@@ -15,7 +15,7 @@ Atualização: 2026-10-11. Baseline original: `81897d5`.
 | IDs | Estado | Próxima ação |
 |---|---|---|
 | KZN-312, 318, 325, 331 | Causa localizada; verificação isolada realizada | Preparar specs e planos antes de implementar |
-| FIX-001 | Evidência estática; documentos SDD em proposta | Revisão e aprovação antes de alterar config/publicar aplicação |
+| FIX-001 | Evidência estática; SDD configuracao-por-ambiente em proposta | Revisão e aprovação antes de alterar config/publicar aplicação |
 | FIX-002 | Evidência estática | Especificar origens e validar ambiente |
 | FIX-003, 004, 007, 008 | Verificação isolada realizada | Spec/plan e regressões focadas |
 | FIX-005, 006 | Evidência estática | Reprodução integrada e spec/plan |
@@ -46,6 +46,9 @@ Não preencher nome, prazo ou horas com suposições.
 
 Destino autorizado: https://github.com/eduardofrois/kaizen-test.
 Em 2026-10-11, foi consultado como público e sem refs remotas. O primeiro
-envio deve conter documentação e arquivos seguros; publicação da aplicação
+envio contém documentação e arquivos seguros, no commit `0b75868` da main;
+o Git original foi preservado em backup local e a main própria foi enviada
+com upstream configurado. A publicação da aplicação
 aguarda remoção das credenciais literais por SDD. Não enviar o histórico da
-empresa, que também contém a configuração original.
+empresa, que também contém a configuração original. O usuário solicitou
+nomes SDD descritivos; essa solicitação não aprovou a implementação.

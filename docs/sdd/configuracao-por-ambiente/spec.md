@@ -1,9 +1,10 @@
-# Spec — FIX-001: configuração explícita sem segredos no código
+# Spec — Configuração por ambiente, sem segredos no código
 
 **Versão:** 1
 **Estado:** Proposta
 **Data/baseline:** 2026-10-11; original 81897d5
 **Origem:** FIX-001 em fix.md; nota KZN-2B9C
+**Nome do trabalho:** configuracao-por-ambiente
 **Aprovação:** Pendente. A estrutura documental aprovada não aprova esta correção.
 
 ## Problema

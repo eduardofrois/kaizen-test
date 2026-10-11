@@ -1,4 +1,4 @@
-# Plano de implementação — [ID e título]
+# Plano de implementação — [Nome descritivo do trabalho]
 
 > Modelo: completar com arquivos e passos concretos antes da revisão. Não
 > executar campos genéricos deste template como se fossem plano aprovado.

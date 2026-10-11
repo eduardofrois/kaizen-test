@@ -7,7 +7,7 @@ Não representa implementação nem aprovação das correções.
 ## Como usar este arquivo
 
 1. Leia AGENTS.md, README.md e as fronteiras em docs/ai/.
-2. Escolha uma unidade, prepare `docs/sdd/<id>/spec.md` e `plan.md`.
+2. Escolha uma unidade, prepare `docs/sdd/<nome-descritivo>/spec.md` e `plan.md`.
 3. Obtenha aprovação explícita para implementar antes de editar aplicação,
    testes, schema, dependências ou contratos.
 4. Após executar, registre arquivos alterados e evidência de validação real.
@@ -48,7 +48,9 @@ Prioridades são propostas para ordenar trabalho, não decisões aprovadas.
 
 ## FIX-001 — Segredos literais e configuração com fallback
 
-**Estado:** não corrigido. Spec/plan propostos em docs/sdd/fix-001/.
+**Estado:** não corrigido. Spec/plan propostos em
+docs/sdd/configuracao-por-ambiente/. O ID FIX-001 é referência do inventário;
+o trabalho é nomeado pelo que faz.
 
 **Onde:** backend/src/config.js, bloco PADRAO (linhas 16–20), montagem de
 config.jwt/config.erp (35–44), validarConfig() (54 em diante).
@@ -104,7 +106,7 @@ backend/src/config.js define corsOrigem na linha 47, sem consumo correspondente.
 **O que foi encontrado:** o middleware reflete a origem enviada pela requisição
 e permite credenciais; não aplica a origem definida no ambiente. Comentário
 apresenta isso como solução para preflight, mas o desenho previsto já usa
-proxy/mensma origem em desenvolvimento e produção.
+proxy/mesma origem em desenvolvimento e produção.
 
 **Como cheguei:** segui CORS_ORIGEM desde .env.example/config até app.js e
 comparei com frontend/vite.config.js e o fetch com credentials: include.

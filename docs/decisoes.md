@@ -20,11 +20,21 @@
 
 - Estado: destino/inicialização/envio inicial autorizados em 2026-10-11.
 - Destino: eduardofrois/kaizen-test, consultado como público e vazio.
-- Procedimento: preservar README e histórico original em backup local;
-  iniciar histórico próprio; publicar documentação primeiro.
+- Procedimento executado: README preservado, Git original em backup local,
+  histórico próprio iniciado na main e primeiro envio documental realizado
+  no commit `0b75868`, com upstream configurado.
 - Motivo da publicação em etapas: config original contém segredos literais e
   sua alteração depende de aprovação SDD. Não publicar esses valores/histórico.
 - Acesso/push só são considerados concluídos após confirmação remota.
+
+## DEC-004 — Nomes descritivos para trabalho SDD
+
+- Estado: solicitado pelo usuário em 2026-10-11.
+- Usar objetivo concreto para pasta/branch/título, como
+  `configuracao-por-ambiente`, `total-do-carrinho` e `multiplos-carrinhos`.
+- IDs FIX/KZN/INV permanecem nos metadados e no inventário para rastreabilidade.
+- Motivo: facilitar entender o que será feito ao retomar em outra sessão.
+- Renomear documentos não aprova sua implementação.
 
 ## Propostas para MULTI-001 — ainda não aprovadas
 

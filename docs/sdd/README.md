@@ -3,8 +3,8 @@
 ## Fluxo acordado
 
 1. Investigar o comportamento e reunir evidência.
-2. Escrever `docs/sdd/<id>/spec.md`; revisar requisitos e decisões com o usuário.
-3. Escrever `docs/sdd/<id>/plan.md` cobrindo a spec.
+2. Escrever `docs/sdd/<nome-descritivo>/spec.md`; revisar requisitos e decisões com o usuário.
+3. Escrever `docs/sdd/<nome-descritivo>/plan.md` cobrindo a spec.
 4. Obter aprovação explícita para implementar os documentos revisados.
 5. Implementar apenas o escopo aprovado, em branch `codex/<assunto>`.
 6. Executar validações previstas e regressões pertinentes.
@@ -23,10 +23,10 @@ docs/sdd/
   _templates/
     spec.md
     plan.md
-  kzn-312/
+  total-do-carrinho/
     spec.md
     plan.md
-  fix-001/
+  configuracao-por-ambiente/
     spec.md
     plan.md
   multiplos-carrinhos/
@@ -35,13 +35,17 @@ docs/sdd/
 ```
 
 Pastas de exemplos só são criadas quando houver unidade em preparação.
-FIX-001 tem proposta inicial; demais correções/features ainda não têm aprovação.
+Configuração por ambiente tem proposta inicial; demais correções/features
+ainda não têm aprovação.
 Preferir uma unidade por causa/regra; justificar agrupamento de mudanças
 interdependentes sem esconder vários problemas num único commit.
 
 ## Conteúdo e rastreabilidade
 
-- Usar ID oficial KZN quando existir; FIX/INV são IDs internos do inventário.
+- Nomear pasta e branch pelo objetivo concreto, em minúsculas com hífens.
+  Não usar apenas IDs como fix-001 para identificar o trabalho.
+- Manter ID oficial KZN, quando existir, nos metadados; FIX/INV são IDs
+  internos do inventário e servem para rastrear a origem.
 - Spec define comportamento e aceite; plan define arquivos, passos e provas.
 - Registrar versão, estado, baseline e referência da aprovação nos dois.
 - Registrar aprovação como mensagem do usuário + data e escopo; usar ID da

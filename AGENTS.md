@@ -9,7 +9,11 @@ alterações locais antes de editar. Instruções diretas do usuário prevalecem
 
 ## Aprovação e SDD
 
-- Toda correção e funcionalidade precisa de `docs/sdd/<id>/spec.md` e `plan.md`.
+- Toda correção e funcionalidade precisa de
+  `docs/sdd/<nome-descritivo>/spec.md` e `plan.md`.
+- Nomeie pastas e branches pelo objetivo, em minúsculas com hífens, como
+  `configuracao-por-ambiente` ou `total-do-carrinho`. IDs FIX/KZN ficam nos
+  metadados para rastreabilidade, não como único nome do trabalho.
 - Investigar e preparar documentação não autoriza implementar.
 - Só altere código, testes, dependências, contratos ou schema após aprovação
   explícita do usuário para implementar a versão revisada de spec e plano.

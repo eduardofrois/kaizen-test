@@ -1,4 +1,4 @@
-# Plano de implementação — FIX-001
+# Plano de implementação — Configuração por ambiente
 
 **Versão:** 1
 **Estado:** Proposta
@@ -36,7 +36,7 @@ em processos isolados, sem importar serviços/banco. Preservar bootstrap fail-fa
 **Produz:** mesmo shape; strings vazias indicam campos obrigatórios ausentes;
 validarConfig() lança erro agregado sem valores sensíveis.
 
-- [ ] Confirmar aprovação, conferir baseline e criar branch codex/fix-config-segredos.
+- [ ] Confirmar aprovação, conferir baseline e criar branch codex/configuracao-por-ambiente.
 - [ ] Instalar dependências existentes: a partir de backend/, executar `npm ci`.
       Não iniciar servidor, consultar ERP nem criar .env durante os testes.
 - [ ] Criar backend/tests/config.test.js com o conteúdo abaixo.

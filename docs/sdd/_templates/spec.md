@@ -1,4 +1,4 @@
-# Spec — [ID e título]
+# Spec — [Nome descritivo do trabalho]
 
 > Modelo: substituir os campos ao criar uma unidade real. Este arquivo não
 > autoriza implementação e não é uma especificação de funcionalidade pronta.
@@ -7,6 +7,7 @@
 **Estado:** Proposta
 **Baseline/data:** [commit e data]
 **Origem:** [chamado, FIX/INV ou requisito README]
+**Nome da pasta/branch:** [objetivo em minúsculas com hífens; não apenas ID]
 **Aprovação:** Pendente — registrar mensagem/data/escopo após aprovação real.
 
 ## Problema e evidência
