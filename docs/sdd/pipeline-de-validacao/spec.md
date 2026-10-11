@@ -1,0 +1,124 @@
+# Spec — Pipeline de validação
+
+**Versão:** 1
+**Estado:** Proposta
+**Baseline/data:** origin/main a70f55f; 2026-10-11
+**Origem:** CI-001 — validação automática antes do merge manual
+**Pasta:** pipeline-de-validacao
+**Branch:** ci/pipeline-de-validacao
+**Aprovação para implementar:** pendente. O usuário autorizou preparar SDD
+com “entao vamos”; isso não aprova ainda a implementação do workflow.
+
+## Problema e evidência
+
+Não existe .github/workflows na baseline. O backend tem seis testes de
+configuração em backend/tests/config.test.js, executados diretamente por
+node --test; não existe script npm test. O frontend tem script build com Vite,
+mas nenhuma suíte de testes de interface. Ambos possuem package-lock.json.
+As validações locais não são executadas automaticamente em cada PR.
+
+O candidato escolheu branches por tipo e merges manuais no GitHub. Uma CI
+com checks estáveis permitirá configurar proteção de main com evidência real.
+Esta unidade não altera configurações de proteção do repositório.
+
+## Objetivo
+
+Executar automaticamente os testes existentes do backend e a compilação do
+frontend para cada PR destinado à main e para cada push na main. Exibir duas
+verificações independentes, úteis para revisão, sem ambiente real da loja.
+
+## Escopo
+
+Incluído: um workflow GitHub Actions, script npm test no backend, instruções
+locais/remotas e atualização do relatório/estado SDD.
+Fora: novos testes de negócio, suíte frontend/E2E, lint, cobertura mínima,
+automação de Conventional Commits, deploy, Docker, mudança de dependências,
+correção de bugs, proteção de branch via API e permissões administrativas.
+
+## Requisitos e invariantes
+
+- REQ-01: workflow .github/workflows/validacao.yml com pull_request para main
+  (opened, synchronize, reopened) e push para main. Sem filtros de caminhos
+  que deixem checks obrigatórios pendentes em PRs apenas documentais.
+- REQ-02: jobs independentes chamados testes-backend e build-frontend,
+  com os mesmos IDs, sem matrix ou nomes dinâmicos.
+- REQ-03: ambos usam ubuntu-24.04 e Node 24.14.1, alinhado à versão local
+  já utilizada, com timeout de 10 minutos por job.
+- REQ-04: instalar com npm ci no diretório de cada projeto; usar cache npm
+  separado pelo respectivo package-lock.json. Não versionar node_modules/dist.
+- REQ-05: backend executa npm test, definido como node --test tests/*.test.js.
+  Descoberta inclui novos arquivos .test.js diretamente em backend/tests.
+  Testes em subpastas exigirão ajuste explícito do comando em outra revisão.
+- REQ-06: frontend executa npm run build. Esse check comprova compilação,
+  não comportamento da interface, acessibilidade ou integração com API.
+- REQ-07: sem .env, secrets, token ERP ou inicialização de servidor/banco.
+  Testes atuais criam subprocessos com env sintética e cwd temporário.
+  Instalação/cache/checkout acessam rede; a execução dos testes não acessa ERP.
+- REQ-08: permissões contents: read, checkout sem persistir credenciais,
+  sem pull_request_target e sem continue-on-error. Exit code não zero falha o job.
+- REQ-09: cancelar execuções antigas da mesma referência/PR com concurrency;
+  distinguir os grupos de push e pull_request. Não cancelar PRs diferentes.
+- REQ-10: só recomendar checks obrigatórios após execução real bem-sucedida
+  no GitHub; merge manual do candidato. Não afirmar CI validada só por teste local.
+- REQ-11: actions oficiais em versões explícitas verificadas:
+  actions/checkout@v6.0.2 e actions/setup-node@v6.3.0. Sem actions de terceiros.
+  Tags de versão não são imutáveis; fixação por SHA é evolução fora desta unidade.
+
+## Contratos e dados
+
+Novo comando público de desenvolvimento: npm test em backend/.
+Checks previstos: testes-backend e build-frontend no workflow Validacao.
+APIs, schema, dados da loja, sessões e regras de carrinho não mudam.
+Nenhum artefato de build ou credencial é publicado pela pipeline.
+
+## Alternativas
+
+1. **Dois jobs, testes existentes + build (recomendado):** escopo pequeno,
+   falhas distinguíveis e execução paralela; utiliza o que já existe.
+2. Um job sequencial: menos configuração, mas falha do backend impede conhecer
+   o resultado do build e expõe apenas um check para a proteção.
+3. Incluir E2E/checkout e matriz de Node: maior cobertura potencial, porém
+   exige dados isolados, mocks e decisões adicionais; adiar por SDD separado.
+
+## Critérios de aceite
+
+- [ ] AC-01: PR para main dispara os dois checks; novo push no PR executa novamente.
+- [ ] AC-02: push na main após merge dispara os dois jobs.
+- [ ] AC-03: npm test executa os seis testes atuais e todos passam, sem .env real.
+- [ ] AC-04: npm run build gera frontend/dist/index.html sem precisar de backend/ERP.
+- [ ] AC-05: workflow usa Node/runner, lockfiles, cache e diretórios especificados.
+- [ ] AC-06: falhas não são ocultadas; sem permissões de escrita, secrets,
+  comandos de banco/servidor ou dependência de credencial externa.
+- [ ] AC-07: nomes dos checks são estáveis e docs explicam como selecioná-los
+  na proteção de main após o primeiro sucesso real.
+- [ ] AC-08: spec/plan, investigação e relatório distinguem proposta,
+  implementação, validação local e execução remota; merge não feito pela IA.
+
+## Riscos e casos de borda
+
+better-sqlite3 pode exigir instalação nativa no Linux: npm ci no runner é prova
+necessária; sucesso no macOS não garante o mesmo resultado. Falhas de registry
+ou download de Node são falhas de infraestrutura, não prova de bug da aplicação.
+Um PR pode exigir autorização de execução de Actions pela política do GitHub.
+Sem workflow na main, push na branch sem PR não dispara este desenho.
+Node exato precisa de atualização deliberada no futuro. CI verde não afirma
+que os quatro chamados ou múltiplos carrinhos foram resolvidos.
+
+## Validação e entrega
+
+Local: npm test em backend/ e npm run build em frontend/, após aprovação.
+Remota: registrar URL da execução, SHA, jobs e resultados observados no PR;
+após merge feito pelo candidato, confirmar também execução na main.
+Antes do merge, AC-02 fica pendente com status explícito. Se não houver
+acesso à execução remota, registrar limitação sem marcar Validado.
+
+Fontes consultadas em 2026-10-11:
+- [Sintaxe GitHub Actions](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax)
+- [Cache por lockfile](https://github.com/actions/setup-node/blob/main/docs/advanced-usage.md)
+- [checkout v6.0.2](https://github.com/actions/checkout/releases/tag/v6.0.2)
+- [setup-node v6.3.0](https://github.com/actions/setup-node/releases/tag/v6.3.0)
+
+## Revisão e histórico
+
+Versão 1 preparada para aprovação. Escopo e requisitos cobertos pelo plano;
+nenhum workflow/script de aplicação foi criado ou modificado nesta preparação.

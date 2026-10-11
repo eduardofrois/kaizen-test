@@ -393,3 +393,11 @@ codex/configuracao-por-ambiente preservada. Os registros anteriores de push
 pendente descrevem a etapa anterior e estão superados por esta atualização.
 .env e arquivos gerados não foram enviados. Publicação do código no GitHub
 não representa deploy da aplicação.
+
+## Preparação de CI — 2026-10-11
+
+Preparados spec e plano de pipeline GitHub Actions com dois checks propostos:
+testes do backend e build do frontend. A main remota inclui o merge manual
+do PR #1. Branch de trabalho: ci/pipeline-de-validacao. Implementação e
+execução da CI aguardam aprovação SDD; não há workflow criado nesta etapa.
+Não foram adicionados testes de negócio nem declarada cobertura dos chamados.

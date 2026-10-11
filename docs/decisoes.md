@@ -98,3 +98,13 @@ e implementação. Não promover uma sugestão da IA a decisão do candidato.
 - Publicar branches de trabalho no repositório próprio; merges serão feitos
   manualmente pelo candidato no GitHub. Não realizar novos merges locais
   sem instrução explícita. O merge anterior já realizado permanece no histórico.
+
+## DEC-008 — Pipeline inicial enxuta
+
+- Estado: proposta em 2026-10-11; implementação aguardando SDD aprovado.
+- Direção: GitHub Actions com testes-backend e build-frontend independentes,
+  Node 24.14.1 e ubuntu-24.04; PRs para main e pushes na main.
+- Motivo: automatizar verificações existentes sem credenciais ERP. Build
+  não substitui testes de interface; suíte de negócio/E2E fica fora.
+- CI não altera regras de proteção nem faz merge/deploy. Selecionar checks
+  obrigatórios só após sucesso remoto. Spec/plan: pipeline-de-validacao.

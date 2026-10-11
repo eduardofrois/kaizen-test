@@ -75,3 +75,11 @@ codex/configuracao-por-ambiente preservada. Os registros anteriores de push
 pendente descrevem a etapa anterior e estão superados por esta atualização.
 .env e arquivos gerados não foram enviados. Publicação do código no GitHub
 não representa deploy da aplicação.
+
+## CI-001 — Pipeline de validação em preparação
+
+SDD versão 1 proposto em docs/sdd/pipeline-de-validacao/; branch
+ci/pipeline-de-validacao baseada em origin/main a70f55f, após merge manual
+do PR #1 pelo candidato. Dois checks propostos: testes-backend e
+build-frontend. Workflow, script npm test e execuções ainda não implementados
+nesta unidade; aprovação explícita pendente.
