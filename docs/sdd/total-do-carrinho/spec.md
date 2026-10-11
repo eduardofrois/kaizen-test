@@ -115,7 +115,7 @@ Sem necessidade de aguardar estoque real para provar a correção do serviço.
 
 ## Entrega e histórico
 
-Atualizar KZN-312 em fix.md, RELATORIO.md, investigação e decisões conforme
+Atualizar KZN-312 em fix.md, RELATORIO.md, investigação e spec/plano conforme
 resultados reais. FIX-003/KZN-318 continuam pendentes e terão SDD próprio.
 Versão 1 aprovada e implementada; resultados registrados abaixo. Pedido do usuário: trabalhar
 no total do carrinho após confirmar a pipeline antes e depois do merge.

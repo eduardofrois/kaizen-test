@@ -24,7 +24,7 @@ novas, env real, banco local, escrita SIAC, reset ou merge pela IA.
 |---|---|---|
 | Alterar | backend/src/services/carrinhoService.js | Filtrar agregação em lerCarrinho |
 | Criar | backend/tests/carrinho-total.test.js | Regressões reais do serviço e bloqueio checkout |
-| Atualizar | fix.md, RELATORIO.md, docs/investigacao.md, docs/decisoes.md | Evidências e limites |
+| Atualizar | fix.md, RELATORIO.md, docs/investigacao.md | Evidências e limites |
 | Atualizar | docs/sdd/total-do-carrinho/spec.md e plan.md | Estado e resultados observados |
 
 ## Tarefa 1 — Regressões e correção central
@@ -220,7 +220,7 @@ const totalCentavos = itens.reduce(
       configuração e onze novos testes); registrar resultado real. Executar
       `node --check src/services/carrinhoService.js` e `git diff --check`.
 - [x] Confirmar que alteração de produto limita-se ao redutor. Não declarar
-      FIX-003 ou KZN-318 resolvidos. Atualizar fix/relatório/decisões com
+      FIX-003 ou KZN-318 resolvidos. Atualizar fix/relatório/spec/plano com
       causa, comportamento, provas RED/GREEN e limites da validação.
 - [x] Commit `fix: exclui itens indisponiveis do total do carrinho` e publicação
       em origin/fix/total-do-carrinho, apenas com os arquivos revisados.

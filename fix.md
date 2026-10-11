@@ -551,7 +551,7 @@ quantidade de bugs ou de intenção do avaliador.
   adiciona ignore. Novo histórico deve evitar artefatos e segredos.
 - Ainda não há migrações versionadas; existe suíte isolada de configuração.
 - Decisões de limite, seleção, exclusão e pós-checkout de múltiplos carrinhos
-  continuam propostas em docs/decisoes.md, não aprovação de implementação.
+  continuam propostas em docs/ai/arch.md, não aprovação de implementação.
 
 ## FIX-010 — Cadastro aceita entrada acima dos limites da API
 

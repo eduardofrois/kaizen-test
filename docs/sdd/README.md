@@ -8,7 +8,7 @@
 4. Obter aprovação explícita para implementar os documentos revisados.
 5. Implementar apenas o escopo aprovado, em branch `<tipo>/<assunto>` (ex.: `fix/total-do-carrinho`).
 6. Executar validações previstas e regressões pertinentes.
-7. Atualizar fix.md, decisões e, quando autorizado, RELATORIO.md.
+7. Atualizar fix.md, spec/plano e, quando autorizado, RELATORIO.md.
 
 Documentos podem ser preparados como propostas em paralelo à investigação.
 Nunca executar um plano em proposta. Aprovação da organização documental,

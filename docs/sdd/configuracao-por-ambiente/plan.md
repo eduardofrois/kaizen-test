@@ -27,7 +27,7 @@ em processos isolados, sem importar serviços/banco. Preservar bootstrap fail-fa
 | Criar | backend/tests/config.test.js | Regressão de ausência, placeholder, formato e não exposição |
 | Alterar | README.md | Corrigir SIAC_URL para ERP_URL e explicar configuração obrigatória |
 | Alterar | backend/.env.example | Explicar rejeição dos placeholders e proibir credencial rastreada |
-| Atualizar | fix.md, docs/ambiente.md, docs/investigacao.md, docs/decisoes.md | Resultados e situação de publicação |
+| Atualizar | fix.md, docs/ambiente.md, docs/investigacao.md | Resultados e situação de publicação |
 
 ## Tarefa 1 — Configuração fail-fast e primeiro código seguro
 

@@ -26,7 +26,7 @@ parar os servidores antes ou usar checkout isolado, preservando .env e banco.
 | Criar | .github/workflows/validacao.yml | Eventos, permissões e dois checks |
 | Alterar | backend/package.json | Script test sem dependência nova |
 | Atualizar | README.md, docs/ambiente.md | Comandos e limites da CI |
-| Atualizar | RELATORIO.md, docs/investigacao.md, docs/decisoes.md | Evidências e decisão CI-001 |
+| Atualizar | RELATORIO.md, docs/investigacao.md | Evidências e decisão CI-001 |
 | Atualizar | docs/sdd/pipeline-de-validacao/spec.md e plan.md | Estado e resultados reais |
 
 ## Tarefa 1 — Workflow e comandos reproduzíveis
