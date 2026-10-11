@@ -109,3 +109,36 @@ e implementação. Não promover uma sugestão da IA a decisão do candidato.
   não substitui testes de interface; suíte de negócio/E2E fica fora.
 - CI não altera regras de proteção nem faz merge/deploy. Selecionar checks
   obrigatórios só após sucesso remoto. Spec/plan: pipeline-de-validacao.
+
+## DEC-009 — Total com pendências e separação das causas
+
+- Estado: SDD versão 1 aprovado em 2026-10-11 (“Docs aprovados.”); implementado
+  e validado com 17 testes, confirmação manual e checks do PR #3 passando.
+- Unidade: total-do-carrinho / KZN-312.
+- Proposta: total do resumo considera só linhas disponíveis na quantidade
+  solicitada. Linhas com pendência mantêm dados e subtotal de referência;
+  checkout permanece bloqueado até ajustar/remover, sem compra parcial implícita.
+- Local: lerCarrinho, evitando duplicar regra no frontend.
+- Limite: FIX-003 (precisão monetária) e KZN-318 (contador) são causas distintas
+  e ficam em unidades próprias. Sem alteração de quantidade, schema ou SIAC.
+- Provas planejadas: onze regressões com schema real em memória, fetch fake,
+  processos isolados e testes de checkout rejeitado, sem criar pedido real.
+
+## Orientação de entrega do total — 2026-10-11
+
+Candidato pediu aguardar seu comando antes de abrir PR de total-do-carrinho,
+pois vai validar localmente. Publicar branch/commits não autoriza abrir esse
+PR. Não confundir com autorização anterior para PR da pipeline. FIX-005 fica
+em unidade separada, apesar da confirmação manual nesta etapa.
+
+## Validação remota concluída — PR #3
+
+PR: https://github.com/eduardofrois/kaizen-test/pull/3
+Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38175551404
+Checks testes-backend e build-frontend passaram no commit ac2231f.
+Com reprodução prévia, aprovação SDD, RED/GREEN, confirmação manual do
+candidato e checks do PR concluídos, KZN-312 está Validado. Todos os critérios
+da versão 1 cumpridos; merge continua pendente de ação manual do candidato.
+Nenhum merge/deploy realizado pela IA. As pendências de validação e instruções
+de aguardar abertura descritas anteriormente são registros históricos superados.
+FIX-003, FIX-005 e KZN-318 permanecem fora desta correção.

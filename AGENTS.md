@@ -93,3 +93,26 @@ SDD pipeline-de-validacao versão 1 aprovado pelo usuário (“aprovo”). Abert
 do PR autorizada em seguida (“Pode abrir o PR”). Implementação, comandos
 locais e publicação da branch autorizados. Merge permanece manual pelo
 candidato; não alterar proteção de main nem configurar secrets por conta própria.
+
+## Total do carrinho — aprovação em 2026-10-11
+
+SDD total-do-carrinho versão 1 aprovado pelo candidato (“Docs aprovados.”).
+KZN-312 implementado com 17 testes locais passando; validação manual da
+correção e checks remotos pendentes. Candidato pediu explicitamente aguardar
+seu comando para abrir PR desta unidade. Não abrir PR enquanto essa instrução
+não for revogada. Publicação de commits na branch segue o fluxo combinado.
+FIX-005 foi confirmado manualmente, mas sua correção não foi aprovada; manter
+separado de KZN-312, assim como FIX-003 e KZN-318.
+
+## PR do total — autorização em 2026-10-11
+
+Candidato confirmou “funcionando, pode abrir o PR”. Está revogada a instrução
+anterior de aguardar para abrir o PR de total-do-carrinho. Abertura e
+acompanhamento dos checks autorizados; merge permanece manual pelo candidato.
+
+## KZN-312 — validação em 2026-10-11
+
+Total-do-carrinho versão 1 Validado: 17 testes locais, confirmação manual
+“funcionando” e ambos os checks do PR #3 passaram. PR aberto sob autorização
+explícita; instrução anterior para aguardar abertura superada. Merge manual
+pelo candidato pendente. Não ampliar a correção para FIX-003/FIX-005/KZN-318.

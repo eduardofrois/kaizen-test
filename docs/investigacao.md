@@ -14,11 +14,13 @@ Atualização: 2026-10-11. Baseline original: `81897d5`.
 
 | IDs | Estado | Próxima ação |
 |---|---|---|
-| KZN-312, 318, 325, 331 | Causa localizada; verificação isolada realizada | Preparar specs e planos antes de implementar |
+| KZN-312 | Validado: 17 testes, manual pelo candidato e checks do PR #3 | Merge manual pendente |
+| KZN-318, 325, 331 | Causa localizada; verificação isolada realizada | Preparar specs e planos antes de implementar |
 | FIX-001 | Validado por SDD aprovado; seis testes e roteiro manual local | Publicação remota pendente; unidade concluída |
 | FIX-002 | Evidência estática | Especificar origens e validar ambiente |
 | FIX-003, 004, 007, 008 | Verificação isolada realizada | Spec/plan e regressões focadas |
-| FIX-005, 006 | Evidência estática | Reprodução integrada e spec/plan |
+| FIX-005 | Manual pelo candidato e estática; não corrigido | Preparar SDD próprio de ciclo de sessão |
+| FIX-006 | Evidência estática | Reprodução integrada e spec/plan |
 | FIX-009 | Restrições CSS localizadas | Reprodução visual desktop/celular |
 | INV-001 a INV-005 | Pontos adicionais | Ver classificações e passos de confirmação em fix.md |
 | MULTI-001 | Requisito obrigatório | Definir produto, modelagem, contrato e migração por SDD |
@@ -118,3 +120,43 @@ Pendente apenas AC-02 e a etapa correspondente do plano: executar e observar
 push/main após merge manual do candidato no PR #2. Não declarar estado
 Validado global até obter essa evidência. Registro atual supera as pendências
 remotas descritas nas etapas anteriores; merge/deploy/proteção não realizados.
+
+## Unidade em preparação — total-do-carrinho
+
+Em 2026-10-11, candidato confirmou a CI antes e depois do merge e pediu
+trabalhar no total. Criada branch fix/total-do-carrinho a partir de origin/main
+4261129. Spec/plan versão 1 em proposta para KZN-312: somar só linhas
+com disponivel=true, mantendo linhas/quantidades/subtotais e bloqueio checkout.
+FIX-003 é causa distinta e permanece pendente de SDD próprio. Nenhuma
+alteração no serviço ou testes nesta preparação. Plano prevê onze regressões
+novas com schema SQLite em memória e ERP simulado em subprocessos isolados.
+Pipeline já comprovada em push/main no run 38172472231; registros de pendência
+anteriores à confirmação são históricos. Unidade total ainda sem aprovação.
+
+## Execução de total-do-carrinho — 2026-10-11
+
+Versão 1 aprovada pelo candidato após reprodução manual. Redutor corrigido;
+onze testes novos (RED seis falhas/cinco sucessos) e GREEN 17 sucessos na
+suíte completa. Sintaxe/diff passaram. Sem env/banco/rede ERP reais nos testes.
+Aguardar validação manual pós-correção e comando do candidato para abrir PR.
+FIX-005 confirmado manualmente: estado de X permanece após login em Y até F5;
+sem correção nesta unidade. FIX-003/KZN-318 também seguem separados.
+
+## Validação manual e autorização do PR — 2026-10-11
+
+Candidato confirmou “funcionando, pode abrir o PR”. Validação manual
+pós-correção confirmada pelo candidato; autorização anterior para aguardar
+foi revogada por esta mensagem. Abrir PR para main e acompanhar os checks,
+sem realizar merge. Testes locais já passaram; evidência remota ainda pendente.
+
+## Validação remota concluída — PR #3
+
+PR: https://github.com/eduardofrois/kaizen-test/pull/3
+Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38175551404
+Checks testes-backend e build-frontend passaram no commit ac2231f.
+Com reprodução prévia, aprovação SDD, RED/GREEN, confirmação manual do
+candidato e checks do PR concluídos, KZN-312 está Validado. Todos os critérios
+da versão 1 cumpridos; merge continua pendente de ação manual do candidato.
+Nenhum merge/deploy realizado pela IA. As pendências de validação e instruções
+de aguardar abertura descritas anteriormente são registros históricos superados.
+FIX-003, FIX-005 e KZN-318 permanecem fora desta correção.

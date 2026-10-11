@@ -58,20 +58,22 @@ O procedimento de instalação/execução está descrito como previsto em
 
 ## 2. Chamados reportados
 
-As causas abaixo foram localizadas e verificadas de forma isolada. Nenhum
-destes quatro chamados foi corrigido; testes integrados continuam pendentes.
+As causas dos quatro chamados foram localizadas. KZN-312 foi corrigido e
+validado automaticamente, manualmente pelo candidato e pelos checks do PR #3.
+Os demais chamados continuam sem correção.
 
 ### KZN-312 — Total do carrinho vem maior que a soma das peças
 
 | Campo | Registro |
 |---|---|
-| **Causa** | `lerCarrinho()` soma `valor_total` de todos os itens, inclusive os marcados como indisponíveis. A pendência impede checkout, mas não exclui o valor da soma. |
-| **Como reproduzi** | Executei o serviço em memória com banco/ERP simulados: uma linha disponível de R$ 20 e três unidades sem estoque de R$ 228. O retorno foi R$ 704, com R$ 684 relativos ao item indisponível. Não foi reprodução pela interface. |
-| **Arquivos alterados** | Nenhum arquivo de aplicação. Causa em `backend/src/services/carrinhoService.js`, `enriquecerItens()` e `lerCarrinho()`. |
-| **Como validei a correção** | Pendente: ainda não há correção. A spec deverá definir o total com pendências e preservar o bloqueio de checkout. |
+| **Causa** | lerCarrinho somava subtotais de linhas indisponíveis. A pendência bloqueava o checkout, mas não excluía seu valor da soma. |
+| **Como reproduzi** | Cenário isolado: R$20 disponíveis + três unidades sem estoque de R$228 retornavam R$704, excesso de R$684. Candidato também confirmou reprodução pela interface com item que perdeu estoque enquanto permanecia no carrinho. |
+| **Arquivos alterados** | backend/src/services/carrinhoService.js (apenas condição do redutor), backend/tests/carrinho-total.test.js e documentação. |
+| **Correção** | Somar somente linhas com disponivel=true; manter dados, quantidades e subtotais referenciais, sem compra parcial e sem liberar checkout com pendências. Spec/plan versão 1 aprovados em 2026-10-11. |
+| **Como validei** | RED: seis falhas/cinco sucessos nos onze novos testes. GREEN: npm test com 17 sucessos; schema real em SQLite :memory:, fetch simulado e env/cwd isolados. Cobertos estoque, inativo, 404/500, vazio, isolamento de usuários, releitura e rejeição de checkout sem POST. Sintaxe e diff passaram. Candidato confirmou funcionamento e ambos os checks do PR #3 passaram. |
 
-Também encontrei perda de centavos na conversão monetária, descrita no
-problema 3. É uma causa distinta que afeta o mesmo fluxo.
+FIX-003 (perda de centavos) é outra causa e continua pendente. Não foi alterado
+nesta unidade, assim como o contador KZN-318. Nota KZN-7F3A preservada.
 
 ### KZN-318 — Número no ícone do carrinho está errado
 
@@ -154,7 +156,7 @@ Não há suposição de que o teste contenha exatamente sete problemas extras.
 | Campo | Registro |
 |---|---|
 | **O que está errado** | O provider carrega uma vez e não observa login, logout ou identidade do usuário. Respostas em andamento também não são invalidadas por troca de identidade. |
-| **Como cheguei nele** | Leitura de `CarrinhoContext.jsx`, `AuthContext.jsx` e montagem em `main.jsx`. Reprodução integrada pendente. |
+| **Como cheguei nele** | Leitura de `CarrinhoContext.jsx`, `AuthContext.jsx` e montagem em `main.jsx`. Candidato confirmou manualmente que o carrinho de X permanece visível após sair e entrar em Y, até F5. |
 | **Impacto** | Interface pode continuar vazia após login ou mostrar conteúdo residual da conta anterior. As consultas do backend continuam filtradas por usuário; não foi demonstrado vazamento pela API. |
 | **Corrigi?** | Não. Ciclo da sessão, estados de erro e respostas antigas precisam de spec/plano. |
 | **Arquivos alterados** | Nenhum arquivo de aplicação. |
@@ -444,3 +446,46 @@ Pendente apenas AC-02 e a etapa correspondente do plano: executar e observar
 push/main após merge manual do candidato no PR #2. Não declarar estado
 Validado global até obter essa evidência. Registro atual supera as pendências
 remotas descritas nas etapas anteriores; merge/deploy/proteção não realizados.
+
+## Preparação de KZN-312 — Total do carrinho
+
+Em 2026-10-11, após confirmar a pipeline em PR/main, preparada unidade SDD
+versão 1 total-do-carrinho na branch fix/total-do-carrinho. Proposta: excluir
+linhas indisponíveis do total do resumo, preservando linhas, quantidades,
+subtotais de referência e bloqueio de checkout. Causa localizada no redutor
+de lerCarrinho; nota KZN-7F3A preservada. Nenhum código corrigido nesta etapa.
+Plano prevê onze testes do serviço com SQLite em memória/ERP simulado,
+RED antes da alteração e GREEN depois. Precisão monetária FIX-003 e contador
+KZN-318 permanecem pendentes, com SDD próprio. Aprovação para implementar
+esta proposta ainda não foi dada; nenhum resultado novo de teste é declarado.
+
+## KZN-312 implementado e FIX-005 confirmado — 2026-10-11
+
+Aprovação de implementação: “Consegui recriar, perfeito. Docs aprovados.”
+KZN-312 corrigido conforme SDD versão 1 e 17 testes passaram. O candidato vai
+validar a correção localmente e pediu aguardar seu comando para abrir PR.
+Nenhum PR/merge realizado nesta unidade. Status SDD: Implementado, checks
+remotos e validação manual pós-correção pendentes.
+
+Novo retorno sobre achado existente FIX-005: sair de X e entrar em Y manteve
+o carrinho de X na interface até F5. Registrado como confirmação manual, sem
+inferir vazamento pela API. Correção permanece separada, sem aprovação SDD.
+
+## Validação manual e autorização do PR — 2026-10-11
+
+Candidato confirmou “funcionando, pode abrir o PR”. Validação manual
+pós-correção confirmada pelo candidato; autorização anterior para aguardar
+foi revogada por esta mensagem. Abrir PR para main e acompanhar os checks,
+sem realizar merge. Testes locais já passaram; evidência remota ainda pendente.
+
+## Validação remota concluída — PR #3
+
+PR: https://github.com/eduardofrois/kaizen-test/pull/3
+Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38175551404
+Checks testes-backend e build-frontend passaram no commit ac2231f.
+Com reprodução prévia, aprovação SDD, RED/GREEN, confirmação manual do
+candidato e checks do PR concluídos, KZN-312 está Validado. Todos os critérios
+da versão 1 cumpridos; merge continua pendente de ação manual do candidato.
+Nenhum merge/deploy realizado pela IA. As pendências de validação e instruções
+de aguardar abertura descritas anteriormente são registros históricos superados.
+FIX-003, FIX-005 e KZN-318 permanecem fora desta correção.
