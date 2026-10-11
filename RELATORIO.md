@@ -444,3 +444,15 @@ Pendente apenas AC-02 e a etapa correspondente do plano: executar e observar
 push/main após merge manual do candidato no PR #2. Não declarar estado
 Validado global até obter essa evidência. Registro atual supera as pendências
 remotas descritas nas etapas anteriores; merge/deploy/proteção não realizados.
+
+## Preparação de KZN-312 — Total do carrinho
+
+Em 2026-10-11, após confirmar a pipeline em PR/main, preparada unidade SDD
+versão 1 total-do-carrinho na branch fix/total-do-carrinho. Proposta: excluir
+linhas indisponíveis do total do resumo, preservando linhas, quantidades,
+subtotais de referência e bloqueio de checkout. Causa localizada no redutor
+de lerCarrinho; nota KZN-7F3A preservada. Nenhum código corrigido nesta etapa.
+Plano prevê onze testes do serviço com SQLite em memória/ERP simulado,
+RED antes da alteração e GREEN depois. Precisão monetária FIX-003 e contador
+KZN-318 permanecem pendentes, com SDD próprio. Aprovação para implementar
+esta proposta ainda não foi dada; nenhum resultado novo de teste é declarado.

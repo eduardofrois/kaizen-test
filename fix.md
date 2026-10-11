@@ -496,6 +496,20 @@ paginas/Checkout.jsx (48–57). Cada chamado terá spec/plan próprios. KZN-312
 precisa definir semântica do total com pendências; checkout continua bloqueado
 até ajustes, salvo decisão aprovada diferente.
 
+### KZN-312 — Preparação SDD em 2026-10-11
+
+Estado: especificado, aguardando aprovação. Documentos versão 1 em
+[spec.md](docs/sdd/total-do-carrinho/spec.md) e
+[plan.md](docs/sdd/total-do-carrinho/plan.md); branch fix/total-do-carrinho.
+Proposta: excluir do resumo toda linha indisponível, inclusive estoque
+inferior à quantidade solicitada, preservando a linha e checkout bloqueado.
+Subtotal da linha continua referencial; não mudar quantidade automaticamente.
+Correção central no redutor de lerCarrinho, sem frontend/contador/migração.
+FIX-003 continua pendente; testes desta unidade usam valores inteiros em reais
+para isolar a causa KZN-312. Não afirmar precisão monetária integral resolvida.
+Onze novas regressões previstas com SQLite em memória e fetch simulado;
+RED/GREEN ainda não executados, nenhum arquivo de aplicação alterado.
+
 ## Notas de revisão encontradas
 
 | Identificador | Arquivo e linha da baseline |
