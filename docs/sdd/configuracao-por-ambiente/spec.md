@@ -1,11 +1,11 @@
 # Spec — Configuração por ambiente, sem segredos no código
 
 **Versão:** 1
-**Estado:** Proposta
+**Estado:** Validado — testes automatizados e validação manual local concluídos
 **Data/baseline:** 2026-10-11; original 81897d5
 **Origem:** FIX-001 em fix.md; nota KZN-2B9C
 **Nome do trabalho:** configuracao-por-ambiente
-**Aprovação:** Pendente. A estrutura documental aprovada não aprova esta correção.
+**Aprovação:** explícita do usuário em 2026-10-11 para esta correção/configuração inicial.
 
 ## Problema
 
@@ -64,14 +64,14 @@ Não criar .env com valores fictícios como substituto da configuração real.
 
 ## Critérios de aceite
 
-- [ ] AC-01: cada variável obrigatória ausente/vazia causa erro identificável.
-- [ ] AC-02: placeholders JWT/token e JWT curto são rejeitados.
-- [ ] AC-03: URL inválida ou com protocolo não HTTP(S) é rejeitada sem ecoar valor.
-- [ ] AC-04: env sintética válida passa; propriedades e normalização preservadas.
-- [ ] AC-05: teste executa em diretório temporário sem .env/rede/banco real.
-- [ ] AC-06: diff/arquivos/histórico destinados ao GitHub não contêm os segredos
+- [x] AC-01: cada variável obrigatória ausente/vazia causa erro identificável.
+- [x] AC-02: placeholders JWT/token e JWT curto são rejeitados.
+- [x] AC-03: URL inválida ou com protocolo não HTTP(S) é rejeitada sem ecoar valor.
+- [x] AC-04: env sintética válida passa; propriedades e normalização preservadas.
+- [x] AC-05: teste executa em diretório temporário sem .env/rede/banco real.
+- [x] AC-06: diff/arquivos/histórico destinados ao GitHub não contêm os segredos
   originais nem .env/SQLite/build/dependências locais.
-- [ ] AC-07: README, exemplo e guia descrevem ERP_URL e obrigação dos segredos.
+- [x] AC-07: README, exemplo e guia descrevem ERP_URL e obrigação dos segredos.
 
 ## Riscos
 
@@ -87,3 +87,32 @@ node:test + subprocessos com env sintética e cwd temporário, após instalar
 dependências pelo lockfile. Registrar comandos/resultados. Revisar conteúdo
 a publicar sem imprimir credenciais. Atualizar FIX-001, ambiente e decisão de
 Git; editar relatório apenas quando o usuário aprovar seu preenchimento.
+
+## Registro da execução — 2026-10-11
+
+Usuário: "sobre o fix configuracao por ambiente, esta aprovado a forma que
+vamos fazer essa correcao/configuracao inicial"; pediu também atualização do
+relatório e criação de .env. Complemento autorizado: backend/.env local com
+campos obrigatórios vazios, padrões operacionais preenchidos, permissão 0600
+e exclusão do Git. Esta solicitação substitui a restrição anterior de não
+criar .env; testes continuam isolados e não leem esse arquivo.
+
+Branch: codex/configuracao-por-ambiente. npm ci: 120 pacotes instalados,
+auditoria informou zero vulnerabilidades. node --test tests/config.test.js:
+RED cinco falhas/um sucesso; GREEN seis sucessos. node --check
+backend/src/config.js: passou. Sem rede ERP ou banco nos testes; integração
+real e preenchimento local estavam pendentes nesse momento; foram confirmados
+pelo candidato na validação manual abaixo. Nota KZN-2B9C preservada.
+Relatório, inventário e guias atualizados. Novo push não realizado nesta etapa.
+
+### Confirmação manual da configuração — 2026-10-11
+
+Evidência informada pelo candidato: login, catálogo, persistência da sessão
+após atualizar a página e logout funcionaram localmente. Ao executar
+`JWT_SEGREDO= npm start` em backend/, o processo encerrou com
+`Configuracao invalida: JWT_SEGREDO nao definido. Rode: npm run segredo:gerar`.
+Fail-fast manual confirmado, sem alterar .env. Os seis testes automatizados
+já haviam passado. Não foi executado checkout real; este registro não
+comprova os demais fluxos do sistema. Implementação registrada no commit c46e68e. Validação concluída para o
+escopo aprovado; resultados consolidados neste commit documental complementar.
+Nenhuma nova alteração de aplicação realizada; publicação remota pendente.

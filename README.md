@@ -34,7 +34,7 @@ de 30 em 30 minutos
 A documentação técnica (arquitetura, contrato da API, decisões, paleta) está em
 **[ARQUITETURA.md](ARQUITETURA.md)**. Vale ler antes de começar.
 
-`SIAC_URL` é a **base** da API — os caminhos (`/produtos`, `/pedidos`) são
+`ERP_URL` é a **base** da API — os caminhos (`/produtos`, `/pedidos`) são
 montados em cima dela. Para conferir se você tem acesso, o ERP responde em
 `/health` sem exigir token.
 
@@ -218,6 +218,20 @@ Entregar menos sabendo explicar vale mais do que entregar tudo sem saber.
 - Velocidade. Preferimos entrega pensada a entrega rápida.
 
 ---
+
+## Configuração do ambiente
+
+No diretório `backend/`, copie `.env.example` para `.env` se ainda não existir.
+`JWT_SEGREDO`, `ERP_URL` e `ERP_TOKEN` são obrigatórios. Substitua os exemplos
+localmente; não versione `.env` nem credenciais reais. Gere o segredo JWT com
+`npm run segredo:gerar` (mínimo 32 caracteres). A URL é a base HTTP(S) do ERP.
+Veja [docs/ambiente.md](docs/ambiente.md) para as demais variáveis e execução.
+
+Teste isolado da configuração, a partir de `backend/`:
+
+```sh
+node --test tests/config.test.js
+```
 
 ## Antes de começar
 

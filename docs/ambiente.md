@@ -2,8 +2,10 @@
 
 ## Situação verificada
 
-Em 2026-10-11: Node local v24.14.1 e npm 11.11.0. Não houve instalação de
-dependências, criação de .env, inicialização por scripts, build novo ou deploy.
+Em 2026-10-11: Node local v24.14.1 e npm 11.11.0. `npm ci` instalou as dependências do backend (120 pacotes; auditoria: zero
+vulnerabilidades). backend/.env criado com permissão 0600 e depois preenchido pelo candidato.
+Execução local confirmada pelo candidato: catálogo, login, sessão após refresh,
+logout e rejeição de JWT_SEGREDO vazio. Build novo e deploy não executados.
 Os comandos abaixo são um procedimento previsto; sua execução deve ser
 registrada posteriormente com resultados reais.
 
@@ -13,8 +15,11 @@ primeira validação e registrar eventual ajuste. Instalar pelos lockfiles.
 
 ## Variáveis do backend
 
-Criar `backend/.env` local a partir de `backend/.env.example` quando autorizado
-e com os valores fornecidos localmente pelo usuário. Executar o backend a
+`backend/.env` já foi criado por solicitação do usuário. O candidato confirmou o preenchimento de
+JWT_SEGREDO, ERP_URL e ERP_TOKEN e a execução local. Esses campos são
+obrigatórios e sua ausência impede inicialização. Para JWT, execute `npm run segredo:gerar` em backend/ e
+copie o resultado somente para seu ambiente local. Os demais campos já têm
+padrões de desenvolvimento. Não substitua um .env existente ao retomar. Executar o backend a
 partir de backend/, pois dotenv carrega .env do diretório de trabalho.
 
 | Variável | Papel |
@@ -30,9 +35,9 @@ partir de backend/, pois dotenv carrega .env do diretório de trabalho.
 | ERP_TIMEOUT_MS | Tempo limite da integração; padrão 8000 |
 | CORS_ORIGEM | Origem prevista do frontend; ignorada pela baseline, ver FIX-002 |
 
-README usa o nome SIAC_URL, mas a implementação lê ERP_URL. Não criar env no
+README e implementação usam ERP_URL. Não criar env no
 frontend com token ERP. Não publicar os valores nem copiar .env para docs.
-FIX-001 precisa ser resolvido antes da publicação do código da aplicação.
+FIX-001 corrigido: não há fallback secreto e exemplos são rejeitados.
 
 ## Desenvolvimento previsto
 
@@ -90,5 +95,29 @@ Cookie Secure requer que o navegador acesse a aplicação por HTTPS em produçã
 
 `.env`, node_modules, dist, SQLite e WAL/SHM ficam fora do Git pela nova regra.
 Arquivo já rastreado exige tratamento explícito no índice; ignore não remove
-histórico. Não há script npm test atualmente. Cada spec aprovada deve definir
+histórico. Não há script npm test; a suíte aprovada executa com
+`cd backend` e `node --test tests/config.test.js` (seis testes passaram).
+A sintaxe foi validada com `node --check backend/src/config.js` na raiz.
+Testes usam subprocessos e variáveis sintéticas sem ERP/banco/.env real.
+Cada spec aprovada deve definir
 seus comandos de validação e usar banco/ERP isolados quando necessário.
+
+## Instalação local — 2026-10-11
+
+Após o usuário informar que preencheu o .env, executado npm ci nos dois
+projetos: backend 120 pacotes; frontend 82 pacotes. Ambas as auditorias
+informaram zero vulnerabilidades nessa execução. Manifests e lockfiles
+preservados. Servidores não foram iniciados nesta etapa; usar npm run dev
+em cada diretório, em terminais separados, conforme os comandos acima.
+
+### Confirmação manual da configuração — 2026-10-11
+
+Evidência informada pelo candidato: login, catálogo, persistência da sessão
+após atualizar a página e logout funcionaram localmente. Ao executar
+`JWT_SEGREDO= npm start` em backend/, o processo encerrou com
+`Configuracao invalida: JWT_SEGREDO nao definido. Rode: npm run segredo:gerar`.
+Fail-fast manual confirmado, sem alterar .env. Os seis testes automatizados
+já haviam passado. Não foi executado checkout real; este registro não
+comprova os demais fluxos do sistema. Implementação registrada no commit c46e68e. Validação concluída para o
+escopo aprovado; resultados consolidados neste commit documental complementar.
+Nenhuma nova alteração de aplicação realizada; publicação remota pendente.

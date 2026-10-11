@@ -2,7 +2,7 @@
 
 Atualizado em **2026-10-11**. Baseline lida: commit original **81897d5**.
 Este arquivo é o contexto detalhado para retomar o trabalho em outra sessão.
-Não representa implementação nem aprovação das correções.
+Distingue correções executadas de propostas ainda sem aprovação.
 
 ## Como usar este arquivo
 
@@ -24,17 +24,24 @@ empresa. Pontos INV estão separados por dependerem de confirmação ou decisão
   integrado que percorra navegador/API/ERP.
 - **Isolada:** função/expressão original executada em memória com entradas
   controladas e, quando necessário, stubs de banco/ERP.
-- **Integrada:** aplicação real percorrida; ainda não executada nesta etapa.
+- **Integrada:** aplicação real percorrida; candidato confirmou catálogo,
+  login, refresh e logout. Demais fluxos não foram validados.
 - **Risco/decisão:** condição possível ou regra ambígua que precisa de definição.
 
 Scripts isolados foram transitórios, não salvos como suíte. Não houve chamadas
-de escrita ao SIAC. Nenhuma correção abaixo foi implementada.
+de escrita ao SIAC. FIX-001 validado por testes isolados e roteiro manual pelo candidato;
+demais correções pendentes.
+
+O preenchimento inicial de RELATORIO.md foi aprovado em 2026-10-11 e registra
+estes achados com os graus de evidência e pendências. Essa aprovação não
+autoriza outras correções. Configuração por ambiente foi aprovada separadamente
+em 2026-10-11 e implementada nesta sessão.
 
 ## Visão geral
 
 | ID | Assunto | Evidência | Prioridade proposta |
 |---|---|---|---|
-| FIX-001 | Credenciais e segredo JWT literais/fallback | Estática | Crítica se defaults forem usados; tratar antes da publicação |
+| FIX-001 | Credenciais e segredo JWT literais/fallback | Corrigido; seis testes e validação manual local | Concluído no escopo aprovado |
 | FIX-002 | CORS com qualquer origem e credenciais | Estática | Alta; impacto depende do ambiente |
 | FIX-003 | Perda de centavos na conversão monetária | Isolada | Alta |
 | FIX-004 | Botão Próxima bloqueia última página | Isolada | Alta |
@@ -43,12 +50,14 @@ de escrita ao SIAC. Nenhuma correção abaixo foi implementada.
 | FIX-007 | Telefone opcional não pode ser removido | Isolada | Média |
 | FIX-008 | Login/troca de senha removem espaços aceitos no cadastro | Isolada | Alta |
 | FIX-009 | Cabeçalho e grade inadequados para telas pequenas | Estática; visual pendente | Média |
+| FIX-010 | Inputs de documento/telefone sem limite de entrada | Manual no cadastro; estática no perfil | Média; SDD pendente |
 
 Prioridades são propostas para ordenar trabalho, não decisões aprovadas.
 
 ## FIX-001 — Segredos literais e configuração com fallback
 
-**Estado:** não corrigido. Spec/plan propostos em
+**Estado:** validado por seis testes automatizados e roteiro manual local
+pelo candidato em 2026-10-11. Spec/plan aprovados em
 docs/sdd/configuracao-por-ambiente/. O ID FIX-001 é referência do inventário;
 o trabalho é nomeado pelo que faz.
 
@@ -94,6 +103,41 @@ expostos exige ação do responsável pelo SIAC; apagar código não revoga toke
 **Cuidado no Git:** repositório de entrega é público. Iniciar novo histórico
 com documentação segura evita carregar o histórico original com credenciais.
 Não publicar a aplicação até essa mudança ser aprovada e executada.
+
+### Execução aprovada — 2026-10-11
+
+Os trechos e linhas acima descrevem a baseline original. No código atual,
+PADRAO foi removido; JWT_SEGREDO, ERP_URL e ERP_TOKEN são obrigatórios.
+JWT curto, placeholders e URL não absoluta HTTP(S) são rejeitados sem valores
+nos erros. Formato exportado, cookie e defaults operacionais foram preservados.
+Nota KZN-2B9C mantida. CORS não foi alterado.
+
+Aprovação: usuário aprovou a correção/configuração inicial e pediu atualização
+do relatório e criação de .env. Criado `backend/.env` com permissão 0600,
+ignorado pelo Git, campos obrigatórios vazios e demais padrões preenchidos.
+Na etapa posterior, candidato confirmou preenchimento e catálogo/login
+funcionando; refresh, logout e fail-fast manual também confirmados.
+
+Arquivos: backend/src/config.js, backend/tests/config.test.js,
+backend/.env.example, README.md, guia de ambiente e registros SDD/relatório.
+`npm ci` instalou 120 pacotes no backend; auditoria informou zero vulnerabilidades.
+`node --test tests/config.test.js`: antes, cinco falhas/um sucesso; depois,
+seis sucessos. `node --check backend/src/config.js`: passou. Testes isolam cwd
+e ambiente, não leem .env local e não acessam ERP nem banco. Não houve
+revogação das credenciais externas nem publicação do histórico original.
+
+
+### Confirmação manual da configuração — 2026-10-11
+
+Evidência informada pelo candidato: login, catálogo, persistência da sessão
+após atualizar a página e logout funcionaram localmente. Ao executar
+`JWT_SEGREDO= npm start` em backend/, o processo encerrou com
+`Configuracao invalida: JWT_SEGREDO nao definido. Rode: npm run segredo:gerar`.
+Fail-fast manual confirmado, sem alterar .env. Os seis testes automatizados
+já haviam passado. Não foi executado checkout real; este registro não
+comprova os demais fluxos do sistema. Implementação registrada no commit c46e68e. Validação concluída para o
+escopo aprovado; resultados consolidados neste commit documental complementar.
+Nenhuma nova alteração de aplicação realizada; publicação remota pendente.
 
 ## FIX-002 — CORS aceita qualquer origem com credenciais
 
@@ -470,13 +514,45 @@ quantidade de bugs ou de intenção do avaliador.
   existir no ERP se gravação local falhar; log permite reconciliação manual.
 - N chamadas ERP na listagem de pedidos, ausência de recuperação/confirmação
   de email, pagamento/frete/nota, ViaCEP e dígitos CPF/CNPJ já são escopo conhecido.
-- README fala SIAC_URL, código utiliza ERP_URL. Corrigir coerência na unidade
-  de configuração, sem publicar valores.
+- README corrigido para ERP_URL na unidade de configuração.
 - Original não possui .gitignore e versiona SQLite/dist; estrutura documental
   adiciona ignore. Novo histórico deve evitar artefatos e segredos.
-- Ainda não há migrações versionadas nem suíte automatizada.
+- Ainda não há migrações versionadas; existe suíte isolada de configuração.
 - Decisões de limite, seleção, exclusão e pós-checkout de múltiplos carrinhos
   continuam propostas em docs/decisoes.md, não aprovação de implementação.
+
+## FIX-010 — Cadastro aceita entrada acima dos limites da API
+
+**Estado:** identificado; correção não aprovada nem implementada.
+**Evidência:** reprodução manual pelo candidato em 2026-10-11, com capturas
+mostrando documento e telefone longos aceitos durante digitação e mensagens
+após enviar; confirmada por leitura do código. Prioridade proposta: média.
+
+**Onde:** frontend/src/paginas/Cadastro.jsx, campos documento e telefone e
+handler mudar(). O mesmo padrão sem maxLength aparece em Perfil.jsx, ainda
+sem reprodução manual nessa tela. Campo em componentes/ui.jsx repassa props
+ao input; a omissão está nos consumidores, não em bloqueio do componente.
+
+**Causa e contrato:** não há maxLength nem restrição no handler; type=tel
+não limita tamanho ou caracteres. O backend valida documento com máximo de
+18 caracteres e 11/14 dígitos; telefone opcional com máximo de 20 caracteres
+e 10/11 dígitos. Portanto, os exemplos enviados foram rejeitados pela API,
+conforme capturas: não há evidência de persistência desses valores excessivos.
+
+**Impacto:** feedback tardio e retrabalho no formulário. Falta de limite de
+entrada é distinta de falta de validação no servidor. Máscara, caracteres
+permitidos e validação de dígitos verificadores são decisões separadas;
+ausência de verificação matemática de CPF/CNPJ já é limitação documentada.
+
+**Direção para SDD:** alinhar limites de entrada ao contrato existente em
+cadastro e perfil, preservando telefone opcional e validação do servidor.
+Definir separadamente se haverá máscara/normalização, sem inferir que basta
+aceitar só números ou usar input numérico (documentos podem ter zeros iniciais).
+
+**Aceite a especificar:** digitação e colagem acima do limite, valores
+formatados e sem formatação, edição de valores existentes, telefone vazio,
+mensagens acessíveis e rejeição do excesso quando a API é chamada diretamente.
+Não atribuir correção deste achado à unidade configuracao-por-ambiente.
 
 ## Como atualizar ao trabalhar em um item
 
