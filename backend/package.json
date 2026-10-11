@@ -8,6 +8,7 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "node --watch src/server.js",
+    "test": "node --test tests/*.test.js",
     "db:init": "node scripts/init-db.js",
     "db:reset": "node scripts/init-db.js --reset",
     "segredo:gerar": "node -e \"console.log(require('node:crypto').randomBytes(48).toString('hex'))\""

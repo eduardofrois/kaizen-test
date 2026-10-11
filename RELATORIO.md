@@ -24,7 +24,7 @@ arquitetura, código, dependências e configuração. As dependências do backen
 auditoria informou zero vulnerabilidades nessa execução). Foi criado
 `backend/.env` local, ignorado pelo Git, com os três campos obrigatórios vazios
 para preenchimento pelo candidato, que depois informou tê-los configurado e
-iniciado os servidores com sucesso. Build novo e deploy não executados.
+iniciado os servidores com sucesso. Build frontend validado posteriormente pela unidade CI-001; deploy pendente.
 
 O repositório próprio foi inicializado em
 [eduardofrois/kaizen-test](https://github.com/eduardofrois/kaizen-test), com
@@ -276,7 +276,8 @@ itens em toda operação. Essa garantia nova ainda não foi implementada nem tes
 
 O candidato validou manualmente catálogo, login, refresh de sessão e logout
 no navegador e rejeição de JWT_SEGREDO vazio no terminal. Não houve execução
-real do checkout, auditoria visual completa, build novo ou deploy. As simulações não comprovam o contrato
+real do checkout, auditoria visual completa ou deploy. O build frontend foi
+validado posteriormente na unidade CI-001. As simulações não comprovam o contrato
 real do SIAC. Nenhum pedido real foi criado e nenhum dado de negócio foi alterado.
 
 Foi adicionada a suíte `backend/tests/config.test.js`. Em `backend/`, executar
@@ -393,3 +394,53 @@ codex/configuracao-por-ambiente preservada. Os registros anteriores de push
 pendente descrevem a etapa anterior e estão superados por esta atualização.
 .env e arquivos gerados não foram enviados. Publicação do código no GitHub
 não representa deploy da aplicação.
+
+## Preparação de CI — 2026-10-11
+
+Preparados spec e plano de pipeline GitHub Actions com dois checks propostos:
+testes do backend e build do frontend. A main remota inclui o merge manual
+do PR #1. Branch de trabalho: ci/pipeline-de-validacao. Implementação e
+execução da CI aguardam aprovação SDD; não há workflow criado nesta etapa.
+Não foram adicionados testes de negócio nem declarada cobertura dos chamados.
+
+## Implementação da CI — 2026-10-11
+
+Após aprovação SDD versão 1, criado .github/workflows/validacao.yml e script
+npm test no backend. Dois jobs independentes: testes-backend e build-frontend,
+Node 24.14.1/ubuntu-24.04, npm ci/cache pelos lockfiles, timeout de 10 minutos
+e permissões somente de leitura. PRs para main e push na main disparam checks;
+execuções antigas do mesmo PR/ref são canceladas. Sem secrets, ERP ou banco real.
+
+Validação local em cópia temporária para preservar servidores e dados do
+candidato: npm ci em ambos os projetos, seis testes passaram, build transformou
+58 módulos e gerou dist/index.html. Nenhum lockfile foi alterado. YAML analisado
+e diff conferido. Não foi adicionada suíte frontend; build comprova compilação.
+Usuário autorizou abrir PR para validar GitHub Actions. Execução remota e
+push/main após merge do candidato ainda pendentes nesta etapa; estado SDD
+Implementado, sem declarar validação remota ou proteção configurada.
+
+## Primeira execução remota — PR #2
+
+PR: https://github.com/eduardofrois/kaizen-test/pull/2
+Execução pull_request/opened concluída com success:
+https://github.com/eduardofrois/kaizen-test/actions/runs/38172181159
+SHA: 820bc9593a34a31ce49d1a63fcc2b457bd9728dc.
+Jobs testes-backend e build-frontend passaram em Ubuntu 24.04/Node 24.14.1.
+Logs confirmam npm ci em ambos, seis testes sem falhas e build de 58 módulos.
+Frontend instalou 85 pacotes no Linux (82 na validação local macOS), sem
+alteração de lockfile. Não houve credenciais reais, servidor ou ERP na CI.
+Ainda falta confirmar synchronize após novo push documental e push/main
+após merge manual do candidato. Proteção da main não foi alterada.
+
+## Validação do PR concluída — aguardando merge manual
+
+Novo push documental (10420ad) disparou pull_request/synchronize e ambos os
+jobs passaram novamente: run 38172264955, SHA
+10420adcd74f5b5c8eecf71274b7c6e636de38b1.
+Evidência: https://github.com/eduardofrois/kaizen-test/actions/runs/38172264955
+AC-01 confirmado por opened e synchronize; checks testes-backend e
+build-frontend reais e bem-sucedidos, disponíveis para proteção da main.
+Pendente apenas AC-02 e a etapa correspondente do plano: executar e observar
+push/main após merge manual do candidato no PR #2. Não declarar estado
+Validado global até obter essa evidência. Registro atual supera as pendências
+remotas descritas nas etapas anteriores; merge/deploy/proteção não realizados.

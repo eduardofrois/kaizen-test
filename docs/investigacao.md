@@ -75,3 +75,46 @@ codex/configuracao-por-ambiente preservada. Os registros anteriores de push
 pendente descrevem a etapa anterior e estão superados por esta atualização.
 .env e arquivos gerados não foram enviados. Publicação do código no GitHub
 não representa deploy da aplicação.
+
+## CI-001 — Pipeline de validação em preparação
+
+SDD versão 1 proposto em docs/sdd/pipeline-de-validacao/; branch
+ci/pipeline-de-validacao baseada em origin/main a70f55f, após merge manual
+do PR #1 pelo candidato. Dois checks propostos: testes-backend e
+build-frontend. Workflow, script npm test e execuções ainda não implementados
+nesta unidade; aprovação explícita pendente.
+
+## CI-001 — Implementação aprovada e validação local
+
+Versão 1 aprovada em 2026-10-11 (“aprovo”). Workflow e npm test implementados.
+Cópia temporária sem .env/banco: npm ci em ambos, seis testes passaram e
+build frontend passou (58 módulos). Lockfiles preservados. YAML e diff
+conferidos. Usuário autorizou PR (“Pode abrir o PR”); remoto/merge main ainda
+pendentes neste registro. Nenhuma dependência, regra de negócio ou proteção
+alterada. O registro anterior de proposta foi superado por esta execução.
+
+## Primeira execução remota — PR #2
+
+PR: https://github.com/eduardofrois/kaizen-test/pull/2
+Execução pull_request/opened concluída com success:
+https://github.com/eduardofrois/kaizen-test/actions/runs/38172181159
+SHA: 820bc9593a34a31ce49d1a63fcc2b457bd9728dc.
+Jobs testes-backend e build-frontend passaram em Ubuntu 24.04/Node 24.14.1.
+Logs confirmam npm ci em ambos, seis testes sem falhas e build de 58 módulos.
+Frontend instalou 85 pacotes no Linux (82 na validação local macOS), sem
+alteração de lockfile. Não houve credenciais reais, servidor ou ERP na CI.
+Ainda falta confirmar synchronize após novo push documental e push/main
+após merge manual do candidato. Proteção da main não foi alterada.
+
+## Validação do PR concluída — aguardando merge manual
+
+Novo push documental (10420ad) disparou pull_request/synchronize e ambos os
+jobs passaram novamente: run 38172264955, SHA
+10420adcd74f5b5c8eecf71274b7c6e636de38b1.
+Evidência: https://github.com/eduardofrois/kaizen-test/actions/runs/38172264955
+AC-01 confirmado por opened e synchronize; checks testes-backend e
+build-frontend reais e bem-sucedidos, disponíveis para proteção da main.
+Pendente apenas AC-02 e a etapa correspondente do plano: executar e observar
+push/main após merge manual do candidato no PR #2. Não declarar estado
+Validado global até obter essa evidência. Registro atual supera as pendências
+remotas descritas nas etapas anteriores; merge/deploy/proteção não realizados.

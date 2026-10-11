@@ -95,8 +95,8 @@ Cookie Secure requer que o navegador acesse a aplicação por HTTPS em produçã
 
 `.env`, node_modules, dist, SQLite e WAL/SHM ficam fora do Git pela nova regra.
 Arquivo já rastreado exige tratamento explícito no índice; ignore não remove
-histórico. Não há script npm test; a suíte aprovada executa com
-`cd backend` e `node --test tests/config.test.js` (seis testes passaram).
+histórico. A suíte aprovada executa com
+`cd backend` e `npm test` (seis testes passaram).
 A sintaxe foi validada com `node --check backend/src/config.js` na raiz.
 Testes usam subprocessos e variáveis sintéticas sem ERP/banco/.env real.
 Cada spec aprovada deve definir
@@ -121,3 +121,42 @@ já haviam passado. Não foi executado checkout real; este registro não
 comprova os demais fluxos do sistema. Implementação registrada no commit c46e68e. Validação concluída para o
 escopo aprovado; resultados consolidados neste commit documental complementar.
 Nenhuma nova alteração de aplicação realizada; publicação remota pendente.
+
+## Pipeline de validação — CI-001
+
+Workflow .github/workflows/validacao.yml: PRs para main e pushes na main,
+dois jobs independentes em ubuntu-24.04/Node 24.14.1, timeout de 10 minutos.
+Instalação por npm ci e cache npm pelo lockfile de cada projeto. Permissões
+contents: read, checkout sem persistir credenciais. Não configurar secrets.
+
+Reproduzir em terminais separados (instalar com servidores parados):
+
+```sh
+cd backend
+npm ci
+npm test
+```
+
+```sh
+cd frontend
+npm ci
+npm run build
+```
+
+npm test descobre backend/tests/*.test.js diretamente nessa pasta. Novas
+suítes devem usar ERP/banco isolados. O build não testa interface ou checkout.
+Validação desta unidade ocorreu em cópia temporária, preservando servidores,
+.env e banco locais: seis testes passaram; build gerou dist/index.html.
+
+Depois de observar sucesso real no PR, em Settings > Branches > regra main,
+ativar Require status checks to pass before merging e selecionar os checks
+`testes-backend` e `build-frontend` exibidos pelo GitHub. Caso nomes apareçam
+com prefixo do workflow, conferir os jobs da execução antes de selecionar.
+Não tornar obrigatório um nome que ainda não executou. Nenhuma alteração de
+proteção feita automaticamente; merge manual pelo candidato. Confirmar
+execução após merge na main antes de marcar AC-02 como concluído.
+
+Validação remota confirmada em 2026-10-11 no PR #2: ambos os checks passaram
+nos runs 38172181159 (opened) e 38172264955 (synchronize). Já podem ser
+selecionados na proteção de main pelo candidato. Ainda é necessário observar
+push/main após merge manual para concluir AC-02 da unidade SDD.
