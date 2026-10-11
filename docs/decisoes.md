@@ -14,7 +14,8 @@
   fluxo/modelos SDD e fix.md detalhado.
 - Motivo: contexto recuperável entre sessões, sem misturar instruções da IA,
   análise interna e relato de entrega.
-- RELATORIO: primeira edição ainda aguarda confirmação do conteúdo proposto.
+- RELATORIO: preenchimento inicial aprovado em 2026-10-11, com evidências e
+  pendências explícitas; não autoriza implementar correções.
 
 ## DEC-003 — Repositório do candidato
 
@@ -38,6 +39,9 @@
 
 ## Propostas para MULTI-001 — ainda não aprovadas
 
+As escolhas desta seção seguem em proposta. O preenchimento aprovado do
+relatório mantém essas decisões de produto como pendentes.
+
 | Pergunta | Proposta inicial | Justificativa a revisar |
 |---|---|---|
 | Limite | 10 carrinhos por usuário | Limite previsível; valor é escolha de produto |
@@ -52,8 +56,33 @@ persistida no servidor; IDs explícitos nas operações; posse verificada em
 todas as rotas; migração preservando itens existentes. Regras para alterações
 concorrentes, duplicidade e múltiplas abas precisam entrar na spec.
 
+## DEC-005 — Preenchimento inicial do relatório
+
+- Estado: aprovado pelo usuário em 2026-10-11.
+- Referência: "aprovo o preenchumento inicial, vai fazendo as alteracoes
+  enquanto eu avalio sobre a config do ambiente".
+- Conteúdo: oito seções originais, com causas e verificações já realizadas,
+  descobertas, preparação documental/Git, notas e pendências de execução.
+- Limites: não inventar identificação, prazo, horas, testes ou correções.
+  Configuração foi aprovada separadamente depois; outras correções seguem sem aprovação.
+- Motivo: manter a comunicação de entrega atualizada desde a investigação.
+
 ## Como adicionar decisões
 
 Registrar ID, estado, data, problema, alternativas, escolha, motivo e
 consequências. Vincular à spec correspondente. Distinguir proposta, aprovação
 e implementação. Não promover uma sugestão da IA a decisão do candidato.
+
+## DEC-006 — Configuração explícita e ambiente local
+
+- Estado: aprovado e implementado em 2026-10-11.
+- Referência: usuário aprovou "fix configuracao por ambiente" e solicitou
+  criação de .env com variáveis a preencher e atualização do relatório.
+- Escolha: exigir JWT_SEGREDO, ERP_URL e ERP_TOKEN; rejeitar placeholders,
+  segredo curto e URL inválida sem revelar valores. Manter defaults operacionais.
+- Motivo: impedir sessões/integração com credenciais implícitas e publicação
+  de literais. A alternativa de gerar segredo no boot invalidaria sessões.
+- Complemento autorizado: backend/.env local, ignorado, permissão 0600,
+  campos obrigatórios vazios. Não copiar valores expostos da baseline.
+- Evidência: seis testes passaram; sintaxe passou. Integração e preenchimento
+  real pendentes. Não houve revogação do token no SIAC nem novo push.

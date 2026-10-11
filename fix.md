@@ -2,7 +2,7 @@
 
 Atualizado em **2026-10-11**. Baseline lida: commit original **81897d5**.
 Este arquivo é o contexto detalhado para retomar o trabalho em outra sessão.
-Não representa implementação nem aprovação das correções.
+Distingue correções executadas de propostas ainda sem aprovação.
 
 ## Como usar este arquivo
 
@@ -28,7 +28,12 @@ empresa. Pontos INV estão separados por dependerem de confirmação ou decisão
 - **Risco/decisão:** condição possível ou regra ambígua que precisa de definição.
 
 Scripts isolados foram transitórios, não salvos como suíte. Não houve chamadas
-de escrita ao SIAC. Nenhuma correção abaixo foi implementada.
+de escrita ao SIAC. FIX-001 foi corrigido e validado isoladamente; demais correções pendentes.
+
+O preenchimento inicial de RELATORIO.md foi aprovado em 2026-10-11 e registra
+estes achados com os graus de evidência e pendências. Essa aprovação não
+autoriza outras correções. Configuração por ambiente foi aprovada separadamente
+em 2026-10-11 e implementada nesta sessão.
 
 ## Visão geral
 
@@ -48,7 +53,7 @@ Prioridades são propostas para ordenar trabalho, não decisões aprovadas.
 
 ## FIX-001 — Segredos literais e configuração com fallback
 
-**Estado:** não corrigido. Spec/plan propostos em
+**Estado:** corrigido e validado isoladamente em 2026-10-11. Spec/plan aprovados em
 docs/sdd/configuracao-por-ambiente/. O ID FIX-001 é referência do inventário;
 o trabalho é nomeado pelo que faz.
 
@@ -94,6 +99,27 @@ expostos exige ação do responsável pelo SIAC; apagar código não revoga toke
 **Cuidado no Git:** repositório de entrega é público. Iniciar novo histórico
 com documentação segura evita carregar o histórico original com credenciais.
 Não publicar a aplicação até essa mudança ser aprovada e executada.
+
+### Execução aprovada — 2026-10-11
+
+Os trechos e linhas acima descrevem a baseline original. No código atual,
+PADRAO foi removido; JWT_SEGREDO, ERP_URL e ERP_TOKEN são obrigatórios.
+JWT curto, placeholders e URL não absoluta HTTP(S) são rejeitados sem valores
+nos erros. Formato exportado, cookie e defaults operacionais foram preservados.
+Nota KZN-2B9C mantida. CORS não foi alterado.
+
+Aprovação: usuário aprovou a correção/configuração inicial e pediu atualização
+do relatório e criação de .env. Criado `backend/.env` com permissão 0600,
+ignorado pelo Git, campos obrigatórios vazios e demais padrões preenchidos.
+Preenchimento dos valores reais e integração com SIAC continuam pendentes.
+
+Arquivos: backend/src/config.js, backend/tests/config.test.js,
+backend/.env.example, README.md, guia de ambiente e registros SDD/relatório.
+`npm ci` instalou 120 pacotes no backend; auditoria informou zero vulnerabilidades.
+`node --test tests/config.test.js`: antes, cinco falhas/um sucesso; depois,
+seis sucessos. `node --check backend/src/config.js`: passou. Testes isolam cwd
+e ambiente, não leem .env local e não acessam ERP nem banco. Não houve
+revogação das credenciais externas nem publicação do histórico original.
 
 ## FIX-002 — CORS aceita qualquer origem com credenciais
 

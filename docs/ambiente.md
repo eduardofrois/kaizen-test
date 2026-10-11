@@ -2,8 +2,9 @@
 
 ## Situação verificada
 
-Em 2026-10-11: Node local v24.14.1 e npm 11.11.0. Não houve instalação de
-dependências, criação de .env, inicialização por scripts, build novo ou deploy.
+Em 2026-10-11: Node local v24.14.1 e npm 11.11.0. `npm ci` instalou as dependências do backend (120 pacotes; auditoria: zero
+vulnerabilidades). Criado backend/.env local com permissão 0600 e sem segredos
+preenchidos. Inicialização por scripts, build novo e deploy não foram executados.
 Os comandos abaixo são um procedimento previsto; sua execução deve ser
 registrada posteriormente com resultados reais.
 
@@ -13,8 +14,11 @@ primeira validação e registrar eventual ajuste. Instalar pelos lockfiles.
 
 ## Variáveis do backend
 
-Criar `backend/.env` local a partir de `backend/.env.example` quando autorizado
-e com os valores fornecidos localmente pelo usuário. Executar o backend a
+`backend/.env` já foi criado por solicitação do usuário. Preencha localmente
+JWT_SEGREDO, ERP_URL e ERP_TOKEN: estão vazios e impedem inicialização até
+serem configurados. Para JWT, execute `npm run segredo:gerar` em backend/ e
+copie o resultado somente para seu ambiente local. Os demais campos já têm
+padrões de desenvolvimento. Não substitua um .env existente ao retomar. Executar o backend a
 partir de backend/, pois dotenv carrega .env do diretório de trabalho.
 
 | Variável | Papel |
@@ -30,9 +34,9 @@ partir de backend/, pois dotenv carrega .env do diretório de trabalho.
 | ERP_TIMEOUT_MS | Tempo limite da integração; padrão 8000 |
 | CORS_ORIGEM | Origem prevista do frontend; ignorada pela baseline, ver FIX-002 |
 
-README usa o nome SIAC_URL, mas a implementação lê ERP_URL. Não criar env no
+README e implementação usam ERP_URL. Não criar env no
 frontend com token ERP. Não publicar os valores nem copiar .env para docs.
-FIX-001 precisa ser resolvido antes da publicação do código da aplicação.
+FIX-001 corrigido: não há fallback secreto e exemplos são rejeitados.
 
 ## Desenvolvimento previsto
 
@@ -90,5 +94,9 @@ Cookie Secure requer que o navegador acesse a aplicação por HTTPS em produçã
 
 `.env`, node_modules, dist, SQLite e WAL/SHM ficam fora do Git pela nova regra.
 Arquivo já rastreado exige tratamento explícito no índice; ignore não remove
-histórico. Não há script npm test atualmente. Cada spec aprovada deve definir
+histórico. Não há script npm test; a suíte aprovada executa com
+`cd backend` e `node --test tests/config.test.js` (seis testes passaram).
+A sintaxe foi validada com `node --check backend/src/config.js` na raiz.
+Testes usam subprocessos e variáveis sintéticas sem ERP/banco/.env real.
+Cada spec aprovada deve definir
 seus comandos de validação e usar banco/ERP isolados quando necessário.

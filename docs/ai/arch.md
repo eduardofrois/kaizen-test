@@ -79,7 +79,8 @@ detalhe verifica posse antes de buscar no ERP.
 
 ## Divergências observadas
 
-- Configuração dita fail-fast usa fallback com segredos fixos: FIX-001.
+- FIX-001 corrigido em 2026-10-11: env explícita para JWT/ERP, sem fallback
+  secreto. Seis regressões em backend/tests/config.test.js; integração pendente.
 - CORS reflete qualquer origem e ignora a origem configurada: FIX-002.
 - Comentário de `main.jsx` diz que carrinho depende da sessão; o provider não
   observa AuthContext: FIX-005.

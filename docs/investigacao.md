@@ -15,7 +15,7 @@ Atualização: 2026-10-11. Baseline original: `81897d5`.
 | IDs | Estado | Próxima ação |
 |---|---|---|
 | KZN-312, 318, 325, 331 | Causa localizada; verificação isolada realizada | Preparar specs e planos antes de implementar |
-| FIX-001 | Evidência estática; SDD configuracao-por-ambiente em proposta | Revisão e aprovação antes de alterar config/publicar aplicação |
+| FIX-001 | Corrigido por SDD aprovado; seis testes passaram | Preencher env local e validar integração |
 | FIX-002 | Evidência estática | Especificar origens e validar ambiente |
 | FIX-003, 004, 007, 008 | Verificação isolada realizada | Spec/plan e regressões focadas |
 | FIX-005, 006 | Evidência estática | Reprodução integrada e spec/plan |
@@ -31,16 +31,20 @@ Atualização: 2026-10-11. Baseline original: `81897d5`.
 - Consulta SQLite somente leitura/imutável: integrity check ok; tabelas vazias.
 - Scripts transitórios em memória executaram funções originais, com stubs de
   banco/ERP e extração de funções frontend. Nenhum pedido real foi criado.
-- Ainda não houve npm ci, build novo, servidor, navegador, deploy nem teste
-  integrado com o SIAC. Não existe suíte de testes adicionada nesta etapa.
+- npm ci do backend concluído. Criado backend/.env local com campos obrigatórios
+  vazios; testes de config: RED cinco falhas/um sucesso; GREEN seis sucessos.
+  Sintaxe passou. Sem build novo, servidor, navegador, deploy ou SIAC integrado.
 
 ## Relatório
 
-O usuário aprovou a estrutura documental e pediu esclarecimento sobre o
-preenchimento. `RELATORIO.md` permanece no modelo original até confirmação.
-Proposta: registrar causas/evidências conhecidas, os nove achados, limitações
-da validação e as três notas; marcar implementação/deploy/feature como pendentes.
-Não preencher nome, prazo ou horas com suposições.
+O preenchimento inicial foi aprovado em 2026-10-11 pela mensagem: "aprovo o
+preenchumento inicial, vai fazendo as alteracoes enquanto eu avalio sobre a
+config do ambiente". `RELATORIO.md` agora registra causas/evidências dos
+quatro chamados, os nove achados, cinco pontos adicionais, limites da
+validação e as três notas. FIX-001 implementado; demais correções, deploy e feature seguem pendentes.
+Nome, data de entrega e horas permanecem sem valores inventados. A aprovação
+documental não aprova outras correções. Configuração foi aprovada explicitamente
+em mensagem posterior e seu resultado está no relatório.
 
 ## Repositório de entrega
 
@@ -49,6 +53,6 @@ Em 2026-10-11, foi consultado como público e sem refs remotas. O primeiro
 envio contém documentação e arquivos seguros, no commit `0b75868` da main;
 o Git original foi preservado em backup local e a main própria foi enviada
 com upstream configurado. A publicação da aplicação
-aguarda remoção das credenciais literais por SDD. Não enviar o histórico da
+teve as credenciais literais removidas por SDD aprovado; novo push pendente. Não enviar o histórico da
 empresa, que também contém a configuração original. O usuário solicitou
 nomes SDD descritivos; essa solicitação não aprovou a implementação.

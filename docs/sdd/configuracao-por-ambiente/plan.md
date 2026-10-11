@@ -1,13 +1,13 @@
 # Plano de implementação — Configuração por ambiente
 
 **Versão:** 1
-**Estado:** Proposta
+**Estado:** Implementado e validado isoladamente
 **Spec:** [spec.md](spec.md), versão 1
 **Objetivo:** remover segredos/fallbacks e validar env antes de publicar aplicação.
 **Arquitetura:** manter config.js como fronteira única de configuração; testar
 em processos isolados, sem importar serviços/banco. Preservar bootstrap fail-fast.
 **Stack:** JavaScript ESM, Node existente, dotenv existente e node:test nativo.
-**Aprovação para implementar:** Pendente.
+**Aprovação para implementar:** explícita do usuário em 2026-10-11.
 **Execução:** nesta sessão, passo a passo, sem delegação automática.
 
 ## Restrições globais
@@ -36,10 +36,10 @@ em processos isolados, sem importar serviços/banco. Preservar bootstrap fail-fa
 **Produz:** mesmo shape; strings vazias indicam campos obrigatórios ausentes;
 validarConfig() lança erro agregado sem valores sensíveis.
 
-- [ ] Confirmar aprovação, conferir baseline e criar branch codex/configuracao-por-ambiente.
-- [ ] Instalar dependências existentes: a partir de backend/, executar `npm ci`.
+- [x] Confirmar aprovação, conferir baseline e criar branch codex/configuracao-por-ambiente.
+- [x] Instalar dependências existentes: a partir de backend/, executar `npm ci`.
       Não iniciar servidor, consultar ERP nem criar .env durante os testes.
-- [ ] Criar backend/tests/config.test.js com o conteúdo abaixo.
+- [x] Criar backend/tests/config.test.js com o conteúdo abaixo.
 
 ```js
 import test from 'node:test';
@@ -142,10 +142,10 @@ test('configuração explícita preserva contrato e normaliza URL', () => {
 });
 ```
 
-- [ ] Executar `node --test tests/config.test.js` em backend/ antes da alteração.
+- [x] Executar `node --test tests/config.test.js` em backend/ antes da alteração.
       Esperado: casos de ausência/default e URL incompleta falham; registrar
       os resultados reais. Não comitar o código original para guardar esse RED.
-- [ ] Em config.js, apagar o bloco PADRAO e os comentários que defendem subir
+- [x] Em config.js, apagar o bloco PADRAO e os comentários que defendem subir
       sem configuração. Preservar a nota KZN-2B9C e seus imports.
       Trocar somente os valores das propriedades abaixo:
 
@@ -156,7 +156,7 @@ url: (process.env.ERP_URL?.trim() || '').replace(/\/+$/, ''),
 token: process.env.ERP_TOKEN?.trim() || '',
 ```
 
-- [ ] Substituir o corpo de validarConfig() por:
+- [x] Substituir o corpo de validarConfig() por:
 
 ```js
 const problemas = [];
@@ -189,20 +189,20 @@ if (problemas.length > 0) {
 }
 ```
 
-- [ ] Corrigir nome SIAC_URL→ERP_URL no README e acrescentar:
+- [x] Corrigir nome SIAC_URL→ERP_URL no README e acrescentar:
       "JWT_SEGREDO, ERP_URL e ERP_TOKEN são obrigatórios no ambiente do backend.
       Os placeholders de backend/.env.example precisam ser substituídos
       localmente; não versione .env nem credenciais reais."
-- [ ] Acrescentar comentário equivalente em backend/.env.example; manter
+- [x] Acrescentar comentário equivalente em backend/.env.example; manter
       placeholders seguros e demais campos. Não adicionar env com valores reais.
-- [ ] Rodar `node --test tests/config.test.js` e `node --check src/config.js`
+- [x] Rodar `node --test tests/config.test.js` e `node --check src/config.js`
       em backend/. Esperado: todos os testes e sintaxe passam. Sem ERP/rede/banco.
-- [ ] Revisar diff contra baseline em backup e os arquivos a versionar.
+- [x] Revisar diff contra baseline em backup e os arquivos a versionar.
       Confirmar ausência de literais originais, artefatos, .env e dados locais.
       Não imprimir credenciais para mostrar que foram removidas.
-- [ ] Atualizar FIX-001 e documentos com comandos/resultados reais. Aprovação
+- [x] Atualizar FIX-001 e documentos com comandos/resultados reais. Aprovação
       de implementação não autoriza afirmar que token externo foi revogado.
-- [ ] Criar commit `fix: exige configuracao explicita sem segredos no codigo`
+- [x] Criar commit `fix: exige configuracao explicita sem segredos no codigo`
       com código sanitizado, teste e documentação. Na importação inicial,
       revisar todos os arquivos de aplicação por allowlist, pois estarão
       inicialmente não rastreados. Não usar git add . sem essa revisão.
@@ -219,15 +219,35 @@ secreto. Backup do Git original fica local e não deve ser publicado.
 
 | Aceite | Prova | Resultado esperado | Observado |
 |---|---|---|---|
-| AC-01/02 | node --test tests/config.test.js | Ausência/vazio/placeholder/curto rejeitados | Não executado |
-| AC-03 | Casos de URL no mesmo teste | Rejeição sem eco do valor | Não executado |
-| AC-04/05 | Caso válido e harness isolado | Contrato preservado, sem efeitos externos | Não executado |
-| AC-06 | Revisão de arquivos, staged diff e histórico próprio | Segredos originais e gerados ausentes | Não executado |
-| AC-07 | Diff README/exemplo/guia | ERP_URL coerente e env obrigatória | Não executado |
+| AC-01/02 | node --test tests/config.test.js | Ausência/vazio/placeholder/curto rejeitados | Concluído; resultados no registro da execução |
+| AC-03 | Casos de URL no mesmo teste | Rejeição sem eco do valor | Concluído; resultados no registro da execução |
+| AC-04/05 | Caso válido e harness isolado | Contrato preservado, sem efeitos externos | Concluído; resultados no registro da execução |
+| AC-06 | Revisão de arquivos, staged diff e histórico próprio | Segredos originais e gerados ausentes | Concluído; resultados no registro da execução |
+| AC-07 | Diff README/exemplo/guia | ERP_URL coerente e env obrigatória | Concluído; resultados no registro da execução |
 
 ## Autorrevisão documental
 
 Todos os requisitos possuem passos correspondentes. Testes usam strings
 sintéticas e diretório temporário, sem herdar o ambiente completo do usuário.
-Sem dependências novas, alteração do SIAC ou migração. A execução aguarda
-aprovação humana; nenhum checkbox de implementação foi iniciado.
+Sem dependências novas, alteração do SIAC ou migração. A execução foi aprovada e os resultados reais estão registrados abaixo.
+
+## Registro da execução — 2026-10-11
+
+Usuário: "sobre o fix configuracao por ambiente, esta aprovado a forma que
+vamos fazer essa correcao/configuracao inicial"; pediu também atualização do
+relatório e criação de .env. Complemento autorizado: backend/.env local com
+campos obrigatórios vazios, padrões operacionais preenchidos, permissão 0600
+e exclusão do Git. Esta solicitação substitui a restrição anterior de não
+criar .env; testes continuam isolados e não leem esse arquivo.
+
+Branch: codex/configuracao-por-ambiente. npm ci: 120 pacotes instalados,
+auditoria informou zero vulnerabilidades. node --test tests/config.test.js:
+RED cinco falhas/um sucesso; GREEN seis sucessos. node --check
+backend/src/config.js: passou. Sem rede ERP ou banco nos testes; integração
+real e preenchimento local pendentes. Nota KZN-2B9C preservada.
+Relatório, inventário e guias atualizados. Novo push não realizado nesta etapa.
+
+Revisão de publicação: 70 arquivos candidatos, incluindo 54 da aplicação,
+e histórico próprio examinados sem os dois segredos literais originais.
+.gitignore confirmado para .env, dependências, SQLite e dist.
+Envio remoto permanece pendente; o commit desta unidade é local.
