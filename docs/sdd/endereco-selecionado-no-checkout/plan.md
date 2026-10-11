@@ -1,7 +1,7 @@
 # Plano de implementação — Endereço selecionado no checkout
 
 **Versão:** 1
-**Estado:** Implementado — payload selecionado confirmado; demais cenários manuais e CI pendentes
+**Estado:** Implementado — payload selecionado e CI confirmados; demais cenários manuais pendentes
 **Spec:** [spec.md](spec.md), versão 1
 **Baseline/data:** 6fab792; 2026-10-11
 **Objetivo:** enviar o endereço efetivamente selecionado.
@@ -93,7 +93,7 @@ Uma recarga também remove a interceptação. Não confirmar novamente sem bloqu
   buscarEndereco(usuario.id, enderecoId) e snapshot sem alterá-los.
 - [x] Atualizar documentos com causa, provas realmente executadas e pendências.
   Não declarar teste integrado do ERP nem criação de pedido sem evidência.
-- [ ] Quando autorizado, commit `fix: usa endereco selecionado no checkout`;
+- [x] Quando autorizado, commit `fix: usa endereco selecionado no checkout`;
   publicar branch, aguardar comando para PR e acompanhar checks autorizados.
   Merge manual pelo usuário.
 
@@ -151,3 +151,14 @@ Usuário solicitou “faca o pr”, autorizando commit, publicação da branch e
 abertura do PR desta unidade. Merge permanece manual. Payload endereco_id=2
 confirmado pelo usuário; demais cenários manuais seguem registrados como
 pendentes. Checks remotos ainda não executados nesta etapa.
+
+## Publicação e CI do KZN-331 — 2026-10-11
+
+PR #7: https://github.com/eduardofrois/kaizen-test/pull/7
+Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38181718715
+Checks testes-backend e build-frontend passaram no commit 37ed34b. Branch
+publicada; merge manual pelo usuário. CI comprova regressões existentes/build,
+sem substituir os cenários específicos de checkout ainda não confirmados.
+Estado Implementado: AC-01 confirmado por payload informado; AC-05 concluído;
+AC-02/AC-03 e validação manual de AC-04 pendentes. Sem pedido real pela IA.
+Pendências de autorização/abertura/CI anteriores são registros históricos.

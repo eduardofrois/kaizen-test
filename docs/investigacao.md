@@ -17,7 +17,7 @@ Atualização: 2026-10-11. Baseline original: `81897d5`.
 | KZN-312 | Validado: 17 testes, manual pelo usuário e checks do PR #3 | Merge manual pendente |
 | KZN-318 | Validado e integrado na main pelo PR #5 | Concluído; merge 27217ff confirmado após pull |
 | KZN-325 | Implementado: frontend 10 testes, backend 23 e build passaram | PR #6 com CI passando; validação manual pendente |
-| KZN-331 | Implementado: envio usa enderecoId; regressões/build passaram | Payload ID 2 confirmado; demais cenários manuais e PR pendentes |
+| KZN-331 | Implementado: envio usa enderecoId; regressões/build passaram | PR #7 com CI passando; cenários manuais restantes pendentes |
 | FIX-001 | Validado por SDD aprovado; seis testes e roteiro manual local | Publicação remota pendente; unidade concluída |
 | FIX-002 | Evidência estática | Especificar origens e validar ambiente |
 | FIX-003, 004, 007, 008 | Verificação isolada realizada | Spec/plan e regressões focadas |
@@ -307,3 +307,14 @@ Usuário solicitou “faca o pr”, autorizando commit, publicação da branch e
 abertura do PR desta unidade. Merge permanece manual. Payload endereco_id=2
 confirmado pelo usuário; demais cenários manuais seguem registrados como
 pendentes. Checks remotos ainda não executados nesta etapa.
+
+## Publicação e CI do KZN-331 — 2026-10-11
+
+PR #7: https://github.com/eduardofrois/kaizen-test/pull/7
+Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38181718715
+Checks testes-backend e build-frontend passaram no commit 37ed34b. Branch
+publicada; merge manual pelo usuário. CI comprova regressões existentes/build,
+sem substituir os cenários específicos de checkout ainda não confirmados.
+Estado Implementado: AC-01 confirmado por payload informado; AC-05 concluído;
+AC-02/AC-03 e validação manual de AC-04 pendentes. Sem pedido real pela IA.
+Pendências de autorização/abertura/CI anteriores são registros históricos.
