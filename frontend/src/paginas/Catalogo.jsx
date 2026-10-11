@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { api } from '../api/cliente.js';
+import { atualizarParametroCatalogo } from '../lib/parametrosCatalogo.js';
 import { useAuth } from '../contextos/AuthContext.jsx';
 import { useCarrinho } from '../contextos/CarrinhoContext.jsx';
 import { CardProduto } from '../componentes/CardProduto.jsx';
@@ -69,12 +70,7 @@ export function Catalogo() {
 
   const trocarParametro = useCallback(
     (chave, valor) => {
-      const proximos = new URLSearchParams(parametros);
-
-      if (valor === null || valor === '' || valor === false) proximos.delete(chave);
-      else proximos.set(chave, String(valor));
-
-      setParametros(proximos);
+      setParametros(atualizarParametroCatalogo(parametros, chave, valor));
     },
     [parametros, setParametros],
   );

@@ -662,3 +662,43 @@ Estado Validado: critérios da versão 1 concluídos com regressões isoladas,
 build local, confirmação manual do usuário e CI do PR. Merge manual pendente.
 Registros anteriores de espera por validação/abertura/CI são históricos.
 FIX-003 e FIX-005 continuam fora do escopo; nenhum merge ou deploy realizado.
+
+## Preparação de busca-e-paginacao — 2026-10-11
+
+KZN-325 reproduzido pelo usuário (“Erro encontrado”). Pull realizado antes do
+trabalho; nova branch fix/busca-e-paginacao baseada na main 27217ff, com PR #5
+integrado. Spec/plano versão 1 em docs/sdd/busca-e-paginacao/, estado Proposta.
+Proposta: remover pagina ao pesquisar, limpar termo ou alterar categoria/estoque;
+preservar paginação explícita e demais filtros. Prevê função compartilhada,
+dez testes nativos sem dependências novas e npm test no job frontend da CI.
+FIX-004 e INV-005 ficam separados. Nenhum código, teste, workflow ou dependência
+alterado; implementação aguarda aprovação explícita.
+
+## Implementação de busca-e-paginacao — 2026-10-11
+
+Versão 1 aprovada pelo usuário: “entao aprovo os docs”. Função compartilhada
+atualizarParametroCatalogo integrada em pesquisar e trocarParametro. Busca,
+categoria e estoque removem pagina; paginação explícita preserva filtros.
+Consulta continua no backend/ERP com tamanho 24; nenhum filtro local de lista.
+Nota KZN-5D1E preservada. FIX-004 e INV-005 não corrigidos nesta unidade.
+
+RED: node --test tests/parametros-catalogo.test.js no comportamento original
+extraído para o módulo — oito falhas nos resets e dois controles passaram.
+GREEN: npm test em frontend — dez testes passaram. npm test em backend —
+23 testes passaram. Build frontend passou com 59 módulos; git diff --check
+passou. Testes frontend importam função real, sem rede, env ou banco; suíte
+backend mantém SQLite isolado e ERP simulado. Não houve validação React/E2E.
+
+Script test frontend criado sem dependências. Workflow atualizado para executar
+npm test no job build-frontend antes do build, preservando nomes dos checks.
+Execução remota ainda pendente; mudança de workflow não equivale a CI validada.
+Estado Implementado: roteiro manual pós-correção, confirmação do usuário e
+checks remotos pendentes. Nenhum PR, merge ou deploy realizado nesta unidade.
+
+## Autorização do PR — 2026-10-11
+
+Usuário autorizou “pode abrir o pr”. Publicação da branch e abertura do PR
+autorizadas; merge permanece manual. Validação automatizada local concluída
+(10 testes frontend, 23 backend e build). Validação manual pós-correção não
+confirmada; não atribuir essa confirmação à autorização de abertura do PR.
+Checks remotos pendentes nesta etapa.
