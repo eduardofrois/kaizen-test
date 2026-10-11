@@ -1,7 +1,7 @@
 # Plano de implementação — Total do carrinho
 
 **Versão:** 1
-**Estado:** Implementado — testes locais e validação manual concluídos; checks do PR pendentes
+**Estado:** Validado — testes locais, confirmação manual e checks do PR concluídos
 **Spec:** [spec.md](spec.md), versão 1
 **Baseline/data:** 4261129; 2026-10-11
 **Objetivo:** excluir linhas indisponíveis do total sem alterar seus dados.
@@ -224,7 +224,7 @@ const totalCentavos = itens.reduce(
       causa, comportamento, provas RED/GREEN e limites da validação.
 - [x] Commit `fix: exclui itens indisponiveis do total do carrinho` e publicação
       em origin/fix/total-do-carrinho, apenas com os arquivos revisados.
-- [ ] Preparar PR para main; abertura pelo candidato ou por autorização
+- [x] Preparar PR para main; abertura pelo candidato ou por autorização
       explícita. Aguardar testes-backend e build-frontend; registrar links/SHA.
       Sem merge pela IA. Ajustar docs de status conforme a evidência evoluir.
 
@@ -237,7 +237,7 @@ const totalCentavos = itens.reduce(
 | AC-03 | Vazio/só indisponíveis/todos disponíveis + snapshot SQLite | Soma correta e dados intactos | Passou; snapshots iguais |
 | AC-04 | Dois usuários no schema real em memória | Só dados do usuário 1 | Passou |
 | AC-05 | finalizarPedido + releitura de estoque | Zero POSTs; bloqueio e recálculo | Passou; itens preservados |
-| AC-06 | npm test + checks do PR | Suíte passa sem env/ERP/DB real; build passa | Local: 17 testes passaram; PR aguardando comando do usuário |
+| AC-06 | npm test + checks do PR | Suíte passa sem env/ERP/DB real; build passa | 17 testes locais passaram; ambos os checks do PR #3 passaram |
 | AC-07 | Diff/histórico/docs | Escopo e limitação FIX-003 explícitos | Conferido; FIX-003 não alterado |
 
 ## Migração e recuperação
@@ -281,3 +281,15 @@ Candidato confirmou “funcionando, pode abrir o PR”. Validação manual
 pós-correção confirmada pelo candidato; autorização anterior para aguardar
 foi revogada por esta mensagem. Abrir PR para main e acompanhar os checks,
 sem realizar merge. Testes locais já passaram; evidência remota ainda pendente.
+
+## Validação remota concluída — PR #3
+
+PR: https://github.com/eduardofrois/kaizen-test/pull/3
+Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38175551404
+Checks testes-backend e build-frontend passaram no commit ac2231f.
+Com reprodução prévia, aprovação SDD, RED/GREEN, confirmação manual do
+candidato e checks do PR concluídos, KZN-312 está Validado. Todos os critérios
+da versão 1 cumpridos; merge continua pendente de ação manual do candidato.
+Nenhum merge/deploy realizado pela IA. As pendências de validação e instruções
+de aguardar abertura descritas anteriormente são registros históricos superados.
+FIX-003, FIX-005 e KZN-318 permanecem fora desta correção.

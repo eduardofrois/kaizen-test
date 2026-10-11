@@ -600,3 +600,15 @@ Candidato confirmou “funcionando, pode abrir o PR”. Validação manual
 pós-correção confirmada pelo candidato; autorização anterior para aguardar
 foi revogada por esta mensagem. Abrir PR para main e acompanhar os checks,
 sem realizar merge. Testes locais já passaram; evidência remota ainda pendente.
+
+## Validação remota concluída — PR #3
+
+PR: https://github.com/eduardofrois/kaizen-test/pull/3
+Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38175551404
+Checks testes-backend e build-frontend passaram no commit ac2231f.
+Com reprodução prévia, aprovação SDD, RED/GREEN, confirmação manual do
+candidato e checks do PR concluídos, KZN-312 está Validado. Todos os critérios
+da versão 1 cumpridos; merge continua pendente de ação manual do candidato.
+Nenhum merge/deploy realizado pela IA. As pendências de validação e instruções
+de aguardar abertura descritas anteriormente são registros históricos superados.
+FIX-003, FIX-005 e KZN-318 permanecem fora desta correção.

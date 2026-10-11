@@ -109,3 +109,10 @@ separado de KZN-312, assim como FIX-003 e KZN-318.
 Candidato confirmou “funcionando, pode abrir o PR”. Está revogada a instrução
 anterior de aguardar para abrir o PR de total-do-carrinho. Abertura e
 acompanhamento dos checks autorizados; merge permanece manual pelo candidato.
+
+## KZN-312 — validação em 2026-10-11
+
+Total-do-carrinho versão 1 Validado: 17 testes locais, confirmação manual
+“funcionando” e ambos os checks do PR #3 passaram. PR aberto sob autorização
+explícita; instrução anterior para aguardar abertura superada. Merge manual
+pelo candidato pendente. Não ampliar a correção para FIX-003/FIX-005/KZN-318.

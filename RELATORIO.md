@@ -59,7 +59,7 @@ O procedimento de instalação/execução está descrito como previsto em
 ## 2. Chamados reportados
 
 As causas dos quatro chamados foram localizadas. KZN-312 foi corrigido e
-validado automaticamente; validação manual pós-correção e PR estão pendentes.
+validado automaticamente, manualmente pelo candidato e pelos checks do PR #3.
 Os demais chamados continuam sem correção.
 
 ### KZN-312 — Total do carrinho vem maior que a soma das peças
@@ -70,7 +70,7 @@ Os demais chamados continuam sem correção.
 | **Como reproduzi** | Cenário isolado: R$20 disponíveis + três unidades sem estoque de R$228 retornavam R$704, excesso de R$684. Candidato também confirmou reprodução pela interface com item que perdeu estoque enquanto permanecia no carrinho. |
 | **Arquivos alterados** | backend/src/services/carrinhoService.js (apenas condição do redutor), backend/tests/carrinho-total.test.js e documentação. |
 | **Correção** | Somar somente linhas com disponivel=true; manter dados, quantidades e subtotais referenciais, sem compra parcial e sem liberar checkout com pendências. Spec/plan versão 1 aprovados em 2026-10-11. |
-| **Como validei** | RED: seis falhas/cinco sucessos nos onze novos testes. GREEN: npm test com 17 sucessos; schema real em SQLite :memory:, fetch simulado e env/cwd isolados. Cobertos estoque, inativo, 404/500, vazio, isolamento de usuários, releitura e rejeição de checkout sem POST. Sintaxe e diff passaram. Validação manual da correção e checks do PR pendentes. |
+| **Como validei** | RED: seis falhas/cinco sucessos nos onze novos testes. GREEN: npm test com 17 sucessos; schema real em SQLite :memory:, fetch simulado e env/cwd isolados. Cobertos estoque, inativo, 404/500, vazio, isolamento de usuários, releitura e rejeição de checkout sem POST. Sintaxe e diff passaram. Candidato confirmou funcionamento e ambos os checks do PR #3 passaram. |
 
 FIX-003 (perda de centavos) é outra causa e continua pendente. Não foi alterado
 nesta unidade, assim como o contador KZN-318. Nota KZN-7F3A preservada.
@@ -477,3 +477,15 @@ Candidato confirmou “funcionando, pode abrir o PR”. Validação manual
 pós-correção confirmada pelo candidato; autorização anterior para aguardar
 foi revogada por esta mensagem. Abrir PR para main e acompanhar os checks,
 sem realizar merge. Testes locais já passaram; evidência remota ainda pendente.
+
+## Validação remota concluída — PR #3
+
+PR: https://github.com/eduardofrois/kaizen-test/pull/3
+Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38175551404
+Checks testes-backend e build-frontend passaram no commit ac2231f.
+Com reprodução prévia, aprovação SDD, RED/GREEN, confirmação manual do
+candidato e checks do PR concluídos, KZN-312 está Validado. Todos os critérios
+da versão 1 cumpridos; merge continua pendente de ação manual do candidato.
+Nenhum merge/deploy realizado pela IA. As pendências de validação e instruções
+de aguardar abertura descritas anteriormente são registros históricos superados.
+FIX-003, FIX-005 e KZN-318 permanecem fora desta correção.

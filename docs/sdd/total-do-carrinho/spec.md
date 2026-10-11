@@ -1,7 +1,7 @@
 # Spec — Total do carrinho com itens indisponíveis
 
 **Versão:** 1
-**Estado:** Implementado — testes locais e validação manual concluídos; checks do PR pendentes
+**Estado:** Validado — testes locais, confirmação manual e checks do PR concluídos
 **Baseline/data:** origin/main 4261129; 2026-10-11
 **Origem:** KZN-312; nota de leitura KZN-7F3A
 **Pasta/branch:** total-do-carrinho / fix/total-do-carrinho
@@ -95,7 +95,7 @@ Sem migração, exclusão de dados, chamada de criação de pedido ou ajuste aut
 - [x] AC-04: itens de outro usuário não aparecem nem contribuem ao total.
 - [x] AC-05: checkout com pendências rejeita com CARRINHO_COM_PENDENCIAS e
   nenhum POST ao ERP; alteração de estoque em nova leitura recalcula o resumo.
-- [ ] AC-06: npm test passa com os seis testes de configuração e novos testes
+- [x] AC-06: npm test passa com os seis testes de configuração e novos testes
   do carrinho, sem .env/rede/banco real; checks de backend/build passam no PR.
 - [x] AC-07: docs registram causa, RED/GREEN, escopo e FIX-003 ainda pendente;
   código alterado apenas na agregação, nota preservada e merge manual.
@@ -148,3 +148,15 @@ Candidato confirmou “funcionando, pode abrir o PR”. Validação manual
 pós-correção confirmada pelo candidato; autorização anterior para aguardar
 foi revogada por esta mensagem. Abrir PR para main e acompanhar os checks,
 sem realizar merge. Testes locais já passaram; evidência remota ainda pendente.
+
+## Validação remota concluída — PR #3
+
+PR: https://github.com/eduardofrois/kaizen-test/pull/3
+Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38175551404
+Checks testes-backend e build-frontend passaram no commit ac2231f.
+Com reprodução prévia, aprovação SDD, RED/GREEN, confirmação manual do
+candidato e checks do PR concluídos, KZN-312 está Validado. Todos os critérios
+da versão 1 cumpridos; merge continua pendente de ação manual do candidato.
+Nenhum merge/deploy realizado pela IA. As pendências de validação e instruções
+de aguardar abertura descritas anteriormente são registros históricos superados.
+FIX-003, FIX-005 e KZN-318 permanecem fora desta correção.

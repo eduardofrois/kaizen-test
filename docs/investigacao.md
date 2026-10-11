@@ -14,7 +14,7 @@ Atualização: 2026-10-11. Baseline original: `81897d5`.
 
 | IDs | Estado | Próxima ação |
 |---|---|---|
-| KZN-312 | Implementado por SDD aprovado; 17 testes passaram | Candidato valida localmente; PR só após seu comando |
+| KZN-312 | Validado: 17 testes, manual pelo candidato e checks do PR #3 | Merge manual pendente |
 | KZN-318, 325, 331 | Causa localizada; verificação isolada realizada | Preparar specs e planos antes de implementar |
 | FIX-001 | Validado por SDD aprovado; seis testes e roteiro manual local | Publicação remota pendente; unidade concluída |
 | FIX-002 | Evidência estática | Especificar origens e validar ambiente |
@@ -148,3 +148,15 @@ Candidato confirmou “funcionando, pode abrir o PR”. Validação manual
 pós-correção confirmada pelo candidato; autorização anterior para aguardar
 foi revogada por esta mensagem. Abrir PR para main e acompanhar os checks,
 sem realizar merge. Testes locais já passaram; evidência remota ainda pendente.
+
+## Validação remota concluída — PR #3
+
+PR: https://github.com/eduardofrois/kaizen-test/pull/3
+Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38175551404
+Checks testes-backend e build-frontend passaram no commit ac2231f.
+Com reprodução prévia, aprovação SDD, RED/GREEN, confirmação manual do
+candidato e checks do PR concluídos, KZN-312 está Validado. Todos os critérios
+da versão 1 cumpridos; merge continua pendente de ação manual do candidato.
+Nenhum merge/deploy realizado pela IA. As pendências de validação e instruções
+de aguardar abertura descritas anteriormente são registros históricos superados.
+FIX-003, FIX-005 e KZN-318 permanecem fora desta correção.

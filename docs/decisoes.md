@@ -113,7 +113,7 @@ e implementação. Não promover uma sugestão da IA a decisão do candidato.
 ## DEC-009 — Total com pendências e separação das causas
 
 - Estado: SDD versão 1 aprovado em 2026-10-11 (“Docs aprovados.”); implementado
-  e validado automaticamente com 17 sucessos; validação manual/PR pendentes.
+  e validado com 17 testes, confirmação manual e checks do PR #3 passando.
 - Unidade: total-do-carrinho / KZN-312.
 - Proposta: total do resumo considera só linhas disponíveis na quantidade
   solicitada. Linhas com pendência mantêm dados e subtotal de referência;
@@ -130,3 +130,15 @@ Candidato pediu aguardar seu comando antes de abrir PR de total-do-carrinho,
 pois vai validar localmente. Publicar branch/commits não autoriza abrir esse
 PR. Não confundir com autorização anterior para PR da pipeline. FIX-005 fica
 em unidade separada, apesar da confirmação manual nesta etapa.
+
+## Validação remota concluída — PR #3
+
+PR: https://github.com/eduardofrois/kaizen-test/pull/3
+Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38175551404
+Checks testes-backend e build-frontend passaram no commit ac2231f.
+Com reprodução prévia, aprovação SDD, RED/GREEN, confirmação manual do
+candidato e checks do PR concluídos, KZN-312 está Validado. Todos os critérios
+da versão 1 cumpridos; merge continua pendente de ação manual do candidato.
+Nenhum merge/deploy realizado pela IA. As pendências de validação e instruções
+de aguardar abertura descritas anteriormente são registros históricos superados.
+FIX-003, FIX-005 e KZN-318 permanecem fora desta correção.

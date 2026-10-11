@@ -37,9 +37,8 @@ docs/sdd/
 Pastas de exemplos só são criadas quando houver unidade em preparação.
 Configuração por ambiente está validada. Pipeline de validação está Validada, com execução push/main confirmada
 no run 38172472231; demais correções/features ainda não têm aprovação.
-Total do carrinho (KZN-312) versão 1 aprovado e implementado; 17 testes
-passaram. Validação manual pós-correção e PR pendentes; aguardar comando
-do candidato antes de abrir PR.
+Total do carrinho (KZN-312) versão 1 Validado: 17 testes, confirmação manual
+e checks do PR #3 concluídos. Merge manual pelo candidato pendente.
 Preferir uma unidade por causa/regra; justificar agrupamento de mudanças
 interdependentes sem esconder vários problemas num único commit.
 
