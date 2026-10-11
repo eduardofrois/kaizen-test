@@ -6,7 +6,7 @@
 2. Escrever `docs/sdd/<nome-descritivo>/spec.md`; revisar requisitos e decisões com o usuário.
 3. Escrever `docs/sdd/<nome-descritivo>/plan.md` cobrindo a spec.
 4. Obter aprovação explícita para implementar os documentos revisados.
-5. Implementar apenas o escopo aprovado, em branch `codex/<assunto>`.
+5. Implementar apenas o escopo aprovado, em branch `<tipo>/<assunto>` (ex.: `fix/total-do-carrinho`).
 6. Executar validações previstas e regressões pertinentes.
 7. Atualizar fix.md, decisões e, quando autorizado, RELATORIO.md.
 

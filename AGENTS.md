@@ -65,7 +65,12 @@ alterações locais antes de editar. Instruções diretas do usuário prevalecem
 - Banco local, WAL/SHM, dependências e build são arquivos gerados; siga o
   `.gitignore`. Não execute `db:reset` nem apague dados sem autorização.
 - Migrações devem preservar contas, endereços, itens e vínculos de pedidos.
-- Use branches `codex/<assunto>` e commits pequenos por unidade de trabalho.
+- Use branches `<tipo>/<assunto>`, sem prefixo codex, com tipos alinhados
+  a Conventional Commits: fix, feat, docs, refactor, test ou chore.
+  Exemplo: `fix/configuracao-por-ambiente`. Commits seguem `tipo: descrição`.
+- Publique as branches de trabalho no repositório do candidato; os merges
+  serão feitos manualmente pelo usuário no GitHub. Não integrar na main
+  sem nova instrução explícita.
 - Não use `git add .` sem revisar arquivos. Não use force push, descarte
   alterações do usuário nem publique no repositório original da empresa.
 - A inicialização/envio inicial ao repositório do candidato foi autorizada;
