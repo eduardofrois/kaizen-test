@@ -160,3 +160,7 @@ Validação remota confirmada em 2026-10-11 no PR #2: ambos os checks passaram
 nos runs 38172181159 (opened) e 38172264955 (synchronize). Já podem ser
 selecionados na proteção de main pelo candidato. Ainda é necessário observar
 push/main após merge manual para concluir AC-02 da unidade SDD.
+
+Validação final CI-001: merge manual do PR #2 confirmado e execução push/main
+38172472231 concluída com ambos os jobs em success (commit 4261129).
+AC-02 concluído; unidade SDD Validado. Não equivale a deploy da aplicação.

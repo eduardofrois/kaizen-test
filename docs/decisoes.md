@@ -102,7 +102,8 @@ e implementação. Não promover uma sugestão da IA a decisão do candidato.
 ## DEC-008 — Pipeline inicial enxuta
 
 - Estado: versão 1 aprovada em 2026-10-11 (“aprovo”); implementada e
-  validada localmente. PR #2 passou em opened e synchronize; push/main após merge manual pendente.
+  validada localmente, no PR #2 (opened/synchronize) e no push/main após
+  merge manual: run 38172472231, ambos os jobs passaram. CI-001 Validado.
 - Direção: GitHub Actions com testes-backend e build-frontend independentes,
   Node 24.14.1 e ubuntu-24.04; PRs para main e pushes na main.
 - Motivo: automatizar verificações existentes sem credenciais ERP. Build

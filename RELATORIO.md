@@ -444,3 +444,17 @@ Pendente apenas AC-02 e a etapa correspondente do plano: executar e observar
 push/main após merge manual do candidato no PR #2. Não declarar estado
 Validado global até obter essa evidência. Registro atual supera as pendências
 remotas descritas nas etapas anteriores; merge/deploy/proteção não realizados.
+
+## Encerramento da validação — 2026-10-11
+
+Candidato realizou merge manual do PR #2 em 2026-10-11, confirmado pelo GitHub.
+Commit na main: 4261129c1be17e650012f10555cad3d669cb9c58.
+Execução do evento push na main concluída com success:
+https://github.com/eduardofrois/kaizen-test/actions/runs/38172472231
+Jobs testes-backend e build-frontend: ambos success. AC-02 comprovado.
+
+CI-001: Validado. Evidências locais, pull_request/opened, synchronize e
+push/main registradas; todos os critérios da versão 1 cumpridos. Registros
+anteriores de pendência são históricos e estão superados por esta confirmação.
+Não houve deploy ou alteração automática de proteção. Atualização documental
+publicada na branch de trabalho; integração desse registro continua manual.

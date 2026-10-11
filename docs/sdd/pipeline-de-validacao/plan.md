@@ -1,7 +1,7 @@
 # Plano de implementação — Pipeline de validação
 
 **Versão:** 1
-**Estado:** Implementado — validação local e PR concluídos; aguardando push/main após merge manual
+**Estado:** Validado — testes locais, PR e push/main concluídos
 **Spec:** [spec.md](spec.md), versão 1
 **Baseline:** a70f55f; 2026-10-11
 **Objetivo:** automatizar testes de configuração e build em PRs/main.
@@ -144,10 +144,10 @@ jobs:
       Mudança de produto/dependência exige revisão SDD.
 - [x] Conferir que um novo commit documental na branch dispara novamente
       pull_request synchronize; registrar execução mais recente bem-sucedida.
-- [ ] Após o candidato fazer merge, observar execução push na main e registrar
+- [x] Após o candidato fazer merge, observar execução push na main e registrar
       resultado. Enquanto não houver merge, manter AC-02 pendente; não declarar
       validação completa nem realizar merge para completar checklist.
-- [ ] Atualizar ACs e matriz abaixo por evidência, então estado Validado somente
+- [x] Atualizar ACs e matriz abaixo por evidência, então estado Validado somente
       após critérios remotos cumpridos. Publicar os registros documentais na
       branch e deixar eventual PR complementar para merge manual do candidato.
 
@@ -156,7 +156,7 @@ jobs:
 | Aceite | Prova | Esperado | Observado |
 |---|---|---|---|
 | AC-01 | Execuções pull_request opened/synchronize | Dois checks por execução | Sucesso nos runs 38172181159 e 38172264955 |
-| AC-02 | Execução push/main após merge manual | Dois jobs passam | Não executado |
+| AC-02 | Execução push/main após merge manual | Dois jobs passam | Success no run 38172472231, SHA 4261129 |
 | AC-03 | npm test em backend/ e job remoto | Seis testes passam sem .env real | Seis testes passaram localmente e no run 38172181159 |
 | AC-04 | npm run build em frontend/ e job remoto | dist/index.html gerado | Build passou localmente e no run 38172181159 |
 | AC-05 | Revisão YAML e logs Actions | Runner/Node/locks/cache/diretórios corretos | YAML e logs reais confirmados no run 38172181159 |
@@ -218,3 +218,17 @@ Pendente apenas AC-02 e a etapa correspondente do plano: executar e observar
 push/main após merge manual do candidato no PR #2. Não declarar estado
 Validado global até obter essa evidência. Registro atual supera as pendências
 remotas descritas nas etapas anteriores; merge/deploy/proteção não realizados.
+
+## Encerramento da validação — 2026-10-11
+
+Candidato realizou merge manual do PR #2 em 2026-10-11, confirmado pelo GitHub.
+Commit na main: 4261129c1be17e650012f10555cad3d669cb9c58.
+Execução do evento push na main concluída com success:
+https://github.com/eduardofrois/kaizen-test/actions/runs/38172472231
+Jobs testes-backend e build-frontend: ambos success. AC-02 comprovado.
+
+CI-001: Validado. Evidências locais, pull_request/opened, synchronize e
+push/main registradas; todos os critérios da versão 1 cumpridos. Registros
+anteriores de pendência são históricos e estão superados por esta confirmação.
+Não houve deploy ou alteração automática de proteção. Atualização documental
+publicada na branch de trabalho; integração desse registro continua manual.
