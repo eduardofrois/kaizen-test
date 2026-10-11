@@ -1,7 +1,7 @@
 # Spec — Pipeline de validação
 
 **Versão:** 1
-**Estado:** Implementado — validação local e PR inicial concluídos; synchronize e push/main pendentes
+**Estado:** Implementado — validação local e PR concluídos; aguardando push/main após merge manual
 **Baseline/data:** origin/main a70f55f; 2026-10-11
 **Origem:** CI-001 — validação automática antes do merge manual
 **Pasta:** pipeline-de-validacao
@@ -82,7 +82,7 @@ Nenhum artefato de build ou credencial é publicado pela pipeline.
 
 ## Critérios de aceite
 
-- [ ] AC-01: PR para main dispara os dois checks; novo push no PR executa novamente.
+- [x] AC-01: PR para main dispara os dois checks; novo push no PR executa novamente.
 - [ ] AC-02: push na main após merge dispara os dois jobs.
 - [x] AC-03: npm test executa os seis testes atuais e todos passam, sem .env real.
 - [x] AC-04: npm run build gera frontend/dist/index.html sem precisar de backend/ERP.
@@ -151,3 +151,16 @@ Frontend instalou 85 pacotes no Linux (82 na validação local macOS), sem
 alteração de lockfile. Não houve credenciais reais, servidor ou ERP na CI.
 Ainda falta confirmar synchronize após novo push documental e push/main
 após merge manual do candidato. Proteção da main não foi alterada.
+
+## Validação do PR concluída — aguardando merge manual
+
+Novo push documental (10420ad) disparou pull_request/synchronize e ambos os
+jobs passaram novamente: run 38172264955, SHA
+10420adcd74f5b5c8eecf71274b7c6e636de38b1.
+Evidência: https://github.com/eduardofrois/kaizen-test/actions/runs/38172264955
+AC-01 confirmado por opened e synchronize; checks testes-backend e
+build-frontend reais e bem-sucedidos, disponíveis para proteção da main.
+Pendente apenas AC-02 e a etapa correspondente do plano: executar e observar
+push/main após merge manual do candidato no PR #2. Não declarar estado
+Validado global até obter essa evidência. Registro atual supera as pendências
+remotas descritas nas etapas anteriores; merge/deploy/proteção não realizados.

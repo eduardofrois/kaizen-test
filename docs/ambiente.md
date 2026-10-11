@@ -155,3 +155,8 @@ com prefixo do workflow, conferir os jobs da execução antes de selecionar.
 Não tornar obrigatório um nome que ainda não executou. Nenhuma alteração de
 proteção feita automaticamente; merge manual pelo candidato. Confirmar
 execução após merge na main antes de marcar AC-02 como concluído.
+
+Validação remota confirmada em 2026-10-11 no PR #2: ambos os checks passaram
+nos runs 38172181159 (opened) e 38172264955 (synchronize). Já podem ser
+selecionados na proteção de main pelo candidato. Ainda é necessário observar
+push/main após merge manual para concluir AC-02 da unidade SDD.

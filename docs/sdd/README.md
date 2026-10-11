@@ -35,8 +35,8 @@ docs/sdd/
 ```
 
 Pastas de exemplos só são criadas quando houver unidade em preparação.
-Configuração por ambiente está validada. Pipeline de validação está implementada e validada localmente,
-com execução remota pendente; demais correções/features ainda não têm aprovação.
+Configuração por ambiente está validada. Pipeline de validação está implementada, com validação local e no PR
+concluída; execução push/main após merge manual pendente; demais correções/features ainda não têm aprovação.
 Preferir uma unidade por causa/regra; justificar agrupamento de mudanças
 interdependentes sem esconder vários problemas num único commit.
 

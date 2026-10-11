@@ -105,3 +105,16 @@ Frontend instalou 85 pacotes no Linux (82 na validação local macOS), sem
 alteração de lockfile. Não houve credenciais reais, servidor ou ERP na CI.
 Ainda falta confirmar synchronize após novo push documental e push/main
 após merge manual do candidato. Proteção da main não foi alterada.
+
+## Validação do PR concluída — aguardando merge manual
+
+Novo push documental (10420ad) disparou pull_request/synchronize e ambos os
+jobs passaram novamente: run 38172264955, SHA
+10420adcd74f5b5c8eecf71274b7c6e636de38b1.
+Evidência: https://github.com/eduardofrois/kaizen-test/actions/runs/38172264955
+AC-01 confirmado por opened e synchronize; checks testes-backend e
+build-frontend reais e bem-sucedidos, disponíveis para proteção da main.
+Pendente apenas AC-02 e a etapa correspondente do plano: executar e observar
+push/main após merge manual do candidato no PR #2. Não declarar estado
+Validado global até obter essa evidência. Registro atual supera as pendências
+remotas descritas nas etapas anteriores; merge/deploy/proteção não realizados.
