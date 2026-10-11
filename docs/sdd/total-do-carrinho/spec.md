@@ -1,12 +1,12 @@
 # Spec — Total do carrinho com itens indisponíveis
 
 **Versão:** 1
-**Estado:** Proposta
+**Estado:** Implementado — testes locais passaram; validação manual e PR pendentes
 **Baseline/data:** origin/main 4261129; 2026-10-11
 **Origem:** KZN-312; nota de leitura KZN-7F3A
 **Pasta/branch:** total-do-carrinho / fix/total-do-carrinho
-**Aprovação:** pendente. Pedido para trabalhar no total autoriza preparar SDD,
-não implementar a correção antes da revisão dos documentos.
+**Aprovação para implementar:** versão 1 aprovada em 2026-10-11;
+usuário: “Consegui recriar, perfeito. Docs aprovados.”
 
 ## Problema e evidência
 
@@ -86,18 +86,18 @@ Sem migração, exclusão de dados, chamada de criação de pedido ou ajuste aut
 
 ## Critérios de aceite
 
-- [ ] AC-01: cenário R$20 + R$684 indisponíveis retorna total 20, duas linhas,
+- [x] AC-01: cenário R$20 + R$684 indisponíveis retorna total 20, duas linhas,
   subtotal de referência 684 preservado e checkout bloqueado.
-- [ ] AC-02: inativo, sem estoque, estoque insuficiente, 404 e 500 não entram
+- [x] AC-02: inativo, sem estoque, estoque insuficiente, 404 e 500 não entram
   no total; cada linha permanece com motivo e disponivel=false.
-- [ ] AC-03: vazio e só indisponíveis retornam zero/bloqueado; todos disponíveis
+- [x] AC-03: vazio e só indisponíveis retornam zero/bloqueado; todos disponíveis
   mantêm total e habilitação; quantidades persistidas não são alteradas.
-- [ ] AC-04: itens de outro usuário não aparecem nem contribuem ao total.
-- [ ] AC-05: checkout com pendências rejeita com CARRINHO_COM_PENDENCIAS e
+- [x] AC-04: itens de outro usuário não aparecem nem contribuem ao total.
+- [x] AC-05: checkout com pendências rejeita com CARRINHO_COM_PENDENCIAS e
   nenhum POST ao ERP; alteração de estoque em nova leitura recalcula o resumo.
 - [ ] AC-06: npm test passa com os seis testes de configuração e novos testes
   do carrinho, sem .env/rede/banco real; checks de backend/build passam no PR.
-- [ ] AC-07: docs registram causa, RED/GREEN, escopo e FIX-003 ainda pendente;
+- [x] AC-07: docs registram causa, RED/GREEN, escopo e FIX-003 ainda pendente;
   código alterado apenas na agregação, nota preservada e merge manual.
 
 ## Riscos e validação
@@ -117,5 +117,27 @@ Sem necessidade de aguardar estoque real para provar a correção do serviço.
 
 Atualizar KZN-312 em fix.md, RELATORIO.md, investigação e decisões conforme
 resultados reais. FIX-003/KZN-318 continuam pendentes e terão SDD próprio.
-Versão 1 proposta; implementação não iniciada. Pedido do usuário: trabalhar
+Versão 1 aprovada e implementada; resultados registrados abaixo. Pedido do usuário: trabalhar
 no total do carrinho após confirmar a pipeline antes e depois do merge.
+
+## Implementação aprovada — 2026-10-11
+
+Usuário confirmou reprodução manual do KZN-312 e aprovou versão 1 com
+“Consegui recriar, perfeito. Docs aprovados.” Alteração do serviço limitada
+à condição item.disponivel no redutor de valor_total. Linhas, quantidades,
+subtotal referencial, contrato, contadores e bloqueio do checkout preservados.
+Nota KZN-7F3A mantida. FIX-003 e FIX-005 não foram corrigidos nesta unidade.
+
+RED: node --test tests/carrinho-total.test.js na baseline — onze testes,
+seis falhas e cinco sucessos; cenário KZN-312 retornou 704 em vez de 20.
+GREEN: npm test após a correção — 17 testes passaram (onze novos e seis
+anteriores). Sintaxe de serviço/teste e git diff --check passaram. Harness
+usou subprocessos com cwd temporário/env sintética, schema SQLite real em
+:memory: e fetch substituído; nenhum .env/banco local/rede ERP utilizado.
+Teste de finalizarPedido rejeitou pendências sem POST e preservou os itens.
+
+Estado Implementado: validação automatizada local concluída; validação manual
+da correção pelo candidato e checks no PR ainda pendentes. Usuário pediu
+explicitamente aguardar seu comando para abrir PR, pois vai validar localmente.
+Nenhum PR, merge ou pedido real criado pela IA. Publicação da branch segue
+o fluxo autorizado; não equivale à autorização para abrir PR.

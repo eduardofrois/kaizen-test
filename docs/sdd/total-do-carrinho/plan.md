@@ -1,19 +1,20 @@
 # Plano de implementação — Total do carrinho
 
 **Versão:** 1
-**Estado:** Proposta
+**Estado:** Implementado — testes locais passaram; validação manual e PR pendentes
 **Spec:** [spec.md](spec.md), versão 1
 **Baseline/data:** 4261129; 2026-10-11
 **Objetivo:** excluir linhas indisponíveis do total sem alterar seus dados.
 **Arquitetura:** correção em lerCarrinho; teste do serviço real com SQLite
 em memória e fetch simulado em subprocessos isolados.
 **Stack:** JavaScript ESM, node:test e better-sqlite3 existentes.
-**Aprovação para implementar:** pendente.
+**Aprovação para implementar:** versão 1 aprovada em 2026-10-11;
+usuário: “Consegui recriar, perfeito. Docs aprovados.”
 **Execução:** nesta sessão, após aprovação; sem delegação automática.
 
 ## Restrições globais
 
-REQ-01 a REQ-09 da spec. Nenhuma implementação antes da aprovação da versão 1.
+REQ-01 a REQ-09 da spec. Implementação autorizada pela aprovação registrada da versão 1.
 Não alterar dinheiro.js, frontend, contadores ou schema. Sem dependências
 novas, env real, banco local, escrita SIAC, reset ou merge pela IA.
 
@@ -34,11 +35,11 @@ observacao, db), schema.sql e contrato ERP { dados: produto }.
 pelo npm test existente. Sem novo contrato público ou dependência.
 **Cobertura:** todos os requisitos e AC-01 a AC-07.
 
-- [ ] Registrar aprovação explícita, conferir Git e mudar SDD para Em implementação.
-- [ ] Preservar .env, banco e servidores locais. Se precisar reinstalar deps,
+- [x] Registrar aprovação explícita, conferir Git e mudar SDD para Em implementação.
+- [x] Preservar .env, banco e servidores locais. Se precisar reinstalar deps,
       utilizar cópia temporária somente dos arquivos versionados e modificados
       desta unidade, como na validação da pipeline; nunca copiar .env/dados.
-- [ ] Criar backend/tests/carrinho-total.test.js com o conteúdo abaixo:
+- [x] Criar backend/tests/carrinho-total.test.js com o conteúdo abaixo:
 
 ```js
 import test from 'node:test';
@@ -201,10 +202,10 @@ test('nova leitura reavalia estoque sem modificar quantidade', () => {
 });
 ```
 
-- [ ] Executar `node --test tests/carrinho-total.test.js` em backend/ na baseline.
+- [x] Executar `node --test tests/carrinho-total.test.js` em backend/ na baseline.
       Esperado: falham casos que somam linhas indisponíveis com preço conhecido;
       controles já corretos passam. Registrar contagem RED real, sem inventá-la.
-- [ ] Alterar somente o redutor do total em lerCarrinho para:
+- [x] Alterar somente o redutor do total em lerCarrinho para:
 
 ```js
 const totalCentavos = itens.reduce(
@@ -213,15 +214,15 @@ const totalCentavos = itens.reduce(
 );
 ```
 
-- [ ] Não alterar paraCentavos, valores das linhas, quantidade_pecas ou checkout.
+- [x] Não alterar paraCentavos, valores das linhas, quantidade_pecas ou checkout.
       Preservar a nota KZN-7F3A. Não persistir preço/estoque localmente.
-- [ ] Executar `npm test` em backend/: esperado 17 testes passam (seis de
+- [x] Executar `npm test` em backend/: esperado 17 testes passam (seis de
       configuração e onze novos testes); registrar resultado real. Executar
       `node --check src/services/carrinhoService.js` e `git diff --check`.
-- [ ] Confirmar que alteração de produto limita-se ao redutor. Não declarar
+- [x] Confirmar que alteração de produto limita-se ao redutor. Não declarar
       FIX-003 ou KZN-318 resolvidos. Atualizar fix/relatório/decisões com
       causa, comportamento, provas RED/GREEN e limites da validação.
-- [ ] Commit `fix: exclui itens indisponiveis do total do carrinho` e publicação
+- [x] Commit `fix: exclui itens indisponiveis do total do carrinho` e publicação
       em origin/fix/total-do-carrinho, apenas com os arquivos revisados.
 - [ ] Preparar PR para main; abertura pelo candidato ou por autorização
       explícita. Aguardar testes-backend e build-frontend; registrar links/SHA.
@@ -231,13 +232,13 @@ const totalCentavos = itens.reduce(
 
 | Aceite | Prova | Esperado | Observado |
 |---|---|---|---|
-| AC-01 | Caso KZN-312 | Total 20, referência 684, bloqueio | Não executado |
-| AC-02 | Cinco cenários parametrizados | Pendências excluídas, linhas preservadas | Não executado |
-| AC-03 | Vazio/só indisponíveis/todos disponíveis + snapshot SQLite | Soma correta e dados intactos | Não executado |
-| AC-04 | Dois usuários no schema real em memória | Só dados do usuário 1 | Não executado |
-| AC-05 | finalizarPedido + releitura de estoque | Zero POSTs; bloqueio e recálculo | Não executado |
-| AC-06 | npm test + checks do PR | Suíte passa sem env/ERP/DB real; build passa | Não executado |
-| AC-07 | Diff/histórico/docs | Escopo e limitação FIX-003 explícitos | Proposta documental |
+| AC-01 | Caso KZN-312 | Total 20, referência 684, bloqueio | Passou; RED 704, GREEN 20 |
+| AC-02 | Cinco cenários parametrizados | Pendências excluídas, linhas preservadas | Cinco cenários passaram |
+| AC-03 | Vazio/só indisponíveis/todos disponíveis + snapshot SQLite | Soma correta e dados intactos | Passou; snapshots iguais |
+| AC-04 | Dois usuários no schema real em memória | Só dados do usuário 1 | Passou |
+| AC-05 | finalizarPedido + releitura de estoque | Zero POSTs; bloqueio e recálculo | Passou; itens preservados |
+| AC-06 | npm test + checks do PR | Suíte passa sem env/ERP/DB real; build passa | Local: 17 testes passaram; PR aguardando comando do usuário |
+| AC-07 | Diff/histórico/docs | Escopo e limitação FIX-003 explícitos | Conferido; FIX-003 não alterado |
 
 ## Migração e recuperação
 
@@ -251,3 +252,25 @@ sem chamada à implementação original. Captura somente resultado sintético.
 Todos os requisitos têm passos e provas; sem novas dependências ou mudança
 nos arquivos de aplicação antes da aprovação. Contadores, precisão monetária
 e ajustes de quantidade permanecem unidades separadas.
+
+## Implementação aprovada — 2026-10-11
+
+Usuário confirmou reprodução manual do KZN-312 e aprovou versão 1 com
+“Consegui recriar, perfeito. Docs aprovados.” Alteração do serviço limitada
+à condição item.disponivel no redutor de valor_total. Linhas, quantidades,
+subtotal referencial, contrato, contadores e bloqueio do checkout preservados.
+Nota KZN-7F3A mantida. FIX-003 e FIX-005 não foram corrigidos nesta unidade.
+
+RED: node --test tests/carrinho-total.test.js na baseline — onze testes,
+seis falhas e cinco sucessos; cenário KZN-312 retornou 704 em vez de 20.
+GREEN: npm test após a correção — 17 testes passaram (onze novos e seis
+anteriores). Sintaxe de serviço/teste e git diff --check passaram. Harness
+usou subprocessos com cwd temporário/env sintética, schema SQLite real em
+:memory: e fetch substituído; nenhum .env/banco local/rede ERP utilizado.
+Teste de finalizarPedido rejeitou pendências sem POST e preservou os itens.
+
+Estado Implementado: validação automatizada local concluída; validação manual
+da correção pelo candidato e checks no PR ainda pendentes. Usuário pediu
+explicitamente aguardar seu comando para abrir PR, pois vai validar localmente.
+Nenhum PR, merge ou pedido real criado pela IA. Publicação da branch segue
+o fluxo autorizado; não equivale à autorização para abrir PR.

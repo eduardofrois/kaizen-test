@@ -14,12 +14,13 @@ Atualização: 2026-10-11. Baseline original: `81897d5`.
 
 | IDs | Estado | Próxima ação |
 |---|---|---|
-| KZN-312 | Spec/plan versão 1 em proposta: total-do-carrinho | Revisão e aprovação antes de implementar |
+| KZN-312 | Implementado por SDD aprovado; 17 testes passaram | Candidato valida localmente; PR só após seu comando |
 | KZN-318, 325, 331 | Causa localizada; verificação isolada realizada | Preparar specs e planos antes de implementar |
 | FIX-001 | Validado por SDD aprovado; seis testes e roteiro manual local | Publicação remota pendente; unidade concluída |
 | FIX-002 | Evidência estática | Especificar origens e validar ambiente |
 | FIX-003, 004, 007, 008 | Verificação isolada realizada | Spec/plan e regressões focadas |
-| FIX-005, 006 | Evidência estática | Reprodução integrada e spec/plan |
+| FIX-005 | Manual pelo candidato e estática; não corrigido | Preparar SDD próprio de ciclo de sessão |
+| FIX-006 | Evidência estática | Reprodução integrada e spec/plan |
 | FIX-009 | Restrições CSS localizadas | Reprodução visual desktop/celular |
 | INV-001 a INV-005 | Pontos adicionais | Ver classificações e passos de confirmação em fix.md |
 | MULTI-001 | Requisito obrigatório | Definir produto, modelagem, contrato e migração por SDD |
@@ -131,3 +132,12 @@ alteração no serviço ou testes nesta preparação. Plano prevê onze regress�
 novas com schema SQLite em memória e ERP simulado em subprocessos isolados.
 Pipeline já comprovada em push/main no run 38172472231; registros de pendência
 anteriores à confirmação são históricos. Unidade total ainda sem aprovação.
+
+## Execução de total-do-carrinho — 2026-10-11
+
+Versão 1 aprovada pelo candidato após reprodução manual. Redutor corrigido;
+onze testes novos (RED seis falhas/cinco sucessos) e GREEN 17 sucessos na
+suíte completa. Sintaxe/diff passaram. Sem env/banco/rede ERP reais nos testes.
+Aguardar validação manual pós-correção e comando do candidato para abrir PR.
+FIX-005 confirmado manualmente: estado de X permanece após login em Y até F5;
+sem correção nesta unidade. FIX-003/KZN-318 também seguem separados.
