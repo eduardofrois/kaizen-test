@@ -417,3 +417,16 @@ e diff conferido. Não foi adicionada suíte frontend; build comprova compilaç�
 Usuário autorizou abrir PR para validar GitHub Actions. Execução remota e
 push/main após merge do candidato ainda pendentes nesta etapa; estado SDD
 Implementado, sem declarar validação remota ou proteção configurada.
+
+## Primeira execução remota — PR #2
+
+PR: https://github.com/eduardofrois/kaizen-test/pull/2
+Execução pull_request/opened concluída com success:
+https://github.com/eduardofrois/kaizen-test/actions/runs/38172181159
+SHA: 820bc9593a34a31ce49d1a63fcc2b457bd9728dc.
+Jobs testes-backend e build-frontend passaram em Ubuntu 24.04/Node 24.14.1.
+Logs confirmam npm ci em ambos, seis testes sem falhas e build de 58 módulos.
+Frontend instalou 85 pacotes no Linux (82 na validação local macOS), sem
+alteração de lockfile. Não houve credenciais reais, servidor ou ERP na CI.
+Ainda falta confirmar synchronize após novo push documental e push/main
+após merge manual do candidato. Proteção da main não foi alterada.

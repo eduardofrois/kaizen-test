@@ -1,7 +1,7 @@
 # Spec — Pipeline de validação
 
 **Versão:** 1
-**Estado:** Implementado — validação local concluída; execução remota pendente
+**Estado:** Implementado — validação local e PR inicial concluídos; synchronize e push/main pendentes
 **Baseline/data:** origin/main a70f55f; 2026-10-11
 **Origem:** CI-001 — validação automática antes do merge manual
 **Pasta:** pipeline-de-validacao
@@ -86,10 +86,10 @@ Nenhum artefato de build ou credencial é publicado pela pipeline.
 - [ ] AC-02: push na main após merge dispara os dois jobs.
 - [x] AC-03: npm test executa os seis testes atuais e todos passam, sem .env real.
 - [x] AC-04: npm run build gera frontend/dist/index.html sem precisar de backend/ERP.
-- [ ] AC-05: workflow usa Node/runner, lockfiles, cache e diretórios especificados.
+- [x] AC-05: workflow usa Node/runner, lockfiles, cache e diretórios especificados.
 - [x] AC-06: falhas não são ocultadas; sem permissões de escrita, secrets,
   comandos de banco/servidor ou dependência de credencial externa.
-- [ ] AC-07: nomes dos checks são estáveis e docs explicam como selecioná-los
+- [x] AC-07: nomes dos checks são estáveis e docs explicam como selecioná-los
   na proteção de main após o primeiro sucesso real.
 - [x] AC-08: spec/plan, investigação e relatório distinguem proposta,
   implementação, validação local e execução remota; merge não feito pela IA.
@@ -138,3 +138,16 @@ problemas de whitespace. Servidores locais não foram interrompidos.
 Usuário autorizou abertura de PR com “Pode abrir o PR”. Execução remota,
 checks em synchronize e push após merge manual ainda pendentes nesta etapa.
 Nenhum merge/deploy ou alteração de proteção realizado pela IA.
+
+## Primeira execução remota — PR #2
+
+PR: https://github.com/eduardofrois/kaizen-test/pull/2
+Execução pull_request/opened concluída com success:
+https://github.com/eduardofrois/kaizen-test/actions/runs/38172181159
+SHA: 820bc9593a34a31ce49d1a63fcc2b457bd9728dc.
+Jobs testes-backend e build-frontend passaram em Ubuntu 24.04/Node 24.14.1.
+Logs confirmam npm ci em ambos, seis testes sem falhas e build de 58 módulos.
+Frontend instalou 85 pacotes no Linux (82 na validação local macOS), sem
+alteração de lockfile. Não houve credenciais reais, servidor ou ERP na CI.
+Ainda falta confirmar synchronize após novo push documental e push/main
+após merge manual do candidato. Proteção da main não foi alterada.

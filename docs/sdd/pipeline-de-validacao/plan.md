@@ -1,7 +1,7 @@
 # Plano de implementação — Pipeline de validação
 
 **Versão:** 1
-**Estado:** Implementado — validação local concluída; execução remota pendente
+**Estado:** Implementado — validação local e PR inicial concluídos; synchronize e push/main pendentes
 **Spec:** [spec.md](spec.md), versão 1
 **Baseline:** a70f55f; 2026-10-11
 **Objetivo:** automatizar testes de configuração e build em PRs/main.
@@ -134,11 +134,11 @@ jobs:
 **Produz:** evidência de execução real e checks selecionáveis na proteção.
 **Cobertura:** AC-01, AC-02, AC-05 a AC-08.
 
-- [ ] Publicar branch de trabalho no origin do candidato. PR com base main
+- [x] Publicar branch de trabalho no origin do candidato. PR com base main
       deve ser aberto para disparar pull_request; preparar título/descrição
       com escopo, comandos e limitações. A abertura de PR será feita mediante
       autorização do candidato ou diretamente por ele. Não fazer merge.
-- [ ] Observar execução real do PR e registrar link/SHA/resultados dos dois jobs;
+- [x] Observar execução real do PR e registrar link/SHA/resultados dos dois jobs;
       nenhuma falha pode ser ignorada com continue-on-error. Se houver falha
       em instalação/build, investigar a causa e corrigir apenas neste escopo.
       Mudança de produto/dependência exige revisão SDD.
@@ -157,11 +157,11 @@ jobs:
 |---|---|---|---|
 | AC-01 | Execuções pull_request opened/synchronize | Dois checks por execução | Não executado |
 | AC-02 | Execução push/main após merge manual | Dois jobs passam | Não executado |
-| AC-03 | npm test em backend/ e job remoto | Seis testes passam sem .env real | Local: seis testes passaram; remoto pendente |
-| AC-04 | npm run build em frontend/ e job remoto | dist/index.html gerado | Local: build passou (58 módulos); remoto pendente |
-| AC-05 | Revisão YAML e logs Actions | Runner/Node/locks/cache/diretórios corretos | YAML conferido; logs remotos pendentes |
+| AC-03 | npm test em backend/ e job remoto | Seis testes passam sem .env real | Seis testes passaram localmente e no run 38172181159 |
+| AC-04 | npm run build em frontend/ e job remoto | dist/index.html gerado | Build passou localmente e no run 38172181159 |
+| AC-05 | Revisão YAML e logs Actions | Runner/Node/locks/cache/diretórios corretos | YAML e logs reais confirmados no run 38172181159 |
 | AC-06 | Revisão de permissões e comandos; resultados dos processos | Sem secrets/ERP/DB; erro não ocultado | Revisão concluída; comandos locais exit 0; sem continue-on-error |
-| AC-07 | Checks reais e guia | Nomes estáveis e selecionáveis | Não executado |
+| AC-07 | Checks reais e guia | Nomes estáveis e selecionáveis | Ambos os checks reais passaram no PR #2; guia disponível |
 | AC-08 | Diff documental e histórico PR | Estado fiel e merge manual | Implementado; aprovação e validação local registradas |
 
 ## Migração e recuperação
@@ -192,3 +192,16 @@ problemas de whitespace. Servidores locais não foram interrompidos.
 Usuário autorizou abertura de PR com “Pode abrir o PR”. Execução remota,
 checks em synchronize e push após merge manual ainda pendentes nesta etapa.
 Nenhum merge/deploy ou alteração de proteção realizado pela IA.
+
+## Primeira execução remota — PR #2
+
+PR: https://github.com/eduardofrois/kaizen-test/pull/2
+Execução pull_request/opened concluída com success:
+https://github.com/eduardofrois/kaizen-test/actions/runs/38172181159
+SHA: 820bc9593a34a31ce49d1a63fcc2b457bd9728dc.
+Jobs testes-backend e build-frontend passaram em Ubuntu 24.04/Node 24.14.1.
+Logs confirmam npm ci em ambos, seis testes sem falhas e build de 58 módulos.
+Frontend instalou 85 pacotes no Linux (82 na validação local macOS), sem
+alteração de lockfile. Não houve credenciais reais, servidor ou ERP na CI.
+Ainda falta confirmar synchronize após novo push documental e push/main
+após merge manual do candidato. Proteção da main não foi alterada.
