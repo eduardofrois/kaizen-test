@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { atualizarParametroCatalogo } from '../lib/parametrosCatalogo.js';
 import { Link, NavLink, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../contextos/AuthContext.jsx';
 import { useCarrinho } from '../contextos/CarrinhoContext.jsx';
@@ -36,9 +37,7 @@ export function Cabecalho() {
     const termo = busca.trim();
 
     // Preserva os filtros que ja estavam aplicados na vitrine.
-    const atuais = new URLSearchParams(window.location.search);
-    if (termo) atuais.set('busca', termo);
-    else atuais.delete('busca');
+    const atuais = atualizarParametroCatalogo(window.location.search, 'busca', termo);
 
     navegar(`/?${atuais.toString()}`);
   }

@@ -160,3 +160,12 @@ Validação remota confirmada em 2026-10-11 no PR #2: ambos os checks passaram
 nos runs 38172181159 (opened) e 38172264955 (synchronize). Já podem ser
 selecionados na proteção de main pelo usuário. Ainda é necessário observar
 push/main após merge manual para concluir AC-02 da unidade SDD.
+
+## Testes frontend — KZN-325
+
+Em frontend/, execute `npm test` para as regressões de parâmetros do catálogo
+com node:test, sem navegador, ERP ou .env. O job build-frontend passa a executar
+esse comando antes de `npm run build`; nomes dos checks permanecem iguais.
+Validação local: dez testes frontend, 23 backend e build passaram em 2026-10-11.
+Execução remota desta alteração ainda pendente; teste puro não substitui o
+roteiro manual de pesquisa/filtros e histórico.

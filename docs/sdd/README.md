@@ -83,3 +83,7 @@ independente e explicitar a decisão necessária.
 
 Contador do carrinho (KZN-318) versão 1 Validado: 23 testes, build, confirmação
 manual e checks do PR #5 concluídos. Merge manual pendente.
+
+Busca e paginação (KZN-325): versão 1 aprovada e Implementada; testes locais
+frontend/backend e build passaram. Validação manual e checks remotos pendentes.
+Contador (KZN-318) integrado na main pelo PR #5, merge 27217ff confirmado após pull.

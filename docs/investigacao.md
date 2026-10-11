@@ -15,8 +15,9 @@ Atualização: 2026-10-11. Baseline original: `81897d5`.
 | IDs | Estado | Próxima ação |
 |---|---|---|
 | KZN-312 | Validado: 17 testes, manual pelo usuário e checks do PR #3 | Merge manual pendente |
-| KZN-318 | Validado: 23 testes, build, manual e CI do PR #5 | Merge manual pendente |
-| KZN-325, 331 | Causa localizada; verificação isolada realizada | Preparar specs e planos antes de implementar |
+| KZN-318 | Validado e integrado na main pelo PR #5 | Concluído; merge 27217ff confirmado após pull |
+| KZN-325 | Implementado: frontend 10 testes, backend 23 e build passaram | PR #6 com CI passando; validação manual pendente |
+| KZN-331 | Causa localizada; verificação isolada realizada | Preparar spec/plano |
 | FIX-001 | Validado por SDD aprovado; seis testes e roteiro manual local | Publicação remota pendente; unidade concluída |
 | FIX-002 | Evidência estática | Especificar origens e validar ambiente |
 | FIX-003, 004, 007, 008 | Verificação isolada realizada | Spec/plan e regressões focadas |
@@ -211,3 +212,54 @@ Estado Validado: critérios da versão 1 concluídos com regressões isoladas,
 build local, confirmação manual do usuário e CI do PR. Merge manual pendente.
 Registros anteriores de espera por validação/abertura/CI são históricos.
 FIX-003 e FIX-005 continuam fora do escopo; nenhum merge ou deploy realizado.
+
+## Preparação de busca-e-paginacao — 2026-10-11
+
+KZN-325 reproduzido pelo usuário (“Erro encontrado”). Pull realizado antes do
+trabalho; nova branch fix/busca-e-paginacao baseada na main 27217ff, com PR #5
+integrado. Spec/plano versão 1 em docs/sdd/busca-e-paginacao/, estado Proposta.
+Proposta: remover pagina ao pesquisar, limpar termo ou alterar categoria/estoque;
+preservar paginação explícita e demais filtros. Prevê função compartilhada,
+dez testes nativos sem dependências novas e npm test no job frontend da CI.
+FIX-004 e INV-005 ficam separados. Nenhum código, teste, workflow ou dependência
+alterado; implementação aguarda aprovação explícita.
+
+## Implementação de busca-e-paginacao — 2026-10-11
+
+Versão 1 aprovada pelo usuário: “entao aprovo os docs”. Função compartilhada
+atualizarParametroCatalogo integrada em pesquisar e trocarParametro. Busca,
+categoria e estoque removem pagina; paginação explícita preserva filtros.
+Consulta continua no backend/ERP com tamanho 24; nenhum filtro local de lista.
+Nota KZN-5D1E preservada. FIX-004 e INV-005 não corrigidos nesta unidade.
+
+RED: node --test tests/parametros-catalogo.test.js no comportamento original
+extraído para o módulo — oito falhas nos resets e dois controles passaram.
+GREEN: npm test em frontend — dez testes passaram. npm test em backend —
+23 testes passaram. Build frontend passou com 59 módulos; git diff --check
+passou. Testes frontend importam função real, sem rede, env ou banco; suíte
+backend mantém SQLite isolado e ERP simulado. Não houve validação React/E2E.
+
+Script test frontend criado sem dependências. Workflow atualizado para executar
+npm test no job build-frontend antes do build, preservando nomes dos checks.
+Execução remota ainda pendente; mudança de workflow não equivale a CI validada.
+Estado Implementado: roteiro manual pós-correção, confirmação do usuário e
+checks remotos pendentes. Nenhum PR, merge ou deploy realizado nesta unidade.
+
+## Autorização do PR — 2026-10-11
+
+Usuário autorizou “pode abrir o pr”. Publicação da branch e abertura do PR
+autorizadas; merge permanece manual. Validação automatizada local concluída
+(10 testes frontend, 23 backend e build). Validação manual pós-correção não
+confirmada; não atribuir essa confirmação à autorização de abertura do PR.
+Checks remotos pendentes nesta etapa.
+
+## CI e publicação de KZN-325 — 2026-10-11
+
+PR #6: https://github.com/eduardofrois/kaizen-test/pull/6
+Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38179901454
+Checks testes-backend e build-frontend passaram no commit c51b6ba. Workflow
+do PR inclui npm test frontend antes do build. Branch publicada em origin.
+Estado Implementado: validação automatizada local/remota concluída; falta
+confirmação manual pós-correção (AC-04 e parte integrada de AC-01/AC-02).
+Não marcar a unidade como Validada apenas pela CI. Merge manual pelo usuário.
+Pendências remotas descritas antes desta execução são históricas.
