@@ -17,7 +17,7 @@ Atualização: 2026-10-11. Baseline original: `81897d5`.
 | KZN-312 | Validado: 17 testes, manual pelo usuário e checks do PR #3 | Merge manual pendente |
 | KZN-318 | Validado e integrado na main pelo PR #5 | Concluído; merge 27217ff confirmado após pull |
 | KZN-325 | Implementado: frontend 10 testes, backend 23 e build passaram | PR #6 com CI passando; validação manual pendente |
-| KZN-331 | Causa localizada; verificação isolada realizada | Preparar spec/plano |
+| KZN-331 | Implementado: envio usa enderecoId; regressões/build passaram | Payload ID 2 confirmado; demais cenários manuais e PR pendentes |
 | FIX-001 | Validado por SDD aprovado; seis testes e roteiro manual local | Publicação remota pendente; unidade concluída |
 | FIX-002 | Evidência estática | Especificar origens e validar ambiente |
 | FIX-003, 004, 007, 008 | Verificação isolada realizada | Spec/plan e regressões focadas |
@@ -263,3 +263,47 @@ Estado Implementado: validação automatizada local/remota concluída; falta
 confirmação manual pós-correção (AC-04 e parte integrada de AC-01/AC-02).
 Não marcar a unidade como Validada apenas pela CI. Merge manual pelo usuário.
 Pendências remotas descritas antes desta execução são históricas.
+
+## Preparação de endereco-selecionado-no-checkout — 2026-10-11
+
+Pull confirmado; main 6fab792 inclui merge do PR #6. KZN-331: inspeção do
+Checkout.jsx confirma finalizar() buscando principal e ignorando enderecoId.
+Backend já verifica posse e utiliza o ID recebido para observação/snapshot.
+Spec/plano versão 1 em docs/sdd/endereco-selecionado-no-checkout/, Proposta.
+Correção proposta só no payload frontend; validação por POST interceptado sem
+criar pedido real. Mensagem “pronto” não detalha reprodução, então não foi
+registrada confirmação manual específica. Implementação aguarda aprovação.
+
+## Implementação de KZN-331 — 2026-10-11
+
+Versão 1 aprovada pelo usuário: “aprovado”. Checkout.jsx/finalizar passou a
+enviar { endereco_id: enderecoId, observacao }, removendo a busca pelo principal
+no envio. Seleção inicial, radios, enderecoSalvo, guarda do botão e fluxo de
+erro/navegação preservados. Backend, contrato, schema e dependências intactos.
+
+Validação local: npm test frontend — dez testes passaram; npm test backend —
+23 passaram; build frontend — passou com 59 módulos; git diff --check passou.
+Essas suítes são regressões existentes, não teste específico do payload KZN-331.
+Inspeção do diff confirma uso do estado selecionado e preservação do restante.
+Inventário da automação não apresentou aba local conectada para executar o
+roteiro de interceptação. Validação do payload no navegador permanece pendente;
+nenhum pedido real criado e nenhum cadastro/endereço/banco local alterado.
+Estado Implementado, não Validado. PR e checks remotos aguardam autorização.
+
+## Validação do payload pelo usuário — 2026-10-11
+
+Usuário confirmou “validado” e apresentou o payload
+`{ "endereco_id": 2, "observacao": "" }`. Evidência informada pelo usuário
+confirma envio do ID selecionado 2 e observação vazia. Não comprova por si
+só criação de pedido, integração ERP, uso de endereço recém-cadastrado ou
+observação preenchida. Esses cenários não foram declarados executados.
+AC-01 confirmado; AC-02, AC-03 e verificação manual de AC-04 permanecem
+sem evidência específica. Regressões locais/build já passaram. PR ainda
+não autorizado; merge manual pelo usuário.
+
+## Autorização de publicação — 2026-10-11
+
+Usuário solicitou “faca o pr”, autorizando commit, publicação da branch e
+abertura do PR desta unidade. Merge permanece manual. Payload endereco_id=2
+confirmado pelo usuário; demais cenários manuais seguem registrados como
+pendentes. Checks remotos ainda não executados nesta etapa.
