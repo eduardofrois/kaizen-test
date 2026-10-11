@@ -47,7 +47,7 @@ Arquivos criados para organizar o trabalho:
 - `AGENTS.md`, com instruções e aprovação obrigatória antes de implementar.
 - `fix.md`, com inventário detalhado de problemas e investigação.
 - `docs/ai/arch.md` e `boundaries.md`, com arquitetura real e limites.
-- `docs/investigacao.md`, `decisoes.md` e `ambiente.md`.
+- `docs/investigacao.md` e `docs/ambiente.md`.
 - Fluxo e modelos em `docs/sdd/`.
 - Spec e plano aprovados e executados em `docs/sdd/configuracao-por-ambiente/`.
 
@@ -244,7 +244,7 @@ payloads serão definidos na spec/plano da funcionalidade.
 | Qual carrinho vem selecionado ao entrar? | Pendente. | Definir persistência e comportamento entre sessões/abas. |
 | O que acontece com os carrinhos após fechar um pedido? | Pendente. | Definir preservação do nome/conteúdo e alterações concorrentes. |
 
-Há sugestões iniciais em [docs/decisoes.md](docs/decisoes.md), ainda não
+Há sugestões iniciais em [docs/ai/arch.md](docs/ai/arch.md), ainda não
 aprovadas como decisões de produto.
 
 ### Isolamento

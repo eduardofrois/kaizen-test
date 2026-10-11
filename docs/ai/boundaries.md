@@ -67,7 +67,8 @@
 
 - Fonte de requisitos: README. Intenção arquitetural: ARQUITETURA.
 - Fonte detalhada dos achados: fix.md. Índice de situação: docs/investigacao.md.
-- Decisões: docs/decisoes.md. Entrega para avaliadores: RELATORIO.md.
+- Escolhas por unidade: spec e plano SDD. Arquitetura geral: docs/ai/arch.md.
+- Entrega para avaliadores: RELATORIO.md.
 - Não chamar hipótese de bug confirmado nem simulação de teste de produção.
 - Preservar os identificadores KZN-2B9C, KZN-7F3A e KZN-5D1E no registro de
   leitura e, quando autorizado, no resumo de entrega.

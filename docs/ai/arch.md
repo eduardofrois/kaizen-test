@@ -97,4 +97,23 @@ detalhe verifica posse antes de buscar no ERP.
 Múltiplos carrinhos exigirá entidade própria, migração de itens, contrato HTTP
 com IDs, persistência da seleção, isolamento e checkout de um carrinho. Limite
 de dez carrinhos, painel lateral e regras de exclusão são propostas iniciais,
-não decisões implementadas. Consulte `docs/decisoes.md` e o ciclo SDD.
+não decisões implementadas. As propostas abaixo devem passar pelo ciclo SDD.
+
+## Propostas para MULTI-001 — ainda não aprovadas
+
+As escolhas desta seção seguem em proposta. O preenchimento aprovado do
+relatório mantém essas decisões de produto como pendentes.
+
+| Pergunta | Proposta inicial | Justificativa a revisar |
+|---|---|---|
+| Limite | 10 carrinhos por usuário | Limite previsível; valor é escolha de produto |
+| Excluir ativo | Selecionar outro; último excluído gera padrão vazio | Evitar estado sem destino para adicionar peças |
+| Vitrine desktop | Painel lateral | Editar carrinho sem abandonar resultado da busca |
+| Celular | Painel recolhível | Preservar espaço para catálogo e acesso às ações |
+| Entrada na loja | Último carrinho ativo persistido | Retomar orçamento de onde parou |
+| Após checkout | Manter carrinho e nome; retirar conteúdo comprado | Reutilizar organização e preservar demais carrinhos |
+
+Direção técnica proposta: entidade carrinhos; itens por carrinho; seleção
+persistida no servidor; IDs explícitos nas operações; posse verificada em
+todas as rotas; migração preservando itens existentes. Regras para alterações
+concorrentes, duplicidade e múltiplas abas precisam entrar na spec.

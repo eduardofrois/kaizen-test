@@ -58,10 +58,9 @@ alterações locais antes de editar. Instruções diretas do usuário prevalecem
 
 - Nunca copie valores de `.env`, tokens, cookies, hashes ou credenciais para
   documentos, commits, logs compartilhados ou respostas.
-- A nota KZN-2B9C marca configuração com credenciais literais na baseline.
-  Antes de publicar a aplicação, resolva FIX-001 por SDD e confira o conteúdo
-  completo e o histórico que serão enviados. `.gitignore` não remove segredos
-  do código nem arquivos já rastreados.
+- Antes de publicar, confira o conteúdo completo e o histórico que serão
+  enviados. Nunca publique credenciais literais. `.gitignore` não remove
+  segredos do código nem arquivos já rastreados.
 - Banco local, WAL/SHM, dependências e build são arquivos gerados; siga o
   `.gitignore`. Não execute `db:reset` nem apague dados sem autorização.
 - Migrações devem preservar contas, endereços, itens e vínculos de pedidos.
@@ -73,46 +72,18 @@ alterações locais antes de editar. Instruções diretas do usuário prevalecem
   sem nova instrução explícita.
 - Não use `git add .` sem revisar arquivos. Não use force push, descarte
   alterações do usuário nem publique no repositório original da empresa.
-- A inicialização/envio inicial ao repositório do candidato foi autorizada;
-  isso não concede autorização permanente para publicar qualquer mudança.
+- Autorização para um envio não concede autorização permanente para publicar
+  qualquer mudança. Confira o escopo autorizado na sessão e nos registros SDD.
 
-## Estado de aprovação em 2026-10-11
+## Responsabilidade dos documentos
 
-A estrutura documental, `fix.md` e o preenchimento inicial de `RELATORIO.md`
-foram autorizados. A aprovação do relatório veio na mensagem: "aprovo o
-preenchumento inicial, vai fazendo as alteracoes enquanto eu avalio sobre a
-config do ambiente". Registrar evidências reais e manter resultados pendentes
-identificados. A correção `configuracao-por-ambiente` foi explicitamente
-aprovada em 2026-10-11, junto da criação de `backend/.env` local e atualização
-do relatório. Demais correções e múltiplos carrinhos aguardam SDD aprovado.
-Veja `docs/investigacao.md` para retomar.
-
-## Pipeline — aprovação em 2026-10-11
-
-SDD pipeline-de-validacao versão 1 aprovado pelo usuário (“aprovo”). Abertura
-do PR autorizada em seguida (“Pode abrir o PR”). Implementação, comandos
-locais e publicação da branch autorizados. Merge permanece manual pelo
-candidato; não alterar proteção de main nem configurar secrets por conta própria.
-
-## Total do carrinho — aprovação em 2026-10-11
-
-SDD total-do-carrinho versão 1 aprovado pelo candidato (“Docs aprovados.”).
-KZN-312 implementado com 17 testes locais passando; validação manual da
-correção e checks remotos pendentes. Candidato pediu explicitamente aguardar
-seu comando para abrir PR desta unidade. Não abrir PR enquanto essa instrução
-não for revogada. Publicação de commits na branch segue o fluxo combinado.
-FIX-005 foi confirmado manualmente, mas sua correção não foi aprovada; manter
-separado de KZN-312, assim como FIX-003 e KZN-318.
-
-## PR do total — autorização em 2026-10-11
-
-Candidato confirmou “funcionando, pode abrir o PR”. Está revogada a instrução
-anterior de aguardar para abrir o PR de total-do-carrinho. Abertura e
-acompanhamento dos checks autorizados; merge permanece manual pelo candidato.
-
-## KZN-312 — validação em 2026-10-11
-
-Total-do-carrinho versão 1 Validado: 17 testes locais, confirmação manual
-“funcionando” e ambos os checks do PR #3 passaram. PR aberto sob autorização
-explícita; instrução anterior para aguardar abertura superada. Merge manual
-pelo candidato pendente. Não ampliar a correção para FIX-003/FIX-005/KZN-318.
+- Este arquivo contém apenas instruções duradouras para trabalhar no projeto.
+  Não registrar aqui aprovações, status de tarefas, resultados, commits ou PRs.
+- Specs e planos registram escopo, aprovação, execução e validação da unidade.
+- `docs/investigacao.md` registra situação atual, pendências e próxima ação.
+- Escolhas e justificativas ficam na spec/plano da unidade; arquitetura geral
+  fica em `docs/ai/arch.md`.
+- `RELATORIO.md` registra resultados e evidências para a entrega.
+- `fix.md` detalha achados, causas, reproduções e estado das correções.
+- Consulte os documentos da unidade e a sessão para autorizações pontuais;
+  não transforme essas autorizações em regras permanentes neste arquivo.
