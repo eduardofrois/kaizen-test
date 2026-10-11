@@ -83,3 +83,12 @@ ci/pipeline-de-validacao baseada em origin/main a70f55f, após merge manual
 do PR #1 pelo candidato. Dois checks propostos: testes-backend e
 build-frontend. Workflow, script npm test e execuções ainda não implementados
 nesta unidade; aprovação explícita pendente.
+
+## CI-001 — Implementação aprovada e validação local
+
+Versão 1 aprovada em 2026-10-11 (“aprovo”). Workflow e npm test implementados.
+Cópia temporária sem .env/banco: npm ci em ambos, seis testes passaram e
+build frontend passou (58 módulos). Lockfiles preservados. YAML e diff
+conferidos. Usuário autorizou PR (“Pode abrir o PR”); remoto/merge main ainda
+pendentes neste registro. Nenhuma dependência, regra de negócio ou proteção
+alterada. O registro anterior de proposta foi superado por esta execução.

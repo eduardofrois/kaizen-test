@@ -66,7 +66,7 @@ alterações locais antes de editar. Instruções diretas do usuário prevalecem
   `.gitignore`. Não execute `db:reset` nem apague dados sem autorização.
 - Migrações devem preservar contas, endereços, itens e vínculos de pedidos.
 - Use branches `<tipo>/<assunto>`, sem prefixo codex, com tipos alinhados
-  a Conventional Commits: fix, feat, docs, refactor, test ou chore.
+  a Conventional Commits: fix, feat, ci, docs, refactor, test ou chore.
   Exemplo: `fix/configuracao-por-ambiente`. Commits seguem `tipo: descrição`.
 - Publique as branches de trabalho no repositório do candidato; os merges
   serão feitos manualmente pelo usuário no GitHub. Não integrar na main
@@ -86,3 +86,10 @@ identificados. A correção `configuracao-por-ambiente` foi explicitamente
 aprovada em 2026-10-11, junto da criação de `backend/.env` local e atualização
 do relatório. Demais correções e múltiplos carrinhos aguardam SDD aprovado.
 Veja `docs/investigacao.md` para retomar.
+
+## Pipeline — aprovação em 2026-10-11
+
+SDD pipeline-de-validacao versão 1 aprovado pelo usuário (“aprovo”). Abertura
+do PR autorizada em seguida (“Pode abrir o PR”). Implementação, comandos
+locais e publicação da branch autorizados. Merge permanece manual pelo
+candidato; não alterar proteção de main nem configurar secrets por conta própria.

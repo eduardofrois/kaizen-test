@@ -230,8 +230,20 @@ Veja [docs/ambiente.md](docs/ambiente.md) para as demais variáveis e execução
 Teste isolado da configuração, a partir de `backend/`:
 
 ```sh
-node --test tests/config.test.js
+npm test
 ```
+
+## Validação automática
+
+O workflow `Validacao` executa em PRs para `main` e em pushes na `main`:
+
+- `testes-backend`: `npm ci` e `npm test` em `backend/`.
+- `build-frontend`: `npm ci` e `npm run build` em `frontend/`.
+
+Ambos usam Node 24.14.1. Os testes existentes usam configuração sintética,
+sem `.env`, ERP ou banco real. O build verifica compilação, sem substituir
+validação de interface. Merges são manuais pelo candidato.
+Veja [docs/ambiente.md](docs/ambiente.md) para reprodução e proteção da main.
 
 ## Antes de começar
 

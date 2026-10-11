@@ -401,3 +401,19 @@ testes do backend e build do frontend. A main remota inclui o merge manual
 do PR #1. Branch de trabalho: ci/pipeline-de-validacao. Implementação e
 execução da CI aguardam aprovação SDD; não há workflow criado nesta etapa.
 Não foram adicionados testes de negócio nem declarada cobertura dos chamados.
+
+## Implementação da CI — 2026-10-11
+
+Após aprovação SDD versão 1, criado .github/workflows/validacao.yml e script
+npm test no backend. Dois jobs independentes: testes-backend e build-frontend,
+Node 24.14.1/ubuntu-24.04, npm ci/cache pelos lockfiles, timeout de 10 minutos
+e permissões somente de leitura. PRs para main e push na main disparam checks;
+execuções antigas do mesmo PR/ref são canceladas. Sem secrets, ERP ou banco real.
+
+Validação local em cópia temporária para preservar servidores e dados do
+candidato: npm ci em ambos os projetos, seis testes passaram, build transformou
+58 módulos e gerou dist/index.html. Nenhum lockfile foi alterado. YAML analisado
+e diff conferido. Não foi adicionada suíte frontend; build comprova compilação.
+Usuário autorizou abrir PR para validar GitHub Actions. Execução remota e
+push/main após merge do candidato ainda pendentes nesta etapa; estado SDD
+Implementado, sem declarar validação remota ou proteção configurada.

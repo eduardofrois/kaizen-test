@@ -1,13 +1,14 @@
 # Plano de implementação — Pipeline de validação
 
 **Versão:** 1
-**Estado:** Proposta
+**Estado:** Implementado — validação local concluída; execução remota pendente
 **Spec:** [spec.md](spec.md), versão 1
 **Baseline:** a70f55f; 2026-10-11
 **Objetivo:** automatizar testes de configuração e build em PRs/main.
 **Arquitetura:** um workflow com dois jobs independentes e lockfiles existentes.
 **Stack:** GitHub Actions, Node 24.14.1, npm, node:test e Vite.
-**Aprovação para implementar:** pendente.
+**Aprovação para implementar:** versão 1 aprovada pelo usuário em
+2026-10-11, resposta “aprovo” à apresentação de spec.md e plan.md.
 **Execução:** nesta sessão, após aprovação, sem delegação automática.
 
 ## Restrições globais
@@ -34,19 +35,19 @@ parar os servidores antes ou usar checkout isolado, preservando .env e banco.
 **Produz:** npm test e dois status checks estáveis. Sem contratos HTTP novos.
 **Cobertura:** REQ-01 a REQ-11; AC-03 a AC-08 e configuração de AC-01/02.
 
-- [ ] Registrar aprovação da versão 1 em spec/plan e mudar estado para Em implementação.
-- [ ] Conferir branch, alterações locais e main remota; preservar frontend/.vite
+- [x] Registrar aprovação da versão 1 em spec/plan e mudar estado para Em implementação.
+- [x] Conferir branch, alterações locais e main remota; preservar frontend/.vite
       não rastreado, .env e banco. Não adicionar arquivos gerados ao commit.
-- [ ] Registrar baseline: ausência de .github/workflows/validacao.yml e de
+- [x] Registrar baseline: ausência de .github/workflows/validacao.yml e de
       script test no package.json; testes existentes já possuem evidência.
       Não introduzir teste que apenas espelha YAML.
-- [ ] Acrescentar a scripts de backend/package.json, preservando os demais:
+- [x] Acrescentar a scripts de backend/package.json, preservando os demais:
 
 ```json
 "test": "node --test tests/*.test.js"
 ```
 
-- [ ] Criar .github/workflows/validacao.yml com este conteúdo:
+- [x] Criar .github/workflows/validacao.yml com este conteúdo:
 
 ```yaml
 name: Validacao
@@ -112,18 +113,18 @@ jobs:
         run: npm run build
 ```
 
-- [ ] Executar npm ci e npm test em backend/ e npm ci e npm run build em
+- [x] Executar npm ci e npm test em backend/ e npm ci e npm run build em
       frontend/, com servidores parados ou checkout isolado. Esperado:
       seis testes passam e dist/index.html é gerado. Registrar saída real.
-- [ ] Conferir git diff --check; revisar YAML contra REQ-01 a REQ-11,
+- [x] Conferir git diff --check; revisar YAML contra REQ-01 a REQ-11,
       nomes dos checks, paths de cache (raiz do repo) e working-directory
       (apenas passos run). Conferir package-lock.json sem alteração.
-- [ ] Atualizar README/ambiente com comandos locais e limites do check build;
+- [x] Atualizar README/ambiente com comandos locais e limites do check build;
       explicar seleção de testes-backend e build-frontend em proteção de main
       somente após observá-los com sucesso no GitHub. Não alterar proteção.
-- [ ] Atualizar relatório e investigação com resultado local; status Implementado
+- [x] Atualizar relatório e investigação com resultado local; status Implementado
       se workflow pronto e validação remota ainda não disponível.
-- [ ] Commit em ci/pipeline-de-validacao:
+- [x] Commit em ci/pipeline-de-validacao:
       ci: executa testes do backend e build do frontend em PRs.
       Staging explícito dos arquivos revisados; nunca .env/dist/.vite/node_modules.
 
@@ -156,12 +157,12 @@ jobs:
 |---|---|---|---|
 | AC-01 | Execuções pull_request opened/synchronize | Dois checks por execução | Não executado |
 | AC-02 | Execução push/main após merge manual | Dois jobs passam | Não executado |
-| AC-03 | npm test em backend/ e job remoto | Seis testes passam sem .env real | Não executado nesta unidade |
-| AC-04 | npm run build em frontend/ e job remoto | dist/index.html gerado | Não executado |
-| AC-05 | Revisão YAML e logs Actions | Runner/Node/locks/cache/diretórios corretos | Não executado |
-| AC-06 | Revisão de permissões e comandos; resultados dos processos | Sem secrets/ERP/DB; erro não ocultado | Não executado |
+| AC-03 | npm test em backend/ e job remoto | Seis testes passam sem .env real | Local: seis testes passaram; remoto pendente |
+| AC-04 | npm run build em frontend/ e job remoto | dist/index.html gerado | Local: build passou (58 módulos); remoto pendente |
+| AC-05 | Revisão YAML e logs Actions | Runner/Node/locks/cache/diretórios corretos | YAML conferido; logs remotos pendentes |
+| AC-06 | Revisão de permissões e comandos; resultados dos processos | Sem secrets/ERP/DB; erro não ocultado | Revisão concluída; comandos locais exit 0; sem continue-on-error |
 | AC-07 | Checks reais e guia | Nomes estáveis e selecionáveis | Não executado |
-| AC-08 | Diff documental e histórico PR | Estado fiel e merge manual | Proposta preparada |
+| AC-08 | Diff documental e histórico PR | Estado fiel e merge manual | Implementado; aprovação e validação local registradas |
 
 ## Migração e recuperação
 
@@ -175,3 +176,19 @@ Requisitos cobertos por configuração explícita e provas locais/remotas.
 Sem placeholders de implementação; observações Não executado são estados
 reais da proposta. A validação da infraestrutura depende do GitHub;
 comandos locais não validam runner Linux, eventos ou proteção da main.
+
+## Execução aprovada — 2026-10-11
+
+Versão 1 aprovada pelo usuário com “aprovo”. Workflow implementado conforme
+plano; backend ganhou npm test, sem nova dependência ou alteração de lockfile.
+Validação em cópia temporária de arquivos versionados, sem .env/banco/deps
+locais: Node v24.14.1; npm ci instalou 120 pacotes no backend e 82 no frontend,
+ambas as auditorias informaram zero vulnerabilidades nessa execução.
+npm test: seis testes passaram. npm run build: 58 módulos transformados,
+dist/index.html gerado, build concluído. Lockfiles comparados e preservados.
+YAML analisado com PyYAML; eventos, jobs e permissões conferidos; diff sem
+problemas de whitespace. Servidores locais não foram interrompidos.
+
+Usuário autorizou abertura de PR com “Pode abrir o PR”. Execução remota,
+checks em synchronize e push após merge manual ainda pendentes nesta etapa.
+Nenhum merge/deploy ou alteração de proteção realizado pela IA.

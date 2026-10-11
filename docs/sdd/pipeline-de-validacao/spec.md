@@ -1,13 +1,13 @@
 # Spec — Pipeline de validação
 
 **Versão:** 1
-**Estado:** Proposta
+**Estado:** Implementado — validação local concluída; execução remota pendente
 **Baseline/data:** origin/main a70f55f; 2026-10-11
 **Origem:** CI-001 — validação automática antes do merge manual
 **Pasta:** pipeline-de-validacao
 **Branch:** ci/pipeline-de-validacao
-**Aprovação para implementar:** pendente. O usuário autorizou preparar SDD
-com “entao vamos”; isso não aprova ainda a implementação do workflow.
+**Aprovação para implementar:** versão 1 aprovada pelo usuário em
+2026-10-11, resposta “aprovo” à apresentação de spec.md e plan.md.
 
 ## Problema e evidência
 
@@ -84,14 +84,14 @@ Nenhum artefato de build ou credencial é publicado pela pipeline.
 
 - [ ] AC-01: PR para main dispara os dois checks; novo push no PR executa novamente.
 - [ ] AC-02: push na main após merge dispara os dois jobs.
-- [ ] AC-03: npm test executa os seis testes atuais e todos passam, sem .env real.
-- [ ] AC-04: npm run build gera frontend/dist/index.html sem precisar de backend/ERP.
+- [x] AC-03: npm test executa os seis testes atuais e todos passam, sem .env real.
+- [x] AC-04: npm run build gera frontend/dist/index.html sem precisar de backend/ERP.
 - [ ] AC-05: workflow usa Node/runner, lockfiles, cache e diretórios especificados.
-- [ ] AC-06: falhas não são ocultadas; sem permissões de escrita, secrets,
+- [x] AC-06: falhas não são ocultadas; sem permissões de escrita, secrets,
   comandos de banco/servidor ou dependência de credencial externa.
 - [ ] AC-07: nomes dos checks são estáveis e docs explicam como selecioná-los
   na proteção de main após o primeiro sucesso real.
-- [ ] AC-08: spec/plan, investigação e relatório distinguem proposta,
+- [x] AC-08: spec/plan, investigação e relatório distinguem proposta,
   implementação, validação local e execução remota; merge não feito pela IA.
 
 ## Riscos e casos de borda
@@ -122,3 +122,19 @@ Fontes consultadas em 2026-10-11:
 
 Versão 1 preparada para aprovação. Escopo e requisitos cobertos pelo plano;
 nenhum workflow/script de aplicação foi criado ou modificado nesta preparação.
+
+## Execução aprovada — 2026-10-11
+
+Versão 1 aprovada pelo usuário com “aprovo”. Workflow implementado conforme
+plano; backend ganhou npm test, sem nova dependência ou alteração de lockfile.
+Validação em cópia temporária de arquivos versionados, sem .env/banco/deps
+locais: Node v24.14.1; npm ci instalou 120 pacotes no backend e 82 no frontend,
+ambas as auditorias informaram zero vulnerabilidades nessa execução.
+npm test: seis testes passaram. npm run build: 58 módulos transformados,
+dist/index.html gerado, build concluído. Lockfiles comparados e preservados.
+YAML analisado com PyYAML; eventos, jobs e permissões conferidos; diff sem
+problemas de whitespace. Servidores locais não foram interrompidos.
+
+Usuário autorizou abertura de PR com “Pode abrir o PR”. Execução remota,
+checks em synchronize e push após merge manual ainda pendentes nesta etapa.
+Nenhum merge/deploy ou alteração de proteção realizado pela IA.
