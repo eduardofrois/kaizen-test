@@ -1,7 +1,7 @@
 # Plano de implementação — Total do carrinho
 
 **Versão:** 1
-**Estado:** Implementado — testes locais passaram; validação manual e PR pendentes
+**Estado:** Implementado — testes locais e validação manual concluídos; checks do PR pendentes
 **Spec:** [spec.md](spec.md), versão 1
 **Baseline/data:** 4261129; 2026-10-11
 **Objetivo:** excluir linhas indisponíveis do total sem alterar seus dados.
@@ -274,3 +274,10 @@ da correção pelo candidato e checks no PR ainda pendentes. Usuário pediu
 explicitamente aguardar seu comando para abrir PR, pois vai validar localmente.
 Nenhum PR, merge ou pedido real criado pela IA. Publicação da branch segue
 o fluxo autorizado; não equivale à autorização para abrir PR.
+
+## Validação manual e autorização do PR — 2026-10-11
+
+Candidato confirmou “funcionando, pode abrir o PR”. Validação manual
+pós-correção confirmada pelo candidato; autorização anterior para aguardar
+foi revogada por esta mensagem. Abrir PR para main e acompanhar os checks,
+sem realizar merge. Testes locais já passaram; evidência remota ainda pendente.

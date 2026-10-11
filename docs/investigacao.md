@@ -141,3 +141,10 @@ suíte completa. Sintaxe/diff passaram. Sem env/banco/rede ERP reais nos testes.
 Aguardar validação manual pós-correção e comando do candidato para abrir PR.
 FIX-005 confirmado manualmente: estado de X permanece após login em Y até F5;
 sem correção nesta unidade. FIX-003/KZN-318 também seguem separados.
+
+## Validação manual e autorização do PR — 2026-10-11
+
+Candidato confirmou “funcionando, pode abrir o PR”. Validação manual
+pós-correção confirmada pelo candidato; autorização anterior para aguardar
+foi revogada por esta mensagem. Abrir PR para main e acompanhar os checks,
+sem realizar merge. Testes locais já passaram; evidência remota ainda pendente.

@@ -470,3 +470,10 @@ remotos e validação manual pós-correção pendentes.
 Novo retorno sobre achado existente FIX-005: sair de X e entrar em Y manteve
 o carrinho de X na interface até F5. Registrado como confirmação manual, sem
 inferir vazamento pela API. Correção permanece separada, sem aprovação SDD.
+
+## Validação manual e autorização do PR — 2026-10-11
+
+Candidato confirmou “funcionando, pode abrir o PR”. Validação manual
+pós-correção confirmada pelo candidato; autorização anterior para aguardar
+foi revogada por esta mensagem. Abrir PR para main e acompanhar os checks,
+sem realizar merge. Testes locais já passaram; evidência remota ainda pendente.

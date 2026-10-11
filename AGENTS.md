@@ -103,3 +103,9 @@ seu comando para abrir PR desta unidade. Não abrir PR enquanto essa instrução
 não for revogada. Publicação de commits na branch segue o fluxo combinado.
 FIX-005 foi confirmado manualmente, mas sua correção não foi aprovada; manter
 separado de KZN-312, assim como FIX-003 e KZN-318.
+
+## PR do total — autorização em 2026-10-11
+
+Candidato confirmou “funcionando, pode abrir o PR”. Está revogada a instrução
+anterior de aguardar para abrir o PR de total-do-carrinho. Abertura e
+acompanhamento dos checks autorizados; merge permanece manual pelo candidato.

@@ -593,3 +593,10 @@ alterados, comando/roteiro de validação, resultado e limitações remanescente
 Estados recomendados: identificado → especificado → aprovado → implementado →
 validado. Não marcar validado apenas por inspeção do diff. Se uma hipótese não
 se confirmar, manter registro do descarte e da evidência.
+
+## Validação manual e autorização do PR — 2026-10-11
+
+Candidato confirmou “funcionando, pode abrir o PR”. Validação manual
+pós-correção confirmada pelo candidato; autorização anterior para aguardar
+foi revogada por esta mensagem. Abrir PR para main e acompanhar os checks,
+sem realizar merge. Testes locais já passaram; evidência remota ainda pendente.
