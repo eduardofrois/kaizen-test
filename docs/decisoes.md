@@ -87,3 +87,14 @@ e implementação. Não promover uma sugestão da IA a decisão do candidato.
 - Evidência: seis testes e sintaxe passaram; candidato confirmou preenchimento
   local, catálogo, login, refresh, logout e rejeição de JWT_SEGREDO vazio.
   Checkout não validado. Não houve revogação do token no SIAC nem novo push.
+
+## DEC-007 — Branches por tipo e merge manual no GitHub
+
+- Estado: solicitado pelo candidato em 2026-10-11.
+- Convenção: <tipo>/<assunto>, usando tipos de Conventional Commits,
+  sem prefixo codex. Commits mantêm tipo: descrição.
+- Branch de configuração renomeada para fix/configuracao-por-ambiente.
+  Referências ao nome antigo nos registros anteriores são históricas.
+- Publicar branches de trabalho no repositório próprio; merges serão feitos
+  manualmente pelo candidato no GitHub. Não realizar novos merges locais
+  sem instrução explícita. O merge anterior já realizado permanece no histórico.
