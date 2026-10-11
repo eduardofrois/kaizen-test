@@ -16,7 +16,7 @@ Atualização: 2026-10-11. Baseline original: `81897d5`.
 |---|---|---|
 | KZN-312 | Validado: 17 testes, manual pelo usuário e checks do PR #3 | Merge manual pendente |
 | KZN-318 | Validado e integrado na main pelo PR #5 | Concluído; merge 27217ff confirmado após pull |
-| KZN-325 | Implementado: frontend 10 testes, backend 23 e build passaram | Validar manualmente; aguardar comando para PR |
+| KZN-325 | Implementado: frontend 10 testes, backend 23 e build passaram | PR #6 com CI passando; validação manual pendente |
 | KZN-331 | Causa localizada; verificação isolada realizada | Preparar spec/plano |
 | FIX-001 | Validado por SDD aprovado; seis testes e roteiro manual local | Publicação remota pendente; unidade concluída |
 | FIX-002 | Evidência estática | Especificar origens e validar ambiente |
@@ -252,3 +252,14 @@ autorizadas; merge permanece manual. Validação automatizada local concluída
 (10 testes frontend, 23 backend e build). Validação manual pós-correção não
 confirmada; não atribuir essa confirmação à autorização de abertura do PR.
 Checks remotos pendentes nesta etapa.
+
+## CI e publicação de KZN-325 — 2026-10-11
+
+PR #6: https://github.com/eduardofrois/kaizen-test/pull/6
+Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38179901454
+Checks testes-backend e build-frontend passaram no commit c51b6ba. Workflow
+do PR inclui npm test frontend antes do build. Branch publicada em origin.
+Estado Implementado: validação automatizada local/remota concluída; falta
+confirmação manual pós-correção (AC-04 e parte integrada de AC-01/AC-02).
+Não marcar a unidade como Validada apenas pela CI. Merge manual pelo usuário.
+Pendências remotas descritas antes desta execução são históricas.

@@ -702,3 +702,14 @@ autorizadas; merge permanece manual. Validação automatizada local concluída
 (10 testes frontend, 23 backend e build). Validação manual pós-correção não
 confirmada; não atribuir essa confirmação à autorização de abertura do PR.
 Checks remotos pendentes nesta etapa.
+
+## CI e publicação de KZN-325 — 2026-10-11
+
+PR #6: https://github.com/eduardofrois/kaizen-test/pull/6
+Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38179901454
+Checks testes-backend e build-frontend passaram no commit c51b6ba. Workflow
+do PR inclui npm test frontend antes do build. Branch publicada em origin.
+Estado Implementado: validação automatizada local/remota concluída; falta
+confirmação manual pós-correção (AC-04 e parte integrada de AC-01/AC-02).
+Não marcar a unidade como Validada apenas pela CI. Merge manual pelo usuário.
+Pendências remotas descritas antes desta execução são históricas.

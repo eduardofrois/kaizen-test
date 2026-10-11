@@ -1,7 +1,7 @@
 # Spec — Busca e paginação do catálogo
 
 **Versão:** 1
-**Estado:** Implementado — validação automatizada local concluída; manual e CI pendentes
+**Estado:** Implementado — validação automatizada local/remota concluída; manual pendente
 **Baseline/data:** 27217ff; 2026-10-11
 **Origem:** KZN-325 — Busca diz que não encontrou peça que existe
 **Branch:** fix/busca-e-paginacao
@@ -86,7 +86,7 @@ parte da versão 1 aprovada pelo usuário.
   e suporta termo com acentos e caracteres especiais.
 - [ ] AC-04: teste manual confirma resultados ao pesquisar após avançar páginas;
   F5 e histórico conservam URL/consulta. Não exigir sincronização do input (INV-005).
-- [ ] AC-05: testes frontend, suíte backend e build passam. CI inclui testes
+- [x] AC-05: testes frontend, suíte backend e build passam. CI inclui testes
   frontend; checks remotos após autorização de PR. Documentar limites reais.
 
 ## Riscos e validação
@@ -134,3 +134,14 @@ autorizadas; merge permanece manual. Validação automatizada local concluída
 (10 testes frontend, 23 backend e build). Validação manual pós-correção não
 confirmada; não atribuir essa confirmação à autorização de abertura do PR.
 Checks remotos pendentes nesta etapa.
+
+## CI e publicação de KZN-325 — 2026-10-11
+
+PR #6: https://github.com/eduardofrois/kaizen-test/pull/6
+Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38179901454
+Checks testes-backend e build-frontend passaram no commit c51b6ba. Workflow
+do PR inclui npm test frontend antes do build. Branch publicada em origin.
+Estado Implementado: validação automatizada local/remota concluída; falta
+confirmação manual pós-correção (AC-04 e parte integrada de AC-01/AC-02).
+Não marcar a unidade como Validada apenas pela CI. Merge manual pelo usuário.
+Pendências remotas descritas antes desta execução são históricas.

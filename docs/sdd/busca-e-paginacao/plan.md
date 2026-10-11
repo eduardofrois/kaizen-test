@@ -1,7 +1,7 @@
 # Plano de implementação — Busca e paginação
 
 **Versão:** 1
-**Estado:** Implementado — validação automatizada local concluída; manual e CI pendentes
+**Estado:** Implementado — validação automatizada local/remota concluída; manual pendente
 **Spec:** [spec.md](spec.md), versão 1
 **Baseline/data:** 27217ff; 2026-10-11
 **Objetivo:** reiniciar página ao pesquisar/filtrar e conservar navegação explícita.
@@ -146,9 +146,9 @@ Limpar todos os filtros já usa URLSearchParams vazio e continua igual.
   conferir pagina=2 e filtros. Dar F5, voltar e avançar no histórico: URL/lista
   restauradas sem reset automático. Verificar input separadamente (INV-005).
 - [x] Registrar quem executou o roteiro, resultados e limitações; atualizar docs.
-- [ ] Revisar arquivos; quando autorizado, commit sugerido
+- [x] Revisar arquivos; quando autorizado, commit sugerido
   `fix: reinicia pagina ao pesquisar e filtrar catalogo` e publicação da branch.
-- [ ] Aguardar autorização para PR; acompanhar checks e registrar evidências.
+- [x] Aguardar autorização para PR; acompanhar checks e registrar evidências.
   Merge manual pelo usuário; não alterar proteção de main.
 
 ## Matriz de validação
@@ -159,7 +159,7 @@ Limpar todos os filtros já usa URLSearchParams vazio e continua igual.
 | AC-02 | Cinco casos categoria/estoque/null + manual | Reset sem perder demais parâmetros | Testes puros passaram; manual pendente |
 | AC-03 | Paginação, encoding e snapshots de entrada | Página explícita e entrada intacta | Passou |
 | AC-04 | Navegador, F5, voltar/avançar | URL/lista coerentes | Não executado pós-correção |
-| AC-05 | npm test dos dois projetos, build e CI autorizada | Sucesso | Frontend 10, backend 23 e build passaram; CI pendente |
+| AC-05 | npm test dos dois projetos, build e CI autorizada | Sucesso | Frontend 10, backend 23 e build locais passaram; checks do PR #6 passaram |
 
 ## Migração e recuperação
 
@@ -200,3 +200,14 @@ autorizadas; merge permanece manual. Validação automatizada local concluída
 (10 testes frontend, 23 backend e build). Validação manual pós-correção não
 confirmada; não atribuir essa confirmação à autorização de abertura do PR.
 Checks remotos pendentes nesta etapa.
+
+## CI e publicação de KZN-325 — 2026-10-11
+
+PR #6: https://github.com/eduardofrois/kaizen-test/pull/6
+Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38179901454
+Checks testes-backend e build-frontend passaram no commit c51b6ba. Workflow
+do PR inclui npm test frontend antes do build. Branch publicada em origin.
+Estado Implementado: validação automatizada local/remota concluída; falta
+confirmação manual pós-correção (AC-04 e parte integrada de AC-01/AC-02).
+Não marcar a unidade como Validada apenas pela CI. Merge manual pelo usuário.
+Pendências remotas descritas antes desta execução são históricas.
