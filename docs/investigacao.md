@@ -65,3 +65,13 @@ captura da vitrine. Refresh de sessão, logout e fail-fast manual também confir
 pelo candidato em seguida. FIX-010 adicionado em fix.md: limites ausentes nos inputs de
 cadastro, rejeição pela API confirmada nas capturas; perfil tem padrão
 semelhante por inspeção. Correção pendente de SDD/aprovação.
+
+## Integração e publicação — 2026-10-11
+
+Por autorização do candidato, branch configuracao-por-ambiente integrada na
+main pelo merge f913cda, sem conflitos. Push para eduardofrois/kaizen-test
+concluído: remoto confirmou main de 6307deb para f913cda. Branch local
+codex/configuracao-por-ambiente preservada. Os registros anteriores de push
+pendente descrevem a etapa anterior e estão superados por esta atualização.
+.env e arquivos gerados não foram enviados. Publicação do código no GitHub
+não representa deploy da aplicação.

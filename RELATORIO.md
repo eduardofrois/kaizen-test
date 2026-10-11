@@ -383,3 +383,13 @@ já haviam passado. Não foi executado checkout real; este registro não
 comprova os demais fluxos do sistema. Implementação registrada no commit c46e68e. Validação concluída para o
 escopo aprovado; resultados consolidados neste commit documental complementar.
 Nenhuma nova alteração de aplicação realizada; publicação remota pendente.
+
+## Integração e publicação — 2026-10-11
+
+Por autorização do candidato, branch configuracao-por-ambiente integrada na
+main pelo merge f913cda, sem conflitos. Push para eduardofrois/kaizen-test
+concluído: remoto confirmou main de 6307deb para f913cda. Branch local
+codex/configuracao-por-ambiente preservada. Os registros anteriores de push
+pendente descrevem a etapa anterior e estão superados por esta atualização.
+.env e arquivos gerados não foram enviados. Publicação do código no GitHub
+não representa deploy da aplicação.
