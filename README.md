@@ -242,7 +242,7 @@ O workflow `Validacao` executa em PRs para `main` e em pushes na `main`:
 
 Ambos usam Node 24.14.1. Os testes existentes usam configuração sintética,
 sem `.env`, ERP ou banco real. O build verifica compilação, sem substituir
-validação de interface. Merges são manuais pelo candidato.
+validação de interface. Merges são manuais pelo usuário.
 Veja [docs/ambiente.md](docs/ambiente.md) para reprodução e proteção da main.
 
 ## Antes de começar

@@ -24,12 +24,12 @@ empresa. Pontos INV estão separados por dependerem de confirmação ou decisão
   integrado que percorra navegador/API/ERP.
 - **Isolada:** função/expressão original executada em memória com entradas
   controladas e, quando necessário, stubs de banco/ERP.
-- **Integrada:** aplicação real percorrida; candidato confirmou catálogo,
+- **Integrada:** aplicação real percorrida; usuário confirmou catálogo,
   login, refresh e logout. Demais fluxos não foram validados.
 - **Risco/decisão:** condição possível ou regra ambígua que precisa de definição.
 
 Scripts isolados foram transitórios, não salvos como suíte. Não houve chamadas
-de escrita ao SIAC. FIX-001 validado por testes isolados e roteiro manual pelo candidato;
+de escrita ao SIAC. FIX-001 validado por testes isolados e roteiro manual pelo usuário;
 demais correções pendentes.
 
 O preenchimento inicial de RELATORIO.md foi aprovado em 2026-10-11 e registra
@@ -45,7 +45,7 @@ em 2026-10-11 e implementada nesta sessão.
 | FIX-002 | CORS com qualquer origem e credenciais | Estática | Alta; impacto depende do ambiente |
 | FIX-003 | Perda de centavos na conversão monetária | Isolada | Alta |
 | FIX-004 | Botão Próxima bloqueia última página | Isolada | Alta |
-| FIX-005 | Carrinho não acompanha login/logout/troca de conta | Manual pelo candidato e estática | Alta |
+| FIX-005 | Carrinho não acompanha login/logout/troca de conta | Manual pelo usuário e estática | Alta |
 | FIX-006 | Estoque reduzido impede ajuste de quantidade na UI | Estática | Alta |
 | FIX-007 | Telefone opcional não pode ser removido | Isolada | Média |
 | FIX-008 | Login/troca de senha removem espaços aceitos no cadastro | Isolada | Alta |
@@ -57,7 +57,7 @@ Prioridades são propostas para ordenar trabalho, não decisões aprovadas.
 ## FIX-001 — Segredos literais e configuração com fallback
 
 **Estado:** validado por seis testes automatizados e roteiro manual local
-pelo candidato em 2026-10-11. Spec/plan aprovados em
+pelo usuário em 2026-10-11. Spec/plan aprovados em
 docs/sdd/configuracao-por-ambiente/. O ID FIX-001 é referência do inventário;
 o trabalho é nomeado pelo que faz.
 
@@ -115,7 +115,7 @@ Nota KZN-2B9C mantida. CORS não foi alterado.
 Aprovação: usuário aprovou a correção/configuração inicial e pediu atualização
 do relatório e criação de .env. Criado `backend/.env` com permissão 0600,
 ignorado pelo Git, campos obrigatórios vazios e demais padrões preenchidos.
-Na etapa posterior, candidato confirmou preenchimento e catálogo/login
+Na etapa posterior, usuário confirmou preenchimento e catálogo/login
 funcionando; refresh, logout e fail-fast manual também confirmados.
 
 Arquivos: backend/src/config.js, backend/tests/config.test.js,
@@ -129,7 +129,7 @@ revogação das credenciais externas nem publicação do histórico original.
 
 ### Confirmação manual da configuração — 2026-10-11
 
-Evidência informada pelo candidato: login, catálogo, persistência da sessão
+Evidência informada pelo usuário: login, catálogo, persistência da sessão
 após atualizar a página e logout funcionaram localmente. Ao executar
 `JWT_SEGREDO= npm start` em backend/, o processo encerrou com
 `Configuracao invalida: JWT_SEGREDO nao definido. Rode: npm run segredo:gerar`.
@@ -237,10 +237,10 @@ com 0/1 página respeitar o comportamento de ocultação existente.
 
 ## FIX-005 — Estado do carrinho desconectado da autenticação
 
-**Estado:** confirmado manualmente pelo candidato em 2026-10-11; não corrigido.
+**Estado:** confirmado manualmente pelo usuário em 2026-10-11; não corrigido.
 
 **Confirmação manual:** após sair da conta X e entrar em Y no mesmo navegador,
-o carrinho de X permaneceu visível até F5. Evidência fornecida pelo candidato;
+o carrinho de X permaneceu visível até F5. Evidência fornecida pelo usuário;
 não foi demonstrado vazamento pela API. Respostas antigas em andamento ainda
 precisam de reprodução controlada. Correção separada, sem SDD aprovado.
 
@@ -517,7 +517,7 @@ RED/GREEN ainda não executados, nenhum arquivo de aplicação alterado.
 
 ### KZN-312 — Implementação e provas em 2026-10-11
 
-Spec/plan versão 1 aprovados após reprodução manual pelo candidato. Serviço
+Spec/plan versão 1 aprovados após reprodução manual pelo usuário. Serviço
 corrigido com item.disponivel na agregação. Dados/linhas/subtotais referenciais
 e bloqueio checkout preservados. Arquivos: carrinhoService.js e
 backend/tests/carrinho-total.test.js, além dos registros documentais.
@@ -525,7 +525,7 @@ RED: onze testes, seis falhas/cinco sucessos, total 704 em vez de 20.
 GREEN: npm test com 17 sucessos; sintaxe e diff passaram. Testes isolam cwd,
 env, SQLite :memory: com schema real e fetch fake. Zero pedidos reais criados.
 FIX-003 e KZN-318 não corrigidos. Estado Implementado; validação manual
-pós-correção e checks do PR pendentes. Aguardar comando do candidato para
+pós-correção e checks do PR pendentes. Aguardar comando do usuário para
 abrir PR, conforme solicitação explícita desta sessão.
 
 ## Notas de revisão encontradas
@@ -556,7 +556,7 @@ quantidade de bugs ou de intenção do avaliador.
 ## FIX-010 — Cadastro aceita entrada acima dos limites da API
 
 **Estado:** identificado; correção não aprovada nem implementada.
-**Evidência:** reprodução manual pelo candidato em 2026-10-11, com capturas
+**Evidência:** reprodução manual pelo usuário em 2026-10-11, com capturas
 mostrando documento e telefone longos aceitos durante digitação e mensagens
 após enviar; confirmada por leitura do código. Prioridade proposta: média.
 
@@ -596,8 +596,8 @@ se confirmar, manter registro do descarte e da evidência.
 
 ## Validação manual e autorização do PR — 2026-10-11
 
-Candidato confirmou “funcionando, pode abrir o PR”. Validação manual
-pós-correção confirmada pelo candidato; autorização anterior para aguardar
+Usuário confirmou “funcionando, pode abrir o PR”. Validação manual
+pós-correção confirmada pelo usuário; autorização anterior para aguardar
 foi revogada por esta mensagem. Abrir PR para main e acompanhar os checks,
 sem realizar merge. Testes locais já passaram; evidência remota ainda pendente.
 
@@ -607,8 +607,58 @@ PR: https://github.com/eduardofrois/kaizen-test/pull/3
 Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38175551404
 Checks testes-backend e build-frontend passaram no commit ac2231f.
 Com reprodução prévia, aprovação SDD, RED/GREEN, confirmação manual do
-candidato e checks do PR concluídos, KZN-312 está Validado. Todos os critérios
-da versão 1 cumpridos; merge continua pendente de ação manual do candidato.
+usuário e checks do PR concluídos, KZN-312 está Validado. Todos os critérios
+da versão 1 cumpridos; merge continua pendente de ação manual do usuário.
 Nenhum merge/deploy realizado pela IA. As pendências de validação e instruções
 de aguardar abertura descritas anteriormente são registros históricos superados.
 FIX-003, FIX-005 e KZN-318 permanecem fora desta correção.
+
+## Preparação de contador-do-carrinho — 2026-10-11
+
+KZN-318 reproduzido manualmente pelo usuário, conforme informou nesta sessão.
+Inspeção confirmou quantidade_pecas = itens.length em lerCarrinho; cabeçalho e
+resumo já consomem esse campo. Spec e plano versão 1 preparados em
+`docs/sdd/contador-do-carrinho/`, estado Proposta. Regra proposta: somar unidades
+incluindo linhas com pendências, mantendo quantidade_itens como produtos distintos
+e preservando o total filtrado do KZN-312. Implementação e testes aguardam aprovação;
+nenhum código, teste, dependência ou banco alterado nesta preparação.
+
+## Implementação de contador-do-carrinho — 2026-10-11
+
+Versão 1 aprovada pela mensagem “aprovado os documentos”. Implementação
+limitada à soma de item.quantidade em quantidade_pecas. quantidade_itens,
+total filtrado do KZN-312, nota KZN-7F3A e checkout preservados.
+Seis regressões acrescentadas ao harness isolado existente, sem dependências.
+
+RED: node --test tests/carrinho-total.test.js antes da correção — 17 testes,
+12 passaram e cinco falharam no contador; exemplo 3+4 retornou 2 em vez de 7.
+GREEN: npm test após a correção — 23 testes passaram (17 de carrinho e seis
+configuração). SQLite em memória, fetch simulado e subprocesso com ambiente
+sintético; sem .env, banco local ou ERP real. Snapshots preservados e zero POST.
+node --check backend/src/services/carrinhoService.js e build frontend passaram;
+build transformou 58 módulos. Inspeção confirmou badge 99+, aria-label exato
+e resumo consumindo quantidade_pecas. Isso não substitui validação visual.
+
+Estado Implementado: validação automatizada local concluída; roteiro manual
+7→5→3→0 e persistência após F5 aguardam confirmação do usuário.
+PR não aberto; checks remotos não executados. FIX-003/FIX-005 não corrigidos.
+Também atendida a solicitação de usar “usuário” nas referências documentais.
+
+## Validação manual e autorização do PR — 2026-10-11
+
+Usuário confirmou “validado, pode subir o pr” após o roteiro de validação
+local. Validação manual pós-correção confirmada pelo usuário; não executada
+pela IA. Publicação da branch e abertura de PR autorizadas nesta mensagem.
+Testes locais: 23 passaram; build passou. Checks remotos ainda pendentes.
+Merge permanece manual pelo usuário. Pendências manuais descritas anteriormente
+são registros históricos superados por esta confirmação.
+
+## Validação remota de KZN-318 — 2026-10-11
+
+PR #5: https://github.com/eduardofrois/kaizen-test/pull/5
+Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38177680580
+Checks testes-backend e build-frontend passaram no commit ea3bc6a.
+Estado Validado: critérios da versão 1 concluídos com regressões isoladas,
+build local, confirmação manual do usuário e CI do PR. Merge manual pendente.
+Registros anteriores de espera por validação/abertura/CI são históricos.
+FIX-003 e FIX-005 continuam fora do escopo; nenhum merge ou deploy realizado.

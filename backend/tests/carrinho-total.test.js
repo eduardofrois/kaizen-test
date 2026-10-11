@@ -156,3 +156,28 @@ test('nova leitura reavalia estoque sem modificar quantidade', () => {
   assert.equal(dados.releitura.itens[0].quantidade, 3);
   assert.equal(dados.releitura.pronto_para_checkout, false);
 });
+
+for (const [nome, itens, pecas, distintos] of [
+  ['3+4 unidades', [item('A', { quantidade: 3 }), item('B', { quantidade: 4 })], 7, 2],
+  ['uma linha', [item('A', { quantidade: 5 })], 5, 1],
+  ['vazio', [], 0, 0],
+  ['acima de 99', [item('A', { quantidade: 99, estoque: 100 }), item('B', { quantidade: 2 })], 101, 2],
+  ['outro usuario', [item('A', { quantidade: 3 }), item('B', { usuario: 2, quantidade: 4 })], 3, 1],
+]) {
+  test('KZN-318: contador com ' + nome, () => {
+    const { carrinho } = consultar({ itens });
+    assert.equal(carrinho.quantidade_pecas, pecas);
+    assert.equal(carrinho.quantidade_itens, distintos);
+  });
+}
+
+test('KZN-318: pendencia conta unidades sem entrar no total', () => {
+  const { carrinho } = consultar({ itens: [
+    item('OK', { quantidade: 3 }),
+    item('SEM', { quantidade: 4, estoque: 0 }),
+  ] });
+  assert.equal(carrinho.quantidade_pecas, 7);
+  assert.equal(carrinho.quantidade_itens, 2);
+  assert.equal(carrinho.valor_total, 60);
+  assert.equal(carrinho.pronto_para_checkout, false);
+});
