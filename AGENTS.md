@@ -67,7 +67,7 @@ alterações locais antes de editar. Instruções diretas do usuário prevalecem
 - Use branches `<tipo>/<assunto>`, sem prefixo codex, com tipos alinhados
   a Conventional Commits: fix, feat, ci, docs, refactor, test ou chore.
   Exemplo: `fix/configuracao-por-ambiente`. Commits seguem `tipo: descrição`.
-- Publique as branches de trabalho no repositório do candidato; os merges
+- Publique as branches de trabalho no repositório do usuário; os merges
   serão feitos manualmente pelo usuário no GitHub. Não integrar na main
   sem nova instrução explícita.
 - Não use `git add .` sem revisar arquivos. Não use force push, descarte

@@ -206,7 +206,7 @@ if (problemas.length > 0) {
       com código sanitizado, teste e documentação. Na importação inicial,
       revisar todos os arquivos de aplicação por allowlist, pois estarão
       inicialmente não rastreados. Não usar git add . sem essa revisão.
-- [x] Enviar branch/aplicação ao repositório do candidato apenas dentro da
+- [x] Enviar branch/aplicação ao repositório do usuário apenas dentro da
       autorização vigente; verificar refs remotas e integridade do histórico.
 
 ## Migração e recuperação
@@ -245,7 +245,7 @@ auditoria informou zero vulnerabilidades. node --test tests/config.test.js:
 RED cinco falhas/um sucesso; GREEN seis sucessos. node --check
 backend/src/config.js: passou. Sem rede ERP ou banco nos testes; integração
 real e preenchimento local estavam pendentes nesse momento; foram confirmados
-pelo candidato na validação manual abaixo. Nota KZN-2B9C preservada.
+pelo usuário na validação manual abaixo. Nota KZN-2B9C preservada.
 Relatório, inventário e guias atualizados. Novo push não realizado nesta etapa.
 
 Revisão de publicação: 70 arquivos candidatos, incluindo 54 da aplicação,
@@ -255,7 +255,7 @@ Envio remoto permanece pendente; o commit desta unidade é local.
 
 ### Confirmação manual da configuração — 2026-10-11
 
-Evidência informada pelo candidato: login, catálogo, persistência da sessão
+Evidência informada pelo usuário: login, catálogo, persistência da sessão
 após atualizar a página e logout funcionaram localmente. Ao executar
 `JWT_SEGREDO= npm start` em backend/, o processo encerrou com
 `Configuracao invalida: JWT_SEGREDO nao definido. Rode: npm run segredo:gerar`.
@@ -267,7 +267,7 @@ Nenhuma nova alteração de aplicação realizada; publicação remota pendente.
 
 ## Integração e publicação — 2026-10-11
 
-Por autorização do candidato, branch configuracao-por-ambiente integrada na
+Por autorização do usuário, branch configuracao-por-ambiente integrada na
 main pelo merge f913cda, sem conflitos. Push para eduardofrois/kaizen-test
 concluído: remoto confirmou main de 6307deb para f913cda. Branch local
 codex/configuracao-por-ambiente preservada. Os registros anteriores de push

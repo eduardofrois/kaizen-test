@@ -17,7 +17,7 @@ node --test; não existe script npm test. O frontend tem script build com Vite,
 mas nenhuma suíte de testes de interface. Ambos possuem package-lock.json.
 As validações locais não são executadas automaticamente em cada PR.
 
-O candidato escolheu branches por tipo e merges manuais no GitHub. Uma CI
+O usuário escolheu branches por tipo e merges manuais no GitHub. Uma CI
 com checks estáveis permitirá configurar proteção de main com evidência real.
 Esta unidade não altera configurações de proteção do repositório.
 
@@ -59,7 +59,7 @@ correção de bugs, proteção de branch via API e permissões administrativas.
 - REQ-09: cancelar execuções antigas da mesma referência/PR com concurrency;
   distinguir os grupos de push e pull_request. Não cancelar PRs diferentes.
 - REQ-10: só recomendar checks obrigatórios após execução real bem-sucedida
-  no GitHub; merge manual do candidato. Não afirmar CI validada só por teste local.
+  no GitHub; merge manual do usuário. Não afirmar CI validada só por teste local.
 - REQ-11: actions oficiais em versões explícitas verificadas:
   actions/checkout@v6.0.2 e actions/setup-node@v6.3.0. Sem actions de terceiros.
   Tags de versão não são imutáveis; fixação por SHA é evolução fora desta unidade.
@@ -108,7 +108,7 @@ que os quatro chamados ou múltiplos carrinhos foram resolvidos.
 
 Local: npm test em backend/ e npm run build em frontend/, após aprovação.
 Remota: registrar URL da execução, SHA, jobs e resultados observados no PR;
-após merge feito pelo candidato, confirmar também execução na main.
+após merge feito pelo usuário, confirmar também execução na main.
 Antes do merge, AC-02 fica pendente com status explícito. Se não houver
 acesso à execução remota, registrar limitação sem marcar Validado.
 
@@ -150,7 +150,7 @@ Logs confirmam npm ci em ambos, seis testes sem falhas e build de 58 módulos.
 Frontend instalou 85 pacotes no Linux (82 na validação local macOS), sem
 alteração de lockfile. Não houve credenciais reais, servidor ou ERP na CI.
 Ainda falta confirmar synchronize após novo push documental e push/main
-após merge manual do candidato. Proteção da main não foi alterada.
+após merge manual do usuário. Proteção da main não foi alterada.
 
 ## Validação do PR concluída — aguardando merge manual
 
@@ -161,6 +161,6 @@ Evidência: https://github.com/eduardofrois/kaizen-test/actions/runs/38172264955
 AC-01 confirmado por opened e synchronize; checks testes-backend e
 build-frontend reais e bem-sucedidos, disponíveis para proteção da main.
 Pendente apenas AC-02 e a etapa correspondente do plano: executar e observar
-push/main após merge manual do candidato no PR #2. Não declarar estado
+push/main após merge manual do usuário no PR #2. Não declarar estado
 Validado global até obter essa evidência. Registro atual supera as pendências
 remotas descritas nas etapas anteriores; merge/deploy/proteção não realizados.

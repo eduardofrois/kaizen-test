@@ -134,22 +134,22 @@ jobs:
 **Produz:** evidência de execução real e checks selecionáveis na proteção.
 **Cobertura:** AC-01, AC-02, AC-05 a AC-08.
 
-- [x] Publicar branch de trabalho no origin do candidato. PR com base main
+- [x] Publicar branch de trabalho no origin do usuário. PR com base main
       deve ser aberto para disparar pull_request; preparar título/descrição
       com escopo, comandos e limitações. A abertura de PR será feita mediante
-      autorização do candidato ou diretamente por ele. Não fazer merge.
+      autorização do usuário ou diretamente por ele. Não fazer merge.
 - [x] Observar execução real do PR e registrar link/SHA/resultados dos dois jobs;
       nenhuma falha pode ser ignorada com continue-on-error. Se houver falha
       em instalação/build, investigar a causa e corrigir apenas neste escopo.
       Mudança de produto/dependência exige revisão SDD.
 - [x] Conferir que um novo commit documental na branch dispara novamente
       pull_request synchronize; registrar execução mais recente bem-sucedida.
-- [ ] Após o candidato fazer merge, observar execução push na main e registrar
+- [ ] Após o usuário fazer merge, observar execução push na main e registrar
       resultado. Enquanto não houver merge, manter AC-02 pendente; não declarar
       validação completa nem realizar merge para completar checklist.
 - [ ] Atualizar ACs e matriz abaixo por evidência, então estado Validado somente
       após critérios remotos cumpridos. Publicar os registros documentais na
-      branch e deixar eventual PR complementar para merge manual do candidato.
+      branch e deixar eventual PR complementar para merge manual do usuário.
 
 ## Matriz de validação
 
@@ -204,7 +204,7 @@ Logs confirmam npm ci em ambos, seis testes sem falhas e build de 58 módulos.
 Frontend instalou 85 pacotes no Linux (82 na validação local macOS), sem
 alteração de lockfile. Não houve credenciais reais, servidor ou ERP na CI.
 Ainda falta confirmar synchronize após novo push documental e push/main
-após merge manual do candidato. Proteção da main não foi alterada.
+após merge manual do usuário. Proteção da main não foi alterada.
 
 ## Validação do PR concluída — aguardando merge manual
 
@@ -215,6 +215,6 @@ Evidência: https://github.com/eduardofrois/kaizen-test/actions/runs/38172264955
 AC-01 confirmado por opened e synchronize; checks testes-backend e
 build-frontend reais e bem-sucedidos, disponíveis para proteção da main.
 Pendente apenas AC-02 e a etapa correspondente do plano: executar e observar
-push/main após merge manual do candidato no PR #2. Não declarar estado
+push/main após merge manual do usuário no PR #2. Não declarar estado
 Validado global até obter essa evidência. Registro atual supera as pendências
 remotas descritas nas etapas anteriores; merge/deploy/proteção não realizados.

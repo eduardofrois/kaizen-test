@@ -3,8 +3,8 @@
 ## Situação verificada
 
 Em 2026-10-11: Node local v24.14.1 e npm 11.11.0. `npm ci` instalou as dependências do backend (120 pacotes; auditoria: zero
-vulnerabilidades). backend/.env criado com permissão 0600 e depois preenchido pelo candidato.
-Execução local confirmada pelo candidato: catálogo, login, sessão após refresh,
+vulnerabilidades). backend/.env criado com permissão 0600 e depois preenchido pelo usuário.
+Execução local confirmada pelo usuário: catálogo, login, sessão após refresh,
 logout e rejeição de JWT_SEGREDO vazio. Build novo e deploy não executados.
 Os comandos abaixo são um procedimento previsto; sua execução deve ser
 registrada posteriormente com resultados reais.
@@ -15,7 +15,7 @@ primeira validação e registrar eventual ajuste. Instalar pelos lockfiles.
 
 ## Variáveis do backend
 
-`backend/.env` já foi criado por solicitação do usuário. O candidato confirmou o preenchimento de
+`backend/.env` já foi criado por solicitação do usuário. O usuário confirmou o preenchimento de
 JWT_SEGREDO, ERP_URL e ERP_TOKEN e a execução local. Esses campos são
 obrigatórios e sua ausência impede inicialização. Para JWT, execute `npm run segredo:gerar` em backend/ e
 copie o resultado somente para seu ambiente local. Os demais campos já têm
@@ -112,7 +112,7 @@ em cada diretório, em terminais separados, conforme os comandos acima.
 
 ### Confirmação manual da configuração — 2026-10-11
 
-Evidência informada pelo candidato: login, catálogo, persistência da sessão
+Evidência informada pelo usuário: login, catálogo, persistência da sessão
 após atualizar a página e logout funcionaram localmente. Ao executar
 `JWT_SEGREDO= npm start` em backend/, o processo encerrou com
 `Configuracao invalida: JWT_SEGREDO nao definido. Rode: npm run segredo:gerar`.
@@ -153,10 +153,10 @@ ativar Require status checks to pass before merging e selecionar os checks
 `testes-backend` e `build-frontend` exibidos pelo GitHub. Caso nomes apareçam
 com prefixo do workflow, conferir os jobs da execução antes de selecionar.
 Não tornar obrigatório um nome que ainda não executou. Nenhuma alteração de
-proteção feita automaticamente; merge manual pelo candidato. Confirmar
+proteção feita automaticamente; merge manual pelo usuário. Confirmar
 execução após merge na main antes de marcar AC-02 como concluído.
 
 Validação remota confirmada em 2026-10-11 no PR #2: ambos os checks passaram
 nos runs 38172181159 (opened) e 38172264955 (synchronize). Já podem ser
-selecionados na proteção de main pelo candidato. Ainda é necessário observar
+selecionados na proteção de main pelo usuário. Ainda é necessário observar
 push/main após merge manual para concluir AC-02 da unidade SDD.

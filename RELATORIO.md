@@ -4,15 +4,15 @@
 
 **Última atualização:** 2026-10-11.
 
-**Candidato:** pendente de informação.
+**Autor:** pendente de informação.
 
 **Data de entrega:** pendente de definição.
 
-**Tempo aproximado dedicado:** pendente de registro pelo candidato.
+**Tempo aproximado dedicado:** pendente de registro pelo usuário.
 
 Esta versão registra o que foi encontrado e verificado até agora. A
 configuração por ambiente (FIX-001) foi corrigida e validada com testes
-automatizados e verificações manuais locais pelo candidato. Demais correções,
+automatizados e verificações manuais locais pelo usuário. Demais correções,
 múltiplos carrinhos, validação dos demais fluxos e deploy estão pendentes. A análise partiu da baseline original `81897d5`.
 
 ---
@@ -23,7 +23,7 @@ A aplicação ainda não foi colocada no ar. Foram lidos os requisitos,
 arquitetura, código, dependências e configuração. As dependências do backend foram instaladas com `npm ci` (120 pacotes;
 auditoria informou zero vulnerabilidades nessa execução). Foi criado
 `backend/.env` local, ignorado pelo Git, com os três campos obrigatórios vazios
-para preenchimento pelo candidato, que depois informou tê-los configurado e
+para preenchimento pelo usuário, que depois informou tê-los configurado e
 iniciado os servidores com sucesso. Build frontend validado posteriormente pela unidade CI-001; deploy pendente.
 
 O repositório próprio foi inicializado em
@@ -38,7 +38,7 @@ com credenciais não integra o novo repositório.
 Pontos de configuração identificados: o README citava `SIAC_URL` e foi corrigido
 para `ERP_URL`; o proxy Vite aponta para backend :3001; os requisitos de Node
 do frontend são mais específicos que o >=20 declarado pelo backend. O
-ambiente local consultado tem Node v24.14.1 e npm 11.11.0. Execução local confirmada pelo candidato,
+ambiente local consultado tem Node v24.14.1 e npm 11.11.0. Execução local confirmada pelo usuário,
 com catálogo, login, persistência da sessão e logout funcionando.
 
 Arquivos criados para organizar o trabalho:
@@ -59,7 +59,7 @@ O procedimento de instalação/execução está descrito como previsto em
 ## 2. Chamados reportados
 
 As causas dos quatro chamados foram localizadas. KZN-312 foi corrigido e
-validado automaticamente, manualmente pelo candidato e pelos checks do PR #3.
+validado automaticamente, manualmente pelo usuário e pelos checks do PR #3.
 Os demais chamados continuam sem correção.
 
 ### KZN-312 — Total do carrinho vem maior que a soma das peças
@@ -67,10 +67,10 @@ Os demais chamados continuam sem correção.
 | Campo | Registro |
 |---|---|
 | **Causa** | lerCarrinho somava subtotais de linhas indisponíveis. A pendência bloqueava o checkout, mas não excluía seu valor da soma. |
-| **Como reproduzi** | Cenário isolado: R$20 disponíveis + três unidades sem estoque de R$228 retornavam R$704, excesso de R$684. Candidato também confirmou reprodução pela interface com item que perdeu estoque enquanto permanecia no carrinho. |
+| **Como reproduzi** | Cenário isolado: R$20 disponíveis + três unidades sem estoque de R$228 retornavam R$704, excesso de R$684. Usuário também confirmou reprodução pela interface com item que perdeu estoque enquanto permanecia no carrinho. |
 | **Arquivos alterados** | backend/src/services/carrinhoService.js (apenas condição do redutor), backend/tests/carrinho-total.test.js e documentação. |
 | **Correção** | Somar somente linhas com disponivel=true; manter dados, quantidades e subtotais referenciais, sem compra parcial e sem liberar checkout com pendências. Spec/plan versão 1 aprovados em 2026-10-11. |
-| **Como validei** | RED: seis falhas/cinco sucessos nos onze novos testes. GREEN: npm test com 17 sucessos; schema real em SQLite :memory:, fetch simulado e env/cwd isolados. Cobertos estoque, inativo, 404/500, vazio, isolamento de usuários, releitura e rejeição de checkout sem POST. Sintaxe e diff passaram. Candidato confirmou funcionamento e ambos os checks do PR #3 passaram. |
+| **Como validei** | RED: seis falhas/cinco sucessos nos onze novos testes. GREEN: npm test com 17 sucessos; schema real em SQLite :memory:, fetch simulado e env/cwd isolados. Cobertos estoque, inativo, 404/500, vazio, isolamento de usuários, releitura e rejeição de checkout sem POST. Sintaxe e diff passaram. Usuário confirmou funcionamento e ambos os checks do PR #3 passaram. |
 
 FIX-003 (perda de centavos) é outra causa e continua pendente. Não foi alterado
 nesta unidade, assim como o contador KZN-318. Nota KZN-7F3A preservada.
@@ -119,7 +119,7 @@ Não há suposição de que o teste contenha exatamente sete problemas extras.
 | **Impacto** | Exposição do segredo usado pode comprometer assinaturas de sessão e a credencial ERP. Não testei validade das credenciais nem exploração de contas reais. |
 | **Corrigi?** | Sim, após aprovação explícita de spec/plan em 2026-10-11. Removi literais/fallbacks; exigi JWT_SEGREDO, ERP_URL e ERP_TOKEN; rejeitei placeholders, JWT curto e URL inválida sem ecoar valores. Defaults operacionais e contratos foram preservados. Revogação externa não foi realizada. |
 | **Arquivos alterados** | backend/src/config.js, backend/tests/config.test.js, backend/.env.example, README.md e registros documentais. backend/.env criado somente localmente, sem credenciais preenchidas. |
-| **Validação** | `node --test tests/config.test.js`: seis testes passaram após a correção. `node --check backend/src/config.js`: passou. Processos com env sintética e diretório temporário, sem .env do usuário, rede ERP ou banco. Complemento manual pelo candidato: catálogo, login, refresh de sessão, logout e rejeição de JWT_SEGREDO vazio confirmados. Checkout não testado. |
+| **Validação** | `node --test tests/config.test.js`: seis testes passaram após a correção. `node --check backend/src/config.js`: passou. Processos com env sintética e diretório temporário, sem .env do usuário, rede ERP ou banco. Complemento manual pelo usuário: catálogo, login, refresh de sessão, logout e rejeição de JWT_SEGREDO vazio confirmados. Checkout não testado. |
 
 ### Problema 2 — CORS aceita qualquer origem com credenciais (FIX-002)
 
@@ -156,7 +156,7 @@ Não há suposição de que o teste contenha exatamente sete problemas extras.
 | Campo | Registro |
 |---|---|
 | **O que está errado** | O provider carrega uma vez e não observa login, logout ou identidade do usuário. Respostas em andamento também não são invalidadas por troca de identidade. |
-| **Como cheguei nele** | Leitura de `CarrinhoContext.jsx`, `AuthContext.jsx` e montagem em `main.jsx`. Candidato confirmou manualmente que o carrinho de X permanece visível após sair e entrar em Y, até F5. |
+| **Como cheguei nele** | Leitura de `CarrinhoContext.jsx`, `AuthContext.jsx` e montagem em `main.jsx`. Usuário confirmou manualmente que o carrinho de X permanece visível após sair e entrar em Y, até F5. |
 | **Impacto** | Interface pode continuar vazia após login ou mostrar conteúdo residual da conta anterior. As consultas do backend continuam filtradas por usuário; não foi demonstrado vazamento pela API. |
 | **Corrigi?** | Não. Ciclo da sessão, estados de erro e respostas antigas precisam de spec/plano. |
 | **Arquivos alterados** | Nenhum arquivo de aplicação. |
@@ -276,7 +276,7 @@ itens em toda operação. Essa garantia nova ainda não foi implementada nem tes
 
 ### Limitações da validação
 
-O candidato validou manualmente catálogo, login, refresh de sessão e logout
+O usuário validou manualmente catálogo, login, refresh de sessão e logout
 no navegador e rejeição de JWT_SEGREDO vazio no terminal. Não houve execução
 real do checkout, auditoria visual completa ou deploy. O build frontend foi
 validado posteriormente na unidade CI-001. As simulações não comprovam o contrato
@@ -347,22 +347,22 @@ de leitura, sem inferir que cada nota representa apenas um bug.
 
 A investigação e a documentação tiveram apoio de IA, conforme permitido
 pelo teste. As decisões de implementação continuam sujeitas à revisão do
-candidato. Este relatório será atualizado com causas, mudanças e provas
+usuário. Este relatório será atualizado com causas, mudanças e provas
 efetivamente realizadas ao longo do trabalho.
 
 ### Atualização de preparação local — 2026-10-11
 
-O candidato informou que preencheu backend/.env. As dependências foram
+O usuário informou que preencheu backend/.env. As dependências foram
 instaladas pelos lockfiles com npm ci: backend 120 pacotes e frontend 82.
 Auditorias npm informaram zero vulnerabilidades nessa execução. Nenhum
 manifest/lockfile foi alterado. Servidores e integração real não foram
-iniciados nesta etapa; instruções de execução local entregues ao candidato.
+iniciados nesta etapa; instruções de execução local entregues ao usuário.
 
 ### Validação manual e novo achado — 2026-10-11
 
-O candidato informou que iniciou o projeto local com sucesso, conseguiu
+O usuário informou que iniciou o projeto local com sucesso, conseguiu
 logar e visualizar as peças. A captura da vitrine mostra catálogo carregado
-e navegação de usuário autenticado. Evidência fornecida pelo candidato;
+e navegação de usuário autenticado. Evidência fornecida pelo usuário;
 não equivale a teste completo de sessão, checkout ou credencial inválida.
 Persistência após atualizar a página, logout e execução com JWT_SEGREDO
 vazio foram confirmados posteriormente, conforme registro abaixo.
@@ -377,7 +377,7 @@ das capturas não foram copiados para a documentação.
 
 ### Confirmação manual da configuração — 2026-10-11
 
-Evidência informada pelo candidato: login, catálogo, persistência da sessão
+Evidência informada pelo usuário: login, catálogo, persistência da sessão
 após atualizar a página e logout funcionaram localmente. Ao executar
 `JWT_SEGREDO= npm start` em backend/, o processo encerrou com
 `Configuracao invalida: JWT_SEGREDO nao definido. Rode: npm run segredo:gerar`.
@@ -389,7 +389,7 @@ Nenhuma nova alteração de aplicação realizada; publicação remota pendente.
 
 ## Integração e publicação — 2026-10-11
 
-Por autorização do candidato, branch configuracao-por-ambiente integrada na
+Por autorização do usuário, branch configuracao-por-ambiente integrada na
 main pelo merge f913cda, sem conflitos. Push para eduardofrois/kaizen-test
 concluído: remoto confirmou main de 6307deb para f913cda. Branch local
 codex/configuracao-por-ambiente preservada. Os registros anteriores de push
@@ -414,11 +414,11 @@ e permissões somente de leitura. PRs para main e push na main disparam checks;
 execuções antigas do mesmo PR/ref são canceladas. Sem secrets, ERP ou banco real.
 
 Validação local em cópia temporária para preservar servidores e dados do
-candidato: npm ci em ambos os projetos, seis testes passaram, build transformou
+usuário: npm ci em ambos os projetos, seis testes passaram, build transformou
 58 módulos e gerou dist/index.html. Nenhum lockfile foi alterado. YAML analisado
 e diff conferido. Não foi adicionada suíte frontend; build comprova compilação.
 Usuário autorizou abrir PR para validar GitHub Actions. Execução remota e
-push/main após merge do candidato ainda pendentes nesta etapa; estado SDD
+push/main após merge do usuário ainda pendentes nesta etapa; estado SDD
 Implementado, sem declarar validação remota ou proteção configurada.
 
 ## Primeira execução remota — PR #2
@@ -432,7 +432,7 @@ Logs confirmam npm ci em ambos, seis testes sem falhas e build de 58 módulos.
 Frontend instalou 85 pacotes no Linux (82 na validação local macOS), sem
 alteração de lockfile. Não houve credenciais reais, servidor ou ERP na CI.
 Ainda falta confirmar synchronize após novo push documental e push/main
-após merge manual do candidato. Proteção da main não foi alterada.
+após merge manual do usuário. Proteção da main não foi alterada.
 
 ## Validação do PR concluída — aguardando merge manual
 
@@ -443,7 +443,7 @@ Evidência: https://github.com/eduardofrois/kaizen-test/actions/runs/38172264955
 AC-01 confirmado por opened e synchronize; checks testes-backend e
 build-frontend reais e bem-sucedidos, disponíveis para proteção da main.
 Pendente apenas AC-02 e a etapa correspondente do plano: executar e observar
-push/main após merge manual do candidato no PR #2. Não declarar estado
+push/main após merge manual do usuário no PR #2. Não declarar estado
 Validado global até obter essa evidência. Registro atual supera as pendências
 remotas descritas nas etapas anteriores; merge/deploy/proteção não realizados.
 
@@ -462,7 +462,7 @@ esta proposta ainda não foi dada; nenhum resultado novo de teste é declarado.
 ## KZN-312 implementado e FIX-005 confirmado — 2026-10-11
 
 Aprovação de implementação: “Consegui recriar, perfeito. Docs aprovados.”
-KZN-312 corrigido conforme SDD versão 1 e 17 testes passaram. O candidato vai
+KZN-312 corrigido conforme SDD versão 1 e 17 testes passaram. O usuário vai
 validar a correção localmente e pediu aguardar seu comando para abrir PR.
 Nenhum PR/merge realizado nesta unidade. Status SDD: Implementado, checks
 remotos e validação manual pós-correção pendentes.
@@ -473,8 +473,8 @@ inferir vazamento pela API. Correção permanece separada, sem aprovação SDD.
 
 ## Validação manual e autorização do PR — 2026-10-11
 
-Candidato confirmou “funcionando, pode abrir o PR”. Validação manual
-pós-correção confirmada pelo candidato; autorização anterior para aguardar
+Usuário confirmou “funcionando, pode abrir o PR”. Validação manual
+pós-correção confirmada pelo usuário; autorização anterior para aguardar
 foi revogada por esta mensagem. Abrir PR para main e acompanhar os checks,
 sem realizar merge. Testes locais já passaram; evidência remota ainda pendente.
 
@@ -484,8 +484,48 @@ PR: https://github.com/eduardofrois/kaizen-test/pull/3
 Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38175551404
 Checks testes-backend e build-frontend passaram no commit ac2231f.
 Com reprodução prévia, aprovação SDD, RED/GREEN, confirmação manual do
-candidato e checks do PR concluídos, KZN-312 está Validado. Todos os critérios
-da versão 1 cumpridos; merge continua pendente de ação manual do candidato.
+usuário e checks do PR concluídos, KZN-312 está Validado. Todos os critérios
+da versão 1 cumpridos; merge continua pendente de ação manual do usuário.
 Nenhum merge/deploy realizado pela IA. As pendências de validação e instruções
 de aguardar abertura descritas anteriormente são registros históricos superados.
 FIX-003, FIX-005 e KZN-318 permanecem fora desta correção.
+
+## Preparação de contador-do-carrinho — 2026-10-11
+
+KZN-318 reproduzido manualmente pelo usuário, conforme informou nesta sessão.
+Inspeção confirmou quantidade_pecas = itens.length em lerCarrinho; cabeçalho e
+resumo já consomem esse campo. Spec e plano versão 1 preparados em
+`docs/sdd/contador-do-carrinho/`, estado Proposta. Regra proposta: somar unidades
+incluindo linhas com pendências, mantendo quantidade_itens como produtos distintos
+e preservando o total filtrado do KZN-312. Implementação e testes aguardam aprovação;
+nenhum código, teste, dependência ou banco alterado nesta preparação.
+
+## Implementação de contador-do-carrinho — 2026-10-11
+
+Versão 1 aprovada pela mensagem “aprovado os documentos”. Implementação
+limitada à soma de item.quantidade em quantidade_pecas. quantidade_itens,
+total filtrado do KZN-312, nota KZN-7F3A e checkout preservados.
+Seis regressões acrescentadas ao harness isolado existente, sem dependências.
+
+RED: node --test tests/carrinho-total.test.js antes da correção — 17 testes,
+12 passaram e cinco falharam no contador; exemplo 3+4 retornou 2 em vez de 7.
+GREEN: npm test após a correção — 23 testes passaram (17 de carrinho e seis
+configuração). SQLite em memória, fetch simulado e subprocesso com ambiente
+sintético; sem .env, banco local ou ERP real. Snapshots preservados e zero POST.
+node --check backend/src/services/carrinhoService.js e build frontend passaram;
+build transformou 58 módulos. Inspeção confirmou badge 99+, aria-label exato
+e resumo consumindo quantidade_pecas. Isso não substitui validação visual.
+
+Estado Implementado: validação automatizada local concluída; roteiro manual
+7→5→3→0 e persistência após F5 aguardam confirmação do usuário.
+PR não aberto; checks remotos não executados. FIX-003/FIX-005 não corrigidos.
+Também atendida a solicitação de usar “usuário” nas referências documentais.
+
+## Validação manual e autorização do PR — 2026-10-11
+
+Usuário confirmou “validado, pode subir o pr” após o roteiro de validação
+local. Validação manual pós-correção confirmada pelo usuário; não executada
+pela IA. Publicação da branch e abertura de PR autorizadas nesta mensagem.
+Testes locais: 23 passaram; build passou. Checks remotos ainda pendentes.
+Merge permanece manual pelo usuário. Pendências manuais descritas anteriormente
+são registros históricos superados por esta confirmação.
