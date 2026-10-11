@@ -80,3 +80,6 @@ Antes de continuar uma spec aprovada, conferir se código/contratos e documentos
 permanecem compatíveis. Consultar aprovação registrada e não reinferi-la de
 uma checklist preenchida pela IA. Se faltar informação, avançar na investigação
 independente e explicitar a decisão necessária.
+
+Contador do carrinho (KZN-318) versão 1 Validado: 23 testes, build, confirmação
+manual e checks do PR #5 concluídos. Merge manual pendente.

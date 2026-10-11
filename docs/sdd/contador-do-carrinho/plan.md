@@ -1,7 +1,7 @@
 # Plano de implementação — Contador do carrinho
 
 **Versão:** 1
-**Estado:** Implementado — testes locais e manual concluídos; CI pendente
+**Estado:** Validado — testes locais, confirmação manual e CI do PR concluídos
 **Spec:** [spec.md](spec.md), versão 1
 **Baseline/data:** b8f6abf; 2026-10-11
 **Objetivo:** contar unidades mantendo produtos distintos e regras do total.
@@ -97,7 +97,7 @@ quantidade_pecas: itens.reduce((soma, item) => soma + item.quantidade, 0),
   Manter FIX-003/FIX-005 fora do escopo e não adicionar histórico ao AGENTS.
 - [x] Revisar diff e arquivos gerados; quando autorizado, commit sugerido
   `fix: soma unidades no contador do carrinho`, publicando somente esta branch.
-- [ ] Aguardar comando explícito para abrir PR; acompanhar testes-backend e
+- [x] Aguardar comando explícito para abrir PR; acompanhar testes-backend e
   build-frontend quando autorizado. Merge manual pelo usuário.
 
 ## Matriz de validação
@@ -109,7 +109,7 @@ quantidade_pecas: itens.reduce((soma, item) => soma + item.quantidade, 0),
 | AC-03 | pendência + regressões KZN-312 | 7 peças, total 60, bloqueado | Passou |
 | AC-04 | dois usuários + snapshot do harness | 3/1; banco intacto | Passou |
 | AC-05 | roteiro manual + inspeção dos consumidores | 7→5→3→0; 99+ preservado | Confirmado pelo usuário; inspeção de 99+/aria-label preservados |
-| AC-06 | npm test, build, diff e CI autorizada | Sucesso sem dependências novas | 23 testes e build passaram; CI pendente |
+| AC-06 | npm test, build, diff e CI autorizada | Sucesso sem dependências novas | 23 testes/build locais e ambos os checks do PR #5 passaram |
 
 ## Migração e recuperação
 
@@ -151,3 +151,13 @@ pela IA. Publicação da branch e abertura de PR autorizadas nesta mensagem.
 Testes locais: 23 passaram; build passou. Checks remotos ainda pendentes.
 Merge permanece manual pelo usuário. Pendências manuais descritas anteriormente
 são registros históricos superados por esta confirmação.
+
+## Validação remota de KZN-318 — 2026-10-11
+
+PR #5: https://github.com/eduardofrois/kaizen-test/pull/5
+Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38177680580
+Checks testes-backend e build-frontend passaram no commit ea3bc6a.
+Estado Validado: critérios da versão 1 concluídos com regressões isoladas,
+build local, confirmação manual do usuário e CI do PR. Merge manual pendente.
+Registros anteriores de espera por validação/abertura/CI são históricos.
+FIX-003 e FIX-005 continuam fora do escopo; nenhum merge ou deploy realizado.

@@ -15,7 +15,7 @@ Atualização: 2026-10-11. Baseline original: `81897d5`.
 | IDs | Estado | Próxima ação |
 |---|---|---|
 | KZN-312 | Validado: 17 testes, manual pelo usuário e checks do PR #3 | Merge manual pendente |
-| KZN-318 | Implementado: 23 testes e build passaram | Manual confirmado; PR autorizado, CI pendente |
+| KZN-318 | Validado: 23 testes, build, manual e CI do PR #5 | Merge manual pendente |
 | KZN-325, 331 | Causa localizada; verificação isolada realizada | Preparar specs e planos antes de implementar |
 | FIX-001 | Validado por SDD aprovado; seis testes e roteiro manual local | Publicação remota pendente; unidade concluída |
 | FIX-002 | Evidência estática | Especificar origens e validar ambiente |
@@ -201,3 +201,13 @@ pela IA. Publicação da branch e abertura de PR autorizadas nesta mensagem.
 Testes locais: 23 passaram; build passou. Checks remotos ainda pendentes.
 Merge permanece manual pelo usuário. Pendências manuais descritas anteriormente
 são registros históricos superados por esta confirmação.
+
+## Validação remota de KZN-318 — 2026-10-11
+
+PR #5: https://github.com/eduardofrois/kaizen-test/pull/5
+Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38177680580
+Checks testes-backend e build-frontend passaram no commit ea3bc6a.
+Estado Validado: critérios da versão 1 concluídos com regressões isoladas,
+build local, confirmação manual do usuário e CI do PR. Merge manual pendente.
+Registros anteriores de espera por validação/abertura/CI são históricos.
+FIX-003 e FIX-005 continuam fora do escopo; nenhum merge ou deploy realizado.

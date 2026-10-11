@@ -652,3 +652,13 @@ pela IA. Publicação da branch e abertura de PR autorizadas nesta mensagem.
 Testes locais: 23 passaram; build passou. Checks remotos ainda pendentes.
 Merge permanece manual pelo usuário. Pendências manuais descritas anteriormente
 são registros históricos superados por esta confirmação.
+
+## Validação remota de KZN-318 — 2026-10-11
+
+PR #5: https://github.com/eduardofrois/kaizen-test/pull/5
+Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38177680580
+Checks testes-backend e build-frontend passaram no commit ea3bc6a.
+Estado Validado: critérios da versão 1 concluídos com regressões isoladas,
+build local, confirmação manual do usuário e CI do PR. Merge manual pendente.
+Registros anteriores de espera por validação/abertura/CI são históricos.
+FIX-003 e FIX-005 continuam fora do escopo; nenhum merge ou deploy realizado.

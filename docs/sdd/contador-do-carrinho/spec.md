@@ -1,7 +1,7 @@
 # Spec — Contador do carrinho
 
 **Versão:** 1
-**Estado:** Implementado — testes locais e manual concluídos; CI pendente
+**Estado:** Validado — testes locais, confirmação manual e CI do PR concluídos
 **Baseline/data:** b8f6abf; 2026-10-11
 **Origem:** KZN-318 — Número no ícone do carrinho está errado
 **Branch:** fix/contador-do-carrinho
@@ -71,7 +71,7 @@ Escolhas aprovadas com a versão 1 em 2026-10-11.
 - [x] AC-04: dados de outro usuário não entram na contagem; leitura não muda persistência.
 - [x] AC-05: cabeçalho e resumo acompanham adição, alteração, remoção e F5;
   cabeçalho mantém 99+ e aria-label exato quando aplicável.
-- [ ] AC-06: suíte backend e build passam; registrar resultados reais e manter
+- [x] AC-06: suíte backend e build passam; registrar resultados reais e manter
   FIX-003/FIX-005 pendentes. Checks remotos somente após PR autorizado.
 
 ## Riscos e estratégia de validação
@@ -118,3 +118,13 @@ pela IA. Publicação da branch e abertura de PR autorizadas nesta mensagem.
 Testes locais: 23 passaram; build passou. Checks remotos ainda pendentes.
 Merge permanece manual pelo usuário. Pendências manuais descritas anteriormente
 são registros históricos superados por esta confirmação.
+
+## Validação remota de KZN-318 — 2026-10-11
+
+PR #5: https://github.com/eduardofrois/kaizen-test/pull/5
+Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38177680580
+Checks testes-backend e build-frontend passaram no commit ea3bc6a.
+Estado Validado: critérios da versão 1 concluídos com regressões isoladas,
+build local, confirmação manual do usuário e CI do PR. Merge manual pendente.
+Registros anteriores de espera por validação/abertura/CI são históricos.
+FIX-003 e FIX-005 continuam fora do escopo; nenhum merge ou deploy realizado.
