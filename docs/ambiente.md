@@ -3,8 +3,9 @@
 ## Situação verificada
 
 Em 2026-10-11: Node local v24.14.1 e npm 11.11.0. `npm ci` instalou as dependências do backend (120 pacotes; auditoria: zero
-vulnerabilidades). Criado backend/.env local com permissão 0600 e sem segredos
-preenchidos. Inicialização por scripts, build novo e deploy não foram executados.
+vulnerabilidades). backend/.env criado com permissão 0600 e depois preenchido pelo candidato.
+Execução local confirmada pelo candidato: catálogo, login, sessão após refresh,
+logout e rejeição de JWT_SEGREDO vazio. Build novo e deploy não executados.
 Os comandos abaixo são um procedimento previsto; sua execução deve ser
 registrada posteriormente com resultados reais.
 
@@ -14,9 +15,9 @@ primeira validação e registrar eventual ajuste. Instalar pelos lockfiles.
 
 ## Variáveis do backend
 
-`backend/.env` já foi criado por solicitação do usuário. Preencha localmente
-JWT_SEGREDO, ERP_URL e ERP_TOKEN: estão vazios e impedem inicialização até
-serem configurados. Para JWT, execute `npm run segredo:gerar` em backend/ e
+`backend/.env` já foi criado por solicitação do usuário. O candidato confirmou o preenchimento de
+JWT_SEGREDO, ERP_URL e ERP_TOKEN e a execução local. Esses campos são
+obrigatórios e sua ausência impede inicialização. Para JWT, execute `npm run segredo:gerar` em backend/ e
 copie o resultado somente para seu ambiente local. Os demais campos já têm
 padrões de desenvolvimento. Não substitua um .env existente ao retomar. Executar o backend a
 partir de backend/, pois dotenv carrega .env do diretório de trabalho.
@@ -100,3 +101,23 @@ A sintaxe foi validada com `node --check backend/src/config.js` na raiz.
 Testes usam subprocessos e variáveis sintéticas sem ERP/banco/.env real.
 Cada spec aprovada deve definir
 seus comandos de validação e usar banco/ERP isolados quando necessário.
+
+## Instalação local — 2026-10-11
+
+Após o usuário informar que preencheu o .env, executado npm ci nos dois
+projetos: backend 120 pacotes; frontend 82 pacotes. Ambas as auditorias
+informaram zero vulnerabilidades nessa execução. Manifests e lockfiles
+preservados. Servidores não foram iniciados nesta etapa; usar npm run dev
+em cada diretório, em terminais separados, conforme os comandos acima.
+
+### Confirmação manual da configuração — 2026-10-11
+
+Evidência informada pelo candidato: login, catálogo, persistência da sessão
+após atualizar a página e logout funcionaram localmente. Ao executar
+`JWT_SEGREDO= npm start` em backend/, o processo encerrou com
+`Configuracao invalida: JWT_SEGREDO nao definido. Rode: npm run segredo:gerar`.
+Fail-fast manual confirmado, sem alterar .env. Os seis testes automatizados
+já haviam passado. Não foi executado checkout real; este registro não
+comprova os demais fluxos do sistema. Implementação registrada no commit c46e68e. Validação concluída para o
+escopo aprovado; resultados consolidados neste commit documental complementar.
+Nenhuma nova alteração de aplicação realizada; publicação remota pendente.

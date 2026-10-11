@@ -47,6 +47,8 @@ alterações locais antes de editar. Instruções diretas do usuário prevalecem
   como efeito colateral de uma suíte.
 - Distinga inspeção estática, verificação isolada e teste integrado/manual.
 - Não declare build, teste, deploy ou correção sem execução e evidência.
+- Ao concluir cada etapa SDD, atualize o estado de spec/plan, checkboxes,
+  evidências e pendências antes do commit. Diferencie validação de publicação.
 - Atualize `fix.md` ao investigar/implementar/validar; mantenha o relatório
   coerente com resultados reais quando sua edição estiver autorizada.
 - Comunique causa raiz, resultado, validação e limitações em português.

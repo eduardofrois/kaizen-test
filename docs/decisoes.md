@@ -84,5 +84,6 @@ e implementação. Não promover uma sugestão da IA a decisão do candidato.
   de literais. A alternativa de gerar segredo no boot invalidaria sessões.
 - Complemento autorizado: backend/.env local, ignorado, permissão 0600,
   campos obrigatórios vazios. Não copiar valores expostos da baseline.
-- Evidência: seis testes passaram; sintaxe passou. Integração e preenchimento
-  real pendentes. Não houve revogação do token no SIAC nem novo push.
+- Evidência: seis testes e sintaxe passaram; candidato confirmou preenchimento
+  local, catálogo, login, refresh, logout e rejeição de JWT_SEGREDO vazio.
+  Checkout não validado. Não houve revogação do token no SIAC nem novo push.

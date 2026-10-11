@@ -1,7 +1,7 @@
 # Plano de implementação — Configuração por ambiente
 
 **Versão:** 1
-**Estado:** Implementado e validado isoladamente
+**Estado:** Validado — testes automatizados e validação manual local concluídos
 **Spec:** [spec.md](spec.md), versão 1
 **Objetivo:** remover segredos/fallbacks e validar env antes de publicar aplicação.
 **Arquitetura:** manter config.js como fronteira única de configuração; testar
@@ -244,10 +244,23 @@ Branch: codex/configuracao-por-ambiente. npm ci: 120 pacotes instalados,
 auditoria informou zero vulnerabilidades. node --test tests/config.test.js:
 RED cinco falhas/um sucesso; GREEN seis sucessos. node --check
 backend/src/config.js: passou. Sem rede ERP ou banco nos testes; integração
-real e preenchimento local pendentes. Nota KZN-2B9C preservada.
+real e preenchimento local estavam pendentes nesse momento; foram confirmados
+pelo candidato na validação manual abaixo. Nota KZN-2B9C preservada.
 Relatório, inventário e guias atualizados. Novo push não realizado nesta etapa.
 
 Revisão de publicação: 70 arquivos candidatos, incluindo 54 da aplicação,
 e histórico próprio examinados sem os dois segredos literais originais.
 .gitignore confirmado para .env, dependências, SQLite e dist.
 Envio remoto permanece pendente; o commit desta unidade é local.
+
+### Confirmação manual da configuração — 2026-10-11
+
+Evidência informada pelo candidato: login, catálogo, persistência da sessão
+após atualizar a página e logout funcionaram localmente. Ao executar
+`JWT_SEGREDO= npm start` em backend/, o processo encerrou com
+`Configuracao invalida: JWT_SEGREDO nao definido. Rode: npm run segredo:gerar`.
+Fail-fast manual confirmado, sem alterar .env. Os seis testes automatizados
+já haviam passado. Não foi executado checkout real; este registro não
+comprova os demais fluxos do sistema. Implementação registrada no commit c46e68e. Validação concluída para o
+escopo aprovado; resultados consolidados neste commit documental complementar.
+Nenhuma nova alteração de aplicação realizada; publicação remota pendente.

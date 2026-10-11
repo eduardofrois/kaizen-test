@@ -1,7 +1,7 @@
 # Spec — Configuração por ambiente, sem segredos no código
 
 **Versão:** 1
-**Estado:** Implementado e validado isoladamente
+**Estado:** Validado — testes automatizados e validação manual local concluídos
 **Data/baseline:** 2026-10-11; original 81897d5
 **Origem:** FIX-001 em fix.md; nota KZN-2B9C
 **Nome do trabalho:** configuracao-por-ambiente
@@ -101,5 +101,18 @@ Branch: codex/configuracao-por-ambiente. npm ci: 120 pacotes instalados,
 auditoria informou zero vulnerabilidades. node --test tests/config.test.js:
 RED cinco falhas/um sucesso; GREEN seis sucessos. node --check
 backend/src/config.js: passou. Sem rede ERP ou banco nos testes; integração
-real e preenchimento local pendentes. Nota KZN-2B9C preservada.
+real e preenchimento local estavam pendentes nesse momento; foram confirmados
+pelo candidato na validação manual abaixo. Nota KZN-2B9C preservada.
 Relatório, inventário e guias atualizados. Novo push não realizado nesta etapa.
+
+### Confirmação manual da configuração — 2026-10-11
+
+Evidência informada pelo candidato: login, catálogo, persistência da sessão
+após atualizar a página e logout funcionaram localmente. Ao executar
+`JWT_SEGREDO= npm start` em backend/, o processo encerrou com
+`Configuracao invalida: JWT_SEGREDO nao definido. Rode: npm run segredo:gerar`.
+Fail-fast manual confirmado, sem alterar .env. Os seis testes automatizados
+já haviam passado. Não foi executado checkout real; este registro não
+comprova os demais fluxos do sistema. Implementação registrada no commit c46e68e. Validação concluída para o
+escopo aprovado; resultados consolidados neste commit documental complementar.
+Nenhuma nova alteração de aplicação realizada; publicação remota pendente.

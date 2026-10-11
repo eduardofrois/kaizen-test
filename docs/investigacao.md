@@ -15,7 +15,7 @@ Atualização: 2026-10-11. Baseline original: `81897d5`.
 | IDs | Estado | Próxima ação |
 |---|---|---|
 | KZN-312, 318, 325, 331 | Causa localizada; verificação isolada realizada | Preparar specs e planos antes de implementar |
-| FIX-001 | Corrigido por SDD aprovado; seis testes passaram | Preencher env local e validar integração |
+| FIX-001 | Validado por SDD aprovado; seis testes e roteiro manual local | Publicação remota pendente; unidade concluída |
 | FIX-002 | Evidência estática | Especificar origens e validar ambiente |
 | FIX-003, 004, 007, 008 | Verificação isolada realizada | Spec/plan e regressões focadas |
 | FIX-005, 006 | Evidência estática | Reprodução integrada e spec/plan |
@@ -33,7 +33,8 @@ Atualização: 2026-10-11. Baseline original: `81897d5`.
   banco/ERP e extração de funções frontend. Nenhum pedido real foi criado.
 - npm ci do backend concluído. Criado backend/.env local com campos obrigatórios
   vazios; testes de config: RED cinco falhas/um sucesso; GREEN seis sucessos.
-  Sintaxe passou. Sem build novo, servidor, navegador, deploy ou SIAC integrado.
+  Sintaxe passou. Posteriormente, candidato confirmou servidores locais, catálogo, login,
+  refresh, logout e fail-fast manual. Sem build novo, checkout real ou deploy.
 
 ## Relatório
 
@@ -56,3 +57,11 @@ com upstream configurado. A publicação da aplicação
 teve as credenciais literais removidas por SDD aprovado; novo push pendente. Não enviar o histórico da
 empresa, que também contém a configuração original. O usuário solicitou
 nomes SDD descritivos; essa solicitação não aprovou a implementação.
+
+## Retorno manual do candidato — 2026-10-11
+
+Projeto iniciado localmente; login e catálogo confirmados pelo candidato com
+captura da vitrine. Refresh de sessão, logout e fail-fast manual também confirmados
+pelo candidato em seguida. FIX-010 adicionado em fix.md: limites ausentes nos inputs de
+cadastro, rejeição pela API confirmada nas capturas; perfil tem padrão
+semelhante por inspeção. Correção pendente de SDD/aprovação.

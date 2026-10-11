@@ -11,8 +11,9 @@
 **Tempo aproximado dedicado:** pendente de registro pelo candidato.
 
 Esta versão registra o que foi encontrado e verificado até agora. A
-configuração por ambiente (FIX-001) foi corrigida e validada isoladamente. As
-demais correções, múltiplos carrinhos, execução integrada e deploy estão pendentes. A análise partiu da baseline original `81897d5`.
+configuração por ambiente (FIX-001) foi corrigida e validada com testes
+automatizados e verificações manuais locais pelo candidato. Demais correções,
+múltiplos carrinhos, validação dos demais fluxos e deploy estão pendentes. A análise partiu da baseline original `81897d5`.
 
 ---
 
@@ -22,7 +23,8 @@ A aplicação ainda não foi colocada no ar. Foram lidos os requisitos,
 arquitetura, código, dependências e configuração. As dependências do backend foram instaladas com `npm ci` (120 pacotes;
 auditoria informou zero vulnerabilidades nessa execução). Foi criado
 `backend/.env` local, ignorado pelo Git, com os três campos obrigatórios vazios
-para preenchimento pelo candidato. Servidores, build novo e deploy não foram executados.
+para preenchimento pelo candidato, que depois informou tê-los configurado e
+iniciado os servidores com sucesso. Build novo e deploy não executados.
 
 O repositório próprio foi inicializado em
 [eduardofrois/kaizen-test](https://github.com/eduardofrois/kaizen-test), com
@@ -36,8 +38,8 @@ com credenciais não integra o novo repositório.
 Pontos de configuração identificados: o README citava `SIAC_URL` e foi corrigido
 para `ERP_URL`; o proxy Vite aponta para backend :3001; os requisitos de Node
 do frontend são mais específicos que o >=20 declarado pelo backend. O
-ambiente local consultado tem Node v24.14.1 e npm 11.11.0. Ainda não foi
-validada a execução da aplicação com essas versões.
+ambiente local consultado tem Node v24.14.1 e npm 11.11.0. Execução local confirmada pelo candidato,
+com catálogo, login, persistência da sessão e logout funcionando.
 
 Arquivos criados para organizar o trabalho:
 
@@ -115,7 +117,7 @@ Não há suposição de que o teste contenha exatamente sete problemas extras.
 | **Impacto** | Exposição do segredo usado pode comprometer assinaturas de sessão e a credencial ERP. Não testei validade das credenciais nem exploração de contas reais. |
 | **Corrigi?** | Sim, após aprovação explícita de spec/plan em 2026-10-11. Removi literais/fallbacks; exigi JWT_SEGREDO, ERP_URL e ERP_TOKEN; rejeitei placeholders, JWT curto e URL inválida sem ecoar valores. Defaults operacionais e contratos foram preservados. Revogação externa não foi realizada. |
 | **Arquivos alterados** | backend/src/config.js, backend/tests/config.test.js, backend/.env.example, README.md e registros documentais. backend/.env criado somente localmente, sem credenciais preenchidas. |
-| **Validação** | `node --test tests/config.test.js`: seis testes passaram após a correção. `node --check backend/src/config.js`: passou. Processos com env sintética e diretório temporário, sem .env do usuário, rede ERP ou banco. Integração real pendente. |
+| **Validação** | `node --test tests/config.test.js`: seis testes passaram após a correção. `node --check backend/src/config.js`: passou. Processos com env sintética e diretório temporário, sem .env do usuário, rede ERP ou banco. Complemento manual pelo candidato: catálogo, login, refresh de sessão, logout e rejeição de JWT_SEGREDO vazio confirmados. Checkout não testado. |
 
 ### Problema 2 — CORS aceita qualquer origem com credenciais (FIX-002)
 
@@ -272,8 +274,9 @@ itens em toda operação. Essa garantia nova ainda não foi implementada nem tes
 
 ### Limitações da validação
 
-Não houve teste integrado no navegador/API, execução real do checkout,
-auditoria visual, build novo ou deploy. As simulações não comprovam o contrato
+O candidato validou manualmente catálogo, login, refresh de sessão e logout
+no navegador e rejeição de JWT_SEGREDO vazio no terminal. Não houve execução
+real do checkout, auditoria visual completa, build novo ou deploy. As simulações não comprovam o contrato
 real do SIAC. Nenhum pedido real foi criado e nenhum dado de negócio foi alterado.
 
 Foi adicionada a suíte `backend/tests/config.test.js`. Em `backend/`, executar
@@ -343,3 +346,40 @@ A investigação e a documentação tiveram apoio de IA, conforme permitido
 pelo teste. As decisões de implementação continuam sujeitas à revisão do
 candidato. Este relatório será atualizado com causas, mudanças e provas
 efetivamente realizadas ao longo do trabalho.
+
+### Atualização de preparação local — 2026-10-11
+
+O candidato informou que preencheu backend/.env. As dependências foram
+instaladas pelos lockfiles com npm ci: backend 120 pacotes e frontend 82.
+Auditorias npm informaram zero vulnerabilidades nessa execução. Nenhum
+manifest/lockfile foi alterado. Servidores e integração real não foram
+iniciados nesta etapa; instruções de execução local entregues ao candidato.
+
+### Validação manual e novo achado — 2026-10-11
+
+O candidato informou que iniciou o projeto local com sucesso, conseguiu
+logar e visualizar as peças. A captura da vitrine mostra catálogo carregado
+e navegação de usuário autenticado. Evidência fornecida pelo candidato;
+não equivale a teste completo de sessão, checkout ou credencial inválida.
+Persistência após atualizar a página, logout e execução com JWT_SEGREDO
+vazio foram confirmados posteriormente, conforme registro abaixo.
+
+Novo achado FIX-010: cadastro permite digitar/colar documento e telefone
+acima dos limites; após envio, a API rejeita com máximo de 18 e 20 caracteres,
+respectivamente. Confirmada ausência de maxLength em Cadastro.jsx; mesmo
+padrão observado estaticamente em Perfil.jsx. É uma melhoria de prevenção e
+feedback na interface, mantendo validação no servidor. Não foi implementada;
+exige spec/plan e aprovação própria. Detalhamento em fix.md. Dados pessoais
+das capturas não foram copiados para a documentação.
+
+### Confirmação manual da configuração — 2026-10-11
+
+Evidência informada pelo candidato: login, catálogo, persistência da sessão
+após atualizar a página e logout funcionaram localmente. Ao executar
+`JWT_SEGREDO= npm start` em backend/, o processo encerrou com
+`Configuracao invalida: JWT_SEGREDO nao definido. Rode: npm run segredo:gerar`.
+Fail-fast manual confirmado, sem alterar .env. Os seis testes automatizados
+já haviam passado. Não foi executado checkout real; este registro não
+comprova os demais fluxos do sistema. Implementação registrada no commit c46e68e. Validação concluída para o
+escopo aprovado; resultados consolidados neste commit documental complementar.
+Nenhuma nova alteração de aplicação realizada; publicação remota pendente.
