@@ -1,7 +1,7 @@
 # Spec — Remoção de telefone do perfil
 
 **Versão:** 1
-**Estado:** Validado — publicação autorizada; CI pendente
+**Estado:** Validado — PR #12 aberto; CI da implementação passou
 **Baseline/data:** c7e98cd; 2026-10-12
 **Origem:** FIX-007
 **Branch:** fix/remocao-de-telefone-do-perfil
@@ -122,3 +122,13 @@ expor número pessoal. AC-05 concluído com regressões locais e confirmação
 do usuário. Estado Validado; commit/publicação da branch e PR para main
 autorizados. CI remoto será acompanhado; merge manual pelo usuário.
 Registros anteriores de validação/publicação pendente são históricos.
+
+## Publicação FIX-007 — 2026-10-12
+
+Implementação publicada no commit40ea907, branch fix/remocao-de-telefone-do-perfil.
+PR #12: https://github.com/eduardofrois/kaizen-test/pull/12
+Checks testes-backend e build-frontend passaram no run38314449233:
+https://github.com/eduardofrois/kaizen-test/actions/runs/38314449233
+Validação manual confirmada pelo usuário. Estado Validado; merge manual pendente.
+Esta atualização documental gera novos checks a acompanhar. Registros anteriores
+de publicação/CI/manual pendentes são históricos. Nenhum merge realizado pela IA.

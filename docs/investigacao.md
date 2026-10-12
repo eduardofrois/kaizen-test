@@ -22,7 +22,7 @@ Atualização: 2026-10-11. Baseline original: `81897d5`.
 | FIX-002 | Evidência estática | Especificar origens e validar ambiente |
 | FIX-003 | Validado localmente | PR #9 aberto; CI da implementação passou |
 | FIX-004 | Implementado; regressões/build passaram | PR #10 aberto; CI da implementação passou; manual pendente |
-| FIX-007 | Implementado; backend65/frontend53/build passaram | Manual confirmado; PR autorizado; CI pendente |
+| FIX-007 | Implementado; backend65/frontend53/build passaram | Manual confirmado; PR #12 com CI da implementação passando; merge manual pendente |
 | FIX-008 | Verificação isolada realizada | Spec/plan e regressões focadas |
 | FIX-005 | Implementado: 27 testes novos; frontend 37/backend 23/build passaram | PR #8 com CI passando; integração visual complementar pendente |
 | FIX-006 | Implementado; backend44/frontend53/build passaram | PR #11 aberto; CI da implementação passou; manual pendente |
@@ -615,3 +615,13 @@ expor número pessoal. AC-05 concluído com regressões locais e confirmação
 do usuário. Estado Validado; commit/publicação da branch e PR para main
 autorizados. CI remoto será acompanhado; merge manual pelo usuário.
 Registros anteriores de validação/publicação pendente são históricos.
+
+## Publicação FIX-007 — 2026-10-12
+
+Implementação publicada no commit40ea907, branch fix/remocao-de-telefone-do-perfil.
+PR #12: https://github.com/eduardofrois/kaizen-test/pull/12
+Checks testes-backend e build-frontend passaram no run38314449233:
+https://github.com/eduardofrois/kaizen-test/actions/runs/38314449233
+Validação manual confirmada pelo usuário. Estado Validado; merge manual pendente.
+Esta atualização documental gera novos checks a acompanhar. Registros anteriores
+de publicação/CI/manual pendentes são históricos. Nenhum merge realizado pela IA.

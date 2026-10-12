@@ -1,7 +1,7 @@
 # Plano — Remoção de telefone do perfil
 
 **Versão:** 1
-**Estado:** Validado — publicação autorizada; CI pendente
+**Estado:** Validado — PR #12 aberto; CI da implementação passou
 **Spec:** [spec.md](spec.md), versão 1
 **Baseline/data:** c7e98cd; 2026-10-12
 **Objetivo:** remover telefone explicitamente e preservar quando omitido.
@@ -133,7 +133,7 @@ Não alterar validador global, serialização, sessão ou frontend.
 - [x] Atualizar spec/plano, fix.md, relatório, investigação e índice SDD com
   RED/GREEN, aprovações, estado e pendências. Teste HTTP isolado não equivale
   a sessão real no navegador; registro manual somente quando confirmado.
-- [ ] Após comando explícito, commit `fix: permite remover telefone do perfil`,
+- [x] Após comando explícito, commit `fix: permite remover telefone do perfil`,
   publicar branch e abrir PR. Merge manual pelo usuário.
 
 ## Matriz de validação
@@ -187,3 +187,13 @@ expor número pessoal. AC-05 concluído com regressões locais e confirmação
 do usuário. Estado Validado; commit/publicação da branch e PR para main
 autorizados. CI remoto será acompanhado; merge manual pelo usuário.
 Registros anteriores de validação/publicação pendente são históricos.
+
+## Publicação FIX-007 — 2026-10-12
+
+Implementação publicada no commit40ea907, branch fix/remocao-de-telefone-do-perfil.
+PR #12: https://github.com/eduardofrois/kaizen-test/pull/12
+Checks testes-backend e build-frontend passaram no run38314449233:
+https://github.com/eduardofrois/kaizen-test/actions/runs/38314449233
+Validação manual confirmada pelo usuário. Estado Validado; merge manual pendente.
+Esta atualização documental gera novos checks a acompanhar. Registros anteriores
+de publicação/CI/manual pendentes são históricos. Nenhum merge realizado pela IA.
