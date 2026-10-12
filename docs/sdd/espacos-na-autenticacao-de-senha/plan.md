@@ -196,3 +196,17 @@ Commit de implementação: `9b29049`. Branch publicada:
 https://github.com/eduardofrois/kaizen-test/pull/13
 Estado Validado; testes locais e confirmação manual concluídos. Checks remotos
 em acompanhamento. Merge manual pendente. Nenhum merge realizado pela IA.
+
+## Atualização do PR #13 e resolução de conflitos — 2026-10-12
+
+Usuário solicitou corrigir os conflitos do PR #13. Incorporada a main
+`60d5827` na branch `fix/espacos-na-autenticacao-de-senha`, preservando os
+registros da FIX-008 e os trabalhos posteriores (layout, CORS e máscaras).
+Os conflitos eram documentais em RELATORIO.md, fix.md, docs/investigacao.md
+e docs/sdd/README.md; o código foi integrado automaticamente, sem alteração
+adicional de comportamento. Revisado o diff contra main: permanece restrito
+à correção de autenticação, seus testes e documentação.
+Validação conjunta: backend96/96, frontend79/79 e build63 módulos passaram;
+git diff --check passou. Nenhum teste manual novo realizado nesta atualização.
+PRs #14, #15 e #16 já integrados à main. PR #13 continua aberto: atualização
+da branch autorizada, checks remotos a acompanhar e merge manual pelo usuário.

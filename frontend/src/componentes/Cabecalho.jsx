@@ -4,12 +4,12 @@ import { Link, NavLink, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../contextos/AuthContext.jsx';
 import { useCarrinho } from '../contextos/CarrinhoContext.jsx';
 
-function ItemMenu({ para, children }) {
+function ItemMenu({ para, children, className = '' }) {
   return (
     <NavLink
       to={para}
       className={({ isActive }) =>
-        `rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+        `rounded-lg px-3 py-2 text-sm font-medium transition-colors ${className} ${
           isActive ? 'bg-tinta-100 text-tinta-900' : 'text-tinta-600 hover:bg-tinta-100'
         }`
       }
@@ -49,8 +49,8 @@ export function Cabecalho() {
 
   return (
     <header className="sticky top-0 z-20 border-b border-tinta-200 bg-white/95 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center gap-x-4 px-4 py-3">
-        <Link to="/" className="flex items-center gap-2 text-lg font-bold text-tinta-900">
+      <div className="mx-auto flex max-w-6xl flex-col items-stretch gap-3 px-4 py-3 lg:flex-row lg:items-center lg:gap-4">
+        <Link to="/" className="flex w-fit shrink-0 items-center gap-2 text-lg font-bold text-tinta-900">
           {/* O K e grande e bold, entao 3:1 basta e o quadrado pode levar o
               #00a5ac exato - e onde a marca mais aparece. */}
           <span className="grid size-9 place-items-center rounded-lg bg-marca-500
@@ -62,7 +62,7 @@ export function Cabecalho() {
           </span>
         </Link>
 
-        <form onSubmit={pesquisar} className="min-w-[380px] flex-1">
+        <form onSubmit={pesquisar} className="w-full min-w-0 lg:flex-1">
           <label htmlFor="busca-topo" className="sr-only">
             Buscar peças
           </label>
@@ -78,7 +78,7 @@ export function Cabecalho() {
           />
         </form>
 
-        <nav className="ml-auto flex items-center gap-1">
+        <nav className={`items-center gap-1 lg:ml-auto lg:shrink-0 ${autenticado ? 'flex flex-wrap' : 'grid grid-cols-2 lg:flex'}`}>
           {autenticado ? (
             <>
               <ItemMenu para="/pedidos">Pedidos</ItemMenu>
@@ -111,10 +111,10 @@ export function Cabecalho() {
             </>
           ) : (
             <>
-              <ItemMenu para="/entrar">Entrar</ItemMenu>
+              <ItemMenu para="/entrar" className="flex-1 text-center lg:flex-none">Entrar</ItemMenu>
               <Link
                 to="/cadastro"
-                className="rounded-lg bg-marca-700 px-4 py-2 text-sm font-semibold text-white hover:bg-marca-800"
+                className="flex-1 rounded-lg bg-marca-700 px-4 py-2 text-center text-sm font-semibold text-white hover:bg-marca-800 lg:flex-none"
               >
                 Criar conta
               </Link>

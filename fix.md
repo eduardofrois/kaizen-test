@@ -42,14 +42,14 @@ em 2026-10-11 e implementada nesta sessão.
 | ID | Assunto | Evidência | Prioridade proposta |
 |---|---|---|---|
 | FIX-001 | Credenciais e segredo JWT literais/fallback | Corrigido; seis testes e validação manual local | Concluído no escopo aprovado |
-| FIX-002 | CORS com qualquer origem e credenciais | Estática | Alta; impacto depende do ambiente |
+| FIX-002 | CORS com qualquer origem e credenciais | Validado; testes e manual concluídos | Publicação autorizada |
 | FIX-003 | Perda de centavos na conversão monetária | Validada localmente | Alta |
 | FIX-004 | Botão Próxima bloqueia última página | Implementado; manual pendente | Alta |
 | FIX-005 | Carrinho não acompanha login/logout/troca de conta | Manual pelo usuário e estática | Alta |
 | FIX-006 | Estoque reduzido impede ajuste de quantidade na UI | Implementado; manual pendente | Alta |
-| FIX-007 | Telefone opcional não pode ser removido | Implementado; manual pendente | Média |
-| FIX-008 | Login/troca de senha removem espaços aceitos no cadastro | Validado; publicação autorizada | Alta |
-| FIX-009 | Cabeçalho e grade inadequados para telas pequenas | Estática; visual pendente | Média |
+| FIX-007 | Telefone opcional não pode ser removido | Validado pelo usuário | Média |
+| FIX-008 | Login/troca de senha removem espaços aceitos no cadastro | Validado; PR #13 aberto | Alta |
+| FIX-009 | Cabeçalho e grade inadequados para telas pequenas | Validado pelo usuário | Média |
 | FIX-010 | Inputs de documento/telefone sem limite de entrada | Manual no cadastro; estática no perfil | Média; SDD pendente |
 
 Prioridades são propostas para ordenar trabalho, não decisões aprovadas.
@@ -141,7 +141,7 @@ Nenhuma nova alteração de aplicação realizada; publicação remota pendente.
 
 ## FIX-002 — CORS aceita qualquer origem com credenciais
 
-**Estado:** não corrigido; reprodução em navegador pendente.
+**Estado:** validado por testes isolados, regressões e confirmação manual do usuário em 2026-10-12; publicação autorizada.
 
 **Onde:** backend/src/app.js, criarApp(), linha 28:
 `cors({ origin: true, credentials: true })`.
@@ -361,7 +361,7 @@ para string composta só de espaços documentada (não atende letra+número).
 
 ## FIX-009 — Layout sem adaptação suficiente para celular
 
-**Estado:** restrições CSS confirmadas; reprodução visual e medidas pendentes.
+**Estado:** implementado e validado pelo usuário em 2026-10-12; publicação autorizada. Matriz autenticada completa não executada pela IA.
 
 **Onde:** componentes/Cabecalho.jsx linha 66, busca com min-w-[380px] numa
 linha flex junto com marca e navegação; paginas/Catalogo.jsx linha 183, grade
@@ -555,7 +555,7 @@ quantidade de bugs ou de intenção do avaliador.
 
 ## FIX-010 — Cadastro aceita entrada acima dos limites da API
 
-**Estado:** identificado; correção não aprovada nem implementada.
+**Estado:** máscaras/limites implementados e validados pelo usuário em 2026-10-12; publicação autorizada.
 **Evidência:** reprodução manual pelo usuário em 2026-10-11, com capturas
 mostrando documento e telefone longos aceitos durante digitação e mensagens
 após enviar; confirmada por leitura do código. Prioridade proposta: média.
@@ -1132,3 +1132,229 @@ Commit de implementação: `9b29049`. Branch publicada:
 https://github.com/eduardofrois/kaizen-test/pull/13
 Estado Validado; testes locais e confirmação manual concluídos. Checks remotos
 em acompanhamento. Merge manual pendente. Nenhum merge realizado pela IA.
+
+## Investigação FIX-009 — 2026-10-12
+
+Main sincronizada em f744b39; PR #13 ainda não integrado na consulta remota.
+Branch fix/layout-responsivo-do-catalogo. Reprodução visual local como visitante:
+viewport solicitado375x812, largura útil reportada341px; página/cabeçalho702px,
+busca380px. Screenshot observado confirma corte do cabeçalho e cards comprimidos.
+Nota de revisão KZN-5D1E lida em Cabecalho.jsx. Usuário escolheu ações visíveis,
+distribuídas em linhas, sem menu recolhível. Spec versão1 em proposta em
+ docs/sdd/layout-responsivo-do-catalogo/spec.md; aprovação e plano pendentes.
+Sem código/testes/dependências alterados. Autenticado e matriz de larguras
+permanecem pendentes; não declarar validação da correção nesta etapa.
+
+## Spec FIX-009 aprovada — 2026-10-12
+
+Usuário aprovou spec versão1 com “se temos essas informações na spec, aprovada”,
+após confirmar busca flexível e grade responsiva. Plano versão1 preparado em
+docs/sdd/layout-responsivo-do-catalogo/plan.md. Implementação aguarda aprovação
+do plano; nenhum código, teste ou dependência alterado nesta etapa.
+
+## FIX-009 implementado — 2026-10-12
+
+Plano versão1 aprovado com “aprovado” nesta sessão. Alterados apenas
+Cabecalho.jsx e Catalogo.jsx: marca sem compressão, busca flexível sem mínimo
+380px, navegação com quebra de linha, cabeçalho em coluna abaixo1024px e grade
+1/2/4 colunas nos limites640/1024px. Nota KZN-5D1E preservada e reavaliada:
+o trecho do cabeçalho continha a restrição de largura responsável pelo corte.
+Nenhum handler, contrato, estado React, paleta ou dependência alterado.
+Revisão React: DOM/ordem de teclado e semântica preservados, sem novos hooks.
+
+Medições no catálogo local como visitante (largura útil/clientWidth/scrollWidth
+iguais em cada caso):320,375,390,640,768,1024,1280px. Colunas observadas:
+1,1,1,2,2,4,4. Larguras da busca respectivamente288,343,358,608,736,587.45,715.45px.
+Paginação em320px: largura288px e scrollWidth288px, sem ajuste necessário.
+Não foi necessário alterar CardProduto ou ui.jsx. Busca amortecedor retornou
+produtos; categoria SUSPENSAO e estoque atualizados na URL mantendo busca.
+Tab da busca alcançou Entrar com outline solid. Login em375px sem overflow.
+Screenshot local: /private/tmp/kaizen-fix009-mobile.png (artefato temporário,
+não versionado). Evidência anterior: screenshot do usuário e medida341/702px.
+
+Regressões: frontend53/53, backend65/65, build61 módulos passaram. Backend65
+corresponde à baseline main f744b39; FIX-008 está em outro PR e não nesta branch.
+Sem teste que replique classes CSS. Estado Implementado: faltam matriz
+autenticada/contador/perfil, percurso completo de teclado/rolagem, adição e
+confirmação manual pelo usuário. Estado adicionando e captura desktop ainda
+não conferidos visualmente. Commit/publicação/PR aguardam comando explícito.
+
+### Ajuste FIX-009 — ações de visitante
+
+Em 2026-10-12, usuário solicitou Entrar e Criar conta ocupando a linha inteira
+com larguras iguais. Aplicado flex-1/text-center abaixo1024px, preservando gap
+e larguras pelo conteúdo no desktop. ItemMenu aceita className opcional.
+Validação manual geral continua pendente.
+
+Distribuição exata usa grid-cols-2 na navegação de visitante abaixo1024px,
+pois flex-1 isolado pode diferir por causa dos paddings dos links. Navegação
+autenticada continua flex-wrap; desktop usa flex.
+
+## Validação e publicação autorizada FIX-009 — 2026-10-12
+
+Usuário confirmou “otimo, validado, pode abrir o PR”, incluindo o ajuste dos
+botões Entrar/Criar conta em metades iguais. Validação manual confirmada pelo
+usuário; não atribuir a essa confirmação execução detalhada da matriz de
+todos os estados. Medidas de visitante e limitações registradas acima mantidas.
+Build final após grid-cols-2 passou com61 módulos; git diff --check passou.
+Commit, push e PR desta unidade autorizados. Merge manual pelo usuário.
+
+## Publicação FIX-009 — 2026-10-12
+
+Implementação: `c50fead`. Branch `fix/layout-responsivo-do-catalogo` publicada.
+PR #14: https://github.com/eduardofrois/kaizen-test/pull/14
+Validação manual confirmada; checks remotos em acompanhamento. Merge manual
+pendente. Nenhum merge realizado pela IA.
+
+## Investigação FIX-002 — 2026-10-12
+
+Main sincronizada em14f5163 após merge do PR14. Branch fix/restricao-de-origem-cors.
+Revisados comentários de app.js, proxy Vite, cookies e config.corsOrigem.
+Proposta: permitir apenas origem configurada, padrão localhost5173 em dev/test
+e nenhuma permissão CORS por padrão em produção; requisições seguem rotas
+normalmente sem headers CORS quando origem não autorizada. CORS não é barreira
+de autenticação/CSRF. Spec versão1 em docs/sdd/restricao-de-origem-cors/spec.md.
+Aprovação e plano pendentes. Nenhum código/teste/env real alterado.
+
+## Spec FIX-002 aprovada — 2026-10-12
+
+Usuário confirmou “spec aprovada, pode fazer o plan”. Plano versão1 preparado
+em docs/sdd/restricao-de-origem-cors/plan.md: configuração canônica, callback
+com comparação exata, testes HTTP/SQLite isolados e guia por ambiente.
+Nenhuma variável nova; .env real preservada. Plano em revisão, implementação
+não autorizada nesta etapa. Nenhum código/teste/dependência alterado.
+
+## FIX-002 implementado — 2026-10-12
+
+Plano versão1 aprovado pelo usuário com “aprovado” após apresentação.
+app.js compara Origin exatamente com config.corsOrigem; desconhecida/null/
+ausente não recebe permissões CORS e segue as rotas/autenticação normais.
+config.js valida origem canônica HTTP(S), sem ecoar entrada inválida; padrão
+localhost5173 em dev/test, vazio em produção sem configuração. .env.example
+e guia de ambiente atualizados. Nenhuma variável nova; .env real preservada.
+Nota de revisão KZN-2B9C lida e preservada em config.js. Comentário antigo
+sobre refletir qualquer origem substituído pela política efetiva.
+
+Adicionados19 testes de configuração (alguns com tabelas internas) e5 cenários
+HTTP agrupados. RED24:5 passaram/19 falharam por default produção, ausência de
+validação e reflexão indevida. GREEN24/24; com config.test.js30/30. Suíte
+backend89/89, frontend53/53 e build61 módulos passaram; sintaxe app/config e
+git diff --check passaram. Baseline14f5163 contém65 testes backend anteriores;
+a correção FIX-008 permanece em PR separado e não compõe essa contagem.
+
+HTTP usa app real, SQLite/schema temporários, JWT/usuários sintéticos e fetch
+restrito à origem local. Comprovados GET/OPTIONS permitido, métodos/headers,
+Vary, origens enganadoras/porta/null/ausente, defaults em3 ambientes,401 sem
+sessão e perfil do usuário1 sem hash com sessão. Origem negada com sessão
+continua200 no cliente HTTP sem permissão CORS, conforme decisão da spec.
+Não executada exploração no navegador; não é promessa de proteção CSRF.
+Ajuste de roteiro: /auth/eu exige autenticação, diferente do pressuposto no
+plano inicial; teste usa /perfil com401 sem sessão, mantendo objetivo aprovado.
+Estado Implementado: AC-01 a04 passaram isoladamente; AC-05 regressões/build
+passaram, confirmação manual pendente. Reiniciar backend, abrir loja via
+localhost5173, conferir catálogo, login, perfil e sessão apósF5. Sem reset
+ou alteração de segredo. Commit/push/PR aguardam comando específico.
+
+## FIX-002 validado — 2026-10-12
+
+Usuário confirmou “validado, pode abrir o PR” após roteiro de reinício, catálogo,
+login/perfil e sessão apósF5. AC-05 concluído com regressões e confirmação
+manual. Estado Validado. Commit, publicação da branch e PR autorizados.
+Confirmação de uso normal não equivale a exploração autenticada em navegador.
+CI remoto será acompanhado; merge manual pelo usuário. Registros anteriores
+de manual/autorização pendentes são históricos.
+
+## Publicação FIX-002 — 2026-10-12
+
+Implementação `b3096f8` publicada em `fix/restricao-de-origem-cors`.
+PR #15: https://github.com/eduardofrois/kaizen-test/pull/15
+Estado Validado, confirmação manual registrada. Checks remotos em acompanhamento;
+merge manual pendente. Nenhum merge realizado pela IA.
+
+## Preparação FIX-010 — 2026-10-12
+
+Main sincronizada em7d4f391 após PR15. Branch fix/limites-de-documento-e-telefone.
+Cadastro.jsx e DadosPessoais em Perfil.jsx sem maxLength; Campo já encaminha
+props. Backend mantém documento18/telefone20 caracteres e regras de dígitos.
+Spec versão1 propõe limites nativos nos quatro inputs, sem máscaras ou filtro
+só numérico, preservando telefone opcional e zeros iniciais. Limite de entrada
+não substitui validação do servidor nem impede valores programáticos.
+Documento: docs/sdd/limites-de-documento-e-telefone/spec.md. Aprovação e plano
+pendentes; nenhum código/teste/dependência alterado nesta etapa.
+
+## FIX-010 — spec revisada para máscaras — 2026-10-12
+
+Por pedido do usuário, spec versão2 inclui CPF/CNPJ automático por quantidade
+de dígitos (até11 CPF,12–14 CNPJ), telefone brasileiro fixo/celular com DDD,
+limites14/11 dígitos, colagem/edição/cursor e preservação de zeros. Substitui
+proposta de maxLength isolado. Sem DDI/ramal, algoritmo de dígitos verificadores
+ou alteração da API. Versão2 em revisão; plano e implementação pendentes.
+Nenhum código/teste/dependência alterado nesta etapa.
+
+## FIX-010 — spec v2 aprovada e plano preparado — 2026-10-12
+
+Usuário aprovou versão2 com “aprovado”. Plano versão1 preparado em
+docs/sdd/limites-de-documento-e-telefone/plan.md: funções puras compartilhadas,
+CampoComMascara, integração cadastro/perfil, cursor/exclusão e testes reais
+de entrada. Legado fora do domínio preservado ao carregar; telefone removível.
+Plano em revisão; nenhum código/teste/dependência alterado nesta etapa.
+
+## FIX-010 implementado — 2026-10-12
+
+Plano versão1 aprovado com “aprovado” após apresentação nesta sessão. Criados
+mascaras.js e CampoComMascara.jsx; integrados documento/telefone em Cadastro
+e DadosPessoais de Perfil. CPF/CNPJ automático11/12 dígitos, telefone fixo/
+celular10/11, limites14/11, zeros preservados e payload textual formatado.
+Sem maxLength nativo que corte colagem prematuramente; máscara limita dígitos.
+Campo genérico, API, dependências e schema intactos. Inicialização formata apenas
+valores completos no domínio e preserva legado fora do domínio até edição.
+
+26 testes novos de funções reais, incluindo tabelas e todas as posições de
+exclusão ao redor da pontuação; frontend79/79, backend89/89 e build63 módulos
+passaram; diff --check passou. Primeira execução focada23/24: expectativa de
+cursor escrita como14 estava incorreta (fim da saída tem15); corrigida a
+asserção após conferir comprimento. Não é RED comportamental do defeito original;
+reprodução original vem da confirmação manual/inspeção registrada anteriormente.
+
+Navegador no cadastro: digitação sintética produziu01.234.567/8901-23; telefone
+formatado; colagem com máscara e excesso limitada corretamente; exclusão no
+meio produziu012.345.678-0 com cursor11. Nenhum cadastro/perfil enviado.
+Revisão React: reutilização de componente, handlers compatíveis, sem estado
+paralelo do valor; ref de seleção restaurada após render. Labels/erros mantidos.
+Estado Implementado. Testes puros não comprovam toda interação: perfil
+autenticado/persistência, autofill nativo, teclado virtual, atalhos/desfazer e
+composição ainda precisam de conferência. AC-01 a04 parcialmente comprovados
+isoladamente/cadastro; AC-05 regressões/build passaram, manual pendente.
+Próximo passo: usuário validar nas duas telas digitação, colagem, troca CPF/CNPJ,
+fixo/celular, seleção/exclusão no meio e remoção de telefone com salvar/F5.
+Sem dados pessoais nos docs. Commit/push/PR aguardam comando específico.
+
+## FIX-010 validado — 2026-10-12
+
+Usuário confirmou “validado, pode abrir o PR” após roteiro das duas telas,
+colagem/edição e remoção de telefone. Estado Validado pelo usuário; regressões
+79 frontend/89 backend e build registrados acima. Confirmação não equivale
+a prova automatizada de autofill/composição/teclado virtual; limitações mantidas.
+Commit, push e PR desta unidade autorizados; merge manual pelo usuário.
+Registros anteriores de manual/publicação pendentes são históricos.
+
+## Publicação FIX-010 — 2026-10-12
+
+Implementação `cc24f45` publicada em `fix/limites-de-documento-e-telefone`.
+PR #16: https://github.com/eduardofrois/kaizen-test/pull/16
+Validação manual confirmada. Checks remotos em acompanhamento; merge manual
+pendente. Nenhum merge realizado pela IA.
+
+## Atualização do PR #13 e resolução de conflitos — 2026-10-12
+
+Usuário solicitou corrigir os conflitos do PR #13. Incorporada a main
+`60d5827` na branch `fix/espacos-na-autenticacao-de-senha`, preservando os
+registros da FIX-008 e os trabalhos posteriores (layout, CORS e máscaras).
+Os conflitos eram documentais em RELATORIO.md, fix.md, docs/investigacao.md
+e docs/sdd/README.md; o código foi integrado automaticamente, sem alteração
+adicional de comportamento. Revisado o diff contra main: permanece restrito
+à correção de autenticação, seus testes e documentação.
+Validação conjunta: backend96/96, frontend79/79 e build63 módulos passaram;
+git diff --check passou. Nenhum teste manual novo realizado nesta atualização.
+PRs #14, #15 e #16 já integrados à main. PR #13 continua aberto: atualização
+da branch autorizada, checks remotos a acompanhar e merge manual pelo usuário.
