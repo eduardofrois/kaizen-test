@@ -93,3 +93,39 @@ regressões locais/build passaram. Payload manual e checks remotos pendentes.
 
 Carrinho por sessão (FIX-005): spec/plano versão 1 aprovados e Implementados;
 27 testes novos, frontend 37/backend 23 e build passaram. Manual/CI pendentes.
+
+## Precisão monetária implementada e validada localmente — 2026-10-11
+
+FIX-003: usuário aprovou spec/plano versão 1 com “aprovado” nesta sessão.
+Substituído floor por round em backend/src/lib/dinheiro.js/paraCentavos,
+para valores finitos não negativos com até duas casas no domínio aprovado.
+RED focado: 29 testes, 20 sucessos/9 falhas, incluindo subtotal 3.42 em vez de
+3.45 e vínculo local 1998 em vez de 1999. GREEN: backend 35/35, frontend
+37/37, build 60 módulos; sintaxe e diff passaram. Adicionados 12 testes:
+nove conversões, ida/volta de 100001 valores, carrinho e pedido com ERP fake.
+Carrinho 3×1.15+2×4.10=11.65; indisponível excluído e checkout bloqueado.
+Pedido simulado conserva 19.99 como 1999 no SQLite em memória; endereço alheio
+rejeitado, apenas carrinho do proprietário limpo, vínculo alheio ausente.
+Sem .env/banco real, pedido real, dependências, schema ou contratos alterados.
+Históricos não reparados; mais de duas casas exige política separada.
+Estado: Validado localmente; manual opcional/CI não executados. Commit,
+publicação e PR aguardam comando do usuário. Próxima ação: revisão/validação
+pelo usuário e autorização para publicação. Registros anteriores são históricos.
+
+## Autorização de publicação — 2026-10-11
+
+Usuário: “pode abrir o PR”. Autorizados commit, publicação da branch
+fix/precisao-monetaria e abertura do PR para main. Validação local concluída;
+CI remoto será acompanhado. Validação manual não foi informada. Merge manual
+pelo usuário; nenhuma autorização para integrar diretamente na main.
+
+## Publicação da correção — 2026-10-11
+
+Commit de implementação: 3f584ce. Branch fix/precisao-monetaria publicada.
+PR #9: https://github.com/eduardofrois/kaizen-test/pull/9
+Checks testes-backend e build-frontend passaram no run 38187488965,
+commit 3f584ce: https://github.com/eduardofrois/kaizen-test/actions/runs/38187488965
+Esta atualização documental gera nova execução de CI a acompanhar.
+Merge permanece manual e pendente.
+Validação manual não informada; ERP real não utilizado nos testes.
+Os registros anteriores de publicação pendente descrevem etapas passadas.
