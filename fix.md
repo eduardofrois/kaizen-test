@@ -176,7 +176,7 @@ requisição sem Origin e política de preflight têm comportamento documentado.
 
 ## FIX-003 — Conversão de reais para centavos perde dinheiro
 
-**Estado:** corrigido e validado localmente; publicação pendente. Ver evidências ao final.
+**Estado:** corrigido e validado localmente; PR #9 aberto. Ver evidências ao final.
 
 **Onde:** backend/src/lib/dinheiro.js, paraCentavos(), linha 7:
 `Math.floor(Number(reais) * 100)`.
@@ -885,3 +885,14 @@ Usuário: “pode abrir o PR”. Autorizados commit, publicação da branch
 fix/precisao-monetaria e abertura do PR para main. Validação local concluída;
 CI remoto será acompanhado. Validação manual não foi informada. Merge manual
 pelo usuário; nenhuma autorização para integrar diretamente na main.
+
+## Publicação da correção — 2026-10-11
+
+Commit de implementação: 3f584ce. Branch fix/precisao-monetaria publicada.
+PR #9: https://github.com/eduardofrois/kaizen-test/pull/9
+Checks testes-backend e build-frontend passaram no run 38187488965,
+commit 3f584ce: https://github.com/eduardofrois/kaizen-test/actions/runs/38187488965
+Esta atualização documental gera nova execução de CI a acompanhar.
+Merge permanece manual e pendente.
+Validação manual não informada; ERP real não utilizado nos testes.
+Os registros anteriores de publicação pendente descrevem etapas passadas.

@@ -20,7 +20,7 @@ Atualização: 2026-10-11. Baseline original: `81897d5`.
 | KZN-331 | Implementado: envio usa enderecoId; regressões/build passaram | PR #7 com CI passando; cenários manuais restantes pendentes |
 | FIX-001 | Validado por SDD aprovado; seis testes e roteiro manual local | Publicação remota pendente; unidade concluída |
 | FIX-002 | Evidência estática | Especificar origens e validar ambiente |
-| FIX-003 | Validado localmente | Revisão do usuário; publicação pendente |
+| FIX-003 | Validado localmente | PR #9 aberto; CI da implementação passou |
 | FIX-004, 007, 008 | Verificação isolada realizada | Spec/plan e regressões focadas |
 | FIX-005 | Implementado: 27 testes novos; frontend 37/backend 23/build passaram | PR #8 com CI passando; integração visual complementar pendente |
 | FIX-006 | Evidência estática | Reprodução integrada e spec/plan |
@@ -436,3 +436,14 @@ Usuário: “pode abrir o PR”. Autorizados commit, publicação da branch
 fix/precisao-monetaria e abertura do PR para main. Validação local concluída;
 CI remoto será acompanhado. Validação manual não foi informada. Merge manual
 pelo usuário; nenhuma autorização para integrar diretamente na main.
+
+## Publicação da correção — 2026-10-11
+
+Commit de implementação: 3f584ce. Branch fix/precisao-monetaria publicada.
+PR #9: https://github.com/eduardofrois/kaizen-test/pull/9
+Checks testes-backend e build-frontend passaram no run 38187488965,
+commit 3f584ce: https://github.com/eduardofrois/kaizen-test/actions/runs/38187488965
+Esta atualização documental gera nova execução de CI a acompanhar.
+Merge permanece manual e pendente.
+Validação manual não informada; ERP real não utilizado nos testes.
+Os registros anteriores de publicação pendente descrevem etapas passadas.

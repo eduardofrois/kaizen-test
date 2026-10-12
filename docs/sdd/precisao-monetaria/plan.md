@@ -1,7 +1,7 @@
 # Plano de implementação — Precisão monetária
 
 **Versão:** 1
-**Estado:** Validado localmente — publicação pendente
+**Estado:** Validado localmente — PR #9 aberto; CI da implementação passou
 **Spec:** [spec.md](spec.md), versão 1
 **Baseline/data:** d040365; 2026-10-11
 **Objetivo:** eliminar perda de centavos em conversão, carrinho e vínculo local.
@@ -164,7 +164,7 @@ export function paraCentavos(reais) {
   reproduzem aproximação, usar provas isoladas e registrar essa limitação.
 - [x] Atualizar SDD, inventário e relatório com RED/GREEN, domínio de duas
   casas, ausência de reparo histórico e distinção de ERP fake versus real.
-- [ ] Quando autorizado, commit `fix: preserva centavos na conversao monetaria`
+- [x] Quando autorizado, commit `fix: preserva centavos na conversao monetaria`
   e publicar branch. PR somente com comando do usuário; merge manual.
 
 ## Matriz de validação
@@ -201,3 +201,14 @@ Usuário: “pode abrir o PR”. Autorizados commit, publicação da branch
 fix/precisao-monetaria e abertura do PR para main. Validação local concluída;
 CI remoto será acompanhado. Validação manual não foi informada. Merge manual
 pelo usuário; nenhuma autorização para integrar diretamente na main.
+
+## Publicação da correção — 2026-10-11
+
+Commit de implementação: 3f584ce. Branch fix/precisao-monetaria publicada.
+PR #9: https://github.com/eduardofrois/kaizen-test/pull/9
+Checks testes-backend e build-frontend passaram no run 38187488965,
+commit 3f584ce: https://github.com/eduardofrois/kaizen-test/actions/runs/38187488965
+Esta atualização documental gera nova execução de CI a acompanhar.
+Merge permanece manual e pendente.
+Validação manual não informada; ERP real não utilizado nos testes.
+Os registros anteriores de publicação pendente descrevem etapas passadas.
