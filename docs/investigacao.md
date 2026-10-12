@@ -23,7 +23,7 @@ Atualização: 2026-10-11. Baseline original: `81897d5`.
 | FIX-003 | Validado localmente | PR #9 aberto; CI da implementação passou |
 | FIX-004 | Implementado; regressões/build passaram | PR #10 aberto; CI da implementação passou; manual pendente |
 | FIX-007 | Implementado; backend65/frontend53/build passaram | Manual confirmado; PR #12 com CI da implementação passando; merge manual pendente |
-| FIX-008 | Validado; backend72/frontend53/build e manual concluídos | Publicação autorizada; acompanhar CI do PR |
+| FIX-008 | Validado; backend72/frontend53/build e manual concluídos | PR #13 aberto; acompanhar CI e merge manual |
 | FIX-005 | Implementado: 27 testes novos; frontend 37/backend 23/build passaram | PR #8 com CI passando; integração visual complementar pendente |
 | FIX-006 | Implementado; backend44/frontend53/build passaram | PR #11 aberto; CI da implementação passou; manual pendente |
 | FIX-009 | Restrições CSS localizadas | Reprodução visual desktop/celular |
@@ -677,3 +677,11 @@ confirmada; AC-06 concluído junto às regressões locais registradas acima.
 Estado Validado. Commit, push da branch e abertura do PR autorizados nesta
 sessão. CI remoto será acompanhado após a publicação; merge manual pelo usuário.
 Registros anteriores de manual/autorização pendentes são históricos.
+
+## Publicação FIX-008 — 2026-10-12
+
+Commit de implementação: `9b29049`. Branch publicada:
+`fix/espacos-na-autenticacao-de-senha`. PR #13 aberto para main:
+https://github.com/eduardofrois/kaizen-test/pull/13
+Estado Validado; testes locais e confirmação manual concluídos. Checks remotos
+em acompanhamento. Merge manual pendente. Nenhum merge realizado pela IA.

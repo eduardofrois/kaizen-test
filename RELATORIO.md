@@ -1009,3 +1009,11 @@ confirmada; AC-06 concluído junto às regressões locais registradas acima.
 Estado Validado. Commit, push da branch e abertura do PR autorizados nesta
 sessão. CI remoto será acompanhado após a publicação; merge manual pelo usuário.
 Registros anteriores de manual/autorização pendentes são históricos.
+
+## Publicação FIX-008 — 2026-10-12
+
+Commit de implementação: `9b29049`. Branch publicada:
+`fix/espacos-na-autenticacao-de-senha`. PR #13 aberto para main:
+https://github.com/eduardofrois/kaizen-test/pull/13
+Estado Validado; testes locais e confirmação manual concluídos. Checks remotos
+em acompanhamento. Merge manual pendente. Nenhum merge realizado pela IA.
