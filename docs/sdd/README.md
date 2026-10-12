@@ -164,3 +164,47 @@ Checks testes-backend e build-frontend passaram para 6607796 no run
 Esta atualização documental dispara novos checks a acompanhar. Manual pendente;
 estado Implementado. Merge manual pelo usuário, não realizado nesta sessão.
 Registros anteriores de publicação pendente são históricos.
+
+## FIX-006 implementado — 2026-10-11
+
+Aprovação do plano versão 1: usuário “aprovao”, após apresentação do plano.
+Campo derivado quantidade_editavel adicionado no backend: produto ativo com
+estoque positivo permite ajustar mesmo com quantidade acima do estoque;
+zero/inativo/ausente/falha de consulta retornam false. disponivel e checkout
+preservados. Linha extraída para LinhaItemCarrinho.jsx; input respeita inteiro
+1..min(99,estoque), ocupado e capacidade; Remover preservado. Sem rascunho novo.
+RED backend focado: 27 casos, 20 passaram/7 falharam por capacidade ausente.
+Controles de conflito e posse já passaram antes da correção. RED frontend:
+7 casos/7 falhas de habilitação, limites e guardas do handler. Após correção:
+27/27 backend focados e 7/7 frontend focados; suítes completas backend44/44 e
+frontend53/53; build passou com61 módulos. Adicionados9 testes backend e7 frontend.
+Redução5→3 comprovada com subtotal60/contador3/checkoutliberado no fake; queda
+adicional para2 retorna409, preserva quantidade e linhas de outro usuário.
+Teste de posse retorna404. Componente real comprova input/callback, label,
+mensagem, limites e bloqueios; não equivale a navegação em navegador.
+Nota KZN-7F3A preservada e relida em carrinhoService. Revisão React focada:
+sem hooks/requisições novos, callbacks e acessibilidade da linha preservados.
+Nenhuma env, dependência, schema, banco real ou estoque SIAC alterado; testes
+com SQLite em memória/fetch sintético, sem pedido real. Estado Implementado.
+AC-01 a AC-04 passaram isoladamente; AC-05 conflito/posse passaram, apresentação
+visual do erro não conferida; AC-06 regressões/build passaram, manual pendente.
+Próximo passo: usuário conferir redução na linha pendente, total e checkout;
+remoção de item sem estoque. Commit/publicação/PR aguardam comando explícito.
+Os registros anteriores descrevem etapas históricas, não o estado atual.
+
+## Autorização de publicação FIX-006 — 2026-10-11
+
+Usuário: “pode commitar e abrir o pr”. Autorizados commit, publicação da branch
+fix/ajuste-de-quantidade-com-estoque-reduzido e PR para main. Validação local
+concluída; manual não informada. CI será acompanhado; merge manual pelo usuário.
+
+## Publicação FIX-006 — 2026-10-12
+
+Commit 58bb69f publicado na branch fix/ajuste-de-quantidade-com-estoque-reduzido.
+PR #11: https://github.com/eduardofrois/kaizen-test/pull/11
+Checks testes-backend e build-frontend passaram para 58bb69f no run
+38198503574: https://github.com/eduardofrois/kaizen-test/actions/runs/38198503574
+Nova execução acompanha esta atualização documental. Estado Implementado; manual pendente.
+Merge permanece manual pelo usuário. Registros de publicação pendente acima
+são históricos. Revisão do conteúdo staged passou após remover linha em branco
+extra ao final do componente; nenhuma mudança comportamental adicional.
