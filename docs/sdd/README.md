@@ -154,3 +154,13 @@ Usuário: “pode abrir o PR”. Autorizados commit, publicação da branch
 fix/ultima-pagina e abertura de PR para main. Checks locais concluídos;
 validação manual não foi informada. CI remoto será acompanhado. Merge manual
 pelo usuário; os registros anteriores de publicação pendente são históricos.
+
+## Publicação de última página — 2026-10-11
+
+Commit de implementação: 6607796. Branch fix/ultima-pagina publicada.
+PR #10: https://github.com/eduardofrois/kaizen-test/pull/10
+Checks testes-backend e build-frontend passaram para 6607796 no run
+38187909239: https://github.com/eduardofrois/kaizen-test/actions/runs/38187909239
+Esta atualização documental dispara novos checks a acompanhar. Manual pendente;
+estado Implementado. Merge manual pelo usuário, não realizado nesta sessão.
+Registros anteriores de publicação pendente são históricos.

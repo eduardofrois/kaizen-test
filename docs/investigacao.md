@@ -21,7 +21,7 @@ Atualização: 2026-10-11. Baseline original: `81897d5`.
 | FIX-001 | Validado por SDD aprovado; seis testes e roteiro manual local | Publicação remota pendente; unidade concluída |
 | FIX-002 | Evidência estática | Especificar origens e validar ambiente |
 | FIX-003 | Validado localmente | PR #9 aberto; CI da implementação passou |
-| FIX-004 | Implementado; regressões/build passaram | Validação manual e autorização de PR |
+| FIX-004 | Implementado; regressões/build passaram | PR #10 aberto; CI da implementação passou; manual pendente |
 | FIX-007, 008 | Verificação isolada realizada | Spec/plan e regressões focadas |
 | FIX-005 | Implementado: 27 testes novos; frontend 37/backend 23/build passaram | PR #8 com CI passando; integração visual complementar pendente |
 | FIX-006 | Evidência estática | Reprodução integrada e spec/plan |
@@ -488,3 +488,13 @@ Usuário: “pode abrir o PR”. Autorizados commit, publicação da branch
 fix/ultima-pagina e abertura de PR para main. Checks locais concluídos;
 validação manual não foi informada. CI remoto será acompanhado. Merge manual
 pelo usuário; os registros anteriores de publicação pendente são históricos.
+
+## Publicação de última página — 2026-10-11
+
+Commit de implementação: 6607796. Branch fix/ultima-pagina publicada.
+PR #10: https://github.com/eduardofrois/kaizen-test/pull/10
+Checks testes-backend e build-frontend passaram para 6607796 no run
+38187909239: https://github.com/eduardofrois/kaizen-test/actions/runs/38187909239
+Esta atualização documental dispara novos checks a acompanhar. Manual pendente;
+estado Implementado. Merge manual pelo usuário, não realizado nesta sessão.
+Registros anteriores de publicação pendente são históricos.
