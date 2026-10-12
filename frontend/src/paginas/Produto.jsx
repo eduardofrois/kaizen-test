@@ -51,7 +51,8 @@ export function Produto() {
     setRecado(null);
 
     try {
-      await adicionar(produto.codigo, quantidade);
+      const aplicado = await adicionar(produto.codigo, quantidade);
+      if (aplicado === false) return;
       setRecado({ tipo: 'sucesso', texto: 'Adicionado ao carrinho.' });
     } catch (falha) {
       setRecado({ tipo: 'erro', texto: falha.message });

@@ -6,7 +6,7 @@ import { FormularioEndereco } from '../componentes/FormularioEndereco.jsx';
 import { Alerta, Botao, Carregando, ErroGeral, EstadoVazio } from '../componentes/ui.jsx';
 
 export function Checkout() {
-  const { carrinho, carregando: carregandoCarrinho, recarregar } = useCarrinho();
+  const { carrinho, carregando: carregandoCarrinho, recarregar, erro: erroCarrinho } = useCarrinho();
   const navegar = useNavigate();
 
   const [enderecos, setEnderecos] = useState([]);
@@ -51,19 +51,26 @@ export function Checkout() {
 
     try {
       const resposta = await api.pedidos.criar({ endereco_id: enderecoId, observacao });
-      await recarregar();
+      if (await recarregar() === false) return;
       navegar(`/pedidos/${resposta.dados.numero}`, { replace: true, state: { novo: true } });
     } catch (falha) {
       setErro(falha);
       // O estoque pode ter mudado entre abrir o checkout e confirmar: recarrega
       // para o carrinho ja mostrar o item que ficou com pendencia.
-      await recarregar();
+      if (await recarregar() === false) return;
     } finally {
       setEnviando(false);
     }
   }
 
   if (carregando || carregandoCarrinho) return <Carregando texto="Preparando o checkout..." />;
+
+  if (erroCarrinho) return (
+    <div className="space-y-4">
+      <Alerta tipo="erro" titulo="Não foi possível carregar o carrinho">{erroCarrinho.message}</Alerta>
+      <Botao onClick={recarregar}>Tentar novamente</Botao>
+    </div>
+  );
 
   if (carrinho.itens.length === 0) {
     return (
