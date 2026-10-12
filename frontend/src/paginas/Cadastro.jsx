@@ -1,3 +1,4 @@
+import { CampoComMascara } from '../componentes/CampoComMascara.jsx';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contextos/AuthContext.jsx';
@@ -69,7 +70,9 @@ export function Cadastro() {
             placeholder="voce@email.com"
           />
 
-          <Campo
+          <CampoComMascara
+            tipoMascara="documento"
+            dica="CPF ou CNPJ: formato identificado automaticamente."
             rotulo="CPF ou CNPJ"
             name="documento"
             value={formulario.documento}
@@ -78,7 +81,9 @@ export function Cadastro() {
             placeholder="123.456.789-00"
           />
 
-          <Campo
+          <CampoComMascara
+            tipoMascara="telefone"
+            dica="DDD + número, sem código do país (+55)."
             rotulo="Telefone (opcional)"
             name="telefone"
             type="tel"

@@ -390,3 +390,77 @@ Implementação `b3096f8` publicada em `fix/restricao-de-origem-cors`.
 PR #15: https://github.com/eduardofrois/kaizen-test/pull/15
 Estado Validado, confirmação manual registrada. Checks remotos em acompanhamento;
 merge manual pendente. Nenhum merge realizado pela IA.
+
+## Preparação FIX-010 — 2026-10-12
+
+Main sincronizada em7d4f391 após PR15. Branch fix/limites-de-documento-e-telefone.
+Cadastro.jsx e DadosPessoais em Perfil.jsx sem maxLength; Campo já encaminha
+props. Backend mantém documento18/telefone20 caracteres e regras de dígitos.
+Spec versão1 propõe limites nativos nos quatro inputs, sem máscaras ou filtro
+só numérico, preservando telefone opcional e zeros iniciais. Limite de entrada
+não substitui validação do servidor nem impede valores programáticos.
+Documento: docs/sdd/limites-de-documento-e-telefone/spec.md. Aprovação e plano
+pendentes; nenhum código/teste/dependência alterado nesta etapa.
+
+## FIX-010 — spec revisada para máscaras — 2026-10-12
+
+Por pedido do usuário, spec versão2 inclui CPF/CNPJ automático por quantidade
+de dígitos (até11 CPF,12–14 CNPJ), telefone brasileiro fixo/celular com DDD,
+limites14/11 dígitos, colagem/edição/cursor e preservação de zeros. Substitui
+proposta de maxLength isolado. Sem DDI/ramal, algoritmo de dígitos verificadores
+ou alteração da API. Versão2 em revisão; plano e implementação pendentes.
+Nenhum código/teste/dependência alterado nesta etapa.
+
+## FIX-010 — spec v2 aprovada e plano preparado — 2026-10-12
+
+Usuário aprovou versão2 com “aprovado”. Plano versão1 preparado em
+docs/sdd/limites-de-documento-e-telefone/plan.md: funções puras compartilhadas,
+CampoComMascara, integração cadastro/perfil, cursor/exclusão e testes reais
+de entrada. Legado fora do domínio preservado ao carregar; telefone removível.
+Plano em revisão; nenhum código/teste/dependência alterado nesta etapa.
+
+## FIX-010 implementado — 2026-10-12
+
+Plano versão1 aprovado com “aprovado” após apresentação nesta sessão. Criados
+mascaras.js e CampoComMascara.jsx; integrados documento/telefone em Cadastro
+e DadosPessoais de Perfil. CPF/CNPJ automático11/12 dígitos, telefone fixo/
+celular10/11, limites14/11, zeros preservados e payload textual formatado.
+Sem maxLength nativo que corte colagem prematuramente; máscara limita dígitos.
+Campo genérico, API, dependências e schema intactos. Inicialização formata apenas
+valores completos no domínio e preserva legado fora do domínio até edição.
+
+26 testes novos de funções reais, incluindo tabelas e todas as posições de
+exclusão ao redor da pontuação; frontend79/79, backend89/89 e build63 módulos
+passaram; diff --check passou. Primeira execução focada23/24: expectativa de
+cursor escrita como14 estava incorreta (fim da saída tem15); corrigida a
+asserção após conferir comprimento. Não é RED comportamental do defeito original;
+reprodução original vem da confirmação manual/inspeção registrada anteriormente.
+
+Navegador no cadastro: digitação sintética produziu01.234.567/8901-23; telefone
+formatado; colagem com máscara e excesso limitada corretamente; exclusão no
+meio produziu012.345.678-0 com cursor11. Nenhum cadastro/perfil enviado.
+Revisão React: reutilização de componente, handlers compatíveis, sem estado
+paralelo do valor; ref de seleção restaurada após render. Labels/erros mantidos.
+Estado Implementado. Testes puros não comprovam toda interação: perfil
+autenticado/persistência, autofill nativo, teclado virtual, atalhos/desfazer e
+composição ainda precisam de conferência. AC-01 a04 parcialmente comprovados
+isoladamente/cadastro; AC-05 regressões/build passaram, manual pendente.
+Próximo passo: usuário validar nas duas telas digitação, colagem, troca CPF/CNPJ,
+fixo/celular, seleção/exclusão no meio e remoção de telefone com salvar/F5.
+Sem dados pessoais nos docs. Commit/push/PR aguardam comando específico.
+
+## FIX-010 validado — 2026-10-12
+
+Usuário confirmou “validado, pode abrir o PR” após roteiro das duas telas,
+colagem/edição e remoção de telefone. Estado Validado pelo usuário; regressões
+79 frontend/89 backend e build registrados acima. Confirmação não equivale
+a prova automatizada de autofill/composição/teclado virtual; limitações mantidas.
+Commit, push e PR desta unidade autorizados; merge manual pelo usuário.
+Registros anteriores de manual/publicação pendentes são históricos.
+
+## Publicação FIX-010 — 2026-10-12
+
+Implementação `cc24f45` publicada em `fix/limites-de-documento-e-telefone`.
+PR #16: https://github.com/eduardofrois/kaizen-test/pull/16
+Validação manual confirmada. Checks remotos em acompanhamento; merge manual
+pendente. Nenhum merge realizado pela IA.

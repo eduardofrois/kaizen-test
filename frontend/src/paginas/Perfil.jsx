@@ -1,3 +1,5 @@
+import { formatarValorInicial } from '../lib/mascaras.js';
+import { CampoComMascara } from '../componentes/CampoComMascara.jsx';
 import { useEffect, useState } from 'react';
 import { api } from '../api/cliente.js';
 import { useAuth } from '../contextos/AuthContext.jsx';
@@ -12,8 +14,8 @@ function DadosPessoais() {
 
   const [formulario, setFormulario] = useState({
     nome: usuario.nome,
-    documento: usuario.documento,
-    telefone: usuario.telefone ?? '',
+    documento: formatarValorInicial('documento', usuario.documento),
+    telefone: formatarValorInicial('telefone', usuario.telefone),
   });
   const [erro, setErro] = useState(null);
   const [salvo, setSalvo] = useState(false);
@@ -71,7 +73,9 @@ function DadosPessoais() {
         />
 
         <div className="grid gap-4 sm:grid-cols-2">
-          <Campo
+          <CampoComMascara
+            tipoMascara="documento"
+            dica="CPF ou CNPJ: formato identificado automaticamente."
             rotulo="CPF ou CNPJ"
             name="documento"
             value={formulario.documento}
@@ -79,7 +83,9 @@ function DadosPessoais() {
             erro={porCampo.documento}
           />
 
-          <Campo
+          <CampoComMascara
+            tipoMascara="telefone"
+            dica="DDD + número, sem código do país (+55)."
             rotulo="Telefone"
             name="telefone"
             type="tel"
