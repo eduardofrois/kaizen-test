@@ -148,8 +148,8 @@ Não há suposição de que o teste contenha exatamente sete problemas extras.
 | **O que está errado** | O botão Próxima usa `pagina >= totalPaginas - 1`, antecipando o bloqueio. |
 | **Como cheguei nele** | Executei a expressão original de `frontend/src/componentes/ui.jsx`: página 1 de 2 e página 2 de 3 já retornam desabilitado. |
 | **Impacto** | Última página do catálogo e dos pedidos não pode ser alcançada pelo botão normal. |
-| **Corrigi?** | Não. A correção compartilhada e suas regressões aguardam SDD. |
-| **Arquivos alterados** | Nenhum arquivo de aplicação. |
+| **Corrigi?** | Sim. Limite corrigido por SDD aprovado; nove testes focados passaram. Validação manual pendente. |
+| **Arquivos alterados** | frontend/src/componentes/ui.jsx, frontend/tests/paginacao.test.js e documentos. |
 
 ### Problema 5 — Carrinho não acompanha autenticação (FIX-005)
 
@@ -781,3 +781,43 @@ Esta atualização documental gera nova execução de CI a acompanhar.
 Merge permanece manual e pendente.
 Validação manual não informada; ERP real não utilizado nos testes.
 Os registros anteriores de publicação pendente descrevem etapas passadas.
+
+## Próxima unidade: última página — 2026-10-11
+
+PR #9 confirmado como integrado à main em a1c60d6; pull concluído.
+Branch fix/ultima-pagina criada. FIX-004: expressão atual bloqueia Próxima
+em 1/2 e 2/3, confirmado por execução isolada; componente compartilhado por
+catálogo e pedidos. Spec versão 1 proposta em docs/sdd/ultima-pagina/spec.md.
+Sem alteração de código/testes; revisão do desenho e plano ainda pendentes.
+
+## Desenho de última página aprovado — 2026-10-11
+
+Usuário aprovou spec versão 1 com “aprovado”. Plano versão 1 preparado em
+docs/sdd/ultima-pagina/plan.md: correção compartilhada, nove casos do componente
+real com Vite/React existentes, regressões/build e roteiro manual nas duas telas.
+Plano aguarda revisão; nenhum código, teste ou dependência alterado.
+
+## FIX-004 implementado — 2026-10-11
+
+Usuário aprovou plano versão 1 com “aprovado”, após apresentação nesta sessão.
+Branch fix/ultima-pagina. Produção: em Paginacao, comparação passou de
+pagina >= totalPaginas - 1 para pagina >= totalPaginas. Nenhuma outra
+alteração de produção, contrato, dependência, API, banco ou ERP nesta unidade.
+Teste novo frontend/tests/paginacao.test.js carrega o módulo real transformado
+pelo Vite existente, confere HTML renderizado e callbacks dos botões.
+RED: nove testes, sete passaram e dois falharam (1/2 e 2/3). GREEN focado:
+9/9; suíte frontend 46/46; backend 35/35; build passou com 60 módulos;
+git diff --check passou. Sem servidor ou pedidos reais nos testes.
+AC-01/02/03/04/06 comprovados por verificação isolada/regressões. AC-05 manual
+pendente: percorrer catálogo até última página preservando filtros e voltar;
+conferir pedidos apenas se histórico existente tiver páginas suficientes.
+HTML/callback direto não equivalem a navegação real no navegador.
+Estado Implementado. Sem commit, publicação ou PR; aguardar conferência e
+comando do usuário. Registros anteriores descrevem etapas passadas.
+
+## Autorização de publicação — 2026-10-11
+
+Usuário: “pode abrir o PR”. Autorizados commit, publicação da branch
+fix/ultima-pagina e abertura de PR para main. Checks locais concluídos;
+validação manual não foi informada. CI remoto será acompanhado. Merge manual
+pelo usuário; os registros anteriores de publicação pendente são históricos.

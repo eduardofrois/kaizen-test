@@ -129,3 +129,28 @@ Esta atualização documental gera nova execução de CI a acompanhar.
 Merge permanece manual e pendente.
 Validação manual não informada; ERP real não utilizado nos testes.
 Os registros anteriores de publicação pendente descrevem etapas passadas.
+
+## FIX-004 implementado — 2026-10-11
+
+Usuário aprovou plano versão 1 com “aprovado”, após apresentação nesta sessão.
+Branch fix/ultima-pagina. Produção: em Paginacao, comparação passou de
+pagina >= totalPaginas - 1 para pagina >= totalPaginas. Nenhuma outra
+alteração de produção, contrato, dependência, API, banco ou ERP nesta unidade.
+Teste novo frontend/tests/paginacao.test.js carrega o módulo real transformado
+pelo Vite existente, confere HTML renderizado e callbacks dos botões.
+RED: nove testes, sete passaram e dois falharam (1/2 e 2/3). GREEN focado:
+9/9; suíte frontend 46/46; backend 35/35; build passou com 60 módulos;
+git diff --check passou. Sem servidor ou pedidos reais nos testes.
+AC-01/02/03/04/06 comprovados por verificação isolada/regressões. AC-05 manual
+pendente: percorrer catálogo até última página preservando filtros e voltar;
+conferir pedidos apenas se histórico existente tiver páginas suficientes.
+HTML/callback direto não equivalem a navegação real no navegador.
+Estado Implementado. Sem commit, publicação ou PR; aguardar conferência e
+comando do usuário. Registros anteriores descrevem etapas passadas.
+
+## Autorização de publicação — 2026-10-11
+
+Usuário: “pode abrir o PR”. Autorizados commit, publicação da branch
+fix/ultima-pagina e abertura de PR para main. Checks locais concluídos;
+validação manual não foi informada. CI remoto será acompanhado. Merge manual
+pelo usuário; os registros anteriores de publicação pendente são históricos.
