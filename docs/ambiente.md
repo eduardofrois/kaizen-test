@@ -33,7 +33,7 @@ partir de backend/, pois dotenv carrega .env do diretório de trabalho.
 | ERP_URL | Base HTTP(S) do SIAC; sem acrescentar /produtos ou /pedidos |
 | ERP_TOKEN | Credencial de integração; somente backend |
 | ERP_TIMEOUT_MS | Tempo limite da integração; padrão 8000 |
-| CORS_ORIGEM | Origem prevista do frontend; ignorada pela baseline, ver FIX-002 |
+| CORS_ORIGEM | Origem única HTTP(S) autorizada para CORS; sem caminho/barra final |
 
 README e implementação usam ERP_URL. Não criar env no
 frontend com token ERP. Não publicar os valores nem copiar .env para docs.
@@ -169,3 +169,23 @@ esse comando antes de `npm run build`; nomes dos checks permanecem iguais.
 Validação local: dez testes frontend, 23 backend e build passaram em 2026-10-11.
 Execução remota desta alteração ainda pendente; teste puro não substitui o
 roteiro manual de pesquisa/filtros e histórico.
+
+## CORS — FIX-002
+
+CORS_ORIGEM já existe; não é necessário criar outra variável. Deve ser uma
+origem canônica, por exemplo https://loja.example ou http://localhost:5173,
+sem barra final, caminho, credenciais, query, fragmento ou lista de origens.
+Configuração inválida impede inicialização sem ecoar o valor no erro.
+
+Ausente/vazia em development/test: padrão http://localhost:5173. Em production:
+nenhuma permissão CORS entre origens. No deploy de mesma origem, remova ou
+esvazie o valor localhost copiado do exemplo; frontend separado precisa de
+origem explícita. Reinicie o backend após mudar configuração. A .env local
+não é alterada automaticamente. Proxy Vite e produção de mesma origem seguem
+funcionando sem precisar de permissão CORS.
+
+Origem desconhecida e requisição sem Origin seguem as rotas normalmente, sem
+headers de autorização CORS; autenticação e posse continuam obrigatórias.
+CORS restringe leitura pelo JavaScript no navegador, não é firewall nem
+proteção CSRF completa. Cookie SameSite=Lax limita envio entre sites, mas não
+equivale a uma lista de origens autorizadas.

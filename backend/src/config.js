@@ -16,11 +16,13 @@ function resolverCaminho(bruto, padrao) {
   return path.isAbsolute(valor) ? valor : path.resolve(raizProjeto, valor);
 }
 
+const ambiente = process.env.NODE_ENV?.trim() || 'development';
+
 export const config = {
   raizProjeto,
   porta: Number(process.env.PORT ?? 3001),
   host: process.env.HOST?.trim() || '0.0.0.0',
-  ambiente: process.env.NODE_ENV?.trim() || 'development',
+  ambiente,
 
   caminhoBanco: resolverCaminho(process.env.DB_PATH, './data/ecommerce.db'),
 
@@ -36,7 +38,8 @@ export const config = {
     timeoutMs: Number(process.env.ERP_TIMEOUT_MS ?? 8000),
   },
 
-  corsOrigem: process.env.CORS_ORIGEM?.trim() || 'http://localhost:5173',
+  corsOrigem: process.env.CORS_ORIGEM?.trim()
+    || (ambiente === 'production' ? '' : 'http://localhost:5173'),
 
   paginacao: { tamanhoPadrao: 24, tamanhoMaximo: 100 },
 };
@@ -67,6 +70,16 @@ export function validarConfig() {
       }
     } catch {
       problemas.push('ERP_URL invalida. Informe uma URL absoluta HTTP(S).');
+    }
+  }
+  if (config.corsOrigem) {
+    try {
+      const url = new URL(config.corsOrigem);
+      if (!['http:', 'https:'].includes(url.protocol) || url.origin !== config.corsOrigem) {
+        throw new Error('origem invalida');
+      }
+    } catch {
+      problemas.push('CORS_ORIGEM invalida. Informe uma unica origem HTTP(S), sem caminho ou credenciais.');
     }
   }
   if (problemas.length > 0) {
