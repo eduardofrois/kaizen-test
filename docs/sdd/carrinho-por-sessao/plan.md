@@ -1,7 +1,7 @@
 # Plano de implementação — Carrinho por sessão
 
 **Versão:** 1
-**Estado:** Implementado — testes locais e troca manual confirmados; integração de falhas e CI pendentes
+**Estado:** Implementado — troca manual e CI confirmadas; integração visual complementar pendente
 **Spec:** [spec.md](spec.md), versão 1
 **Baseline/data:** 1d30bcc; 2026-10-11
 **Objetivo:** isolar conteúdo e resultados assíncronos por ciclo autenticado.
@@ -218,7 +218,7 @@ Não adicionar mensagens técnicas de geração/identidade aos fluxos de produto
 - [ ] Conferir URL/filtros após troca; manter testes KZN-312/318 e KZN-325 verdes.
 - [x] Registrar limites: testes do controlador não são testes de hooks/React;
   integração exige navegador. Atualizar spec/plano/inventário/relatório.
-- [ ] Quando autorizado, commit `fix: isola estado do carrinho por sessao` e
+- [x] Quando autorizado, commit `fix: isola estado do carrinho por sessao` e
   publicação da branch. PR somente sob comando explícito; merge pelo usuário.
 
 ## Matriz de validação
@@ -280,3 +280,14 @@ e abertura do PR. Troca X/Y/X sem F5 confirmada pelo usuário; testes locais
 frontend 37/backend 23 e build concluídos. Checks remotos ainda pendentes
 nesta etapa. Merge permanece manual; cenários visuais complementares não
 foram promovidos a validação concluída.
+
+## Publicação e CI do FIX-005 — 2026-10-11
+
+PR #8: https://github.com/eduardofrois/kaizen-test/pull/8
+Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38186410197
+Checks testes-backend e build-frontend passaram no commit 6ffa315. Branch
+fix/carrinho-por-sessao publicada. Troca X/Y/X sem F5 já confirmada pelo usuário;
+regressões controladas locais e CI concluídas. Integração visual específica
+de boot/StrictMode, falhas e resposta atrasada segue pendente; estado geral
+Implementado até completar os critérios restantes. Merge manual pelo usuário.
+Registros anteriores de autorização/abertura/CI pendentes são históricos.

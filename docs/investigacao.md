@@ -21,7 +21,7 @@ Atualização: 2026-10-11. Baseline original: `81897d5`.
 | FIX-001 | Validado por SDD aprovado; seis testes e roteiro manual local | Publicação remota pendente; unidade concluída |
 | FIX-002 | Evidência estática | Especificar origens e validar ambiente |
 | FIX-003, 004, 007, 008 | Verificação isolada realizada | Spec/plan e regressões focadas |
-| FIX-005 | Implementado: 27 testes novos; frontend 37/backend 23/build passaram | Troca X/Y/X confirmada; falhas visuais e CI pendentes; PR aguarda comando |
+| FIX-005 | Implementado: 27 testes novos; frontend 37/backend 23/build passaram | PR #8 com CI passando; integração visual complementar pendente |
 | FIX-006 | Evidência estática | Reprodução integrada e spec/plan |
 | FIX-009 | Restrições CSS localizadas | Reprodução visual desktop/celular |
 | INV-001 a INV-005 | Pontos adicionais | Ver classificações e passos de confirmação em fix.md |
@@ -381,3 +381,14 @@ e abertura do PR. Troca X/Y/X sem F5 confirmada pelo usuário; testes locais
 frontend 37/backend 23 e build concluídos. Checks remotos ainda pendentes
 nesta etapa. Merge permanece manual; cenários visuais complementares não
 foram promovidos a validação concluída.
+
+## Publicação e CI do FIX-005 — 2026-10-11
+
+PR #8: https://github.com/eduardofrois/kaizen-test/pull/8
+Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38186410197
+Checks testes-backend e build-frontend passaram no commit 6ffa315. Branch
+fix/carrinho-por-sessao publicada. Troca X/Y/X sem F5 já confirmada pelo usuário;
+regressões controladas locais e CI concluídas. Integração visual específica
+de boot/StrictMode, falhas e resposta atrasada segue pendente; estado geral
+Implementado até completar os critérios restantes. Merge manual pelo usuário.
+Registros anteriores de autorização/abertura/CI pendentes são históricos.

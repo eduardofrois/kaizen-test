@@ -831,3 +831,14 @@ e abertura do PR. Troca X/Y/X sem F5 confirmada pelo usuário; testes locais
 frontend 37/backend 23 e build concluídos. Checks remotos ainda pendentes
 nesta etapa. Merge permanece manual; cenários visuais complementares não
 foram promovidos a validação concluída.
+
+## Publicação e CI do FIX-005 — 2026-10-11
+
+PR #8: https://github.com/eduardofrois/kaizen-test/pull/8
+Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38186410197
+Checks testes-backend e build-frontend passaram no commit 6ffa315. Branch
+fix/carrinho-por-sessao publicada. Troca X/Y/X sem F5 já confirmada pelo usuário;
+regressões controladas locais e CI concluídas. Integração visual específica
+de boot/StrictMode, falhas e resposta atrasada segue pendente; estado geral
+Implementado até completar os critérios restantes. Merge manual pelo usuário.
+Registros anteriores de autorização/abertura/CI pendentes são históricos.
