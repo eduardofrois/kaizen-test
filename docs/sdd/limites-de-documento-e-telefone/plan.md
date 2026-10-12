@@ -1,7 +1,7 @@
 # Plano — Limites e máscaras de documento e telefone
 
 **Versão:** 1
-**Estado:** Validado pelo usuário — publicação autorizada
+**Estado:** Validado pelo usuário — PR #16 aberto
 **Spec:** [spec.md](spec.md), versão2 aprovada em2026-10-12.
 **Objetivo:** formatar e limitar documento/telefone nas duas telas com edição utilizável.
 **Arquitetura:** funções puras compartilhadas, CampoComMascara específico e
@@ -141,7 +141,7 @@ assert.equal(formatarTelefone('11987654321'), '(11) 98765-4321');
   e pendências manuais; marcar aceites apenas quando comprovados.
 - [x] Usuário valida cadastro/perfil e telefone removível, edição e colagem;
   registrar confirmação antes de Validado. Sem copiar dados pessoais aos docs.
-- [ ] Somente após comando específico: commit `fix: aplica mascaras a documento
+- [x] Somente após comando específico: commit `fix: aplica mascaras a documento
   e telefone`, push da branch e PR para main; acompanhar checks. Merge manual.
 
 ## Matriz de validação
@@ -203,3 +203,10 @@ colagem/edição e remoção de telefone. Estado Validado pelo usuário; regress
 a prova automatizada de autofill/composição/teclado virtual; limitações mantidas.
 Commit, push e PR desta unidade autorizados; merge manual pelo usuário.
 Registros anteriores de manual/publicação pendentes são históricos.
+
+## Publicação FIX-010 — 2026-10-12
+
+Implementação `cc24f45` publicada em `fix/limites-de-documento-e-telefone`.
+PR #16: https://github.com/eduardofrois/kaizen-test/pull/16
+Validação manual confirmada. Checks remotos em acompanhamento; merge manual
+pendente. Nenhum merge realizado pela IA.

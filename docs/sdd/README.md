@@ -457,3 +457,10 @@ colagem/edição e remoção de telefone. Estado Validado pelo usuário; regress
 a prova automatizada de autofill/composição/teclado virtual; limitações mantidas.
 Commit, push e PR desta unidade autorizados; merge manual pelo usuário.
 Registros anteriores de manual/publicação pendentes são históricos.
+
+## Publicação FIX-010 — 2026-10-12
+
+Implementação `cc24f45` publicada em `fix/limites-de-documento-e-telefone`.
+PR #16: https://github.com/eduardofrois/kaizen-test/pull/16
+Validação manual confirmada. Checks remotos em acompanhamento; merge manual
+pendente. Nenhum merge realizado pela IA.
