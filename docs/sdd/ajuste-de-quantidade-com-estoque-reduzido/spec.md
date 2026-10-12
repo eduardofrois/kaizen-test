@@ -133,3 +133,14 @@ Os registros anteriores descrevem etapas históricas, não o estado atual.
 Usuário: “pode commitar e abrir o pr”. Autorizados commit, publicação da branch
 fix/ajuste-de-quantidade-com-estoque-reduzido e PR para main. Validação local
 concluída; manual não informada. CI será acompanhado; merge manual pelo usuário.
+
+## Publicação FIX-006 — 2026-10-12
+
+Commit 58bb69f publicado na branch fix/ajuste-de-quantidade-com-estoque-reduzido.
+PR #11: https://github.com/eduardofrois/kaizen-test/pull/11
+Checks testes-backend e build-frontend passaram para 58bb69f no run
+38198503574: https://github.com/eduardofrois/kaizen-test/actions/runs/38198503574
+Nova execução acompanha esta atualização documental. Estado Implementado; manual pendente.
+Merge permanece manual pelo usuário. Registros de publicação pendente acima
+são históricos. Revisão do conteúdo staged passou após remover linha em branco
+extra ao final do componente; nenhuma mudança comportamental adicional.

@@ -24,7 +24,7 @@ Atualização: 2026-10-11. Baseline original: `81897d5`.
 | FIX-004 | Implementado; regressões/build passaram | PR #10 aberto; CI da implementação passou; manual pendente |
 | FIX-007, 008 | Verificação isolada realizada | Spec/plan e regressões focadas |
 | FIX-005 | Implementado: 27 testes novos; frontend 37/backend 23/build passaram | PR #8 com CI passando; integração visual complementar pendente |
-| FIX-006 | Implementado; backend44/frontend53/build passaram | Validação manual; publicação após comando |
+| FIX-006 | Implementado; backend44/frontend53/build passaram | PR #11 aberto; CI da implementação passou; manual pendente |
 | FIX-009 | Restrições CSS localizadas | Reprodução visual desktop/celular |
 | INV-001 a INV-005 | Pontos adicionais | Ver classificações e passos de confirmação em fix.md |
 | MULTI-001 | Requisito obrigatório | Definir produto, modelagem, contrato e migração por SDD |
@@ -551,3 +551,14 @@ Os registros anteriores descrevem etapas históricas, não o estado atual.
 Usuário: “pode commitar e abrir o pr”. Autorizados commit, publicação da branch
 fix/ajuste-de-quantidade-com-estoque-reduzido e PR para main. Validação local
 concluída; manual não informada. CI será acompanhado; merge manual pelo usuário.
+
+## Publicação FIX-006 — 2026-10-12
+
+Commit 58bb69f publicado na branch fix/ajuste-de-quantidade-com-estoque-reduzido.
+PR #11: https://github.com/eduardofrois/kaizen-test/pull/11
+Checks testes-backend e build-frontend passaram para 58bb69f no run
+38198503574: https://github.com/eduardofrois/kaizen-test/actions/runs/38198503574
+Nova execução acompanha esta atualização documental. Estado Implementado; manual pendente.
+Merge permanece manual pelo usuário. Registros de publicação pendente acima
+são históricos. Revisão do conteúdo staged passou após remover linha em branco
+extra ao final do componente; nenhuma mudança comportamental adicional.
