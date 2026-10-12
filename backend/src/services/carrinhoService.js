@@ -36,6 +36,7 @@ async function enriquecerItens(linhas) {
           descricao: linha.codigo_produto,
           quantidade: linha.quantidade,
           disponivel: false,
+          quantidade_editavel: false,
           problema: 'Produto indisponivel no catalogo.',
           preco_unitario: 0,
           valor_total: 0,
@@ -62,6 +63,7 @@ async function enriquecerItens(linhas) {
         quantidade: linha.quantidade,
         estoque: produto.estoque,
         disponivel: problema === null,
+        quantidade_editavel: Boolean(produto.ativo && produto.estoque > 0),
         problema,
         valor_total: paraReais(totalCentavos),
       };

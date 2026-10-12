@@ -46,7 +46,7 @@ em 2026-10-11 e implementada nesta sessão.
 | FIX-003 | Perda de centavos na conversão monetária | Validada localmente | Alta |
 | FIX-004 | Botão Próxima bloqueia última página | Implementado; manual pendente | Alta |
 | FIX-005 | Carrinho não acompanha login/logout/troca de conta | Manual pelo usuário e estática | Alta |
-| FIX-006 | Estoque reduzido impede ajuste de quantidade na UI | Estática | Alta |
+| FIX-006 | Estoque reduzido impede ajuste de quantidade na UI | Implementado; manual pendente | Alta |
 | FIX-007 | Telefone opcional não pode ser removido | Isolada | Média |
 | FIX-008 | Login/troca de senha removem espaços aceitos no cadastro | Isolada | Alta |
 | FIX-009 | Cabeçalho e grade inadequados para telas pequenas | Estática; visual pendente | Média |
@@ -277,7 +277,7 @@ resposta atrasada não sobrescreve a nova identidade; erro técnico é visível.
 
 ## FIX-006 — Item com estoque reduzido não pode ser ajustado
 
-**Estado:** evidência estática; reprodução visual pendente; não corrigido.
+**Estado:** implementado por SDD aprovado; regressões locais passaram; validação manual da correção pendente.
 
 **Onde:** frontend/src/paginas/Carrinho.jsx, LinhaItem(), linha 45:
 `disabled={ocupado || !item.disponivel}`.
@@ -946,3 +946,56 @@ Checks testes-backend e build-frontend passaram para 6607796 no run
 Esta atualização documental dispara novos checks a acompanhar. Manual pendente;
 estado Implementado. Merge manual pelo usuário, não realizado nesta sessão.
 Registros anteriores de publicação pendente são históricos.
+
+## Investigação de ajuste de quantidade — 2026-10-11
+
+PR #10 confirmado integrado na main (0845692); pull concluído. Branch
+fix/ajuste-de-quantidade-com-estoque-reduzido. Usuário confirmou reprodução
+do FIX-006 no frontend. Causa: input bloqueado por disponivel=false mesmo
+quando produto ativo permite reduzir a quantidade para o estoque disponível.
+Spec proposta: campo derivado quantidade_editavel, bloqueio para zero/inativo/
+ausente, limite inteiro 1..min(99,estoque), revalidação e conflito no backend.
+Nota KZN-7F3A relida em carrinhoService; registro de leitura, não diagnóstico.
+Spec em docs/sdd/ajuste-de-quantidade-com-estoque-reduzido/spec.md. Revisão do
+desenho e plano pendentes. Nenhum código/teste/dependência alterado.
+
+## Desenho FIX-006 aprovado e plano preparado — 2026-10-11
+
+Usuário aprovou spec versão 1 com “aprovado”. Plano versão 1 documenta
+quantidade_editavel, extração restrita da linha para teste real, limites no
+input e regressões SQLite/ERP fake para redução, conflito e posse.
+Arquivo: docs/sdd/ajuste-de-quantidade-com-estoque-reduzido/plan.md.
+Implementação pendente de aprovação do plano; código/testes intactos.
+
+## FIX-006 implementado — 2026-10-11
+
+Aprovação do plano versão 1: usuário “aprovao”, após apresentação do plano.
+Campo derivado quantidade_editavel adicionado no backend: produto ativo com
+estoque positivo permite ajustar mesmo com quantidade acima do estoque;
+zero/inativo/ausente/falha de consulta retornam false. disponivel e checkout
+preservados. Linha extraída para LinhaItemCarrinho.jsx; input respeita inteiro
+1..min(99,estoque), ocupado e capacidade; Remover preservado. Sem rascunho novo.
+RED backend focado: 27 casos, 20 passaram/7 falharam por capacidade ausente.
+Controles de conflito e posse já passaram antes da correção. RED frontend:
+7 casos/7 falhas de habilitação, limites e guardas do handler. Após correção:
+27/27 backend focados e 7/7 frontend focados; suítes completas backend44/44 e
+frontend53/53; build passou com61 módulos. Adicionados9 testes backend e7 frontend.
+Redução5→3 comprovada com subtotal60/contador3/checkoutliberado no fake; queda
+adicional para2 retorna409, preserva quantidade e linhas de outro usuário.
+Teste de posse retorna404. Componente real comprova input/callback, label,
+mensagem, limites e bloqueios; não equivale a navegação em navegador.
+Nota KZN-7F3A preservada e relida em carrinhoService. Revisão React focada:
+sem hooks/requisições novos, callbacks e acessibilidade da linha preservados.
+Nenhuma env, dependência, schema, banco real ou estoque SIAC alterado; testes
+com SQLite em memória/fetch sintético, sem pedido real. Estado Implementado.
+AC-01 a AC-04 passaram isoladamente; AC-05 conflito/posse passaram, apresentação
+visual do erro não conferida; AC-06 regressões/build passaram, manual pendente.
+Próximo passo: usuário conferir redução na linha pendente, total e checkout;
+remoção de item sem estoque. Commit/publicação/PR aguardam comando explícito.
+Os registros anteriores descrevem etapas históricas, não o estado atual.
+
+## Autorização de publicação FIX-006 — 2026-10-11
+
+Usuário: “pode commitar e abrir o pr”. Autorizados commit, publicação da branch
+fix/ajuste-de-quantidade-com-estoque-reduzido e PR para main. Validação local
+concluída; manual não informada. CI será acompanhado; merge manual pelo usuário.

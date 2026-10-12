@@ -55,7 +55,7 @@ function consultar(cenario) {
       return new Response(JSON.stringify(dados), { status, headers: { 'Content-Type': 'application/json' } });
     };
     try {
-      const { lerCarrinho } = await import(${JSON.stringify(moduloCarrinho)});
+      const { lerCarrinho, alterarQuantidade } = await import(${JSON.stringify(moduloCarrinho)});
       const antes = db.prepare('SELECT * FROM carrinho_itens ORDER BY id').all();
       const carrinho = await lerCarrinho(1, db);
       let checkoutErro = null;
@@ -70,8 +70,16 @@ function consultar(cenario) {
         produtos.get(entrada.itens[0].codigo).estoque = entrada.novoEstoque;
         releitura = await lerCarrinho(1, db);
       }
+      let alterado = null;
+      let alteracaoErro = null;
+      if (entrada.alteracao) {
+        const { codigo, quantidade, estoqueAntes, usuario = 1 } = entrada.alteracao;
+        if (estoqueAntes !== undefined) produtos.get(codigo).estoque = estoqueAntes;
+        try { alterado = await alterarQuantidade(usuario, codigo, quantidade, db); }
+        catch (erro) { alteracaoErro = { status: erro.status, codigo: erro.codigo }; }
+      }
       const depois = db.prepare('SELECT * FROM carrinho_itens ORDER BY id').all();
-      console.log(JSON.stringify({ carrinho, antes, depois, checkoutErro, posts, releitura }));
+      console.log(JSON.stringify({ carrinho, antes, depois, checkoutErro, posts, releitura, alterado, alteracaoErro }));
     } finally { db.close(); }
   `;
   try {
@@ -89,7 +97,7 @@ function consultar(cenario) {
     if (resultado.error) throw resultado.error;
     assert.equal(resultado.status, 0, resultado.stderr);
     const dados = JSON.parse(resultado.stdout.trim().split('\n').at(-1));
-    assert.deepEqual(dados.depois, dados.antes, 'leitura/bloqueio nao altera itens');
+    if (!dados.alterado) assert.deepEqual(dados.depois, dados.antes, 'leitura/bloqueio nao altera itens');
     assert.equal(dados.posts, 0, 'nenhum pedido deve ser criado');
     return dados;
   } finally { rmSync(cwd, { recursive: true, force: true }); }
@@ -193,4 +201,48 @@ test('FIX-003: subtotais e total decimal preservam centavos', () => {
   assert.equal(carrinho.quantidade_pecas, 6);
   assert.equal(carrinho.quantidade_itens, 3);
   assert.equal(carrinho.pronto_para_checkout, false);
+});
+
+
+for (const [nome, opcoes, esperado] of [
+  ['disponivel', {}, true], ['reduzido', { quantidade: 5, estoque: 3 }, true],
+  ['inativo', { ativo: false }, false], ['zero', { estoque: 0 }, false],
+  ['ausente', { statusERP: 404 }, false], ['falha', { statusERP: 500 }, false],
+]) {
+  test('FIX-006: capacidade de editar ' + nome, () => {
+    const { carrinho } = consultar({ itens: [item('A', opcoes)] });
+    assert.equal(carrinho.itens[0].quantidade_editavel, esperado);
+  });
+}
+
+function itensComEstoqueReduzido() {
+  return [item('A', { quantidade: 5, estoque: 3 }), item('B', { usuario: 2, quantidade: 2 })];
+}
+
+test('FIX-006: reduzir resolve pendencia e preserva outro usuario', () => {
+  const dados = consultar({ itens: itensComEstoqueReduzido(), alteracao: { codigo: 'A', quantidade: 3 } });
+  assert.equal(dados.carrinho.itens[0].disponivel, false);
+  assert.equal(dados.carrinho.itens[0].quantidade_editavel, true);
+  assert.equal(dados.carrinho.valor_total, 0);
+  assert.equal(dados.carrinho.pronto_para_checkout, false);
+  assert.equal(dados.alteracaoErro, null);
+  assert.equal(dados.alterado.itens[0].quantidade, 3);
+  assert.equal(dados.alterado.itens[0].valor_total, 60);
+  assert.equal(dados.alterado.valor_total, 60);
+  assert.equal(dados.alterado.quantidade_pecas, 3);
+  assert.equal(dados.alterado.pronto_para_checkout, true);
+  assert.deepEqual(dados.depois, dados.antes.map(linha => linha.usuario_id === 1 ? { ...linha, quantidade: 3 } : linha));
+});
+
+test('FIX-006: nova queda rejeita sem alterar linhas', () => {
+  const dados = consultar({ itens: itensComEstoqueReduzido(), alteracao: { codigo: 'A', quantidade: 3, estoqueAntes: 2 } });
+  assert.deepEqual(dados.alteracaoErro, { status: 409, codigo: 'ESTOQUE_INSUFICIENTE' });
+  assert.equal(dados.alterado, null);
+  assert.deepEqual(dados.depois, dados.antes);
+});
+
+test('FIX-006: usuario nao altera produto alheio', () => {
+  const dados = consultar({ itens: itensComEstoqueReduzido(), alteracao: { codigo: 'A', quantidade: 3, usuario: 2 } });
+  assert.deepEqual(dados.alteracaoErro, { status: 404, codigo: 'NAO_ENCONTRADO' });
+  assert.deepEqual(dados.depois, dados.antes);
 });
