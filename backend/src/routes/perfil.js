@@ -6,6 +6,7 @@ import {
   documento,
   exigirObjeto,
   senha,
+  senhaDeAutenticacao,
   telefone,
   textoObrigatorio,
 } from '../lib/validacao.js';
@@ -45,7 +46,7 @@ rotasPerfil.patch('/senha', async (req, res) => {
   const corpo = exigirObjeto(req.body);
   const erros = new ColetorDeErros();
 
-  const atual = textoObrigatorio(corpo.senha_atual, 'senha_atual', erros, { min: 1, max: 200 });
+  const atual = senhaDeAutenticacao(corpo.senha_atual, 'senha_atual', erros);
   const nova = senha(corpo.nova_senha, 'nova_senha', erros);
 
   erros.lancarSeInvalido('Nao foi possivel trocar a senha.');

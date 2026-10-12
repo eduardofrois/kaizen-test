@@ -16,6 +16,7 @@ import {
   email,
   exigirObjeto,
   senha,
+  senhaDeAutenticacao,
   telefone,
   textoObrigatorio,
 } from '../lib/validacao.js';
@@ -49,7 +50,7 @@ rotasAuth.post('/login', async (req, res) => {
   const erros = new ColetorDeErros();
 
   const enderecoEmail = email(corpo.email, 'email', erros);
-  const texto = textoObrigatorio(corpo.senha, 'senha', erros, { min: 1, max: 200 });
+  const texto = senhaDeAutenticacao(corpo.senha, 'senha', erros);
 
   erros.lancarSeInvalido('Informe e-mail e senha.');
 

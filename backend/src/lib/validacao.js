@@ -101,6 +101,18 @@ export function email(valor, campo, erros) {
   return limpo;
 }
 
+export function senhaDeAutenticacao(valor, campo, erros) {
+  if (typeof valor !== 'string' || valor.trim().length === 0) {
+    erros.adicionar(campo, 'Campo obrigatorio.');
+    return null;
+  }
+  if (valor.length > 200) {
+    erros.adicionar(campo, 'Deve ter no maximo 200 caracteres.');
+    return null;
+  }
+  return valor;
+}
+
 export function senha(valor, campo, erros) {
   if (typeof valor !== 'string' || valor.length === 0) {
     erros.adicionar(campo, 'Campo obrigatorio.');

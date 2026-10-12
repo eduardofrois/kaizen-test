@@ -48,7 +48,7 @@ em 2026-10-11 e implementada nesta sessão.
 | FIX-005 | Carrinho não acompanha login/logout/troca de conta | Manual pelo usuário e estática | Alta |
 | FIX-006 | Estoque reduzido impede ajuste de quantidade na UI | Implementado; manual pendente | Alta |
 | FIX-007 | Telefone opcional não pode ser removido | Implementado; manual pendente | Média |
-| FIX-008 | Login/troca de senha removem espaços aceitos no cadastro | Isolada | Alta |
+| FIX-008 | Login/troca de senha removem espaços aceitos no cadastro | Validado; publicação autorizada | Alta |
 | FIX-009 | Cabeçalho e grade inadequados para telas pequenas | Estática; visual pendente | Média |
 | FIX-010 | Inputs de documento/telefone sem limite de entrada | Manual no cadastro; estática no perfil | Média; SDD pendente |
 
@@ -333,7 +333,7 @@ nome/documento permanecem coerentes.
 
 ## FIX-008 — Senhas recebem trim apenas em alguns fluxos
 
-**Estado:** confirmado com funções reais de hash/verificação; não corrigido.
+**Estado:** validado por testes isolados, regressões e confirmação manual do usuário em 2026-10-12; publicação autorizada.
 
 **Onde:** routes/auth.js, cadastro usa senha(), login usa textoObrigatorio()
 (linha 52); routes/perfil.js usa textoObrigatorio() para senha_atual (linha 45).
@@ -1072,3 +1072,55 @@ https://github.com/eduardofrois/kaizen-test/actions/runs/38314449233
 Validação manual confirmada pelo usuário. Estado Validado; merge manual pendente.
 Esta atualização documental gera novos checks a acompanhar. Registros anteriores
 de publicação/CI/manual pendentes são históricos. Nenhum merge realizado pela IA.
+
+## Investigação de espaços em senha — 2026-10-12
+
+PR #12 integrado na main f744b39; pull concluído. Branch
+fix/espacos-na-autenticacao-de-senha. Inspeção confirma trim em login/senha_atual
+e preservação em cadastro/nova senha, com NFKC simétrico na criptografia.
+Spec versão1 propõe validador de autenticação que preserva entrada, rejeita
+vazio/whitespace/não string e mede máximo200 na string original. Sem alterar
+política de criação, hashes existentes ou demais textos. Spec em
+docs/sdd/espacos-na-autenticacao-de-senha/spec.md; revisão e plano pendentes.
+Nenhum código/teste, env, banco real ou ERP alterado nesta unidade.
+
+## Spec FIX-008 aprovada — 2026-10-12
+
+Usuário aprovou spec versão1 com “aprovado”. Plano preparado em
+docs/sdd/espacos-na-autenticacao-de-senha/plan.md: validador específico,
+rotas login/senha_atual e provas HTTP isoladas com scrypt real, banco temporário
+e credenciais sintéticas. Hashes/tokens não serão expostos nas asserções.
+Plano em revisão; código/testes/dependências intactos nesta unidade.
+
+## FIX-008 implementado — 2026-10-12
+
+Plano versão1 aprovado pelo usuário com “aprovado” após apresentação nesta
+sessão. Criado senhaDeAutenticacao em validacao.js, usado no login e senha_atual.
+Retorna string original, rejeita vazio/whitespace/não string e mede máximo200
+incluindo espaços. Política de criação, textos comuns, scrypt/NFKC preservados.
+RED focado:7 cenários,3 passaram/4 falharam. Uma falha estrutural de export
+inexistente; três comportamentais: login com bordas401 em vez de200, troca422
+em vez de200 e entrada acima200 com espaços aceita após trim. GREEN7/7.
+Testes agrupam tabelas de validador e fluxos HTTP completos; não equivalem
+à contagem de cada asserção. Suíte backend72/72, frontend53/53; build61 módulos,
+sintaxe dos três módulos e git diff --check passaram.
+HTTP local com SQLite temporário, scrypt real e contas/config sintéticas;
+sem .env/banco real, ERP, dependências, schema ou frontend alterados.
+Comprovados cadastro/login original versus trim, troca e login novo/antigo,
+senhas sem espaços/internos, normalização NFKC, limites/erros de campo,
+política de criação, falhas sem alteração do hash, sessão e usuário2 intacto.
+Hashes/tokens/cookies mantidos apenas em memória de teste, sem impressão.
+Estado Implementado. AC-01 a AC-05 passaram isoladamente. AC-06 regressões e
+build passaram; confirmação manual pendente. Roteiro: conta de teste com senha
+contendo espaços nas bordas, sair/entrar, trocar para outra senha com espaços
+e sair/entrar novamente. Não registrar credenciais pessoais nos documentos.
+Sem migração ou fallback de credencial. Commit, publicação e PR aguardam comando
+explícito; CI não executado nesta unidade. Registros anteriores são históricos.
+
+## FIX-008 validado — 2026-10-12
+
+Usuário confirmou “validei a correcao, pode abrir o PR”. Validação manual
+confirmada; AC-06 concluído junto às regressões locais registradas acima.
+Estado Validado. Commit, push da branch e abertura do PR autorizados nesta
+sessão. CI remoto será acompanhado após a publicação; merge manual pelo usuário.
+Registros anteriores de manual/autorização pendentes são históricos.
