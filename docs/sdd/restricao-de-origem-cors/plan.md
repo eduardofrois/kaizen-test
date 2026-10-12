@@ -1,7 +1,7 @@
 # Plano de implementação — Restrição de origem CORS
 
 **Versão:** 1
-**Estado:** Validado — publicação autorizada
+**Estado:** Validado — PR #15 aberto
 **Spec:** [spec.md](spec.md), versão1 aprovada.
 **Objetivo:** conceder CORS somente à origem configurada.
 **Arquitetura:** callback de origem no middleware existente e validação fail-fast
@@ -147,7 +147,7 @@ middlewares sem necessidade. Sem erro403 e sem bypass da autenticação.
 - [x] Usuário reinicia backend, acessa loja via localhost5173, confere catálogo,
   login, perfil e sessão apósF5. Não exige mudar segredo ou resetar banco.
   Registrar confirmação para AC-05; não registrar dados pessoais.
-- [ ] Após comando específico: commit `fix: restringe cors a origem configurada`,
+- [x] Após comando específico: commit `fix: restringe cors a origem configurada`,
   publicar branch e abrir PR para main; acompanhar checks. Merge manual.
 
 ## Matriz de validação
@@ -207,3 +207,10 @@ manual. Estado Validado. Commit, publicação da branch e PR autorizados.
 Confirmação de uso normal não equivale a exploração autenticada em navegador.
 CI remoto será acompanhado; merge manual pelo usuário. Registros anteriores
 de manual/autorização pendentes são históricos.
+
+## Publicação FIX-002 — 2026-10-12
+
+Implementação `b3096f8` publicada em `fix/restricao-de-origem-cors`.
+PR #15: https://github.com/eduardofrois/kaizen-test/pull/15
+Estado Validado, confirmação manual registrada. Checks remotos em acompanhamento;
+merge manual pendente. Nenhum merge realizado pela IA.

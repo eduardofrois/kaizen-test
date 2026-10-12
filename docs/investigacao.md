@@ -756,3 +756,10 @@ manual. Estado Validado. Commit, publicação da branch e PR autorizados.
 Confirmação de uso normal não equivale a exploração autenticada em navegador.
 CI remoto será acompanhado; merge manual pelo usuário. Registros anteriores
 de manual/autorização pendentes são históricos.
+
+## Publicação FIX-002 — 2026-10-12
+
+Implementação `b3096f8` publicada em `fix/restricao-de-origem-cors`.
+PR #15: https://github.com/eduardofrois/kaizen-test/pull/15
+Estado Validado, confirmação manual registrada. Checks remotos em acompanhamento;
+merge manual pendente. Nenhum merge realizado pela IA.
