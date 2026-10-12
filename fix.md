@@ -47,9 +47,9 @@ em 2026-10-11 e implementada nesta sessão.
 | FIX-004 | Botão Próxima bloqueia última página | Implementado; manual pendente | Alta |
 | FIX-005 | Carrinho não acompanha login/logout/troca de conta | Manual pelo usuário e estática | Alta |
 | FIX-006 | Estoque reduzido impede ajuste de quantidade na UI | Implementado; manual pendente | Alta |
-| FIX-007 | Telefone opcional não pode ser removido | Implementado; manual pendente | Média |
+| FIX-007 | Telefone opcional não pode ser removido | Validado pelo usuário | Média |
 | FIX-008 | Login/troca de senha removem espaços aceitos no cadastro | Isolada | Alta |
-| FIX-009 | Cabeçalho e grade inadequados para telas pequenas | Estática; visual pendente | Média |
+| FIX-009 | Cabeçalho e grade inadequados para telas pequenas | Validado pelo usuário | Média |
 | FIX-010 | Inputs de documento/telefone sem limite de entrada | Manual no cadastro; estática no perfil | Média; SDD pendente |
 
 Prioridades são propostas para ordenar trabalho, não decisões aprovadas.
@@ -361,7 +361,7 @@ para string composta só de espaços documentada (não atende letra+número).
 
 ## FIX-009 — Layout sem adaptação suficiente para celular
 
-**Estado:** restrições CSS confirmadas; reprodução visual e medidas pendentes.
+**Estado:** implementado e validado pelo usuário em 2026-10-12; publicação autorizada. Matriz autenticada completa não executada pela IA.
 
 **Onde:** componentes/Cabecalho.jsx linha 66, busca com min-w-[380px] numa
 linha flex junto com marca e navegação; paginas/Catalogo.jsx linha 183, grade
@@ -1072,3 +1072,76 @@ https://github.com/eduardofrois/kaizen-test/actions/runs/38314449233
 Validação manual confirmada pelo usuário. Estado Validado; merge manual pendente.
 Esta atualização documental gera novos checks a acompanhar. Registros anteriores
 de publicação/CI/manual pendentes são históricos. Nenhum merge realizado pela IA.
+
+## Investigação FIX-009 — 2026-10-12
+
+Main sincronizada em f744b39; PR #13 ainda não integrado na consulta remota.
+Branch fix/layout-responsivo-do-catalogo. Reprodução visual local como visitante:
+viewport solicitado375x812, largura útil reportada341px; página/cabeçalho702px,
+busca380px. Screenshot observado confirma corte do cabeçalho e cards comprimidos.
+Nota de revisão KZN-5D1E lida em Cabecalho.jsx. Usuário escolheu ações visíveis,
+distribuídas em linhas, sem menu recolhível. Spec versão1 em proposta em
+ docs/sdd/layout-responsivo-do-catalogo/spec.md; aprovação e plano pendentes.
+Sem código/testes/dependências alterados. Autenticado e matriz de larguras
+permanecem pendentes; não declarar validação da correção nesta etapa.
+
+## Spec FIX-009 aprovada — 2026-10-12
+
+Usuário aprovou spec versão1 com “se temos essas informações na spec, aprovada”,
+após confirmar busca flexível e grade responsiva. Plano versão1 preparado em
+docs/sdd/layout-responsivo-do-catalogo/plan.md. Implementação aguarda aprovação
+do plano; nenhum código, teste ou dependência alterado nesta etapa.
+
+## FIX-009 implementado — 2026-10-12
+
+Plano versão1 aprovado com “aprovado” nesta sessão. Alterados apenas
+Cabecalho.jsx e Catalogo.jsx: marca sem compressão, busca flexível sem mínimo
+380px, navegação com quebra de linha, cabeçalho em coluna abaixo1024px e grade
+1/2/4 colunas nos limites640/1024px. Nota KZN-5D1E preservada e reavaliada:
+o trecho do cabeçalho continha a restrição de largura responsável pelo corte.
+Nenhum handler, contrato, estado React, paleta ou dependência alterado.
+Revisão React: DOM/ordem de teclado e semântica preservados, sem novos hooks.
+
+Medições no catálogo local como visitante (largura útil/clientWidth/scrollWidth
+iguais em cada caso):320,375,390,640,768,1024,1280px. Colunas observadas:
+1,1,1,2,2,4,4. Larguras da busca respectivamente288,343,358,608,736,587.45,715.45px.
+Paginação em320px: largura288px e scrollWidth288px, sem ajuste necessário.
+Não foi necessário alterar CardProduto ou ui.jsx. Busca amortecedor retornou
+produtos; categoria SUSPENSAO e estoque atualizados na URL mantendo busca.
+Tab da busca alcançou Entrar com outline solid. Login em375px sem overflow.
+Screenshot local: /private/tmp/kaizen-fix009-mobile.png (artefato temporário,
+não versionado). Evidência anterior: screenshot do usuário e medida341/702px.
+
+Regressões: frontend53/53, backend65/65, build61 módulos passaram. Backend65
+corresponde à baseline main f744b39; FIX-008 está em outro PR e não nesta branch.
+Sem teste que replique classes CSS. Estado Implementado: faltam matriz
+autenticada/contador/perfil, percurso completo de teclado/rolagem, adição e
+confirmação manual pelo usuário. Estado adicionando e captura desktop ainda
+não conferidos visualmente. Commit/publicação/PR aguardam comando explícito.
+
+### Ajuste FIX-009 — ações de visitante
+
+Em 2026-10-12, usuário solicitou Entrar e Criar conta ocupando a linha inteira
+com larguras iguais. Aplicado flex-1/text-center abaixo1024px, preservando gap
+e larguras pelo conteúdo no desktop. ItemMenu aceita className opcional.
+Validação manual geral continua pendente.
+
+Distribuição exata usa grid-cols-2 na navegação de visitante abaixo1024px,
+pois flex-1 isolado pode diferir por causa dos paddings dos links. Navegação
+autenticada continua flex-wrap; desktop usa flex.
+
+## Validação e publicação autorizada FIX-009 — 2026-10-12
+
+Usuário confirmou “otimo, validado, pode abrir o PR”, incluindo o ajuste dos
+botões Entrar/Criar conta em metades iguais. Validação manual confirmada pelo
+usuário; não atribuir a essa confirmação execução detalhada da matriz de
+todos os estados. Medidas de visitante e limitações registradas acima mantidas.
+Build final após grid-cols-2 passou com61 módulos; git diff --check passou.
+Commit, push e PR desta unidade autorizados. Merge manual pelo usuário.
+
+## Publicação FIX-009 — 2026-10-12
+
+Implementação: `c50fead`. Branch `fix/layout-responsivo-do-catalogo` publicada.
+PR #14: https://github.com/eduardofrois/kaizen-test/pull/14
+Validação manual confirmada; checks remotos em acompanhamento. Merge manual
+pendente. Nenhum merge realizado pela IA.
