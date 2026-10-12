@@ -1,7 +1,7 @@
 # Spec — Layout responsivo do catálogo
 
 **Versão:** 1
-**Estado:** Validado pelo usuário — publicação autorizada
+**Estado:** Validado pelo usuário — PR #14 aberto
 **Origem:** FIX-009
 **Baseline/data:** f744b39; 2026-10-12
 **Branch:** fix/layout-responsivo-do-catalogo
@@ -139,3 +139,10 @@ usuário; não atribuir a essa confirmação execução detalhada da matriz de
 todos os estados. Medidas de visitante e limitações registradas acima mantidas.
 Build final após grid-cols-2 passou com61 módulos; git diff --check passou.
 Commit, push e PR desta unidade autorizados. Merge manual pelo usuário.
+
+## Publicação FIX-009 — 2026-10-12
+
+Implementação: `c50fead`. Branch `fix/layout-responsivo-do-catalogo` publicada.
+PR #14: https://github.com/eduardofrois/kaizen-test/pull/14
+Validação manual confirmada; checks remotos em acompanhamento. Merge manual
+pendente. Nenhum merge realizado pela IA.

@@ -1,7 +1,7 @@
 # Plano de implementação — Layout responsivo do catálogo
 
 **Versão:** 1
-**Estado:** Validado pelo usuário — publicação autorizada
+**Estado:** Validado pelo usuário — PR #14 aberto
 **Spec:** [spec.md](spec.md), versão 1 aprovada em 2026-10-12.
 **Objetivo:** eliminar cortes no cabeçalho e nos cards em telas pequenas.
 **Arquitetura:** classes responsivas nos componentes existentes, sem novo estado.
@@ -115,7 +115,7 @@ indisponível e adicionando, nomes longos e contador preenchido.
 - [x] Atualizar documentos com medidas/screenshots, KZN-5D1E, regressões e
   pendências. Marcar Implementado enquanto houver aceite manual pendente.
 - [x] Usuário valida em seu navegador; registrar confirmação antes de Validado.
-- [ ] Após comando específico, revisar conteúdo/histórico/segredos, commitar
+- [x] Após comando específico, revisar conteúdo/histórico/segredos, commitar
   `fix: adapta cabecalho e catalogo para telas pequenas`, publicar branch e
   abrir PR para main. Acompanhar checks. Merge manual pelo usuário.
 
@@ -185,3 +185,10 @@ usuário; não atribuir a essa confirmação execução detalhada da matriz de
 todos os estados. Medidas de visitante e limitações registradas acima mantidas.
 Build final após grid-cols-2 passou com61 módulos; git diff --check passou.
 Commit, push e PR desta unidade autorizados. Merge manual pelo usuário.
+
+## Publicação FIX-009 — 2026-10-12
+
+Implementação: `c50fead`. Branch `fix/layout-responsivo-do-catalogo` publicada.
+PR #14: https://github.com/eduardofrois/kaizen-test/pull/14
+Validação manual confirmada; checks remotos em acompanhamento. Merge manual
+pendente. Nenhum merge realizado pela IA.
