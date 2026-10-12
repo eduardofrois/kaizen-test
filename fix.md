@@ -42,7 +42,7 @@ em 2026-10-11 e implementada nesta sessão.
 | ID | Assunto | Evidência | Prioridade proposta |
 |---|---|---|---|
 | FIX-001 | Credenciais e segredo JWT literais/fallback | Corrigido; seis testes e validação manual local | Concluído no escopo aprovado |
-| FIX-002 | CORS com qualquer origem e credenciais | Estática | Alta; impacto depende do ambiente |
+| FIX-002 | CORS com qualquer origem e credenciais | Validado; testes e manual concluídos | Publicação autorizada |
 | FIX-003 | Perda de centavos na conversão monetária | Validada localmente | Alta |
 | FIX-004 | Botão Próxima bloqueia última página | Implementado; manual pendente | Alta |
 | FIX-005 | Carrinho não acompanha login/logout/troca de conta | Manual pelo usuário e estática | Alta |
@@ -141,7 +141,7 @@ Nenhuma nova alteração de aplicação realizada; publicação remota pendente.
 
 ## FIX-002 — CORS aceita qualquer origem com credenciais
 
-**Estado:** não corrigido; reprodução em navegador pendente.
+**Estado:** validado por testes isolados, regressões e confirmação manual do usuário em 2026-10-12; publicação autorizada.
 
 **Onde:** backend/src/app.js, criarApp(), linha 28:
 `cors({ origin: true, credentials: true })`.
@@ -1145,3 +1145,68 @@ Implementação: `c50fead`. Branch `fix/layout-responsivo-do-catalogo` publicada
 PR #14: https://github.com/eduardofrois/kaizen-test/pull/14
 Validação manual confirmada; checks remotos em acompanhamento. Merge manual
 pendente. Nenhum merge realizado pela IA.
+
+## Investigação FIX-002 — 2026-10-12
+
+Main sincronizada em14f5163 após merge do PR14. Branch fix/restricao-de-origem-cors.
+Revisados comentários de app.js, proxy Vite, cookies e config.corsOrigem.
+Proposta: permitir apenas origem configurada, padrão localhost5173 em dev/test
+e nenhuma permissão CORS por padrão em produção; requisições seguem rotas
+normalmente sem headers CORS quando origem não autorizada. CORS não é barreira
+de autenticação/CSRF. Spec versão1 em docs/sdd/restricao-de-origem-cors/spec.md.
+Aprovação e plano pendentes. Nenhum código/teste/env real alterado.
+
+## Spec FIX-002 aprovada — 2026-10-12
+
+Usuário confirmou “spec aprovada, pode fazer o plan”. Plano versão1 preparado
+em docs/sdd/restricao-de-origem-cors/plan.md: configuração canônica, callback
+com comparação exata, testes HTTP/SQLite isolados e guia por ambiente.
+Nenhuma variável nova; .env real preservada. Plano em revisão, implementação
+não autorizada nesta etapa. Nenhum código/teste/dependência alterado.
+
+## FIX-002 implementado — 2026-10-12
+
+Plano versão1 aprovado pelo usuário com “aprovado” após apresentação.
+app.js compara Origin exatamente com config.corsOrigem; desconhecida/null/
+ausente não recebe permissões CORS e segue as rotas/autenticação normais.
+config.js valida origem canônica HTTP(S), sem ecoar entrada inválida; padrão
+localhost5173 em dev/test, vazio em produção sem configuração. .env.example
+e guia de ambiente atualizados. Nenhuma variável nova; .env real preservada.
+Nota de revisão KZN-2B9C lida e preservada em config.js. Comentário antigo
+sobre refletir qualquer origem substituído pela política efetiva.
+
+Adicionados19 testes de configuração (alguns com tabelas internas) e5 cenários
+HTTP agrupados. RED24:5 passaram/19 falharam por default produção, ausência de
+validação e reflexão indevida. GREEN24/24; com config.test.js30/30. Suíte
+backend89/89, frontend53/53 e build61 módulos passaram; sintaxe app/config e
+git diff --check passaram. Baseline14f5163 contém65 testes backend anteriores;
+a correção FIX-008 permanece em PR separado e não compõe essa contagem.
+
+HTTP usa app real, SQLite/schema temporários, JWT/usuários sintéticos e fetch
+restrito à origem local. Comprovados GET/OPTIONS permitido, métodos/headers,
+Vary, origens enganadoras/porta/null/ausente, defaults em3 ambientes,401 sem
+sessão e perfil do usuário1 sem hash com sessão. Origem negada com sessão
+continua200 no cliente HTTP sem permissão CORS, conforme decisão da spec.
+Não executada exploração no navegador; não é promessa de proteção CSRF.
+Ajuste de roteiro: /auth/eu exige autenticação, diferente do pressuposto no
+plano inicial; teste usa /perfil com401 sem sessão, mantendo objetivo aprovado.
+Estado Implementado: AC-01 a04 passaram isoladamente; AC-05 regressões/build
+passaram, confirmação manual pendente. Reiniciar backend, abrir loja via
+localhost5173, conferir catálogo, login, perfil e sessão apósF5. Sem reset
+ou alteração de segredo. Commit/push/PR aguardam comando específico.
+
+## FIX-002 validado — 2026-10-12
+
+Usuário confirmou “validado, pode abrir o PR” após roteiro de reinício, catálogo,
+login/perfil e sessão apósF5. AC-05 concluído com regressões e confirmação
+manual. Estado Validado. Commit, publicação da branch e PR autorizados.
+Confirmação de uso normal não equivale a exploração autenticada em navegador.
+CI remoto será acompanhado; merge manual pelo usuário. Registros anteriores
+de manual/autorização pendentes são históricos.
+
+## Publicação FIX-002 — 2026-10-12
+
+Implementação `b3096f8` publicada em `fix/restricao-de-origem-cors`.
+PR #15: https://github.com/eduardofrois/kaizen-test/pull/15
+Estado Validado, confirmação manual registrada. Checks remotos em acompanhamento;
+merge manual pendente. Nenhum merge realizado pela IA.
