@@ -21,7 +21,8 @@ Atualização: 2026-10-11. Baseline original: `81897d5`.
 | FIX-001 | Validado por SDD aprovado; seis testes e roteiro manual local | Publicação remota pendente; unidade concluída |
 | FIX-002 | Evidência estática | Especificar origens e validar ambiente |
 | FIX-003 | Validado localmente | PR #9 aberto; CI da implementação passou |
-| FIX-004, 007, 008 | Verificação isolada realizada | Spec/plan e regressões focadas |
+| FIX-004 | Implementado; regressões/build passaram | PR #10 aberto; CI da implementação passou; manual pendente |
+| FIX-007, 008 | Verificação isolada realizada | Spec/plan e regressões focadas |
 | FIX-005 | Implementado: 27 testes novos; frontend 37/backend 23/build passaram | PR #8 com CI passando; integração visual complementar pendente |
 | FIX-006 | Evidência estática | Reprodução integrada e spec/plan |
 | FIX-009 | Restrições CSS localizadas | Reprodução visual desktop/celular |
@@ -447,3 +448,53 @@ Esta atualização documental gera nova execução de CI a acompanhar.
 Merge permanece manual e pendente.
 Validação manual não informada; ERP real não utilizado nos testes.
 Os registros anteriores de publicação pendente descrevem etapas passadas.
+
+## Próxima unidade: última página — 2026-10-11
+
+PR #9 confirmado como integrado à main em a1c60d6; pull concluído.
+Branch fix/ultima-pagina criada. FIX-004: expressão atual bloqueia Próxima
+em 1/2 e 2/3, confirmado por execução isolada; componente compartilhado por
+catálogo e pedidos. Spec versão 1 proposta em docs/sdd/ultima-pagina/spec.md.
+Sem alteração de código/testes; revisão do desenho e plano ainda pendentes.
+
+## Desenho de última página aprovado — 2026-10-11
+
+Usuário aprovou spec versão 1 com “aprovado”. Plano versão 1 preparado em
+docs/sdd/ultima-pagina/plan.md: correção compartilhada, nove casos do componente
+real com Vite/React existentes, regressões/build e roteiro manual nas duas telas.
+Plano aguarda revisão; nenhum código, teste ou dependência alterado.
+
+## FIX-004 implementado — 2026-10-11
+
+Usuário aprovou plano versão 1 com “aprovado”, após apresentação nesta sessão.
+Branch fix/ultima-pagina. Produção: em Paginacao, comparação passou de
+pagina >= totalPaginas - 1 para pagina >= totalPaginas. Nenhuma outra
+alteração de produção, contrato, dependência, API, banco ou ERP nesta unidade.
+Teste novo frontend/tests/paginacao.test.js carrega o módulo real transformado
+pelo Vite existente, confere HTML renderizado e callbacks dos botões.
+RED: nove testes, sete passaram e dois falharam (1/2 e 2/3). GREEN focado:
+9/9; suíte frontend 46/46; backend 35/35; build passou com 60 módulos;
+git diff --check passou. Sem servidor ou pedidos reais nos testes.
+AC-01/02/03/04/06 comprovados por verificação isolada/regressões. AC-05 manual
+pendente: percorrer catálogo até última página preservando filtros e voltar;
+conferir pedidos apenas se histórico existente tiver páginas suficientes.
+HTML/callback direto não equivalem a navegação real no navegador.
+Estado Implementado. Sem commit, publicação ou PR; aguardar conferência e
+comando do usuário. Registros anteriores descrevem etapas passadas.
+
+## Autorização de publicação — 2026-10-11
+
+Usuário: “pode abrir o PR”. Autorizados commit, publicação da branch
+fix/ultima-pagina e abertura de PR para main. Checks locais concluídos;
+validação manual não foi informada. CI remoto será acompanhado. Merge manual
+pelo usuário; os registros anteriores de publicação pendente são históricos.
+
+## Publicação de última página — 2026-10-11
+
+Commit de implementação: 6607796. Branch fix/ultima-pagina publicada.
+PR #10: https://github.com/eduardofrois/kaizen-test/pull/10
+Checks testes-backend e build-frontend passaram para 6607796 no run
+38187909239: https://github.com/eduardofrois/kaizen-test/actions/runs/38187909239
+Esta atualização documental dispara novos checks a acompanhar. Manual pendente;
+estado Implementado. Merge manual pelo usuário, não realizado nesta sessão.
+Registros anteriores de publicação pendente são históricos.

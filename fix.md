@@ -44,7 +44,7 @@ em 2026-10-11 e implementada nesta sessão.
 | FIX-001 | Credenciais e segredo JWT literais/fallback | Corrigido; seis testes e validação manual local | Concluído no escopo aprovado |
 | FIX-002 | CORS com qualquer origem e credenciais | Estática | Alta; impacto depende do ambiente |
 | FIX-003 | Perda de centavos na conversão monetária | Validada localmente | Alta |
-| FIX-004 | Botão Próxima bloqueia última página | Isolada | Alta |
+| FIX-004 | Botão Próxima bloqueia última página | Implementado; manual pendente | Alta |
 | FIX-005 | Carrinho não acompanha login/logout/troca de conta | Manual pelo usuário e estática | Alta |
 | FIX-006 | Estoque reduzido impede ajuste de quantidade na UI | Estática | Alta |
 | FIX-007 | Telefone opcional não pode ser removido | Isolada | Média |
@@ -211,7 +211,7 @@ entrada inválida e precisão extra na spec, sem ampliar escopo por suposição.
 
 ## FIX-004 — Última página inacessível pelo botão Próxima
 
-**Estado:** confirmado por execução da expressão original; não corrigido.
+**Estado:** implementado por SDD aprovado; nove testes focados passaram; manual pendente.
 
 **Onde:** frontend/src/componentes/ui.jsx, Paginacao(), linha 206:
 `disabled={pagina >= totalPaginas - 1}`.
@@ -896,3 +896,53 @@ Esta atualização documental gera nova execução de CI a acompanhar.
 Merge permanece manual e pendente.
 Validação manual não informada; ERP real não utilizado nos testes.
 Os registros anteriores de publicação pendente descrevem etapas passadas.
+
+## Próxima unidade: última página — 2026-10-11
+
+PR #9 confirmado como integrado à main em a1c60d6; pull concluído.
+Branch fix/ultima-pagina criada. FIX-004: expressão atual bloqueia Próxima
+em 1/2 e 2/3, confirmado por execução isolada; componente compartilhado por
+catálogo e pedidos. Spec versão 1 proposta em docs/sdd/ultima-pagina/spec.md.
+Sem alteração de código/testes; revisão do desenho e plano ainda pendentes.
+
+## Desenho de última página aprovado — 2026-10-11
+
+Usuário aprovou spec versão 1 com “aprovado”. Plano versão 1 preparado em
+docs/sdd/ultima-pagina/plan.md: correção compartilhada, nove casos do componente
+real com Vite/React existentes, regressões/build e roteiro manual nas duas telas.
+Plano aguarda revisão; nenhum código, teste ou dependência alterado.
+
+## FIX-004 implementado — 2026-10-11
+
+Usuário aprovou plano versão 1 com “aprovado”, após apresentação nesta sessão.
+Branch fix/ultima-pagina. Produção: em Paginacao, comparação passou de
+pagina >= totalPaginas - 1 para pagina >= totalPaginas. Nenhuma outra
+alteração de produção, contrato, dependência, API, banco ou ERP nesta unidade.
+Teste novo frontend/tests/paginacao.test.js carrega o módulo real transformado
+pelo Vite existente, confere HTML renderizado e callbacks dos botões.
+RED: nove testes, sete passaram e dois falharam (1/2 e 2/3). GREEN focado:
+9/9; suíte frontend 46/46; backend 35/35; build passou com 60 módulos;
+git diff --check passou. Sem servidor ou pedidos reais nos testes.
+AC-01/02/03/04/06 comprovados por verificação isolada/regressões. AC-05 manual
+pendente: percorrer catálogo até última página preservando filtros e voltar;
+conferir pedidos apenas se histórico existente tiver páginas suficientes.
+HTML/callback direto não equivalem a navegação real no navegador.
+Estado Implementado. Sem commit, publicação ou PR; aguardar conferência e
+comando do usuário. Registros anteriores descrevem etapas passadas.
+
+## Autorização de publicação — 2026-10-11
+
+Usuário: “pode abrir o PR”. Autorizados commit, publicação da branch
+fix/ultima-pagina e abertura de PR para main. Checks locais concluídos;
+validação manual não foi informada. CI remoto será acompanhado. Merge manual
+pelo usuário; os registros anteriores de publicação pendente são históricos.
+
+## Publicação de última página — 2026-10-11
+
+Commit de implementação: 6607796. Branch fix/ultima-pagina publicada.
+PR #10: https://github.com/eduardofrois/kaizen-test/pull/10
+Checks testes-backend e build-frontend passaram para 6607796 no run
+38187909239: https://github.com/eduardofrois/kaizen-test/actions/runs/38187909239
+Esta atualização documental dispara novos checks a acompanhar. Manual pendente;
+estado Implementado. Merge manual pelo usuário, não realizado nesta sessão.
+Registros anteriores de publicação pendente são históricos.
