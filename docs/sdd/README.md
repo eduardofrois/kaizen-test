@@ -90,3 +90,6 @@ Contador (KZN-318) integrado na main pelo PR #5, merge 27217ff confirmado após 
 
 Endereço selecionado no checkout (KZN-331): versão 1 aprovada e Implementada;
 regressões locais/build passaram. Payload manual e checks remotos pendentes.
+
+Carrinho por sessão (FIX-005): spec/plano versão 1 aprovados e Implementados;
+27 testes novos, frontend 37/backend 23 e build passaram. Manual/CI pendentes.

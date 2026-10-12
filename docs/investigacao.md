@@ -21,7 +21,7 @@ Atualização: 2026-10-11. Baseline original: `81897d5`.
 | FIX-001 | Validado por SDD aprovado; seis testes e roteiro manual local | Publicação remota pendente; unidade concluída |
 | FIX-002 | Evidência estática | Especificar origens e validar ambiente |
 | FIX-003, 004, 007, 008 | Verificação isolada realizada | Spec/plan e regressões focadas |
-| FIX-005 | Manual pelo usuário e estática; não corrigido | Preparar SDD próprio de ciclo de sessão |
+| FIX-005 | Implementado: 27 testes novos; frontend 37/backend 23/build passaram | PR #8 com CI passando; integração visual complementar pendente |
 | FIX-006 | Evidência estática | Reprodução integrada e spec/plan |
 | FIX-009 | Restrições CSS localizadas | Reprodução visual desktop/celular |
 | INV-001 a INV-005 | Pontos adicionais | Ver classificações e passos de confirmação em fix.md |
@@ -318,3 +318,77 @@ sem substituir os cenários específicos de checkout ainda não confirmados.
 Estado Implementado: AC-01 confirmado por payload informado; AC-05 concluído;
 AC-02/AC-03 e validação manual de AC-04 pendentes. Sem pedido real pela IA.
 Pendências de autorização/abertura/CI anteriores são registros históricos.
+
+## Investigação de carrinho-por-sessao — 2026-10-11
+
+Pull confirmado; main 1d30bcc inclui PR #7. Branch fix/carrinho-por-sessao.
+FIX-005: provider não observa autenticação; respostas de todas as operações
+podem publicar estado após mudança de conta. Reprodução normal X→Y já foi
+confirmada pelo usuário; concorrência ainda depende de teste controlado.
+Desenho versão 1 em docs/sdd/carrinho-por-sessao/spec.md, Proposta para revisão.
+Inclui identidade/ciclo da sessão, descarte de respostas antigas e erro de
+leitura visível com checkout bloqueado. Plano será detalhado após revisão do
+desenho. Nenhum código/teste/dependência alterado; implementação não aprovada.
+
+## Desenho aprovado e plano do FIX-005 — 2026-10-11
+
+Usuário aprovou o desenho versão 1 com “aprovado”. Plan.md de carrinho-por-sessao
+preparado para revisão: controlador por ciclo, snapshot próprio, descarte de
+respostas e callbacks antigos, retorno false para operação invalidada e guardas
+nos chamadores. Erros de leitura expostos em Carrinho/Checkout com recarga.
+Testes determinísticos do módulo real e integração manual separados. Nenhum
+código/teste alterado. Implementação do plano ainda aguarda aprovação.
+
+## Implementação de carrinho-por-sessao — 2026-10-11
+
+Spec/plano versão 1 aprovados: usuário “aprovado” após apresentação do plano.
+Controlador por instância/ciclo integrado ao AuthContext via provider; novo
+render de identidade usa snapshot novo, vazio, e invalida resultados anteriores.
+Visitante não chama API de carrinho. Geração invalida promises de cleanup/setup.
+Leitura com falha expõe erro em Carrinho/Checkout antes de vazio/resumo, com
+recarga. Sucesso tardio de adição não mostra recado; operações antigas retornam
+false, e Checkout interrompe continuação de recarga invalidada.
+
+Validação local: 27 testes novos do controlador real passaram; npm test frontend
+totalizou 37 sucessos; npm test backend totalizou 23 sucessos. Build passou com
+60 módulos, git diff --check passou. Sem rede, env ou banco real nos testes.
+A execução inicial falhou por módulo ausente: isso é RED estrutural, não prova
+comportamental do defeito na baseline. Não houve alegação de RED comportamental.
+Testes controlados cobrem dez respostas tardias de leitura/mutação, callbacks
+antigos, carga/assinatura, cleanup/setup, X→visitante→X, 401/0/500, retry,
+argumentos, erros de mutação e setter. Não são testes React/hooks/E2E.
+
+Estado Implementado: testes locais e revisão estática concluídos; integração
+manual X/Y sem F5, boot/StrictMode no navegador e simulação visual de rede ainda
+pendentes. Sem novo pedido, cadastro, alteração de estoque ou dependências.
+PR não aberto; aguardará comando do usuário. Concorrência dentro da mesma
+sessão e checkout já enviado ao servidor continuam fora desta correção.
+
+## Confirmação manual de troca de conta — 2026-10-11
+
+Usuário informou “conferido” após o roteiro X→logout→Y→logout→X sem F5,
+conferindo itens, contador e total. Validação manual normal de troca de conta
+confirmada pelo usuário, não executada pela IA. Não extrapolar para inspeção
+Network do boot, testes visuais de falha/401 ou resposta atrasada no navegador.
+Esses cenários têm testes determinísticos no controlador, mas integração visual
+específica ainda não confirmada. Suítes locais e build já passaram.
+PR ainda não autorizado; merge permanece manual pelo usuário.
+
+## Autorização de publicação do FIX-005 — 2026-10-11
+
+Usuário solicitou “otimo, crie o PR”, autorizando commit, publicação da branch
+e abertura do PR. Troca X/Y/X sem F5 confirmada pelo usuário; testes locais
+frontend 37/backend 23 e build concluídos. Checks remotos ainda pendentes
+nesta etapa. Merge permanece manual; cenários visuais complementares não
+foram promovidos a validação concluída.
+
+## Publicação e CI do FIX-005 — 2026-10-11
+
+PR #8: https://github.com/eduardofrois/kaizen-test/pull/8
+Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38186410197
+Checks testes-backend e build-frontend passaram no commit 6ffa315. Branch
+fix/carrinho-por-sessao publicada. Troca X/Y/X sem F5 já confirmada pelo usuário;
+regressões controladas locais e CI concluídas. Integração visual específica
+de boot/StrictMode, falhas e resposta atrasada segue pendente; estado geral
+Implementado até completar os critérios restantes. Merge manual pelo usuário.
+Registros anteriores de autorização/abertura/CI pendentes são históricos.

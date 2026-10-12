@@ -85,7 +85,8 @@ export function Catalogo() {
     setRecado(null);
 
     try {
-      await adicionar(produto.codigo, 1);
+      const aplicado = await adicionar(produto.codigo, 1);
+      if (aplicado === false) return;
       setRecado({ tipo: 'sucesso', texto: `${produto.descricao} foi para o carrinho.` });
     } catch (falha) {
       setRecado({ tipo: 'erro', texto: falha.message });
