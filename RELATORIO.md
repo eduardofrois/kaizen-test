@@ -178,8 +178,8 @@ Não há suposição de que o teste contenha exatamente sete problemas extras.
 | **O que está errado** | `atualizarPerfil()` usa `telefone || atual.telefone`, mantendo o valor antigo quando a validação produz null para limpeza do campo. |
 | **Como cheguei nele** | Executei o serviço com banco simulado: enviei telefone=null e o argumento do UPDATE continuou com o número anterior. |
 | **Impacto** | Usuário não consegue apagar contato, apesar do campo opcional e de uma resposta de salvamento. |
-| **Corrigi?** | Não. A spec deve definir omissão versus limpeza explícita no PATCH e conferir rota/serviço. |
-| **Arquivos alterados** | Nenhum arquivo de aplicação. |
+| **Corrigi?** | Sim. Rota distingue omissão e serviço permite null explícito; 21 testes novos passaram. Manual pendente. |
+| **Arquivos alterados** | backend/src/routes/perfil.js, backend/src/services/usuarioService.js, backend/tests/perfil-telefone.test.js e documentos. |
 
 ### Problema 8 — Senhas têm tratamento inconsistente de espaços (FIX-008)
 
@@ -895,3 +895,65 @@ Nova execução acompanha esta atualização documental. Estado Implementado; ma
 Merge permanece manual pelo usuário. Registros de publicação pendente acima
 são históricos. Revisão do conteúdo staged passou após remover linha em branco
 extra ao final do componente; nenhuma mudança comportamental adicional.
+
+## Investigação de remoção de telefone — 2026-10-12
+
+PR #11 integrado na main c7e98cd, pull concluído. Branch
+fix/remocao-de-telefone-do-perfil criada. FIX-007 confirmado por inspeção atual
+e evidência isolada anterior: || mantém número diante de null; rota também
+normaliza telefone omitido como null. Proposta diferencia ausência (preservar)
+de vazio/espaços/null (remover), preservando validação e demais campos.
+Spec: docs/sdd/remocao-de-telefone-do-perfil/spec.md. Desenho/plano pendentes
+de aprovação; nenhuma alteração de código/testes, env, banco ou ERP.
+
+## Spec FIX-007 aprovada — 2026-10-12
+
+Usuário: “spec aprovada”, versão1. Plano preparado em
+docs/sdd/remocao-de-telefone-do-perfil/plan.md: distinção de presença na rota,
+fallback somente undefined no serviço, testes diretos com SQLite em memória
+e HTTP autenticado com banco descartável, sem .env/DB real ou ERP. Plano em
+revisão; código/testes/dependências permanecem intactos nesta unidade.
+
+## FIX-007 implementado — 2026-10-12
+
+Plano versão1 aprovado pelo usuário com “aprovado”, após apresentação nesta
+sessão. Rota valida telefone apenas quando Object.hasOwn(corpo,'telefone');
+serviço preserva valor anterior somente diante de undefined. Null gravaNULL.
+Vazio/espaços seguem normalização existente; nome/documento obrigatórios.
+Adicionados21 testes:7 serviço real/SQLite em memória e14 HTTP autenticado
+com banco temporário e porta local efêmera. Nenhuma env/DB real ou ERP acessado.
+Primeira execução HTTP sob sandbox falhou em infraestrutura; limpeza do
+servidor mascarou erro de inicialização, posteriormente guardada por listening.
+Essa execução não conta como reprodução do bug. Execução autorizada RED:
+21 casos,16 passaram/5 falharam por telefone antigo em vez deNULL (serviço,
+vazio,espaços,null e payload com usuario_id alheio). GREEN focado21/21.
+Regressão completa backend65/65 e frontend53/53; build61 módulos passou;
+sintaxe dos dois módulos e git diff --check passaram. Testes comprovam GET
+após PATCH, omissão, edição, conta sem telefone, validação422 sem atualização
+parcial,401 sem sessão/token inválido e isolamento entre proprietários.
+Nenhum hash/token/cookie real usado; serialização não expõe senha_hash.
+Estado Implementado. AC-01 a AC-04 comprovados isoladamente; AC-05 testes/build
+passaram, manual pendente. Próximo passo: apagar telefone no perfil, salvar e
+F5; depois editar um telefone válido e conferir persistência. Sem registrar
+número pessoal nos docs. Nenhuma alteração frontend/schema/dependências.
+Commit, publicação e PR aguardam comando explícito; CI não executado nesta
+unidade. Registros anteriores descrevem etapas históricas.
+
+## Validação manual e publicação autorizada — 2026-10-12
+
+Usuário confirmou “validado, pode abrir o PR”, após roteiro de remoção,
+salvamento/F5 e edição de telefone válido. Confirmação manual registrada sem
+expor número pessoal. AC-05 concluído com regressões locais e confirmação
+do usuário. Estado Validado; commit/publicação da branch e PR para main
+autorizados. CI remoto será acompanhado; merge manual pelo usuário.
+Registros anteriores de validação/publicação pendente são históricos.
+
+## Publicação FIX-007 — 2026-10-12
+
+Implementação publicada no commit40ea907, branch fix/remocao-de-telefone-do-perfil.
+PR #12: https://github.com/eduardofrois/kaizen-test/pull/12
+Checks testes-backend e build-frontend passaram no run38314449233:
+https://github.com/eduardofrois/kaizen-test/actions/runs/38314449233
+Validação manual confirmada pelo usuário. Estado Validado; merge manual pendente.
+Esta atualização documental gera novos checks a acompanhar. Registros anteriores
+de publicação/CI/manual pendentes são históricos. Nenhum merge realizado pela IA.
