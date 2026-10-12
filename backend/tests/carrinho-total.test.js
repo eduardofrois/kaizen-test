@@ -181,3 +181,16 @@ test('KZN-318: pendencia conta unidades sem entrar no total', () => {
   assert.equal(carrinho.valor_total, 60);
   assert.equal(carrinho.pronto_para_checkout, false);
 });
+
+test('FIX-003: subtotais e total decimal preservam centavos', () => {
+  const { carrinho } = consultar({ itens: [
+    item('A', { preco: 1.15, quantidade: 3 }),
+    item('B', { preco: 4.10, quantidade: 2 }),
+    item('SEM', { preco: 19.99, estoque: 0 }),
+  ] });
+  assert.deepEqual(carrinho.itens.map(i => i.valor_total), [3.45, 8.20, 19.99]);
+  assert.equal(carrinho.valor_total, 11.65);
+  assert.equal(carrinho.quantidade_pecas, 6);
+  assert.equal(carrinho.quantidade_itens, 3);
+  assert.equal(carrinho.pronto_para_checkout, false);
+});

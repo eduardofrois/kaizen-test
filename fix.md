@@ -43,7 +43,7 @@ em 2026-10-11 e implementada nesta sessão.
 |---|---|---|---|
 | FIX-001 | Credenciais e segredo JWT literais/fallback | Corrigido; seis testes e validação manual local | Concluído no escopo aprovado |
 | FIX-002 | CORS com qualquer origem e credenciais | Estática | Alta; impacto depende do ambiente |
-| FIX-003 | Perda de centavos na conversão monetária | Isolada | Alta |
+| FIX-003 | Perda de centavos na conversão monetária | Validada localmente | Alta |
 | FIX-004 | Botão Próxima bloqueia última página | Isolada | Alta |
 | FIX-005 | Carrinho não acompanha login/logout/troca de conta | Manual pelo usuário e estática | Alta |
 | FIX-006 | Estoque reduzido impede ajuste de quantidade na UI | Estática | Alta |
@@ -176,7 +176,7 @@ requisição sem Origin e política de preflight têm comportamento documentado.
 
 ## FIX-003 — Conversão de reais para centavos perde dinheiro
 
-**Estado:** confirmado em função isolada; não corrigido.
+**Estado:** corrigido e validado localmente; publicação pendente. Ver evidências ao final.
 
 **Onde:** backend/src/lib/dinheiro.js, paraCentavos(), linha 7:
 `Math.floor(Number(reais) * 100)`.
@@ -842,3 +842,46 @@ regressões controladas locais e CI concluídas. Integração visual específica
 de boot/StrictMode, falhas e resposta atrasada segue pendente; estado geral
 Implementado até completar os critérios restantes. Merge manual pelo usuário.
 Registros anteriores de autorização/abertura/CI pendentes são históricos.
+
+## Investigação de precisao-monetaria — 2026-10-11
+
+Pull realizado; main d040365 inclui merge do PR #8. Branch fix/precisao-monetaria.
+Execução isolada de paraCentavos confirmou 0.29→28 e 1.15→114 pela aproximação
+binária seguida de floor. Desenho versão 1 em docs/sdd/precisao-monetaria/spec.md,
+Proposta: arredondamento para valores com até duas casas, mantendo centavos
+inteiros e contratos atuais; sem reparo histórico. Precisão extra fica fora
+e requer política própria. Nenhum código/teste/dependência alterado.
+Aguardar revisão do domínio/desenho antes de detalhar plano e implementar.
+
+## Desenho aprovado e plano de precisao-monetaria — 2026-10-11
+
+Usuário aprovou desenho versão 1 com “aprovado”. Plan.md preparado para revisão:
+conversão compartilhada round, nove casos unitários e ida/volta representativa,
+serviço real do carrinho e pedido simulado com coluna de centavos inspecionada.
+Backend/SIAC e dados históricos preservados; nenhum código/teste alterado.
+Aprovação do plano de implementação ainda pendente.
+
+## Precisão monetária implementada e validada localmente — 2026-10-11
+
+FIX-003: usuário aprovou spec/plano versão 1 com “aprovado” nesta sessão.
+Substituído floor por round em backend/src/lib/dinheiro.js/paraCentavos,
+para valores finitos não negativos com até duas casas no domínio aprovado.
+RED focado: 29 testes, 20 sucessos/9 falhas, incluindo subtotal 3.42 em vez de
+3.45 e vínculo local 1998 em vez de 1999. GREEN: backend 35/35, frontend
+37/37, build 60 módulos; sintaxe e diff passaram. Adicionados 12 testes:
+nove conversões, ida/volta de 100001 valores, carrinho e pedido com ERP fake.
+Carrinho 3×1.15+2×4.10=11.65; indisponível excluído e checkout bloqueado.
+Pedido simulado conserva 19.99 como 1999 no SQLite em memória; endereço alheio
+rejeitado, apenas carrinho do proprietário limpo, vínculo alheio ausente.
+Sem .env/banco real, pedido real, dependências, schema ou contratos alterados.
+Históricos não reparados; mais de duas casas exige política separada.
+Estado: Validado localmente; manual opcional/CI não executados. Commit,
+publicação e PR aguardam comando do usuário. Próxima ação: revisão/validação
+pelo usuário e autorização para publicação. Registros anteriores são históricos.
+
+## Autorização de publicação — 2026-10-11
+
+Usuário: “pode abrir o PR”. Autorizados commit, publicação da branch
+fix/precisao-monetaria e abertura do PR para main. Validação local concluída;
+CI remoto será acompanhado. Validação manual não foi informada. Merge manual
+pelo usuário; nenhuma autorização para integrar diretamente na main.
