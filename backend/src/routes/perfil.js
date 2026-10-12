@@ -30,8 +30,11 @@ rotasPerfil.patch('/', (req, res) => {
   const dados = {
     nome: textoObrigatorio(corpo.nome, 'nome', erros, { min: 3, max: 120 }),
     documento: documento(corpo.documento, 'documento', erros),
-    telefone: telefone(corpo.telefone, 'telefone', erros),
   };
+
+  if (Object.hasOwn(corpo, 'telefone')) {
+    dados.telefone = telefone(corpo.telefone, 'telefone', erros);
+  }
 
   erros.lancarSeInvalido('Nao foi possivel salvar o perfil.');
 
