@@ -29,12 +29,14 @@
 - Erros: `{ erro: { codigo, mensagem, detalhes? }, request_id }`.
 - ERP 401 vira erro 502 da loja; 404/409/422 de negócio são preservados.
 - Falha técnica não deve ser apresentada como carrinho vazio ou ausência de
-  produto sem distinguir sua origem. A baseline ainda tem casos assim.
+  produto sem distinguir sua origem. O enriquecimento atual do carrinho ainda
+  apresenta a mesma pendência visual para produto ausente e falha técnica ERP;
+  esse limite está documentado na arquitetura.
 
 ## Isolamento
 
 - Autenticar usuário no backend e verificar posse em toda operação privada.
-- Carrinho futuro deve pertencer ao usuário autenticado; seus itens devem
+- Todo carrinho deve pertencer ao usuário autenticado; seus itens devem
   pertencer ao carrinho solicitado. Não confiar em usuario_id do payload.
 - Operações em andamento precisam manter identidade do usuário/carrinho de
   origem; respostas antigas não podem substituir estado de outra seleção.
@@ -65,7 +67,7 @@
 
 ## Evidência e entrega
 
-- Fonte de requisitos: README. Intenção arquitetural: ARQUITETURA.
+- Fonte de requisitos: README. Contratos atuais: ARQUITETURA.
 - Fonte detalhada dos achados: fix.md. Índice de situação: docs/investigacao.md.
 - Escolhas por unidade: spec e plano SDD. Arquitetura geral: docs/ai/arch.md.
 - Entrega para avaliadores: RELATORIO.md.

@@ -1,14 +1,27 @@
 # Spec — Carrinho por sessão
 
 **Versão:** 1
-**Estado:** Implementado — troca manual e CI confirmadas; integração visual complementar pendente
+**Estado:** Implementado e integrado à main; validação manual confirmada pelo usuário em 2026-10-12. Evidências e limites por cenário na matriz e no histórico desta unidade.
 **Baseline/data:** 1d30bcc; 2026-10-11
 **Origem:** FIX-005 — Estado do carrinho desconectado da autenticação
 **Branch:** fix/carrinho-por-sessao
 **Aprovação do desenho:** 2026-10-11; mensagem do usuário: “aprovado”, após apresentação da spec.
 **Aprovação para implementar:** spec/plano versão 1 aprovados em 2026-10-11; usuário: “aprovado”, após apresentação do plan.md.
 
-## Problema e evidência
+
+**Validação manual atual — 2026-10-12:** concluída pelo usuário. Referência:
+“Agora eu preciso que voce revise os arquivos e mude aonde fala que eu nao fiz
+a validação manual, pois eu fiz.” A confirmação complementa as evidências
+anteriores; não acrescenta execução pela IA, capturas por variante, exploração
+de segurança ou pedido real no SIAC. Requisitos e aprovações de implementação
+permanecem os já registrados. Esta revisão documental não autoriza publicação.
+
+> Leitura atualizada em 2026-10-13, referência main 76eca4d. O problema e
+> os exemplos de execução abaixo descrevem a baseline e o escopo original
+> da unidade. Relatos datados preservam o estado conhecido naquela etapa.
+> Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
+
+## Problema e evidência na baseline
 
 ProvedorCarrinho está dentro de ProvedorAuth, mas não consome useAuth.
 Seu efeito chama recarregar apenas ao montar. Login, cadastro e logout mudam
@@ -102,6 +115,11 @@ antes de avisos/navegação. Estratégia detalhada no plan.md.
 
 ## Critérios de aceite
 
+A validação manual da correção foi confirmada. Checkboxes ainda abertos
+indicam ausência de detalhamento específico de todas as variantes do critério,
+sem significar ausência de validação manual geral. Não foram inventadas provas
+para interceptação, dados suficientes em pedidos ou falhas induzidas.
+
 - [x] AC-01: boot sem sessão e enquanto auth carrega não consulta carrinho.
 - [x] AC-02: login/cadastro carrega conta atual sem F5; logout oculta estado X.
 - [ ] AC-03: X→Y não exibe snapshot X enquanto Y carrega nem após sua resposta.
@@ -109,9 +127,9 @@ antes de avisos/navegação. Estratégia detalhada no plan.md.
   alteram sessão atual; cobrir X→visitante→X e callback antigo invocado depois.
 - [ ] AC-05: 401 limpa representação; rede/5xx aparecem como erro com recarga
   e checkout bloqueado; resposta antiga não limpa erro/carga atual.
-- [ ] AC-06: manter carrinho por usuário no servidor, URL/filtros e regras de
+- [x] AC-06: manter carrinho por usuário no servidor, URL/filtros e regras de
   total/contador; suítes existentes/build e testes novos passam.
-- [ ] AC-07: validação manual de troca sem F5; testes de concorrência usam
+- [x] AC-07: validação manual de troca sem F5; testes de concorrência usam
   simulação determinística, diferenciados da integração com React/navegador.
 
 ## Riscos e estratégia de validação
@@ -129,7 +147,7 @@ Desenho versão 1 aprovado pelo usuário em 2026-10-11. Plan.md preparado para
 revisão, incluindo erros de leitura e chamadores. Implementação realizada após aprovação do plano; evidências abaixo.
 Aprovação do desenho não foi registrada como aprovação de plano ainda inexistente.
 
-## Implementação de carrinho-por-sessao — 2026-10-11
+## Histórico — Implementação de carrinho-por-sessao — 2026-10-11
 
 Spec/plano versão 1 aprovados: usuário “aprovado” após apresentação do plano.
 Controlador por instância/ciclo integrado ao AuthContext via provider; novo
@@ -154,7 +172,7 @@ pendentes. Sem novo pedido, cadastro, alteração de estoque ou dependências.
 PR não aberto; aguardará comando do usuário. Concorrência dentro da mesma
 sessão e checkout já enviado ao servidor continuam fora desta correção.
 
-## Confirmação manual de troca de conta — 2026-10-11
+## Histórico — Confirmação manual de troca de conta — 2026-10-11
 
 Usuário informou “conferido” após o roteiro X→logout→Y→logout→X sem F5,
 conferindo itens, contador e total. Validação manual normal de troca de conta
@@ -164,7 +182,7 @@ Esses cenários têm testes determinísticos no controlador, mas integração vi
 específica ainda não confirmada. Suítes locais e build já passaram.
 PR ainda não autorizado; merge permanece manual pelo usuário.
 
-## Autorização de publicação do FIX-005 — 2026-10-11
+## Histórico — Autorização de publicação do FIX-005 — 2026-10-11
 
 Usuário solicitou “otimo, crie o PR”, autorizando commit, publicação da branch
 e abertura do PR. Troca X/Y/X sem F5 confirmada pelo usuário; testes locais
@@ -172,7 +190,7 @@ frontend 37/backend 23 e build concluídos. Checks remotos ainda pendentes
 nesta etapa. Merge permanece manual; cenários visuais complementares não
 foram promovidos a validação concluída.
 
-## Publicação e CI do FIX-005 — 2026-10-11
+## Histórico — Publicação e CI do FIX-005 — 2026-10-11
 
 PR #8: https://github.com/eduardofrois/kaizen-test/pull/8
 Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38186410197
@@ -182,3 +200,12 @@ regressões controladas locais e CI concluídas. Integração visual específica
 de boot/StrictMode, falhas e resposta atrasada segue pendente; estado geral
 Implementado até completar os critérios restantes. Merge manual pelo usuário.
 Registros anteriores de autorização/abertura/CI pendentes são históricos.
+
+## Consolidação documental — 2026-10-12
+
+Validação manual da correção concluída pelo usuário, conforme confirmação
+registrada no início. Evidências automatizadas e CI anteriores preservadas.
+Pendências manuais nos relatos históricos descrevem a informação disponível
+à época. Cenários sem detalhamento individual continuam identificados como
+limite de evidência, não como ausência de validação manual da correção.
+Nenhum código, teste, contrato, dependência, banco ou ERP alterado nesta revisão.

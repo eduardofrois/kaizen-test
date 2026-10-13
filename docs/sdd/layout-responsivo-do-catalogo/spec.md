@@ -1,14 +1,27 @@
 # Spec — Layout responsivo do catálogo
 
 **Versão:** 1
-**Estado:** Validado pelo usuário — PR #14 aberto
+**Estado:** Implementado e integrado à main; validação manual confirmada pelo usuário em 2026-10-12. Evidências e limites por cenário na matriz e no histórico desta unidade.
 **Origem:** FIX-009
 **Baseline/data:** f744b39; 2026-10-12
 **Branch:** fix/layout-responsivo-do-catalogo
 **Aprovação da spec:** 2026-10-12; usuário “se temos essas informações na spec, aprovada”.
 **Aprovação para implementar:** 2026-10-12; usuário “aprovado”, após apresentação do plano versão 1.
 
-## Problema e evidência
+
+**Validação manual atual — 2026-10-12:** concluída pelo usuário. Referência:
+“Agora eu preciso que voce revise os arquivos e mude aonde fala que eu nao fiz
+a validação manual, pois eu fiz.” A confirmação complementa as evidências
+anteriores; não acrescenta execução pela IA, capturas por variante, exploração
+de segurança ou pedido real no SIAC. Requisitos e aprovações de implementação
+permanecem os já registrados. Esta revisão documental não autoriza publicação.
+
+> Leitura atualizada em 2026-10-13, referência main 76eca4d. O problema e
+> os exemplos de execução abaixo descrevem a baseline e o escopo original
+> da unidade. Relatos datados preservam o estado conhecido naquela etapa.
+> Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
+
+## Problema e evidência na baseline
 
 Cabecalho.jsx mantém marca, busca com mínimo de 380px e navegação na mesma
 linha. Catalogo.jsx fixa quatro colunas em todas as larguras. Reprodução
@@ -86,12 +99,12 @@ Spec preparada após investigação e preferência do usuário. Implementação 
 aprovada; após aprovação desta spec, detalhar plan.md para revisão separada.
 Commit, publicação e PR dependem de comando específico. Merge manual.
 
-## Aprovação — 2026-10-12
+## Histórico — Aprovação — 2026-10-12
 
 Spec versão 1 aprovada pelo usuário após confirmar que busca flexível e grade
 responsiva estão incluídas. Plano versão 1 preparado para revisão separada.
 
-## FIX-009 implementado — 2026-10-12
+## Histórico — FIX-009 implementado — 2026-10-12
 
 Plano versão1 aprovado com “aprovado” nesta sessão. Alterados apenas
 Cabecalho.jsx e Catalogo.jsx: marca sem compressão, busca flexível sem mínimo
@@ -118,7 +131,7 @@ autenticada/contador/perfil, percurso completo de teclado/rolagem, adição e
 confirmação manual pelo usuário. Estado adicionando e captura desktop ainda
 não conferidos visualmente. Commit/publicação/PR aguardam comando explícito.
 
-## Ajuste solicitado pelo usuário — 2026-10-12
+## Histórico — Ajuste solicitado pelo usuário — 2026-10-12
 
 Usuário solicitou Entrar e Criar conta ocupando toda a largura disponível,
 com metade para cada um. Aplicar abaixo1024px: ambos com flex-1 e texto
@@ -131,7 +144,7 @@ Distribuição exata usa grid-cols-2 na navegação de visitante abaixo1024px,
 pois flex-1 isolado pode diferir por causa dos paddings dos links. Navegação
 autenticada continua flex-wrap; desktop usa flex.
 
-## Validação e publicação autorizada FIX-009 — 2026-10-12
+## Histórico — Validação e publicação autorizada FIX-009 — 2026-10-12
 
 Usuário confirmou “otimo, validado, pode abrir o PR”, incluindo o ajuste dos
 botões Entrar/Criar conta em metades iguais. Validação manual confirmada pelo
@@ -140,7 +153,7 @@ todos os estados. Medidas de visitante e limitações registradas acima mantidas
 Build final após grid-cols-2 passou com61 módulos; git diff --check passou.
 Commit, push e PR desta unidade autorizados. Merge manual pelo usuário.
 
-## Publicação FIX-009 — 2026-10-12
+## Histórico — Publicação FIX-009 — 2026-10-12
 
 Implementação: `c50fead`. Branch `fix/layout-responsivo-do-catalogo` publicada.
 PR #14: https://github.com/eduardofrois/kaizen-test/pull/14

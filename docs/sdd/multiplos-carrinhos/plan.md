@@ -1,7 +1,7 @@
 # Plano de implementação — Múltiplos carrinhos e edição na vitrine
 
 **Versão:** 2
-**Estado:** Revisão v2 implementada com TDD; quatro achados corrigidos e validação isolada/navegador simulado concluída; publicada no PR #17, avaliação/merge manual pendentes.
+**Estado:** V2 implementada e integrada à main no PR #17 (76eca4d); testes e navegador simulado registrados; manual da v1 confirmado. Sem nova confirmação humana específica da v2.
 **Spec:** [spec.md](spec.md), versão 2 aprovada em 2026-10-13; versão 1 preservada no histórico.
 **Aprovação da revisão v2 para implementar:** 2026-10-13; usuário “aprovado” após apresentação dos links da spec/plano v2 e pergunta “Aprova implementar essa versão?”. Inclui os quatro achados, testes RED/GREEN, regressões e ensaio simulado; sem publicação.
 **Autorização de publicação:** 2026-10-13; usuário solicitou abrir PR detalhado da nova feature e enviar o link. Commit/push e PR desta unidade autorizados; merge manual e sem envio da consolidação documental anterior.
@@ -12,6 +12,11 @@
 **Aprovação da spec:** usuário “aprovado” após apresentação da spec v1 e pergunta sobre preparar este plano.
 **Aprovação histórica para implementar v1:** 2026-10-13; usuário “aprovado” após apresentação do plano v1 e pergunta explícita sobre implementar a feature nesta sessão. Escopo: spec v1 e plano v1; não atribuída à revisão v2.
 **Execução:** nesta sessão, uma etapa por vez; sem delegação automática. Registrar resultado observado ao concluir cada etapa. Commit/push/PR exigem comando específico.
+
+> Leitura atualizada em 2026-10-13, referência main 76eca4d. O problema e
+> os exemplos de execução abaixo descrevem a baseline e o escopo original
+> da unidade. Relatos datados preservam o estado conhecido naquela etapa.
+> Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
 
 ## Restrições globais
 
@@ -634,7 +639,7 @@ git diff --check
 | AC-11 | T3/T6 e R4; falhas, replay e reinício | Bloqueio/itens preservados, sem reenvio, roteiro ensaiado | Revalidado na v2: número de resposta parcial persistido; falha local conserva bloqueio; reabertura e replay passam |
 | AC-12 | T6/R5; npm test dos dois, build e diff | Suítes/build passam, documentos/evidências coerentes | V2: backend 123/123; frontend 94/94; build 67 módulos; diff/sintaxe passaram |
 
-## Autorrevisão e execução
+## Autorrevisão do plano original
 
 Cobertura dos 18 requisitos: T1 cobre persistência/migração/contas; T2 cobre
 posse, limites, gestão e mutações; T3 cobre envio/repetição/recuperação; T4
@@ -1013,3 +1018,12 @@ implementação: testes-backend e build-frontend no
 Esta atualização documental acompanha a publicação sem alterar código/testes;
 seu commit gera nova execução de CI. Demais alterações documentais locais
 e frontend/.vite preservados fora do envio. Nenhum merge/deploy realizado.
+
+## Consolidação da entrega — 2026-10-13
+
+PR #17 integrado à main em 76eca4d, conferido pelo Git nesta conversa.
+Reavaliação local: backend 123/123, frontend 94/94 e build 67 módulos passaram.
+Esses resultados antecedem a revisão documental DOC-001; não constituem nova CI
+ou confirmação humana da v2. A consolidação geral foi autorizada pelo pedido
+de corrigir a documentação e agora inclui relatório, arquitetura e índices.
+As menções anteriores a PR aberto/publicação pendente descrevem etapas passadas.

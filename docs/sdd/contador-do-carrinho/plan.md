@@ -1,7 +1,7 @@
 # Plano de implementação — Contador do carrinho
 
 **Versão:** 1
-**Estado:** Validado — testes locais, confirmação manual e CI do PR concluídos
+**Estado:** Implementado e integrado à main; validação manual confirmada pelo usuário em 2026-10-12. Evidências e limites por cenário na matriz e no histórico desta unidade.
 **Spec:** [spec.md](spec.md), versão 1
 **Baseline/data:** b8f6abf; 2026-10-11
 **Objetivo:** contar unidades mantendo produtos distintos e regras do total.
@@ -9,6 +9,19 @@
 **Stack:** JavaScript ESM, node:test, SQLite better-sqlite3, React/Vite existentes.
 **Aprovação para implementar:** versão 1 aprovada em 2026-10-11; mensagem do usuário: “aprovado os documentos”.
 **Execução:** nesta sessão após aprovação, sem delegação automática.
+
+
+**Validação manual atual — 2026-10-12:** concluída pelo usuário. Referência:
+“Agora eu preciso que voce revise os arquivos e mude aonde fala que eu nao fiz
+a validação manual, pois eu fiz.” A confirmação complementa as evidências
+anteriores; não acrescenta execução pela IA, capturas por variante, exploração
+de segurança ou pedido real no SIAC. Requisitos e aprovações de implementação
+permanecem os já registrados. Esta revisão documental não autoriza publicação.
+
+> Leitura atualizada em 2026-10-13, referência main 76eca4d. O problema e
+> os exemplos de execução abaixo descrevem a baseline e o escopo original
+> da unidade. Relatos datados preservam o estado conhecido naquela etapa.
+> Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
 
 ## Restrições globais
 
@@ -120,9 +133,9 @@ sem reset de banco ou alteração no ERP.
 
 Todos os requisitos cobertos pelas duas tarefas; testes usam serviço real e
 infraestrutura isolada já existente. Execução realizada após aprovação explícita
-da versão 1; roteiro manual e publicação continuam pendentes.
+da versão 1; roteiro manual confirmado e publicação registrada no histórico.
 
-## Execução aprovada — 2026-10-11
+## Histórico — Execução aprovada — 2026-10-11
 
 Versão 1 aprovada pela mensagem “aprovado os documentos”. Implementação
 limitada à soma de item.quantidade em quantidade_pecas. quantidade_itens,
@@ -143,7 +156,7 @@ Estado Implementado: validação automatizada local concluída; roteiro manual
 PR não aberto; checks remotos não executados. FIX-003/FIX-005 não corrigidos.
 Também atendida a solicitação de usar “usuário” nas referências documentais.
 
-## Validação manual e autorização do PR — 2026-10-11
+## Histórico — Validação manual e autorização do PR — 2026-10-11
 
 Usuário confirmou “validado, pode subir o pr” após o roteiro de validação
 local. Validação manual pós-correção confirmada pelo usuário; não executada
@@ -152,7 +165,7 @@ Testes locais: 23 passaram; build passou. Checks remotos ainda pendentes.
 Merge permanece manual pelo usuário. Pendências manuais descritas anteriormente
 são registros históricos superados por esta confirmação.
 
-## Validação remota de KZN-318 — 2026-10-11
+## Histórico — Validação remota de KZN-318 — 2026-10-11
 
 PR #5: https://github.com/eduardofrois/kaizen-test/pull/5
 Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38177680580

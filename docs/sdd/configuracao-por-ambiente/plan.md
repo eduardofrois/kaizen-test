@@ -1,7 +1,7 @@
 # Plano de implementação — Configuração por ambiente
 
 **Versão:** 1
-**Estado:** Validado — testes automatizados e validação manual local concluídos
+**Estado:** Implementado e integrado à main; validação manual confirmada pelo usuário em 2026-10-12. Evidências e limites por cenário na matriz e no histórico desta unidade.
 **Spec:** [spec.md](spec.md), versão 1
 **Objetivo:** remover segredos/fallbacks e validar env antes de publicar aplicação.
 **Arquitetura:** manter config.js como fronteira única de configuração; testar
@@ -9,6 +9,19 @@ em processos isolados, sem importar serviços/banco. Preservar bootstrap fail-fa
 **Stack:** JavaScript ESM, Node existente, dotenv existente e node:test nativo.
 **Aprovação para implementar:** explícita do usuário em 2026-10-11.
 **Execução:** nesta sessão, passo a passo, sem delegação automática.
+
+
+**Validação manual atual — 2026-10-12:** concluída pelo usuário. Referência:
+“Agora eu preciso que voce revise os arquivos e mude aonde fala que eu nao fiz
+a validação manual, pois eu fiz.” A confirmação complementa as evidências
+anteriores; não acrescenta execução pela IA, capturas por variante, exploração
+de segurança ou pedido real no SIAC. Requisitos e aprovações de implementação
+permanecem os já registrados. Esta revisão documental não autoriza publicação.
+
+> Leitura atualizada em 2026-10-13, referência main 76eca4d. O problema e
+> os exemplos de execução abaixo descrevem a baseline e o escopo original
+> da unidade. Relatos datados preservam o estado conhecido naquela etapa.
+> Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
 
 ## Restrições globais
 
@@ -231,7 +244,7 @@ Todos os requisitos possuem passos correspondentes. Testes usam strings
 sintéticas e diretório temporário, sem herdar o ambiente completo do usuário.
 Sem dependências novas, alteração do SIAC ou migração. A execução foi aprovada e os resultados reais estão registrados abaixo.
 
-## Registro da execução — 2026-10-11
+## Histórico — Registro da execução — 2026-10-11
 
 Usuário: "sobre o fix configuracao por ambiente, esta aprovado a forma que
 vamos fazer essa correcao/configuracao inicial"; pediu também atualização do
@@ -265,7 +278,7 @@ comprova os demais fluxos do sistema. Implementação registrada no commit c46e6
 escopo aprovado; resultados consolidados neste commit documental complementar.
 Nenhuma nova alteração de aplicação realizada; publicação remota pendente.
 
-## Integração e publicação — 2026-10-11
+## Histórico — Integração e publicação — 2026-10-11
 
 Por autorização do usuário, branch configuracao-por-ambiente integrada na
 main pelo merge f913cda, sem conflitos. Push para eduardofrois/kaizen-test

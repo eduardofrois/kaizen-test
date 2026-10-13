@@ -1,11 +1,24 @@
 # Spec — Configuração por ambiente, sem segredos no código
 
 **Versão:** 1
-**Estado:** Validado — testes automatizados e validação manual local concluídos
+**Estado:** Implementado e integrado à main; validação manual confirmada pelo usuário em 2026-10-12. Evidências e limites por cenário na matriz e no histórico desta unidade.
 **Data/baseline:** 2026-10-11; original 81897d5
 **Origem:** FIX-001 em fix.md; nota KZN-2B9C
 **Nome do trabalho:** configuracao-por-ambiente
 **Aprovação:** explícita do usuário em 2026-10-11 para esta correção/configuração inicial.
+
+
+**Validação manual atual — 2026-10-12:** concluída pelo usuário. Referência:
+“Agora eu preciso que voce revise os arquivos e mude aonde fala que eu nao fiz
+a validação manual, pois eu fiz.” A confirmação complementa as evidências
+anteriores; não acrescenta execução pela IA, capturas por variante, exploração
+de segurança ou pedido real no SIAC. Requisitos e aprovações de implementação
+permanecem os já registrados. Esta revisão documental não autoriza publicação.
+
+> Leitura atualizada em 2026-10-13, referência main 76eca4d. O problema e
+> os exemplos de execução abaixo descrevem a baseline e o escopo original
+> da unidade. Relatos datados preservam o estado conhecido naquela etapa.
+> Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
 
 ## Problema
 
@@ -88,7 +101,7 @@ dependências pelo lockfile. Registrar comandos/resultados. Revisar conteúdo
 a publicar sem imprimir credenciais. Atualizar FIX-001, ambiente e decisão de
 Git; editar relatório apenas quando o usuário aprovar seu preenchimento.
 
-## Registro da execução — 2026-10-11
+## Histórico — Registro da execução — 2026-10-11
 
 Usuário: "sobre o fix configuracao por ambiente, esta aprovado a forma que
 vamos fazer essa correcao/configuracao inicial"; pediu também atualização do
@@ -117,7 +130,7 @@ comprova os demais fluxos do sistema. Implementação registrada no commit c46e6
 escopo aprovado; resultados consolidados neste commit documental complementar.
 Nenhuma nova alteração de aplicação realizada; publicação remota pendente.
 
-## Integração e publicação — 2026-10-11
+## Histórico — Integração e publicação — 2026-10-11
 
 Por autorização do usuário, branch configuracao-por-ambiente integrada na
 main pelo merge f913cda, sem conflitos. Push para eduardofrois/kaizen-test

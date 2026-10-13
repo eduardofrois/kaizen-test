@@ -1,14 +1,27 @@
 # Spec — Total do carrinho com itens indisponíveis
 
 **Versão:** 1
-**Estado:** Validado — testes locais, confirmação manual e checks do PR concluídos
+**Estado:** Implementado e integrado à main; validação manual confirmada pelo usuário em 2026-10-12. Evidências e limites por cenário na matriz e no histórico desta unidade.
 **Baseline/data:** origin/main 4261129; 2026-10-11
 **Origem:** KZN-312; nota de leitura KZN-7F3A
 **Pasta/branch:** total-do-carrinho / fix/total-do-carrinho
 **Aprovação para implementar:** versão 1 aprovada em 2026-10-11;
 usuário: “Consegui recriar, perfeito. Docs aprovados.”
 
-## Problema e evidência
+
+**Validação manual atual — 2026-10-12:** concluída pelo usuário. Referência:
+“Agora eu preciso que voce revise os arquivos e mude aonde fala que eu nao fiz
+a validação manual, pois eu fiz.” A confirmação complementa as evidências
+anteriores; não acrescenta execução pela IA, capturas por variante, exploração
+de segurança ou pedido real no SIAC. Requisitos e aprovações de implementação
+permanecem os já registrados. Esta revisão documental não autoriza publicação.
+
+> Leitura atualizada em 2026-10-13, referência main 76eca4d. O problema e
+> os exemplos de execução abaixo descrevem a baseline e o escopo original
+> da unidade. Relatos datados preservam o estado conhecido naquela etapa.
+> Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
+
+## Problema e evidência na baseline
 
 lerCarrinho(), em backend/src/services/carrinhoService.js, soma valor_total
 de todas as linhas, inclusive disponivel=false. enriquecerItens já identifica
@@ -120,7 +133,7 @@ resultados reais. FIX-003/KZN-318 continuam pendentes e terão SDD próprio.
 Versão 1 aprovada e implementada; resultados registrados abaixo. Pedido do usuário: trabalhar
 no total do carrinho após confirmar a pipeline antes e depois do merge.
 
-## Implementação aprovada — 2026-10-11
+## Histórico — Implementação aprovada — 2026-10-11
 
 Usuário confirmou reprodução manual do KZN-312 e aprovou versão 1 com
 “Consegui recriar, perfeito. Docs aprovados.” Alteração do serviço limitada
@@ -142,14 +155,14 @@ explicitamente aguardar seu comando para abrir PR, pois vai validar localmente.
 Nenhum PR, merge ou pedido real criado pela IA. Publicação da branch segue
 o fluxo autorizado; não equivale à autorização para abrir PR.
 
-## Validação manual e autorização do PR — 2026-10-11
+## Histórico — Validação manual e autorização do PR — 2026-10-11
 
 Usuário confirmou “funcionando, pode abrir o PR”. Validação manual
 pós-correção confirmada pelo usuário; autorização anterior para aguardar
 foi revogada por esta mensagem. Abrir PR para main e acompanhar os checks,
 sem realizar merge. Testes locais já passaram; evidência remota ainda pendente.
 
-## Validação remota concluída — PR #3
+## Histórico — Validação remota concluída — PR #3
 
 PR: https://github.com/eduardofrois/kaizen-test/pull/3
 Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38175551404

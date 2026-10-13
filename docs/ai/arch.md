@@ -1,119 +1,107 @@
-# Guia da arquitetura real
+# Mapa do código e da arquitetura atual
 
-Baseline inspecionada em 2026-10-11: commit original `81897d5`.
-Este guia complementa `ARQUITETURA.md`; o documento original descreve a
-intenção, enquanto este registra também divergências da implementação.
+Atualizado em 2026-10-13. Referência: main `76eca4d`, com múltiplos carrinhos v2
+integrados. O contexto da baseline original `81897d5` está no
+[histórico da investigação](../historico/fix.md).
+[ARQUITETURA.md](../../ARQUITETURA.md) documenta os contratos e regras atuais.
 
-## Fluxo e responsabilidades
+## Camadas e pontos de entrada
 
 ```text
 React → /api → Express → serviços → SQLite da loja
                           └──────→ erp/cliente.js → SIAC externo
 ```
 
-- Frontend: React 19, React Router 7, Vite 7 e Tailwind 4; JavaScript/JSX.
-- Backend: Node, Express 5 e JavaScript ESM.
-- Persistência: `better-sqlite3`; WAL, foreign keys e busy timeout habilitados.
-- Integração: `fetch`, `X-API-Token` e timeout no processo do backend.
-- A lista exata de versões resolvidas fica nos dois `package-lock.json`.
-
-## Pontos de entrada
+Frontend em JavaScript/JSX, React 19, React Router 7, Vite 7 e Tailwind 4.
+Backend Node/Express 5 em JavaScript ESM, com better-sqlite3.
+Versões exatas resolvidas nos dois package-lock.json; Node 24.14.1 usado na CI
+e na última verificação local.
 
 | Área | Arquivos | Responsabilidade |
 |---|---|---|
-| Bootstrap | `backend/src/server.js`, `config.js` | Validar env, abrir banco, aplicar schema, ouvir HTTP e encerrar |
-| HTTP | `backend/src/app.js`, `routes/` | Montagem dos routers, corpo JSON, cookies, CORS e frontend de produção |
-| Sessão | `middleware/autenticacao.js`, `services/usuarioService.js`, `lib/senha.js` | JWT em cookie httpOnly, usuário atual e scrypt |
-| Erros | `lib/ApiError.js`, `lib/validacao.js`, `middleware/erros.js` | Validação acumulada e envelope HTTP |
-| ERP | `backend/src/erp/cliente.js` | Catálogo, produtos, categorias, imagens, pedidos e health |
-| Banco | `backend/src/db/index.js`, `schema.sql` | Conexão singleton e DDL inicial |
-| Frontend | `frontend/src/main.jsx`, `App.jsx` | Providers, BrowserRouter e telas |
-| Cliente HTTP | `frontend/src/api/cliente.js` | Caminhos relativos, cookies e ErroApi |
-| Estado | `frontend/src/contextos/` | Sessão e representação do carrinho |
-| Interface | `frontend/src/componentes/`, `paginas/`, `index.css` | Componentes compartilhados, telas e tokens |
+| Inicialização | backend/src/server.js, config.js | Validar configuração, aplicar schema, abrir HTTP e encerrar |
+| HTTP | backend/src/app.js, routes/ | Cookies, CORS, validação, status e serialização |
+| Sessão | middleware/autenticacao.js, services/usuarioService.js, lib/senha.js | JWT em cookie, conta e scrypt |
+| Erros | lib/ApiError.js, lib/validacao.js, middleware/erros.js | Validação acumulada e envelope de erro |
+| ERP | backend/src/erp/cliente.js | Único acesso a catálogo, produtos, imagens, pedidos e health |
+| Persistência | backend/src/db/index.js, schema.sql, migracoes.js | SQLite, modelo atual e conversão legada |
+| Gestão | services/carrinhosService.js | Posse, nomes, principal, limites e exclusão |
+| Itens | services/carrinhoService.js | Estoque, enriquecimento, quantidades e totais por carrinho |
+| Checkout | services/pedidoService.js, checkoutService.js | Orquestração ERP, tentativas e conclusão local |
+| Navegação | frontend/src/main.jsx, App.jsx | Providers, BrowserRouter e telas |
+| HTTP frontend | frontend/src/api/cliente.js | Caminhos relativos, cookies e ErroApi |
+| Estado | contextos/CarrinhoContext.jsx, lib/carrinhoPorSessao.js | Sessão, seleção por aba, filas e respostas |
+| Vitrine | componentes/PainelCarrinho.jsx, GerenciadorCarrinhos.jsx, ConteudoCarrinho.jsx, AdicionarAoCarrinho.jsx | Gestão e edição sem sair do catálogo |
 
-## Dados locais
+## Persistência e migração
 
-| Tabela | Conteúdo e restrições |
+| Tabela | Conteúdo |
 |---|---|
-| `usuarios` | Identidade da conta, email único, senha_hash e contato |
-| `enderecos` | Pertencem a usuário; principal booleano; exclusão em cascata |
-| `carrinho_itens` | Código, quantidade e usuário; UNIQUE(usuario_id, codigo_produto) |
-| `pedidos_usuario` | Número ERP único, proprietário, snapshot de endereço e total local em centavos |
+| usuarios | Identidade, contato e hash de senha |
+| enderecos | Endereços por usuário |
+| carrinhos | Proprietário, nome, principal, versão e datas |
+| carrinho_itens | Carrinho, código ERP e quantidade; UNIQUE(carrinho_id, codigo_produto) |
+| checkout_tentativas | Identidade por usuário, origem, versão, assinatura da requisição, snapshot de endereço, estado e número ERP conhecido |
+| pedidos_usuario | Vínculo ERP/usuário, snapshot de endereço e total em centavos |
 
-O banco original foi consultado em modo somente leitura/imutável: integrity
-check `ok`; quatro tabelas vazias. Não há dados de catálogo locais.
-Não existe tabela de carrinhos nem infraestrutura de migrações versionadas.
-`aplicarSchema()` executa DDL com `CREATE TABLE IF NOT EXISTS` no bootstrap.
+WAL, foreign keys e busy timeout são configurados na conexão. A migração
+transacional converte itens por usuário para itens por carrinho, preserva IDs,
+quantidades e datas e cria um principal por conta, inclusive vazia.
+`PRAGMA user_version=1` identifica o modelo suportado; versão superior aborta.
+Reexecução não duplica itens. Cadastro cria conta e primeiro carrinho na mesma
+transação. Roteiro: [migração e recuperação](../sdd/multiplos-carrinhos/recuperacao.md).
 
-## Fluxos principais
+## Fluxos atuais
 
-**Autenticação:** cadastro/login → hash/verificação → JWT → cookie
-`kaizen_sessao` com httpOnly, SameSite=Lax e Secure em produção. Rotas privadas
-verificam assinatura e existência do usuário. `/auth/eu` alimenta AuthContext.
+**Sessão:** AuthContext consulta /auth/eu no boot. O controlador do carrinho
+é associado à identidade autenticada; logout e troca de conta invalidam
+operações antigas. Visitante não consulta a API privada de carrinhos.
 
-**Catálogo:** parâmetros da URL → cliente frontend → router catálogo → SIAC.
-O router força produtos ativos e reescreve imagens para o proxy da loja.
+**Catálogo:** busca, categoria, disponibilidade e página vivem na URL.
+Mudança de filtros reinicia a página. Trocar carrinho não remonta os resultados.
 
-**Carrinho:** consulta linhas do usuário → busca produto por linha no SIAC →
-calcula disponibilidade, contadores e valores. Alterações validam estoque
-contra o ERP. Limites atuais: 50 produtos distintos e 99 unidades por produto.
+**Carrinhos:** principal persistido no servidor; ativo pertence à aba/ciclo
+autenticado. Boot e F5 selecionam o principal. Ações usam ID explícito e
+verificam posse no backend. Limites: dez carrinhos, 50 produtos distintos e
+99 unidades por produto em cada um. Preço/estoque/descrição são lidos no ERP.
 
-**Checkout:** valida endereço do usuário → lê carrinho → bloqueia pendências →
-cria pedido no ERP → transação local grava vínculo/snapshot e limpa carrinho.
-O endereço também é enviado ao ERP na observação, limitada a 500 caracteres.
-Não existe transação distribuída, proteção local contra duplicidade ou snapshot
-versionado do carrinho em andamento.
+**Assíncrono:** ciclo, geração de seleção e sequências descartam respostas
+superadas. Leituras e mutações validam ID/versão; filas e ocupação são por
+carrinho. Gestão da coleção tem ocupação própria. Ao recuperar foco ou antes
+de mutar, os metadados são revalidados; ativo excluído recebe substituto.
 
-**Pedidos:** listagem filtra vínculos do usuário e consulta status no ERP;
-detalhe verifica posse antes de buscar no ERP.
+**Checkout:** ID, versão, tentativa, endereço selecionado e observação
+identificam a confirmação. Antes do POST ERP, a loja registra tentativa e
+bloqueio exclusivo persistente. Mutações revalidam o bloqueio após awaits.
+Sucesso salva vínculo, limpa só a origem, incrementa versão e conclui tentativa
+na mesma transação local. Nome, ID e outros carrinhos são preservados.
 
-## Execução e origem
+**Recuperação:** mesma tentativa concluída retorna vínculo sem novo POST.
+Recusa conclusiva preserva itens e libera edição; falha incerta conserva
+bloqueio. Número conhecido de resposta parcial é persistido quando possível.
+F5/reinício não liberam nem reenviam automaticamente. Não há atomicidade
+distribuída ou garantia de idempotência remota. O bloqueio protege processos
+que compartilham o mesmo SQLite.
 
-- Desenvolvimento: Vite :5173 faz proxy de `/api` para backend :3001.
-- Produção: backend serve `frontend/dist` e fallback de rotas React.
-- API/HTML ficam na mesma origem no caminho previsto. O frontend não precisa
-  de env com host da API ou credencial ERP.
-- `/api/health` consulta banco e health do ERP; o HTTP local permanece 200 se
-  a consulta ao banco funcionar, mesmo com estado ERP indisponível no corpo.
+**Pedidos:** listagem consulta vínculos próprios e busca status por pedido no
+ERP. Detalhe verifica posse antes da chamada externa. Snapshot de endereço
+não muda com edições posteriores do cadastro.
 
-## Divergências observadas
+## Execução, testes e limites
 
-- FIX-001 corrigido em 2026-10-11: env explícita para JWT/ERP, sem fallback
-  secreto. Seis regressões em backend/tests/config.test.js; integração pendente.
-- CORS reflete qualquer origem e ignora a origem configurada: FIX-002.
-- Comentário de `main.jsx` diz que carrinho depende da sessão; o provider não
-  observa AuthContext: FIX-005.
-- Conversão monetária perde centavos: FIX-003.
-- Busca/filtros preservam página incompatível: KZN-325.
-- Documentação cita alertas vermelhos no tom 700, mas há usos de red-600.
-  Uma auditoria visual atual ainda não foi feita.
-- README menciona SIAC_URL; implementação lê ERP_URL.
-- Build frontend e banco estavam versionados. A estrutura nova ignora esses
-  artefatos; a publicação da aplicação precisa de revisão própria.
+Vite :5173 encaminha /api para backend :3001. Em production, o backend serve
+frontend/dist; cookie Secure exige HTTPS no navegador. Não há env de API/ERP
+no frontend. Health local pode responder 200 com ERP indisponível no corpo.
+CORS permite somente a origem configurada; produção sem origem não autoriza
+leitura entre origens. CORS não substitui sessão, posse ou proteção CSRF.
 
-## Evolução ainda não aprovada
+Reavaliação local de 2026-10-13: backend 123/123, frontend 94/94 e build de
+67 módulos passaram. ERP simulado e SQLite isolado; não é homologação SIAC.
+Ensaios visuais da feature: [evidências](../sdd/multiplos-carrinhos/validacao-visual.md).
+Não há suíte E2E completa nem auditoria atual integral de contraste.
 
-Múltiplos carrinhos exigirá entidade própria, migração de itens, contrato HTTP
-com IDs, persistência da seleção, isolamento e checkout de um carrinho. Limite
-de dez carrinhos, painel lateral e regras de exclusão são propostas iniciais,
-não decisões implementadas. As propostas abaixo devem passar pelo ciclo SDD.
-
-## Propostas para MULTI-001 — ainda não aprovadas
-
-As escolhas desta seção seguem em proposta. O preenchimento aprovado do
-relatório mantém essas decisões de produto como pendentes.
-
-| Pergunta | Proposta inicial | Justificativa a revisar |
-|---|---|---|
-| Limite | 10 carrinhos por usuário | Limite previsível; valor é escolha de produto |
-| Excluir ativo | Selecionar outro; último excluído gera padrão vazio | Evitar estado sem destino para adicionar peças |
-| Vitrine desktop | Painel lateral | Editar carrinho sem abandonar resultado da busca |
-| Celular | Painel recolhível | Preservar espaço para catálogo e acesso às ações |
-| Entrada na loja | Último carrinho ativo persistido | Retomar orçamento de onde parou |
-| Após checkout | Manter carrinho e nome; retirar conteúdo comprado | Reutilizar organização e preservar demais carrinhos |
-
-Direção técnica proposta: entidade carrinhos; itens por carrinho; seleção
-persistida no servidor; IDs explícitos nas operações; posse verificada em
-todas as rotas; migração preservando itens existentes. Regras para alterações
-concorrentes, duplicidade e múltiplas abas precisam entrar na spec.
+INV-001/002 foram mitigados pelo checkout persistente; recuperação de resultado
+remoto incerto continua operacional. INV-003 (principal de endereço),
+INV-004 (erro em pedidos) e INV-005 (texto da busca/histórico) permanecem
+abertos, com grau de evidência no [inventário](../../fix.md).
+Execução local confirmada; deploy público não registrado.

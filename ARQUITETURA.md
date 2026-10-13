@@ -1,6 +1,8 @@
 # Arquitetura — Kaizen Autopeças
 
-> Documentação técnica do projeto. O enunciado do teste está no [README](README.md).
+> Arquitetura atual em 13/10/2026, referência main `76eca4d`.
+> O enunciado está no [README](README.md); evidências e limitações da entrega
+> estão no [relatório](RELATORIO.md).
 
 Loja de autopeças (React + Node) que **consome a API do SIAC**, o ERP interno da
 Kaizen.
@@ -34,8 +36,9 @@ qualquer visitante leria o catálogo inteiro — e criaria pedidos.
 (`/api/imagens/:arquivo`), então o ERP não precisa estar aberto ao navegador.
 
 **O que é do ERP fica no ERP.** A loja não tem cópia de produto nem de pedido.
-Preço e estoque são sempre lidos na hora, e não existe sincronização para dar
-errado. O único dado de ligação é `pedidos_usuario`: o ERP conhece
+Preço e estoque são consultados no SIAC nas operações; a atualização desses
+dados é responsabilidade do ERP. O vínculo de pedido é `pedidos_usuario`; tentativas de checkout guardam
+metadados mínimos de recuperação, sem copiar pedidos completos. O ERP conhece
 "Fulano, CPF X", não a conta `fulano@email.com`.
 
 ---
@@ -62,16 +65,17 @@ porta do backend.
 ## Autenticação
 
 - Senha com **scrypt** (`node:crypto`), salt por usuário e parâmetros gravados
-  junto do hash. Sem dependência nativa para compilar na EC2, e scrypt é
-  *memory-hard* — resiste a ataque com hardware dedicado, coisa que bcrypt não faz.
+  junto do hash. A implementação usa node:crypto, sem dependência nativa
+  adicional para a senha; scrypt tem custo de memória configurável.
 - Sessão em **JWT dentro de cookie `httpOnly`**, não em `localStorage`. Script
   injetado na página não lê o token. `SameSite=Lax` barra POST de outro site, e
   `secure` liga sozinho em produção.
 - Login não diz se o e-mail existe: e-mail desconhecido e senha errada devolvem
   a mesma mensagem, e o caso sem usuário ainda gasta o tempo de um hash para não
   responder visivelmente mais rápido.
-- O front **não guarda** quem está logado: pergunta ao servidor (`GET /api/auth/eu`)
-  no boot. Só o servidor sabe.
+- O front consulta o servidor (`GET /api/auth/eu`) no boot e mantém a
+  representação da conta em memória no AuthContext. O token fica somente
+  no cookie httpOnly; autorização é responsabilidade do backend.
 
 ---
 
@@ -98,14 +102,31 @@ Tudo sob `/api`. Erros seguem o mesmo formato do ERP:
 | POST   | `/enderecos`                |   ✓    | Cadastra endereço                |
 | PUT    | `/enderecos/:id`            |   ✓    | Edita endereço                   |
 | DELETE | `/enderecos/:id`            |   ✓    | Remove endereço                  |
-| GET    | `/carrinho`                 |   ✓    | Carrinho com preço/estoque atual |
-| POST   | `/carrinho/itens`           |   ✓    | Adiciona item                    |
-| PATCH  | `/carrinho/itens/:codigo`   |   ✓    | Muda a quantidade                |
-| DELETE | `/carrinho/itens/:codigo`   |   ✓    | Remove item                      |
-| DELETE | `/carrinho`                 |   ✓    | Esvazia                          |
+| GET    | `/carrinhos`                |   ✓    | Metadados próprios e principal, sem enriquecer todos os itens |
+| POST   | `/carrinhos`                |   ✓    | Cria carrinho com `nome` |
+| GET    | `/carrinhos/:id`            |   ✓    | Representação enriquecida, versão e bloqueio |
+| PATCH  | `/carrinhos/:id`            |   ✓    | Renomeia |
+| PUT    | `/carrinhos/:id/principal`  |   ✓    | Define principal persistido |
+| DELETE | `/carrinhos/:id`            |   ✓    | Exclui; itens exigem `confirmar_com_itens: true` |
+| POST   | `/carrinhos/:id/itens`      |   ✓    | Adiciona código/quantidade |
+| PATCH  | `/carrinhos/:id/itens/:codigo` | ✓  | Altera quantidade |
+| DELETE | `/carrinhos/:id/itens/:codigo` | ✓  | Remove item |
+| DELETE | `/carrinhos/:id/itens`      |   ✓    | Esvazia somente o carrinho identificado |
+| GET    | `/carrinhos/:id/checkout`   |   ✓    | Situação da tentativa e número ERP conhecido |
 | POST   | `/pedidos`                  |   ✓    | **Checkout**                     |
 | GET    | `/pedidos`                  |   ✓    | Meus pedidos                     |
 | GET    | `/pedidos/:numero`          |   ✓    | Detalhe do pedido                |
+
+O contrato legado `/api/carrinho` exige sessão e devolve
+`409 CARRINHO_OBRIGATORIO`, sem escolher um destino implícito. O frontend atual
+usa `/api/carrinhos/:id`. Sucesso usa `{ dados: ... }`; listagens paginadas
+também incluem `paginacao`.
+
+`POST /pedidos` recebe `carrinho_id`, `versao_carrinho`, `tentativa_id`
+(UUID), `endereco_id` e `observacao` opcional de até 300 caracteres.
+Uma criação confirmada retorna 201; replay concluído retorna 200 sem novo POST
+ao ERP. Campos obrigatórios ausentes retornam 422. A observação enviada ao
+SIAC inclui a entrega e é limitada a 500 caracteres.
 
 ### Como as falhas do ERP chegam ao cliente
 
@@ -114,6 +135,12 @@ Tudo sob `/api`. Erros seguem o mesmo formato do ERP:
 | Rede, timeout ou 5xx         | `502 ERP_INDISPONIVEL`                     |
 | 401 (token errado)           | `502 ERP_NAO_AUTORIZADO` + log no servidor |
 | 404 / 409 / 422              | Repassado como veio                        |
+
+Na criação de pedido, transporte/5xx/resposta inválida e falha local após
+possível criação resultam em `502 CHECKOUT_INCERTO`, com carrinho bloqueado.
+Recusas conclusivas preservam os itens e liberam edição. Número utilizável de
+resposta parcial é conservado quando a persistência permite; não confirma a
+compra sozinho. O envelope HTTP não expõe atributos internos do erro ERP.
 
 O 401 do ERP vira 5xx de propósito: token mal configurado é problema nosso, não
 de quem está comprando. O 409 de estoque, ao contrário, é informação que a
@@ -125,11 +152,11 @@ pessoa precisa ver.
 
 | Rota                | Sessão | O que tem                                        |
 | ------------------- | :----: | ------------------------------------------------ |
-| `/`                 |   —    | Vitrine: busca, filtro por categoria, paginação   |
+| `/`                 |   —    | Vitrine, busca/filtros/página; autenticado também usa painel de carrinhos |
 | `/produto/:codigo`  |   —    | Detalhe, escolha de quantidade                   |
 | `/entrar`           |   —    | Login                                            |
 | `/cadastro`         |   —    | Criar conta                                      |
-| `/carrinho`         |   ✓    | Alterar quantidade, remover, esvaziar            |
+| `/carrinho`         |   ✓    | Gestão de carrinhos, quantidades, remoção e total do ativo |
 | `/checkout`         |   ✓    | Escolher endereço (ou criar na hora), observação |
 | `/pedidos`          |   ✓    | Histórico com status vindo do ERP                |
 | `/pedidos/:numero`  |   ✓    | Itens, endereço e valores                        |
@@ -182,27 +209,40 @@ O quadrado do logo leva o `#00a5ac` puro, porque o "K" é grande e bold — aí
 3:1 basta. Já a palavra "Autopeças" ao lado, com 18px bold, fica a 0,66px de
 contar como "texto grande" no WCAG, então usa `marca-700`.
 
-Onde o `#00a5ac` aparece de fato: o símbolo do logo, os 45 desenhos de peças,
+Onde o `#00a5ac` aparece na identidade documentada: o símbolo do logo, ilustrações de peças,
 as bordas de seleção e o anel de foco do teclado.
 
-### Verificação
+### Referência de contraste e validação
 
-As 11 rotas foram auditadas com o contraste calculado **na página renderizada**
+O documento original relata auditoria das 11 rotas, com contraste **na página renderizada**
 (cor e fundo efetivos, resolvidos via canvas — o Tailwind 4 emite `oklab()`, que
 um parser de `rgb()` lê errado), comparando contra o mínimo exigido para o
-tamanho e peso de cada texto. Zero falhas.
+tamanho e peso de cada texto, sem falhas reportadas naquela versão. Esse
+registro da baseline não comprova auditoria integral da interface atual.
+A feature tem medições de layout/foco em ambiente simulado; veja
+[evidências visuais](docs/sdd/multiplos-carrinhos/validacao-visual.md).
 
 Botões desabilitados são isentos pelo WCAG 1.4.3, mas aqui seguem a regra assim
 mesmo: "isento" não é desculpa para ninguém conseguir ler o rótulo.
 
 Vermelho (sem estoque) e âmbar (últimas unidades) ficaram **fora da paleta de
 propósito**: são sinais de alerta e precisam destoar da marca para serem lidos
-como alerta. Os dois usam o tom 700, que passa em contraste.
+como alerta. O tom 700 é a referência documentada; ainda há usos de red-600
+na implementação. A auditoria integral da versão atual não foi executada.
 
 ---
 
 ## Regras de negócio que valem conhecer
 
+- **Até dez carrinhos por conta.** Nomes de 1–60 caracteres após trim;
+  nomes iguais são permitidos. Cada carrinho admite 50 produtos distintos
+  e até 99 unidades por produto.
+- **Principal e ativo são diferentes.** Principal fica no servidor; ativo
+  pertence à aba e ao ciclo autenticado. Boot/F5 selecionam o principal;
+  navegar mantém o ativo. Alterar principal não troca outro ativo válido.
+- **Exclusão mantém um destino.** Excluir ativo seleciona o mais antigo;
+  excluir principal promove o mais antigo. Excluir o último cria “Meu carrinho”
+  vazio/principal. Conteúdo exige confirmação, sem alteração ao cancelar.
 - **Carrinho fica no servidor**, não no `localStorage`: trocar de navegador ou de
   celular mantém o que a pessoa escolheu.
 - **Preço nunca congela no carrinho.** Guardamos só código e quantidade; preço,
@@ -210,6 +250,12 @@ como alerta. Os dois usam o tom 700, que passa em contraste.
   aparece marcado em vez de quebrar a tela.
 - **Checkout bloqueia com pendência.** Se algum item perdeu estoque, o botão
   trava até ajustar.
+- **Contador soma unidades; total soma linhas disponíveis.** Pendências
+  permanecem visíveis e contam unidades. Com estoque positivo reduzido,
+  quantidade continua editável dentro de 1..min(99, estoque).
+- **Pedido protege só sua origem.** Tentativa persistente bloqueia itens,
+  renomeação, exclusão e esvaziamento do carrinho enviado. Outros continuam
+  utilizáveis. Sucesso mantém ID/nome/principal e esvazia somente a origem.
 - **Endereço vai no snapshot do pedido.** O ERP não tem campo de entrega (vai na
   observação, como o SIAC recebe hoje), e a loja guarda uma cópia em JSON: editar
   o endereço depois não reescreve o histórico.
@@ -228,7 +274,7 @@ backend/
     server.js            bootstrap, graceful shutdown
     app.js               montagem do Express
     config.js            env + validação fail-fast
-    db/                  schema e conexão SQLite
+    db/                  schema, conexão SQLite e migração legada transacional
     erp/cliente.js       ÚNICO ponto que fala com o ERP
     middleware/          sessão JWT, request-id, erros
     routes/              HTTP: lê, chama o serviço, devolve JSON
@@ -247,6 +293,29 @@ autenticação ou pôr um cache atinge um arquivo só.
 
 ---
 
+## Modelo local e recuperação
+
+SQLite guarda `usuarios`, `enderecos`, `carrinhos`, `carrinho_itens`,
+`checkout_tentativas` e `pedidos_usuario`. Itens pertencem ao carrinho, com
+unicidade em `(carrinho_id, codigo_produto)`; posse vem da entidade pai.
+Carrinhos têm versão, incrementada nas alterações de conteúdo e nome.
+Índice parcial permite no máximo um principal por conta; serviços garantem
+a existência de um, inclusive após excluir o último carrinho.
+
+`migrarBanco()` converte o schema legado em transação IMMEDIATE, cria principal
+por conta, preserva itens e verifica integridade antes de gravar user_version=1.
+Não há reset. Cadastro cria conta e carrinho inicial na mesma transação.
+
+Tentativa possui chave `(usuario_id, tentativa_id)`, assinatura verificável
+da confirmação e snapshot de entrega. Índice exclusivo por origem impede
+duas tentativas bloqueantes no mesmo SQLite. Estados preparando/enviando/incerto
+conservam proteção; concluido/recusado registram o desfecho. A origem lógica
+permanece após excluir um carrinho comprado, preservando a deduplicação.
+
+HTTP ERP ocorre fora da transação. Conclusão local atomiza vínculo, limpeza,
+versão e tentativa. Não há expiração automática nem reenvio após reinício.
+Verificação operacional: [migração e recuperação](docs/sdd/multiplos-carrinhos/recuperacao.md).
+
 ## Limitações conhecidas
 
 Decisões de escopo assumidas pelo time, não esquecimentos:
@@ -255,12 +324,20 @@ Decisões de escopo assumidas pelo time, não esquecimentos:
   de frete nem emissão de nota.
 - **Sem recuperação de senha.** Precisa de envio de e-mail.
 - **Sem confirmação de e-mail** no cadastro, pelo mesmo motivo.
-- **Sem testes automatizados.** Uma suíte com `node:test` cobrindo login, posse
-  de pedido/endereço e o checkout com estoque insuficiente seria o primeiro passo.
+- **Testes automatizados adicionados.** Suítes `node:test` em backend/tests e
+  frontend/tests cobrem as correções e regressões documentadas. A validação
+  manual foi confirmada pelo candidato; ainda não há suíte E2E completa ou
+  cobertura integral de todos os fluxos. Veja RELATORIO.md e docs/sdd/.
+- **Falha técnica no enriquecimento de item.** Se buscar um produto falhar,
+  a linha permanece pendente e o checkout bloqueia. A mensagem atual é a mesma
+  para produto ausente e indisponibilidade técnica do ERP; não diferencia
+  essas causas para quem está comprando.
 - **Checkout não é transacional entre os dois sistemas.** Se o ERP criar o pedido
   e a gravação local falhar, o pedido existe mas não aparece em "meus pedidos".
-  O log registra o número para reconciliar à mão; resolver de verdade pede um
-  *outbox* ou um endpoint de cancelamento no ERP.
+  A tentativa conserva bloqueio e, quando recebido e persistido, o número ERP.
+  Recuperar exige evidência do SIAC. Não há garantia remota de idempotência ou
+  execução exatamente uma vez. Processos com SQLite independentes não
+  compartilham esse bloqueio.
 - **`GET /pedidos` faz N chamadas ao ERP** (uma por pedido da página, em
   paralelo) para trazer o status atual. Com páginas de 10 compensa a
   simplicidade; volume maior pediria cache ou consulta em lote no ERP.

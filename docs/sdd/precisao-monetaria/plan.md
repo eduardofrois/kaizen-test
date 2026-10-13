@@ -1,7 +1,7 @@
 # Plano de implementação — Precisão monetária
 
 **Versão:** 1
-**Estado:** Validado localmente — PR #9 aberto; CI da implementação passou
+**Estado:** Implementado e integrado à main; validação manual confirmada pelo usuário em 2026-10-12. Evidências e limites por cenário na matriz e no histórico desta unidade.
 **Spec:** [spec.md](spec.md), versão 1
 **Baseline/data:** d040365; 2026-10-11
 **Objetivo:** eliminar perda de centavos em conversão, carrinho e vínculo local.
@@ -10,6 +10,19 @@
 **Aprovação do desenho:** usuário “aprovado”, em 2026-10-11.
 **Aprovação para implementar este plano:** usuário “aprovado”, em 2026-10-11, após apresentação deste plano versão 1.
 **Execução:** sequencial nesta sessão, sem delegação automática.
+
+
+**Validação manual atual — 2026-10-12:** concluída pelo usuário. Referência:
+“Agora eu preciso que voce revise os arquivos e mude aonde fala que eu nao fiz
+a validação manual, pois eu fiz.” A confirmação complementa as evidências
+anteriores; não acrescenta execução pela IA, capturas por variante, exploração
+de segurança ou pedido real no SIAC. Requisitos e aprovações de implementação
+permanecem os já registrados. Esta revisão documental não autoriza publicação.
+
+> Leitura atualizada em 2026-10-13, referência main 76eca4d. O problema e
+> os exemplos de execução abaixo descrevem a baseline e o escopo original
+> da unidade. Relatos datados preservam o estado conhecido naquela etapa.
+> Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
 
 ## Restrições globais
 
@@ -169,6 +182,10 @@ export function paraCentavos(reais) {
 
 ## Matriz de validação
 
+A confirmação manual consolidada é do usuário. Passos instrumentados que
+continuam sem marcação não têm execução específica registrada; são o roteiro
+original, sem atribuir à IA interceptações ou medições que não realizou.
+
 | Aceite | Prova | Esperado | Observado |
 |---|---|---|---|
 | AC-01 | Nove conversões tabeladas | Centavos exatos | Nove casos passaram |
@@ -184,7 +201,7 @@ Faixa testada não prova todo intervalo Number nem valores de precisão extra.
 Plano cobre desenho aprovado com produção mínima e testes dos consumidores
 reais. Implementação aprovada e validada localmente; publicação aguarda comando do usuário.
 
-## Resultado da execução — 2026-10-11
+## Histórico — Resultado da execução — 2026-10-11
 
 RED conjunto dos três arquivos: 29 testes, 20 passaram e 9 falharam. Falhas
 monetárias reais: subtotais [3.42,8.18,19.98], conversões truncadas, ida/volta
@@ -195,14 +212,14 @@ entradas, ida/volta, carrinho e pedido; preservados os 23 testes backend prévio
 Somente helper alterado em produção. Manual opcional e CI não executados;
 nenhum pedido real, mudança de env/schema ou reparo histórico. Sem commit/PR.
 
-## Autorização de publicação — 2026-10-11
+## Histórico — Autorização de publicação — 2026-10-11
 
 Usuário: “pode abrir o PR”. Autorizados commit, publicação da branch
 fix/precisao-monetaria e abertura do PR para main. Validação local concluída;
 CI remoto será acompanhado. Validação manual não foi informada. Merge manual
 pelo usuário; nenhuma autorização para integrar diretamente na main.
 
-## Publicação da correção — 2026-10-11
+## Histórico — Publicação da correção — 2026-10-11
 
 Commit de implementação: 3f584ce. Branch fix/precisao-monetaria publicada.
 PR #9: https://github.com/eduardofrois/kaizen-test/pull/9
@@ -212,3 +229,12 @@ Esta atualização documental gera nova execução de CI a acompanhar.
 Merge permanece manual e pendente.
 Validação manual não informada; ERP real não utilizado nos testes.
 Os registros anteriores de publicação pendente descrevem etapas passadas.
+
+## Consolidação documental — 2026-10-12
+
+Validação manual da correção concluída pelo usuário, conforme confirmação
+registrada no início. Evidências automatizadas e CI anteriores preservadas.
+Pendências manuais nos relatos históricos descrevem a informação disponível
+à época. Cenários sem detalhamento individual continuam identificados como
+limite de evidência, não como ausência de validação manual da correção.
+Nenhum código, teste, contrato, dependência, banco ou ERP alterado nesta revisão.

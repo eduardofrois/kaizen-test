@@ -3,7 +3,9 @@
 Data: 2026-10-13. Node 24.14.1. Navegador do Codex, ambiente sintético separado
 na porta 3199, API Express real, build React e SQLite temporário. Todo acesso
 ERP interceptado pelo simulador com origem .invalid; contas e produtos sintéticos.
-Não é homologação do SIAC ou confirmação manual do usuário.
+Este ensaio não é homologação do SIAC nem confirmação manual do usuário.
+Separadamente, o usuário confirmou a v1 em 13/10/2026; a v2 tem ensaio
+simulado próprio no plano. PR #17 integrado à main em 76eca4d.
 
 ## Protótipo
 
@@ -33,9 +35,9 @@ lado do painel, sem compressão de quatro colunas.
 
 Capturas temporárias, não versionadas:
 
-- [Painel mobile](/private/tmp/kaizen-multi-mobile-painel.jpg), largura útil
+- Painel mobile: `/private/tmp/kaizen-multi-mobile-painel.jpg`, largura útil
   390, dez carrinhos, Civic com duas unidades e total R$39,98 no build final.
-- [Painel desktop](/private/tmp/kaizen-multi-desktop.jpg), largura útil 1280,
+- Painel desktop: `/private/tmp/kaizen-multi-desktop.jpg`, largura útil 1280,
   busca/página preservadas e painel ao lado dos produtos sintéticos.
 
 ## Percursos observados
@@ -75,5 +77,6 @@ rota e ativou a falha, observada no checkout; não foi bloqueio de aprovação.
 Respostas atrasadas, 401/rede/500 com recarga, HTTP malicioso, estoque e
 recuperação têm provas isoladas descritas na spec/plano. Não foi feita
 interceptação de cada falha no navegador, auditoria integral de contraste,
-teclado virtual real ou ensaio com SIAC real. A confirmação manual do usuário
-e a publicação continuam pendentes. Os artefatos visuais são temporários.
+teclado virtual real ou ensaio com SIAC real. Os artefatos visuais são temporários e podem não existir em outro checkout;
+os resultados e limites do ensaio ficam registrados aqui. Confirmação humana
+da v1 e integração da v2 têm os registros próprios indicados no início.

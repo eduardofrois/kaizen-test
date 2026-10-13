@@ -1,7 +1,7 @@
 # Plano de implementação — Pipeline de validação
 
 **Versão:** 1
-**Estado:** Implementado — validação local e PR concluídos; aguardando push/main após merge manual
+**Estado:** Implementado e integrado à main; CI em PR registrada. Evidência específica do evento push/main permanece pendente no plano; não é falha confirmada do workflow.
 **Spec:** [spec.md](spec.md), versão 1
 **Baseline:** a70f55f; 2026-10-11
 **Objetivo:** automatizar testes de configuração e build em PRs/main.
@@ -10,6 +10,11 @@
 **Aprovação para implementar:** versão 1 aprovada pelo usuário em
 2026-10-11, resposta “aprovo” à apresentação de spec.md e plan.md.
 **Execução:** nesta sessão, após aprovação, sem delegação automática.
+
+> Leitura atualizada em 2026-10-13, referência main 76eca4d. O problema e
+> os exemplos de execução abaixo descrevem a baseline e o escopo original
+> da unidade. Relatos datados preservam o estado conhecido naquela etapa.
+> Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
 
 ## Restrições globais
 

@@ -1,14 +1,27 @@
 # Spec — Precisão monetária
 
 **Versão:** 1
-**Estado:** Validado localmente — PR #9 aberto; CI da implementação passou
+**Estado:** Implementado e integrado à main; validação manual confirmada pelo usuário em 2026-10-12. Evidências e limites por cenário na matriz e no histórico desta unidade.
 **Baseline/data:** d040365; 2026-10-11
 **Origem:** FIX-003 — Conversão de reais para centavos perde dinheiro
 **Branch:** fix/precisao-monetaria
 **Aprovação do desenho:** 2026-10-11; usuário: “aprovado”, após apresentação da spec.
 **Aprovação para implementar:** 2026-10-11; usuário “aprovado”, após apresentação do plano versão 1.
 
-## Problema e evidência
+
+**Validação manual atual — 2026-10-12:** concluída pelo usuário. Referência:
+“Agora eu preciso que voce revise os arquivos e mude aonde fala que eu nao fiz
+a validação manual, pois eu fiz.” A confirmação complementa as evidências
+anteriores; não acrescenta execução pela IA, capturas por variante, exploração
+de segurança ou pedido real no SIAC. Requisitos e aprovações de implementação
+permanecem os já registrados. Esta revisão documental não autoriza publicação.
+
+> Leitura atualizada em 2026-10-13, referência main 76eca4d. O problema e
+> os exemplos de execução abaixo descrevem a baseline e o escopo original
+> da unidade. Relatos datados preservam o estado conhecido naquela etapa.
+> Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
+
+## Problema e evidência na baseline
 
 backend/src/lib/dinheiro.js/paraCentavos usa Math.floor(Number(reais) * 100).
 Representação binária de 1.15 gera 114.99999999999999; floor devolve 114.
@@ -100,7 +113,7 @@ Versão 1 do desenho aprovada pelo usuário em 2026-10-11, incluindo domínio
 de duas casas e ausência de reparo histórico. Plan.md preparado para revisão;
 nenhum código/teste alterado. Aprovação do plano de implementação pendente.
 
-## Implementação e evidências — 2026-10-11
+## Histórico — Implementação e evidências — 2026-10-11
 
 Plano versão 1 aprovado explicitamente. Produção: Math.round substituiu
 Math.floor somente em paraCentavos. RED focado: 29 testes, 20 passaram e
@@ -111,14 +124,14 @@ Pedido criado somente no fake; banco em memória, sem ERP/.env/banco real.
 Validação manual opcional não realizada; CI, commit e PR pendentes.
 Históricos não reparados; precisão superior a duas casas fora do escopo.
 
-## Autorização de publicação — 2026-10-11
+## Histórico — Autorização de publicação — 2026-10-11
 
 Usuário: “pode abrir o PR”. Autorizados commit, publicação da branch
 fix/precisao-monetaria e abertura do PR para main. Validação local concluída;
 CI remoto será acompanhado. Validação manual não foi informada. Merge manual
 pelo usuário; nenhuma autorização para integrar diretamente na main.
 
-## Publicação da correção — 2026-10-11
+## Histórico — Publicação da correção — 2026-10-11
 
 Commit de implementação: 3f584ce. Branch fix/precisao-monetaria publicada.
 PR #9: https://github.com/eduardofrois/kaizen-test/pull/9
@@ -128,3 +141,12 @@ Esta atualização documental gera nova execução de CI a acompanhar.
 Merge permanece manual e pendente.
 Validação manual não informada; ERP real não utilizado nos testes.
 Os registros anteriores de publicação pendente descrevem etapas passadas.
+
+## Consolidação documental — 2026-10-12
+
+Validação manual da correção concluída pelo usuário, conforme confirmação
+registrada no início. Evidências automatizadas e CI anteriores preservadas.
+Pendências manuais nos relatos históricos descrevem a informação disponível
+à época. Cenários sem detalhamento individual continuam identificados como
+limite de evidência, não como ausência de validação manual da correção.
+Nenhum código, teste, contrato, dependência, banco ou ERP alterado nesta revisão.

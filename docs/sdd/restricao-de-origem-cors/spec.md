@@ -1,14 +1,27 @@
 # Spec — Restrição de origem CORS
 
 **Versão:** 1
-**Estado:** Validado — PR #15 aberto
+**Estado:** Implementado e integrado à main; validação manual confirmada pelo usuário em 2026-10-12. Evidências e limites por cenário na matriz e no histórico desta unidade.
 **Origem:** FIX-002
 **Baseline/data:** 14f5163; 2026-10-12
 **Branch:** fix/restricao-de-origem-cors
 **Aprovação da spec:** 2026-10-12; usuário “aprovado” e “spec aprovada, pode fazer o plan”.
 **Aprovação para implementar:** 2026-10-12; usuário “aprovado”, após apresentação do plano versão 1.
 
-## Problema e evidência
+
+**Validação manual atual — 2026-10-12:** concluída pelo usuário. Referência:
+“Agora eu preciso que voce revise os arquivos e mude aonde fala que eu nao fiz
+a validação manual, pois eu fiz.” A confirmação complementa as evidências
+anteriores; não acrescenta execução pela IA, capturas por variante, exploração
+de segurança ou pedido real no SIAC. Requisitos e aprovações de implementação
+permanecem os já registrados. Esta revisão documental não autoriza publicação.
+
+> Leitura atualizada em 2026-10-13, referência main 76eca4d. O problema e
+> os exemplos de execução abaixo descrevem a baseline e o escopo original
+> da unidade. Relatos datados preservam o estado conhecido naquela etapa.
+> Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
+
+## Problema e evidência na baseline
 
 app.js usa cors({ origin:true, credentials:true }) globalmente. Isso reflete
 qualquer Origin recebido, sem consumir config.corsOrigem. O comentário explica
@@ -96,13 +109,13 @@ Main sincronizada; PR14 integrado. Spec preparada para revisão; após aprovaç�
 preparar plan.md detalhado. Nenhum código/teste/config real alterado nesta etapa.
 Commit, push e PR dependem de comando específico; merge manual pelo usuário.
 
-## Aprovação — 2026-10-12
+## Histórico — Aprovação — 2026-10-12
 
 Spec versão1 aprovada pelo usuário. Confirmado que CORS_ORIGEM já existe;
 nenhuma variável nova nem edição de .env real é necessária nesta preparação.
 Plano versão1 preparado para aprovação separada.
 
-## FIX-002 implementado — 2026-10-12
+## Histórico — FIX-002 implementado — 2026-10-12
 
 Plano versão1 aprovado pelo usuário com “aprovado” após apresentação.
 app.js compara Origin exatamente com config.corsOrigem; desconhecida/null/
@@ -133,7 +146,7 @@ passaram, confirmação manual pendente. Reiniciar backend, abrir loja via
 localhost5173, conferir catálogo, login, perfil e sessão apósF5. Sem reset
 ou alteração de segredo. Commit/push/PR aguardam comando específico.
 
-## FIX-002 validado — 2026-10-12
+## Histórico — FIX-002 validado — 2026-10-12
 
 Usuário confirmou “validado, pode abrir o PR” após roteiro de reinício, catálogo,
 login/perfil e sessão apósF5. AC-05 concluído com regressões e confirmação
@@ -142,7 +155,7 @@ Confirmação de uso normal não equivale a exploração autenticada em navegado
 CI remoto será acompanhado; merge manual pelo usuário. Registros anteriores
 de manual/autorização pendentes são históricos.
 
-## Publicação FIX-002 — 2026-10-12
+## Histórico — Publicação FIX-002 — 2026-10-12
 
 Implementação `b3096f8` publicada em `fix/restricao-de-origem-cors`.
 PR #15: https://github.com/eduardofrois/kaizen-test/pull/15

@@ -1,14 +1,27 @@
 # Spec — Limites e máscaras de documento e telefone
 
 **Versão:** 2
-**Estado:** Validado pelo usuário — PR #16 aberto
+**Estado:** Implementado e integrado à main; validação manual confirmada pelo usuário em 2026-10-12. Evidências e limites por cenário na matriz e no histórico desta unidade.
 **Origem:** FIX-010
 **Baseline/data:** 7d4f391; 2026-10-12
 **Branch:** fix/limites-de-documento-e-telefone
 **Aprovação da versão2:** 2026-10-12; usuário “aprovado”, após apresentação da versão2.
 **Aprovação para implementar:** 2026-10-12; usuário “aprovado” após plano versão1.
 
-## Problema e evidência
+
+**Validação manual atual — 2026-10-12:** concluída pelo usuário. Referência:
+“Agora eu preciso que voce revise os arquivos e mude aonde fala que eu nao fiz
+a validação manual, pois eu fiz.” A confirmação complementa as evidências
+anteriores; não acrescenta execução pela IA, capturas por variante, exploração
+de segurança ou pedido real no SIAC. Requisitos e aprovações de implementação
+permanecem os já registrados. Esta revisão documental não autoriza publicação.
+
+> Leitura atualizada em 2026-10-13, referência main 76eca4d. O problema e
+> os exemplos de execução abaixo descrevem a baseline e o escopo original
+> da unidade. Relatos datados preservam o estado conhecido naquela etapa.
+> Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
+
+## Problema e evidência na baseline
 
 Usuário demonstrou cadastro aceitando documento/telefone excessivos durante
 entrada, com rejeição apenas no envio. Cadastro.jsx e DadosPessoais de Perfil.jsx
@@ -126,7 +139,7 @@ código/teste/dependência alterado. Commit/push/PR dependem de comando específ
 Em2026-10-12 usuário aprovou versão2 com máscaras automáticas. Plano versão1
 preparado para revisão separada; aprovação não atribuída à implementação.
 
-## FIX-010 implementado — 2026-10-12
+## Histórico — FIX-010 implementado — 2026-10-12
 
 Plano versão1 aprovado com “aprovado” após apresentação nesta sessão. Criados
 mascaras.js e CampoComMascara.jsx; integrados documento/telefone em Cadastro
@@ -156,7 +169,7 @@ Próximo passo: usuário validar nas duas telas digitação, colagem, troca CPF/
 fixo/celular, seleção/exclusão no meio e remoção de telefone com salvar/F5.
 Sem dados pessoais nos docs. Commit/push/PR aguardam comando específico.
 
-## FIX-010 validado — 2026-10-12
+## Histórico — FIX-010 validado — 2026-10-12
 
 Usuário confirmou “validado, pode abrir o PR” após roteiro das duas telas,
 colagem/edição e remoção de telefone. Estado Validado pelo usuário; regressões
@@ -165,7 +178,7 @@ a prova automatizada de autofill/composição/teclado virtual; limitações mant
 Commit, push e PR desta unidade autorizados; merge manual pelo usuário.
 Registros anteriores de manual/publicação pendentes são históricos.
 
-## Publicação FIX-010 — 2026-10-12
+## Histórico — Publicação FIX-010 — 2026-10-12
 
 Implementação `cc24f45` publicada em `fix/limites-de-documento-e-telefone`.
 PR #16: https://github.com/eduardofrois/kaizen-test/pull/16

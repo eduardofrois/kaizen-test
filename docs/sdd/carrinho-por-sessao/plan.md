@@ -1,7 +1,7 @@
 # Plano de implementação — Carrinho por sessão
 
 **Versão:** 1
-**Estado:** Implementado — troca manual e CI confirmadas; integração visual complementar pendente
+**Estado:** Implementado e integrado à main; validação manual confirmada pelo usuário em 2026-10-12. Evidências e limites por cenário na matriz e no histórico desta unidade.
 **Spec:** [spec.md](spec.md), versão 1
 **Baseline/data:** 1d30bcc; 2026-10-11
 **Objetivo:** isolar conteúdo e resultados assíncronos por ciclo autenticado.
@@ -12,6 +12,19 @@ controlador da identidade atual. Sem remontar App.
 **Aprovação do desenho:** usuário “aprovado”, em 2026-10-11.
 **Aprovação para implementar este plano:** versão 1 aprovada em 2026-10-11; usuário: “aprovado”, após apresentação do plan.md.
 **Execução:** na sessão autorizada, sequencial, sem delegação automática.
+
+
+**Validação manual atual — 2026-10-12:** concluída pelo usuário. Referência:
+“Agora eu preciso que voce revise os arquivos e mude aonde fala que eu nao fiz
+a validação manual, pois eu fiz.” A confirmação complementa as evidências
+anteriores; não acrescenta execução pela IA, capturas por variante, exploração
+de segurança ou pedido real no SIAC. Requisitos e aprovações de implementação
+permanecem os já registrados. Esta revisão documental não autoriza publicação.
+
+> Leitura atualizada em 2026-10-13, referência main 76eca4d. O problema e
+> os exemplos de execução abaixo descrevem a baseline e o escopo original
+> da unidade. Relatos datados preservam o estado conhecido naquela etapa.
+> Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
 
 ## Restrições globais
 
@@ -223,22 +236,26 @@ Não adicionar mensagens técnicas de geração/identidade aos fluxos de produto
 
 ## Matriz de validação
 
+A confirmação manual consolidada é do usuário. Passos instrumentados que
+continuam sem marcação não têm execução específica registrada; são o roteiro
+original, sem atribuir à IA interceptações ou medições que não realizou.
+
 | Aceite | Provas | Observado |
 |---|---|---|
-| AC-01 | Instância visitante/inativa + Network boot | Controlador passou; Network manual pendente |
-| AC-02/03 | Instâncias por sessão + manual X/Y | Troca X/Y/X confirmada pelo usuário; transição lenta visual pendente |
-| AC-04 | Dez casos parametrizados, ciclo cleanup/setup, retorno X e callback antigo | Passou no controlador real; React manual pendente |
-| AC-05 | 401/0/500 e retry + telas | Controlador passou; UI manual pendente |
-| AC-06 | Suítes/build/diff e preservação URL | 37 frontend/23 backend/build/diff passaram; URL manual pendente |
-| AC-07 | Navegador e evidências separadas de teste puro | Não executado |
+| AC-01 | Instância visitante/inativa + Network boot | Controlador passou; manual confirmado; Network sem captura específica |
+| AC-02/03 | Instâncias por sessão + manual X/Y | Troca X/Y/X confirmada pelo usuário; transição lenta sem captura específica |
+| AC-04 | Dez casos parametrizados, ciclo cleanup/setup, retorno X e callback antigo | Passou no controlador real; manual confirmado; React sem prova específica adicional |
+| AC-05 | 401/0/500 e retry + telas | Controlador passou; manual confirmado; UI sem captura específica adicional |
+| AC-06 | Suítes/build/diff e preservação URL | 37 frontend/23 backend/build/diff passaram; manual confirmado; URL sem captura específica adicional |
+| AC-07 | Navegador e evidências separadas de teste puro | manual confirmado pelo usuário em 2026-10-12; sem detalhamento por variante |
 
 ## Migração, recuperação e autorrevisão
 
 Sem migração/dados. Reversão pelo fluxo Git, nunca reset de banco. Helpers
 somente para ciclo do carrinho, sem troca de stack. Aprovação registrada é do
-desenho; implementação aprovada e executada; validação manual/CI pendentes.
+desenho; implementação aprovada e executada; validação manual confirmada e CI da implementação registrada.
 
-## Implementação de carrinho-por-sessao — 2026-10-11
+## Histórico — Implementação de carrinho-por-sessao — 2026-10-11
 
 Spec/plano versão 1 aprovados: usuário “aprovado” após apresentação do plano.
 Controlador por instância/ciclo integrado ao AuthContext via provider; novo
@@ -263,7 +280,7 @@ pendentes. Sem novo pedido, cadastro, alteração de estoque ou dependências.
 PR não aberto; aguardará comando do usuário. Concorrência dentro da mesma
 sessão e checkout já enviado ao servidor continuam fora desta correção.
 
-## Confirmação manual de troca de conta — 2026-10-11
+## Histórico — Confirmação manual de troca de conta — 2026-10-11
 
 Usuário informou “conferido” após o roteiro X→logout→Y→logout→X sem F5,
 conferindo itens, contador e total. Validação manual normal de troca de conta
@@ -273,7 +290,7 @@ Esses cenários têm testes determinísticos no controlador, mas integração vi
 específica ainda não confirmada. Suítes locais e build já passaram.
 PR ainda não autorizado; merge permanece manual pelo usuário.
 
-## Autorização de publicação do FIX-005 — 2026-10-11
+## Histórico — Autorização de publicação do FIX-005 — 2026-10-11
 
 Usuário solicitou “otimo, crie o PR”, autorizando commit, publicação da branch
 e abertura do PR. Troca X/Y/X sem F5 confirmada pelo usuário; testes locais
@@ -281,7 +298,7 @@ frontend 37/backend 23 e build concluídos. Checks remotos ainda pendentes
 nesta etapa. Merge permanece manual; cenários visuais complementares não
 foram promovidos a validação concluída.
 
-## Publicação e CI do FIX-005 — 2026-10-11
+## Histórico — Publicação e CI do FIX-005 — 2026-10-11
 
 PR #8: https://github.com/eduardofrois/kaizen-test/pull/8
 Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38186410197
@@ -291,3 +308,12 @@ regressões controladas locais e CI concluídas. Integração visual específica
 de boot/StrictMode, falhas e resposta atrasada segue pendente; estado geral
 Implementado até completar os critérios restantes. Merge manual pelo usuário.
 Registros anteriores de autorização/abertura/CI pendentes são históricos.
+
+## Consolidação documental — 2026-10-12
+
+Validação manual da correção concluída pelo usuário, conforme confirmação
+registrada no início. Evidências automatizadas e CI anteriores preservadas.
+Pendências manuais nos relatos históricos descrevem a informação disponível
+à época. Cenários sem detalhamento individual continuam identificados como
+limite de evidência, não como ausência de validação manual da correção.
+Nenhum código, teste, contrato, dependência, banco ou ERP alterado nesta revisão.

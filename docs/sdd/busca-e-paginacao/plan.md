@@ -1,7 +1,7 @@
 # Plano de implementação — Busca e paginação
 
 **Versão:** 1
-**Estado:** Implementado — validação automatizada local/remota concluída; manual pendente
+**Estado:** Implementado e integrado à main; validação manual confirmada pelo usuário em 2026-10-12. Evidências e limites por cenário na matriz e no histórico desta unidade.
 **Spec:** [spec.md](spec.md), versão 1
 **Baseline/data:** 27217ff; 2026-10-11
 **Objetivo:** reiniciar página ao pesquisar/filtrar e conservar navegação explícita.
@@ -9,6 +9,19 @@
 **Stack:** JavaScript ESM, URLSearchParams, node:test, React/Vite existentes.
 **Aprovação para implementar:** versão 1 aprovada em 2026-10-11; usuário: “entao aprovo os docs”.
 **Execução:** nesta sessão após aprovação, sem delegação automática.
+
+
+**Validação manual atual — 2026-10-12:** concluída pelo usuário. Referência:
+“Agora eu preciso que voce revise os arquivos e mude aonde fala que eu nao fiz
+a validação manual, pois eu fiz.” A confirmação complementa as evidências
+anteriores; não acrescenta execução pela IA, capturas por variante, exploração
+de segurança ou pedido real no SIAC. Requisitos e aprovações de implementação
+permanecem os já registrados. Esta revisão documental não autoriza publicação.
+
+> Leitura atualizada em 2026-10-13, referência main 76eca4d. O problema e
+> os exemplos de execução abaixo descrevem a baseline e o escopo original
+> da unidade. Relatos datados preservam o estado conhecido naquela etapa.
+> Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
 
 ## Restrições globais
 
@@ -153,12 +166,16 @@ Limpar todos os filtros já usa URLSearchParams vazio e continua igual.
 
 ## Matriz de validação
 
+A confirmação manual consolidada é do usuário. Passos instrumentados que
+continuam sem marcação não têm execução específica registrada; são o roteiro
+original, sem atribuir à IA interceptações ou medições que não realizou.
+
 | Aceite | Prova | Esperado | Observado |
 |---|---|---|---|
-| AC-01 | Casos busca nova/repetida/vazia + manual | Página 1 e filtros preservados | Testes puros passaram; manual pendente |
-| AC-02 | Cinco casos categoria/estoque/null + manual | Reset sem perder demais parâmetros | Testes puros passaram; manual pendente |
+| AC-01 | Casos busca nova/repetida/vazia + manual | Página 1 e filtros preservados | Testes puros passaram; manual confirmado pelo usuário em 2026-10-12; sem detalhamento por variante |
+| AC-02 | Cinco casos categoria/estoque/null + manual | Reset sem perder demais parâmetros | Testes puros passaram; manual confirmado pelo usuário em 2026-10-12; sem detalhamento por variante |
 | AC-03 | Paginação, encoding e snapshots de entrada | Página explícita e entrada intacta | Passou |
-| AC-04 | Navegador, F5, voltar/avançar | URL/lista coerentes | Não executado pós-correção |
+| AC-04 | Navegador, F5, voltar/avançar | URL/lista coerentes | manual confirmado pelo usuário em 2026-10-12; sem detalhamento por variante |
 | AC-05 | npm test dos dois projetos, build e CI autorizada | Sucesso | Frontend 10, backend 23 e build locais passaram; checks do PR #6 passaram |
 
 ## Migração e recuperação
@@ -170,9 +187,9 @@ Sem schema/dados. Reversão por commit no fluxo Git; sem reset de banco ou ERP.
 Regra cobre pesquisa, filtros e paginação explícita. Teste usa módulo real;
 validação manual cobre ligação com React Router sem inventar teste de componente.
 Implementação executada após aprovação da versão 1; resultados locais abaixo.
-Roteiro manual e checks remotos continuam pendentes.
+Validação manual confirmada pelo usuário em 2026-10-12; checks remotos da implementação registrados no histórico.
 
-## Implementação de busca-e-paginacao — 2026-10-11
+## Histórico — Implementação de busca-e-paginacao — 2026-10-11
 
 Versão 1 aprovada pelo usuário: “entao aprovo os docs”. Função compartilhada
 atualizarParametroCatalogo integrada em pesquisar e trocarParametro. Busca,
@@ -193,7 +210,7 @@ Execução remota ainda pendente; mudança de workflow não equivale a CI valida
 Estado Implementado: roteiro manual pós-correção, confirmação do usuário e
 checks remotos pendentes. Nenhum PR, merge ou deploy realizado nesta unidade.
 
-## Autorização do PR — 2026-10-11
+## Histórico — Autorização do PR — 2026-10-11
 
 Usuário autorizou “pode abrir o pr”. Publicação da branch e abertura do PR
 autorizadas; merge permanece manual. Validação automatizada local concluída
@@ -201,7 +218,7 @@ autorizadas; merge permanece manual. Validação automatizada local concluída
 confirmada; não atribuir essa confirmação à autorização de abertura do PR.
 Checks remotos pendentes nesta etapa.
 
-## CI e publicação de KZN-325 — 2026-10-11
+## Histórico — CI e publicação de KZN-325 — 2026-10-11
 
 PR #6: https://github.com/eduardofrois/kaizen-test/pull/6
 Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38179901454
@@ -211,3 +228,12 @@ Estado Implementado: validação automatizada local/remota concluída; falta
 confirmação manual pós-correção (AC-04 e parte integrada de AC-01/AC-02).
 Não marcar a unidade como Validada apenas pela CI. Merge manual pelo usuário.
 Pendências remotas descritas antes desta execução são históricas.
+
+## Consolidação documental — 2026-10-12
+
+Validação manual da correção concluída pelo usuário, conforme confirmação
+registrada no início. Evidências automatizadas e CI anteriores preservadas.
+Pendências manuais nos relatos históricos descrevem a informação disponível
+à época. Cenários sem detalhamento individual continuam identificados como
+limite de evidência, não como ausência de validação manual da correção.
+Nenhum código, teste, contrato, dependência, banco ou ERP alterado nesta revisão.
