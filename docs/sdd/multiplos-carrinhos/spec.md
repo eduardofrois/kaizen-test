@@ -1,7 +1,7 @@
 # Spec — Múltiplos carrinhos e edição na vitrine
 
 **Versão:** 2
-**Estado:** Revisão v2 implementada com TDD e validada em testes/navegador simulado; quatro achados corrigidos. Validação manual da v1 confirmada pelo usuário; publicação pendente.
+**Estado:** Revisão v2 implementada com TDD e validada em testes/navegador simulado; quatro achados corrigidos. Publicada no PR #17, aberto para avaliação e merge manual; validação manual da v1 confirmada pelo usuário.
 **Aprovação da revisão v2:** 2026-10-13; usuário “aprovado” em resposta à apresentação dos links da spec/plano v2 e à pergunta “Aprova implementar essa versão?”. Escopo: REV-01 a REV-04 com TDD, regressões e ensaio simulado; sem publicação.
 **Autorização de publicação:** 2026-10-13; usuário “agora eu preciso que abra um pr detalhado sobre a nova feature e me mande o link para eu avaliar”. Autoriza commit/push da feature e abertura do PR em eduardofrois/kaizen-test; merge manual pelo usuário. Revisão documental geral anterior permanece fora do envio.
 **Baseline/data:** `f95ae66`; 2026-10-13, America/Sao_Paulo. Checkout com alterações documentais locais anteriores, preservadas.
@@ -539,3 +539,14 @@ e mobile; voltar ao Gol conserva bloqueio de itens, resposta dele não altera
 Civic; busca/página e scroll desktop preservados. Zero pedidos neste ensaio.
 AC-06/11 revalidados com as novas provas; sem afirmar auditoria exaustiva.
 Sem escrita no SIAC real, novas dependências/schema, commit, push, PR ou deploy.
+
+### Publicação autorizada e executada — 2026-10-13
+
+Usuário solicitou abrir PR detalhado e enviar o link para avaliação. Commit de
+implementação `2f9ff7a`, branch `feat/multiplos-carrinhos` enviada somente a
+eduardofrois/kaizen-test. [PR #17](https://github.com/eduardofrois/kaizen-test/pull/17)
+aberto contra main, sem conflitos na consulta. CI da implementação passou:
+testes-backend e build-frontend no
+[run 38360777053](https://github.com/eduardofrois/kaizen-test/actions/runs/38360777053).
+Revisão documental geral preexistente preservada localmente e fora do PR.
+Merge manual pendente; nenhum merge, deploy ou pedido real nesta publicação.

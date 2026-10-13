@@ -1,5 +1,19 @@
 # Spec Driven Development
 
+## Publicação MULTI-001 — 2026-10-13
+
+Usuário solicitou PR detalhado da nova feature e link para avaliação.
+Implementação `2f9ff7a` enviada em `feat/multiplos-carrinhos` ao repositório
+eduardofrois/kaizen-test. [PR #17](https://github.com/eduardofrois/kaizen-test/pull/17)
+aberto contra main, sem conflitos na consulta. Checks testes-backend e
+build-frontend da implementação passaram no
+[run 38360777053](https://github.com/eduardofrois/kaizen-test/actions/runs/38360777053).
+
+Validação local registrada: backend 123/123, frontend 94/94, build e navegador
+simulado; 22 regressões TDD na revisão v2. A consolidação documental anterior
+foi preservada localmente, fora do PR. Merge manual pendente; sem merge/deploy.
+Atualização documental da publicação gerará nova CI, separada do run acima.
+
 ## Múltiplos carrinhos — situação da unidade em 2026-10-13
 
 Spec/plano v2 aprovados e implementados, com 123 testes backend, 94 frontend,

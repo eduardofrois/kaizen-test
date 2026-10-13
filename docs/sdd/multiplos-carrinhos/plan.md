@@ -1,7 +1,7 @@
 # Plano de implementação — Múltiplos carrinhos e edição na vitrine
 
 **Versão:** 2
-**Estado:** Revisão v2 implementada com TDD; quatro achados corrigidos e validação isolada/navegador simulado concluída; publicação pendente.
+**Estado:** Revisão v2 implementada com TDD; quatro achados corrigidos e validação isolada/navegador simulado concluída; publicada no PR #17, avaliação/merge manual pendentes.
 **Spec:** [spec.md](spec.md), versão 2 aprovada em 2026-10-13; versão 1 preservada no histórico.
 **Aprovação da revisão v2 para implementar:** 2026-10-13; usuário “aprovado” após apresentação dos links da spec/plano v2 e pergunta “Aprova implementar essa versão?”. Inclui os quatro achados, testes RED/GREEN, regressões e ensaio simulado; sem publicação.
 **Autorização de publicação:** 2026-10-13; usuário solicitou abrir PR detalhado da nova feature e enviar o link. Commit/push e PR desta unidade autorizados; merge manual e sem envio da consolidação documental anterior.
@@ -998,3 +998,18 @@ ou padrões de credenciais verificados; não é garantia exaustiva de ausência
 de todo tipo de segredo. Código/testes são os mesmos que passaram 123/94 e
 build; sem nova execução funcional nesta preparação documental.
 Commit/push/PR serão registrados após execução; merge manual pelo usuário.
+
+### Publicação do PR — 2026-10-13
+
+Commit `2f9ff7a` criado e enviado na branch `feat/multiplos-carrinhos` ao
+repositório autorizado eduardofrois/kaizen-test. [PR #17](https://github.com/eduardofrois/kaizen-test/pull/17)
+aberto contra main, regular, com regras/justificativas, implementação, migração,
+contratos, checkout/recuperação, quatro correções TDD, evidências e roteiro
+manual. PR anexado a esta conversa pela ferramenta do aplicativo.
+
+Consulta remota confirmou OPEN/MERGEABLE e dois checks SUCCESS para a
+implementação: testes-backend e build-frontend no
+[run 38360777053](https://github.com/eduardofrois/kaizen-test/actions/runs/38360777053).
+Esta atualização documental acompanha a publicação sem alterar código/testes;
+seu commit gera nova execução de CI. Demais alterações documentais locais
+e frontend/.vite preservados fora do envio. Nenhum merge/deploy realizado.
