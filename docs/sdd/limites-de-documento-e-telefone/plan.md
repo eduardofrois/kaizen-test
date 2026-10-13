@@ -1,7 +1,7 @@
 # Plano — Limites e máscaras de documento e telefone
 
 **Versão:** 1
-**Estado:** Validado pelo usuário — PR #16 aberto
+**Estado:** Implementado e integrado à main; validação manual confirmada pelo usuário em 2026-10-12. Evidências e limites por cenário na matriz e no histórico desta unidade.
 **Spec:** [spec.md](spec.md), versão2 aprovada em2026-10-12.
 **Objetivo:** formatar e limitar documento/telefone nas duas telas com edição utilizável.
 **Arquitetura:** funções puras compartilhadas, CampoComMascara específico e
@@ -9,6 +9,19 @@ integração nos quatro campos. Campo genérico e contratos preservados.
 **Stack:** React/JSX, JavaScript ESM, node:test e Vite existentes.
 **Aprovação para implementar:** 2026-10-12; usuário “aprovado” após este plano versão1.
 **Execução:** sequencial nesta sessão, sem subagentes.
+
+
+**Validação manual atual — 2026-10-12:** concluída pelo usuário. Referência:
+“Agora eu preciso que voce revise os arquivos e mude aonde fala que eu nao fiz
+a validação manual, pois eu fiz.” A confirmação complementa as evidências
+anteriores; não acrescenta execução pela IA, capturas por variante, exploração
+de segurança ou pedido real no SIAC. Requisitos e aprovações de implementação
+permanecem os já registrados. Esta revisão documental não autoriza publicação.
+
+> Leitura atualizada em 2026-10-13, referência main. O problema e
+> os exemplos de execução abaixo descrevem a baseline e o escopo original
+> da unidade. Relatos datados preservam o estado conhecido naquela etapa.
+> Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
 
 ## Restrições globais
 
@@ -141,18 +154,17 @@ assert.equal(formatarTelefone('11987654321'), '(11) 98765-4321');
   e pendências manuais; marcar aceites apenas quando comprovados.
 - [x] Usuário valida cadastro/perfil e telefone removível, edição e colagem;
   registrar confirmação antes de Validado. Sem copiar dados pessoais aos docs.
-- [x] Somente após comando específico: commit `fix: aplica mascaras a documento
-  e telefone`, push da branch e PR para main; acompanhar checks. Merge manual.
+- [x] Somente após comando específico: registro da unidade, push da branch e PR para main; acompanhar checks. Merge manual.
 
 ## Matriz de validação
 
 | Aceite | Prova | Esperado | Observado |
 |---|---|---|---|
-| AC-01 | Tabelas e navegador, duas telas | CPF/CNPJ automático e limite14 | Pendente |
-| AC-02 | Tabelas e navegador | Fixo/celular, vazio e limite11 | Pendente |
-| AC-03 | Cursor/seleção/teclas/paste | Edição sem travar ou cortar prematuramente | Pendente |
-| AC-04 | Inicialização/contrato/manual | Legado preservado e remoção funcional | Pendente |
-| AC-05 | Suítes/build/confirmação | Sem regressão e manual registrado | Pendente |
+| AC-01 | Tabelas e navegador, duas telas | CPF/CNPJ automático e limite14 | Testes de funções e cadastro no navegador passaram; manual das duas telas confirmado |
+| AC-02 | Tabelas e navegador | Fixo/celular, vazio e limite11 | Testes de funções passaram; vazio/remoção e manual confirmados |
+| AC-03 | Cursor/seleção/teclas/paste | Edição sem travar ou cortar prematuramente | Exclusões em todas as posições testadas; colagem/edição manual confirmadas; IME/autofill sem prova individual |
+| AC-04 | Inicialização/contrato/manual | Legado preservado e remoção funcional | Inicialização/legado cobertos por testes; remoção com salvar/F5 confirmada pelo usuário |
+| AC-05 | Suítes/build/confirmação | Sem regressão e manual registrado | Frontend79/backend89/build63 passaram na etapa; manual confirmado |
 
 ## Recuperação e autorrevisão
 
@@ -165,7 +177,7 @@ Plano versão1 aguarda aprovação; execução permanece não autorizada.
 Nota de execução: testes foram escritos junto à primeira versão das funções,
 não antes. Não foi registrado RED estrutural nem alegado TDD completo.
 
-## FIX-010 implementado — 2026-10-12
+## Histórico — FIX-010 implementado — 2026-10-12
 
 Plano versão1 aprovado com “aprovado” após apresentação nesta sessão. Criados
 mascaras.js e CampoComMascara.jsx; integrados documento/telefone em Cadastro
@@ -195,7 +207,7 @@ Próximo passo: usuário validar nas duas telas digitação, colagem, troca CPF/
 fixo/celular, seleção/exclusão no meio e remoção de telefone com salvar/F5.
 Sem dados pessoais nos docs. Commit/push/PR aguardam comando específico.
 
-## FIX-010 validado — 2026-10-12
+## Histórico — FIX-010 validado — 2026-10-12
 
 Usuário confirmou “validado, pode abrir o PR” após roteiro das duas telas,
 colagem/edição e remoção de telefone. Estado Validado pelo usuário; regressões
@@ -204,9 +216,9 @@ a prova automatizada de autofill/composição/teclado virtual; limitações mant
 Commit, push e PR desta unidade autorizados; merge manual pelo usuário.
 Registros anteriores de manual/publicação pendentes são históricos.
 
-## Publicação FIX-010 — 2026-10-12
+## Histórico — Publicação FIX-010 — 2026-10-12
 
-Implementação `cc24f45` publicada em `fix/limites-de-documento-e-telefone`.
+Implementação publicada em `fix/limites-de-documento-e-telefone`.
 PR #16: https://github.com/eduardofrois/kaizen-test/pull/16
 Validação manual confirmada. Checks remotos em acompanhamento; merge manual
 pendente. Nenhum merge realizado pela IA.

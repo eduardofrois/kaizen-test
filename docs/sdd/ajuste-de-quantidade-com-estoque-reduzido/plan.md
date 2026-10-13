@@ -1,15 +1,28 @@
 # Plano — Ajuste de quantidade com estoque reduzido
 
 **Versão:** 1
-**Estado:** Implementado — validação manual pendente
+**Estado:** Implementado e integrado à main; validação manual confirmada pelo usuário em 2026-10-12. Evidências e limites por cenário na matriz e no histórico desta unidade.
 **Spec:** [spec.md](spec.md), versão 1
-**Baseline/data:** 0845692; 2026-10-11
+**Baseline/data:** 2026-10-11
 **Objetivo:** permitir corrigir quantidade de produto ativo com estoque reduzido.
 **Arquitetura:** capacidade derivada no serviço; input consome capacidade.
 **Stack:** JavaScript ESM, React, Vite, node:test, SQLite em memória/fetch fake.
 **Aprovação do desenho:** usuário “aprovado”, em 2026-10-11.
 **Aprovação para implementar:** 2026-10-11; usuário “aprovao”, após apresentação deste plano versão 1.
 **Execução:** sequencial nesta sessão, sem subagentes.
+
+
+**Validação manual atual — 2026-10-12:** concluída pelo usuário. Referência:
+“Agora eu preciso que voce revise os arquivos e mude aonde fala que eu nao fiz
+a validação manual, pois eu fiz.” A confirmação complementa as evidências
+anteriores; não acrescenta execução pela IA, capturas por variante, exploração
+de segurança ou pedido real no SIAC. Requisitos e aprovações de implementação
+permanecem os já registrados. Esta revisão documental não autoriza publicação.
+
+> Leitura atualizada em 2026-10-13, referência main. O problema e
+> os exemplos de execução abaixo descrevem a baseline e o escopo original
+> da unidade. Relatos datados preservam o estado conhecido naquela etapa.
+> Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
 
 ## Restrições globais
 
@@ -180,23 +193,27 @@ por invocação programática quando ocupado/não editável.
 
 ## Matriz de validação
 
+A confirmação manual consolidada é do usuário. Passos instrumentados que
+continuam sem marcação não têm execução específica registrada; são o roteiro
+original, sem atribuir à IA interceptações ou medições que não realizou.
+
 | Aceite | Prova | Esperado | Observado |
 |---|---|---|---|
 | AC-01 | Serviço e componente reais | Editável5/3, pendência/total preservados | Passou isoladamente |
-| AC-02 | SQLite/fetch fake + manual | Redução3 aceita; subtotal60; isolamento | Fake passou; manual pendente |
+| AC-02 | SQLite/fetch fake + manual | Redução3 aceita; subtotal60; isolamento | Fake passou; manual confirmado pelo usuário em 2026-10-12; sem detalhamento por variante |
 | AC-03 | Matriz capacidade/input | Zero/inativo/ausente bloqueados; remoção | Passou no componente/serviço |
 | AC-04 | Props e callbacks | Ocupado/limites/inteiros | Sete testes frontend passaram |
-| AC-05 | Conflito fake e fluxo erro existente | 409; dados preservados; erro visível quando manual | Fake passou; visual do erro pendente |
-| AC-06 | Suítes/build/diff/manual | Sucesso e limitações registradas | Backend44/frontend53/build61 passaram; manual pendente |
+| AC-05 | Conflito fake e fluxo erro existente | 409; dados preservados; erro visível quando manual | Fake passou; erro sem captura específica adicional |
+| AC-06 | Suítes/build/diff/manual | Sucesso e limitações registradas | Backend44/frontend53/build61 passaram; manual confirmado pelo usuário em 2026-10-12; sem detalhamento por variante |
 
 ## Migração, recuperação e autorrevisão
 
 Sem migração: campo calculado a cada leitura. Front/backend publicados juntos.
 Reversão por commit, sem reset. Extração restrita viabiliza teste do componente
 real sem sessão; não é refatoração geral. Os testes diretos não simulam browser.
-Plano aprovado e implementado; manual, CI e publicação pendentes.
+Plano aprovado e implementado; manual confirmado em 2026-10-12. CI/publicação da implementação registradas no histórico.
 
-## FIX-006 implementado — 2026-10-11
+## Histórico — FIX-006 implementado — 2026-10-11
 
 Aprovação do plano versão 1: usuário “aprovao”, após apresentação do plano.
 Campo derivado quantidade_editavel adicionado no backend: produto ativo com
@@ -223,19 +240,28 @@ Próximo passo: usuário conferir redução na linha pendente, total e checkout;
 remoção de item sem estoque. Commit/publicação/PR aguardam comando explícito.
 Os registros anteriores descrevem etapas históricas, não o estado atual.
 
-## Autorização de publicação FIX-006 — 2026-10-11
+## Histórico — Autorização de publicação FIX-006 — 2026-10-11
 
 Usuário: “pode commitar e abrir o pr”. Autorizados commit, publicação da branch
 fix/ajuste-de-quantidade-com-estoque-reduzido e PR para main. Validação local
 concluída; manual não informada. CI será acompanhado; merge manual pelo usuário.
 
-## Publicação FIX-006 — 2026-10-12
+## Histórico — Publicação FIX-006 — 2026-10-12
 
-Commit 58bb69f publicado na branch fix/ajuste-de-quantidade-com-estoque-reduzido.
+Implementação publicada na branch fix/ajuste-de-quantidade-com-estoque-reduzido.
 PR #11: https://github.com/eduardofrois/kaizen-test/pull/11
-Checks testes-backend e build-frontend passaram para 58bb69f no run
+Checks testes-backend e build-frontend passaram no run
 38198503574: https://github.com/eduardofrois/kaizen-test/actions/runs/38198503574
 Nova execução acompanha esta atualização documental. Estado Implementado; manual pendente.
 Merge permanece manual pelo usuário. Registros de publicação pendente acima
 são históricos. Revisão do conteúdo staged passou após remover linha em branco
 extra ao final do componente; nenhuma mudança comportamental adicional.
+
+## Consolidação documental — 2026-10-12
+
+Validação manual da correção concluída pelo usuário, conforme confirmação
+registrada no início. Evidências automatizadas e CI anteriores preservadas.
+Pendências manuais nos relatos históricos descrevem a informação disponível
+à época. Cenários sem detalhamento individual continuam identificados como
+limite de evidência, não como ausência de validação manual da correção.
+Nenhum código, teste, contrato, dependência, banco ou ERP alterado nesta revisão.

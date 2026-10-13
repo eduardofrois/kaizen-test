@@ -1,15 +1,28 @@
 # Plano — Remoção de telefone do perfil
 
 **Versão:** 1
-**Estado:** Validado — PR #12 aberto; CI da implementação passou
+**Estado:** Implementado e integrado à main; validação manual confirmada pelo usuário em 2026-10-12. Evidências e limites por cenário na matriz e no histórico desta unidade.
 **Spec:** [spec.md](spec.md), versão 1
-**Baseline/data:** c7e98cd; 2026-10-12
+**Baseline/data:** 2026-10-12
 **Objetivo:** remover telefone explicitamente e preservar quando omitido.
 **Arquitetura:** rota distingue presença; serviço distingue undefined de null.
 **Stack:** JavaScript ESM, node:test, Express e SQLite existentes.
 **Aprovação da spec:** usuário “spec aprovada”, em 2026-10-12.
 **Aprovação para implementar:** 2026-10-12; usuário “aprovado”, após apresentação deste plano versão 1.
 **Execução:** sequencial, sem subagentes.
+
+
+**Validação manual atual — 2026-10-12:** concluída pelo usuário. Referência:
+“Agora eu preciso que voce revise os arquivos e mude aonde fala que eu nao fiz
+a validação manual, pois eu fiz.” A confirmação complementa as evidências
+anteriores; não acrescenta execução pela IA, capturas por variante, exploração
+de segurança ou pedido real no SIAC. Requisitos e aprovações de implementação
+permanecem os já registrados. Esta revisão documental não autoriza publicação.
+
+> Leitura atualizada em 2026-10-13, referência main. O problema e
+> os exemplos de execução abaixo descrevem a baseline e o escopo original
+> da unidade. Relatos datados preservam o estado conhecido naquela etapa.
+> Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
 
 ## Restrições globais
 
@@ -133,18 +146,18 @@ Não alterar validador global, serialização, sessão ou frontend.
 - [x] Atualizar spec/plano, fix.md, relatório, investigação e índice SDD com
   RED/GREEN, aprovações, estado e pendências. Teste HTTP isolado não equivale
   a sessão real no navegador; registro manual somente quando confirmado.
-- [x] Após comando explícito, commit `fix: permite remover telefone do perfil`,
+- [x] Após comando explícito, registro da unidade,
   publicar branch e abrir PR. Merge manual pelo usuário.
 
 ## Matriz de validação
 
 | Aceite | Prova | Esperado | Observado |
 |---|---|---|---|
-| AC-01 | Serviço+PATCH/GET+manual | NULL persiste; sem hash | Serviço/HTTP passaram; manual pendente |
+| AC-01 | Serviço+PATCH/GET+manual | NULL persiste; sem hash | Serviço/HTTP passaram; manual confirmado pelo usuário em 2026-10-12 |
 | AC-02 | Omissão/edição/contaNULL | Preservação ou substituição conforme entrada | Passou |
 | AC-03 | HTTP422 e snapshot SQLite | Erro por campo; nenhuma atualização parcial | Passou |
 | AC-04 | Cookie sintético/sem sessão/payloadalheio | Somente autenticado altera | Passou |
-| AC-05 | Suítes/build/sintaxe/diff/manual | Sucesso com limitações registradas | Backend65/frontend53/build61; manual pendente |
+| AC-05 | Suítes/build/sintaxe/diff/manual | Sucesso com limitações registradas | Backend65/frontend53/build61; manual confirmado pelo usuário em 2026-10-12 |
 
 ## Migração, recuperação e autorrevisão
 
@@ -152,9 +165,9 @@ Sem migração: coluna já aceitaNULL; não apagar contatos existentes em lote.
 Reversão por commit; sem reset de banco. Harness HTTP usa banco descartável e
 porta efêmera local para exercer middleware real, sem mudar aplicação para teste.
 Esquema do teste direto em memória, HTTP em arquivo temporário; ambos isolados.
-Plano cobre spec versão1. Implementação aprovada e concluída; manual/CI/publicação pendentes.
+Plano cobre spec versão1. Implementação concluída; manual confirmado. CI/publicação da implementação registradas no histórico.
 
-## FIX-007 implementado — 2026-10-12
+## Histórico — FIX-007 implementado — 2026-10-12
 
 Plano versão1 aprovado pelo usuário com “aprovado”, após apresentação nesta
 sessão. Rota valida telefone apenas quando Object.hasOwn(corpo,'telefone');
@@ -179,7 +192,7 @@ número pessoal nos docs. Nenhuma alteração frontend/schema/dependências.
 Commit, publicação e PR aguardam comando explícito; CI não executado nesta
 unidade. Registros anteriores descrevem etapas históricas.
 
-## Validação manual e publicação autorizada — 2026-10-12
+## Histórico — Validação manual e publicação autorizada — 2026-10-12
 
 Usuário confirmou “validado, pode abrir o PR”, após roteiro de remoção,
 salvamento/F5 e edição de telefone válido. Confirmação manual registrada sem
@@ -188,9 +201,9 @@ do usuário. Estado Validado; commit/publicação da branch e PR para main
 autorizados. CI remoto será acompanhado; merge manual pelo usuário.
 Registros anteriores de validação/publicação pendente são históricos.
 
-## Publicação FIX-007 — 2026-10-12
+## Histórico — Publicação FIX-007 — 2026-10-12
 
-Implementação publicada no commit40ea907, branch fix/remocao-de-telefone-do-perfil.
+Implementação publicada na branch fix/remocao-de-telefone-do-perfil.
 PR #12: https://github.com/eduardofrois/kaizen-test/pull/12
 Checks testes-backend e build-frontend passaram no run38314449233:
 https://github.com/eduardofrois/kaizen-test/actions/runs/38314449233

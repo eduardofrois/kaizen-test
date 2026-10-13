@@ -1,14 +1,27 @@
 # Spec — Ajuste de quantidade com estoque reduzido
 
 **Versão:** 1
-**Estado:** Implementado — validação manual pendente
-**Baseline/data:** 0845692; 2026-10-11
+**Estado:** Implementado e integrado à main; validação manual confirmada pelo usuário em 2026-10-12. Evidências e limites por cenário na matriz e no histórico desta unidade.
+**Baseline/data:** 2026-10-11
 **Origem:** FIX-006
 **Branch:** fix/ajuste-de-quantidade-com-estoque-reduzido
 **Aprovação do desenho:** 2026-10-11; usuário “aprovado”, após apresentação da spec versão 1.
 **Aprovação para implementar:** 2026-10-11; usuário “aprovao”, após apresentação do plano versão 1.
 
-## Problema e evidência
+
+**Validação manual atual — 2026-10-12:** concluída pelo usuário. Referência:
+“Agora eu preciso que voce revise os arquivos e mude aonde fala que eu nao fiz
+a validação manual, pois eu fiz.” A confirmação complementa as evidências
+anteriores; não acrescenta execução pela IA, capturas por variante, exploração
+de segurança ou pedido real no SIAC. Requisitos e aprovações de implementação
+permanecem os já registrados. Esta revisão documental não autoriza publicação.
+
+> Leitura atualizada em 2026-10-13, referência main. O problema e
+> os exemplos de execução abaixo descrevem a baseline e o escopo original
+> da unidade. Relatos datados preservam o estado conhecido naquela etapa.
+> Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
+
+## Problema e evidência na baseline
 
 Usuário informou ter reproduzido o erro no frontend nesta sessão. Inspeção de
 Carrinho.jsx/LinhaItem confirmou disabled={ocupado || !item.disponivel}.
@@ -70,6 +83,11 @@ Não usar correspondência textual de problema: mensagens não são contratos.
 
 ## Critérios de aceite
 
+A validação manual da correção foi confirmada. Checkboxes ainda abertos
+indicam ausência de detalhamento específico de todas as variantes do critério,
+sem significar ausência de validação manual geral. Não foram inventadas provas
+para interceptação, dados suficientes em pedidos ou falhas induzidas.
+
 - [x] AC-01: produto ativo com 5 unidades e estoque 3 retorna edição permitida;
   input habilitado, total exclui linha e checkout permanece bloqueado.
 - [x] AC-02: alteração para 3 é aceita, subtotal/total/contador recalculados e
@@ -79,7 +97,7 @@ Não usar correspondência textual de problema: mensagens não são contratos.
   inteiros são respeitados no input/handler, sem requisições para valores inválidos.
 - [ ] AC-05: queda adicional de estoque gera conflito, mantém quantidade salva e
   não altera itens de outro usuário; erro permanece visível pelo fluxo existente.
-- [ ] AC-06: regressões backend/frontend e build passam; validação manual registra
+- [x] AC-06: regressões backend/frontend e build passam; validação manual registra
   redução de linha pendente, sem IA criar pedidos reais ou alterar estoque SIAC.
 
 ## Riscos e validação
@@ -94,14 +112,14 @@ Nota KZN-7F3A lida novamente em carrinhoService; identifica leitura, não o bug.
 
 ## Entrega e histórico
 
-Main atualizada após PR #10, merge 0845692. Atualizar relatório, inventário,
+Main atualizada após PR #10, merge . Atualizar relatório, inventário,
 investigação e SDD com aprovação, resultados e pendências reais.
 Versão 1 preparada para revisão. Plan.md será detalhado após aprovação do desenho;
 código/testes/dependências permanecem intactos nesta etapa.
 
 Plano versão 1 preparado para revisão; nenhum código/teste alterado.
 
-## FIX-006 implementado — 2026-10-11
+## Histórico — FIX-006 implementado — 2026-10-11
 
 Aprovação do plano versão 1: usuário “aprovao”, após apresentação do plano.
 Campo derivado quantidade_editavel adicionado no backend: produto ativo com
@@ -128,19 +146,28 @@ Próximo passo: usuário conferir redução na linha pendente, total e checkout;
 remoção de item sem estoque. Commit/publicação/PR aguardam comando explícito.
 Os registros anteriores descrevem etapas históricas, não o estado atual.
 
-## Autorização de publicação FIX-006 — 2026-10-11
+## Histórico — Autorização de publicação FIX-006 — 2026-10-11
 
 Usuário: “pode commitar e abrir o pr”. Autorizados commit, publicação da branch
 fix/ajuste-de-quantidade-com-estoque-reduzido e PR para main. Validação local
 concluída; manual não informada. CI será acompanhado; merge manual pelo usuário.
 
-## Publicação FIX-006 — 2026-10-12
+## Histórico — Publicação FIX-006 — 2026-10-12
 
-Commit 58bb69f publicado na branch fix/ajuste-de-quantidade-com-estoque-reduzido.
+Implementação publicada na branch fix/ajuste-de-quantidade-com-estoque-reduzido.
 PR #11: https://github.com/eduardofrois/kaizen-test/pull/11
-Checks testes-backend e build-frontend passaram para 58bb69f no run
+Checks testes-backend e build-frontend passaram no run
 38198503574: https://github.com/eduardofrois/kaizen-test/actions/runs/38198503574
 Nova execução acompanha esta atualização documental. Estado Implementado; manual pendente.
 Merge permanece manual pelo usuário. Registros de publicação pendente acima
 são históricos. Revisão do conteúdo staged passou após remover linha em branco
 extra ao final do componente; nenhuma mudança comportamental adicional.
+
+## Consolidação documental — 2026-10-12
+
+Validação manual da correção concluída pelo usuário, conforme confirmação
+registrada no início. Evidências automatizadas e CI anteriores preservadas.
+Pendências manuais nos relatos históricos descrevem a informação disponível
+à época. Cenários sem detalhamento individual continuam identificados como
+limite de evidência, não como ausência de validação manual da correção.
+Nenhum código, teste, contrato, dependência, banco ou ERP alterado nesta revisão.

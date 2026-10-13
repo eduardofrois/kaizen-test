@@ -1,7 +1,7 @@
 # Plano de implementação — Configuração por ambiente
 
 **Versão:** 1
-**Estado:** Validado — testes automatizados e validação manual local concluídos
+**Estado:** Implementado e integrado à main; validação manual confirmada pelo usuário em 2026-10-12. Evidências e limites por cenário na matriz e no histórico desta unidade.
 **Spec:** [spec.md](spec.md), versão 1
 **Objetivo:** remover segredos/fallbacks e validar env antes de publicar aplicação.
 **Arquitetura:** manter config.js como fronteira única de configuração; testar
@@ -9,6 +9,19 @@ em processos isolados, sem importar serviços/banco. Preservar bootstrap fail-fa
 **Stack:** JavaScript ESM, Node existente, dotenv existente e node:test nativo.
 **Aprovação para implementar:** explícita do usuário em 2026-10-11.
 **Execução:** nesta sessão, passo a passo, sem delegação automática.
+
+
+**Validação manual atual — 2026-10-12:** concluída pelo usuário. Referência:
+“Agora eu preciso que voce revise os arquivos e mude aonde fala que eu nao fiz
+a validação manual, pois eu fiz.” A confirmação complementa as evidências
+anteriores; não acrescenta execução pela IA, capturas por variante, exploração
+de segurança ou pedido real no SIAC. Requisitos e aprovações de implementação
+permanecem os já registrados. Esta revisão documental não autoriza publicação.
+
+> Leitura atualizada em 2026-10-13, referência main. O problema e
+> os exemplos de execução abaixo descrevem a baseline e o escopo original
+> da unidade. Relatos datados preservam o estado conhecido naquela etapa.
+> Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
 
 ## Restrições globais
 
@@ -202,7 +215,7 @@ if (problemas.length > 0) {
       Não imprimir credenciais para mostrar que foram removidas.
 - [x] Atualizar FIX-001 e documentos com comandos/resultados reais. Aprovação
       de implementação não autoriza afirmar que token externo foi revogado.
-- [x] Criar commit `fix: exige configuracao explicita sem segredos no codigo`
+- [x] Criar registro da unidade
       com código sanitizado, teste e documentação. Na importação inicial,
       revisar todos os arquivos de aplicação por allowlist, pois estarão
       inicialmente não rastreados. Não usar git add . sem essa revisão.
@@ -231,7 +244,7 @@ Todos os requisitos possuem passos correspondentes. Testes usam strings
 sintéticas e diretório temporário, sem herdar o ambiente completo do usuário.
 Sem dependências novas, alteração do SIAC ou migração. A execução foi aprovada e os resultados reais estão registrados abaixo.
 
-## Registro da execução — 2026-10-11
+## Histórico — Registro da execução — 2026-10-11
 
 Usuário: "sobre o fix configuracao por ambiente, esta aprovado a forma que
 vamos fazer essa correcao/configuracao inicial"; pediu também atualização do
@@ -261,15 +274,15 @@ após atualizar a página e logout funcionaram localmente. Ao executar
 `Configuracao invalida: JWT_SEGREDO nao definido. Rode: npm run segredo:gerar`.
 Fail-fast manual confirmado, sem alterar .env. Os seis testes automatizados
 já haviam passado. Não foi executado checkout real; este registro não
-comprova os demais fluxos do sistema. Implementação registrada no commit c46e68e. Validação concluída para o
+comprova os demais fluxos do sistema. Implementação registrada nessa publicação. Validação concluída para o
 escopo aprovado; resultados consolidados neste commit documental complementar.
 Nenhuma nova alteração de aplicação realizada; publicação remota pendente.
 
-## Integração e publicação — 2026-10-11
+## Histórico — Integração e publicação — 2026-10-11
 
 Por autorização do usuário, branch configuracao-por-ambiente integrada na
-main pelo merge f913cda, sem conflitos. Push para eduardofrois/kaizen-test
-concluído: remoto confirmou main de 6307deb para f913cda. Branch local
+main pelo merge, sem conflitos. Push para eduardofrois/kaizen-test
+concluído: remoto confirmou a atualização da main. Branch local
 codex/configuracao-por-ambiente preservada. Os registros anteriores de push
 pendente descrevem a etapa anterior e estão superados por esta atualização.
 .env e arquivos gerados não foram enviados. Publicação do código no GitHub

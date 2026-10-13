@@ -1,14 +1,27 @@
 # Spec — Acesso à última página
 
 **Versão:** 1
-**Estado:** Implementado — validação manual pendente
-**Baseline/data:** a1c60d6; 2026-10-11
+**Estado:** Implementado e integrado à main; validação manual confirmada pelo usuário em 2026-10-12. Evidências e limites por cenário na matriz e no histórico desta unidade.
+**Baseline/data:** 2026-10-11
 **Origem:** FIX-004
 **Pasta/branch:** ultima-pagina / fix/ultima-pagina
 **Aprovação do desenho:** 2026-10-11; usuário “aprovado” após apresentação da spec versão 1.
 **Aprovação para implementar:** 2026-10-11; usuário “aprovado”, após apresentação do plano versão 1.
 
-## Problema e evidência
+
+**Validação manual atual — 2026-10-12:** concluída pelo usuário. Referência:
+“Agora eu preciso que voce revise os arquivos e mude aonde fala que eu nao fiz
+a validação manual, pois eu fiz.” A confirmação complementa as evidências
+anteriores; não acrescenta execução pela IA, capturas por variante, exploração
+de segurança ou pedido real no SIAC. Requisitos e aprovações de implementação
+permanecem os já registrados. Esta revisão documental não autoriza publicação.
+
+> Leitura atualizada em 2026-10-13, referência main. O problema e
+> os exemplos de execução abaixo descrevem a baseline e o escopo original
+> da unidade. Relatos datados preservam o estado conhecido naquela etapa.
+> Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
+
+## Problema e evidência na baseline
 
 Paginacao em frontend/src/componentes/ui.jsx desabilita Próxima usando
 pagina >= totalPaginas - 1. A numeração começa em 1. Execução isolada da
@@ -49,6 +62,11 @@ contratos e amplia escopo desnecessariamente.
 
 ## Critérios de aceite
 
+A validação manual da correção foi confirmada. Checkboxes ainda abertos
+indicam ausência de detalhamento específico de todas as variantes do critério,
+sem significar ausência de validação manual geral. Não foram inventadas provas
+para interceptação, dados suficientes em pedidos ou falhas induzidas.
+
 - [x] AC-01: 1/2 permite Próxima; ao clicar solicita 2; 2/2 bloqueia Próxima.
 - [x] AC-02: 1/3 e 2/3 permitem avançar; 3/3 bloqueia Próxima.
 - [x] AC-03: Anterior bloqueada na primeira; nas demais solicita pagina - 1.
@@ -70,13 +88,13 @@ nova; a comparação >= mantém bloqueio para página acima do total.
 ## Entrega e histórico
 
 Atualizar fix.md, RELATORIO.md, investigação e SDD com evidências reais.
-Main atualizada após merge do PR #9, a1c60d6. Código e testes intactos nesta
+Main atualizada após merge do PR #9. Código e testes intactos nesta
 unidade. Após revisão do desenho, preparar plan.md para aprovação antes de
 implementar. Autorizações da unidade monetária não se estendem a esta correção.
 
 Desenho aprovado em 2026-10-11; plano preparado. Código/testes intactos.
 
-## FIX-004 implementado — 2026-10-11
+## Histórico — FIX-004 implementado — 2026-10-11
 
 Usuário aprovou plano versão 1 com “aprovado”, após apresentação nesta sessão.
 Branch fix/ultima-pagina. Produção: em Paginacao, comparação passou de
@@ -94,19 +112,28 @@ HTML/callback direto não equivalem a navegação real no navegador.
 Estado Implementado. Sem commit, publicação ou PR; aguardar conferência e
 comando do usuário. Registros anteriores descrevem etapas passadas.
 
-## Autorização de publicação — 2026-10-11
+## Histórico — Autorização de publicação — 2026-10-11
 
 Usuário: “pode abrir o PR”. Autorizados commit, publicação da branch
 fix/ultima-pagina e abertura de PR para main. Checks locais concluídos;
 validação manual não foi informada. CI remoto será acompanhado. Merge manual
 pelo usuário; os registros anteriores de publicação pendente são históricos.
 
-## Publicação de última página — 2026-10-11
+## Histórico — Publicação de última página — 2026-10-11
 
-Commit de implementação: 6607796. Branch fix/ultima-pagina publicada.
+Branch fix/ultima-pagina publicada.
 PR #10: https://github.com/eduardofrois/kaizen-test/pull/10
-Checks testes-backend e build-frontend passaram para 6607796 no run
+Checks testes-backend e build-frontend passaram no run
 38187909239: https://github.com/eduardofrois/kaizen-test/actions/runs/38187909239
 Esta atualização documental dispara novos checks a acompanhar. Manual pendente;
 estado Implementado. Merge manual pelo usuário, não realizado nesta sessão.
 Registros anteriores de publicação pendente são históricos.
+
+## Consolidação documental — 2026-10-12
+
+Validação manual da correção concluída pelo usuário, conforme confirmação
+registrada no início. Evidências automatizadas e CI anteriores preservadas.
+Pendências manuais nos relatos históricos descrevem a informação disponível
+à época. Cenários sem detalhamento individual continuam identificados como
+limite de evidência, não como ausência de validação manual da correção.
+Nenhum código, teste, contrato, dependência, banco ou ERP alterado nesta revisão.

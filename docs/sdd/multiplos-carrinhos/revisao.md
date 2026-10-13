@@ -9,7 +9,8 @@ uma analisada no codigo que foi feito para ver se voce encontra alguma
 brecha/falha”. Validação manual confirmada para o percurso conferido pelo
 usuário; não há confirmação específica de criação de pedido no SIAC real.
 
-Branch `feat/multiplos-carrinhos`, implementação ainda não commitada. Revisão
+Na etapa inicial desta revisão, a branch era feat/multiplos-carrinhos e a
+implementação ainda não estava commitada. O trecho descreve aquele momento. Revisão
 direta das rotas, serviços, migração, cliente ERP, controlador e consumidores
 React, com roteiro da skill gitnexus-pr-review. O repositório não consta no
 índice GitNexus disponível; nenhuma conclusão depende de grafo desatualizado
@@ -104,7 +105,7 @@ outros campos impedem conclusão; manter bloqueio e não confiar no total invál
   Isso não equivale a auditoria exaustiva de segurança ou teste de produção.
 - Sem build novo, navegador novo, commit, publicação ou deploy nesta revisão.
 
-## Estado e próxima ação
+## Estado e próxima ação na revisão inicial
 
 Validação manual do usuário registrada; quatro achados abertos. Reabertos AC-06
 e AC-11 quanto às lacunas acima; as provas anteriores permanecem históricas.
@@ -139,3 +140,10 @@ Detalhes de comandos e resultados em [plan.md](plan.md). AC-06/11 revalidados.
 Navegador usou somente ERP fake/SQLite temporário, zero pedidos; a referência
 conhecida continua exigindo verificação, não autoriza reenviar/concluir sozinha.
 Sem nova dependência, schema, commit, publicação, CI remoto ou deploy.
+
+## Situação da entrega — 2026-10-13
+
+Os quatro achados foram corrigidos na v2 e integrados no PR #17, merge
+A suíte atual passou com 123 testes backend e 94 frontend; build
+67 módulos. Registros anteriores de achados abertos e publicação pendente
+são históricos. A revisão documental atual não altera os resultados TDD.

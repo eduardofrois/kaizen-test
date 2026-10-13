@@ -1,13 +1,26 @@
 # Plano de implementação — Layout responsivo do catálogo
 
 **Versão:** 1
-**Estado:** Validado pelo usuário — PR #14 aberto
+**Estado:** Implementado e integrado à main; validação manual confirmada pelo usuário em 2026-10-12. Evidências e limites por cenário na matriz e no histórico desta unidade.
 **Spec:** [spec.md](spec.md), versão 1 aprovada em 2026-10-12.
 **Objetivo:** eliminar cortes no cabeçalho e nos cards em telas pequenas.
 **Arquitetura:** classes responsivas nos componentes existentes, sem novo estado.
 **Stack:** React/JSX, Tailwind 4, Vite e node:test existentes.
 **Aprovação para implementar:** 2026-10-12; usuário “aprovado”, após apresentação deste plano versão 1.
 **Execução:** sequencial nesta sessão, sem subagentes.
+
+
+**Validação manual atual — 2026-10-12:** concluída pelo usuário. Referência:
+“Agora eu preciso que voce revise os arquivos e mude aonde fala que eu nao fiz
+a validação manual, pois eu fiz.” A confirmação complementa as evidências
+anteriores; não acrescenta execução pela IA, capturas por variante, exploração
+de segurança ou pedido real no SIAC. Requisitos e aprovações de implementação
+permanecem os já registrados. Esta revisão documental não autoriza publicação.
+
+> Leitura atualizada em 2026-10-13, referência main. O problema e
+> os exemplos de execução abaixo descrevem a baseline e o escopo original
+> da unidade. Relatos datados preservam o estado conhecido naquela etapa.
+> Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
 
 ## Restrições globais
 
@@ -123,12 +136,12 @@ indisponível e adicionando, nomes longos e contador preenchido.
 
 | Aceite | Prova | Resultado esperado | Observado |
 |---|---|---|---|
-| AC-01 | Medidas em7 larguras úteis,2 estados | Sem overflow horizontal | Pendente |
-| AC-02 | Screenshot e inspeção de cabeçalho | Busca/ações/contador acessíveis | Pendente |
-| AC-03 | Grade e conteúdo dos cards | 1/2/4 colunas sem cortes | Pendente |
-| AC-04 | Teclado e navegação de catálogo | Foco/URL/eventos preservados | Pendente |
-| AC-05 | Antes/depois, suítes e build | Desktop preservado e regressões passando | Pendente |
-| AC-06 | Confirmação do usuário | Validação manual registrada | Pendente |
+| AC-01 | Medidas em7 larguras úteis,2 estados | Sem overflow horizontal | Visitante: sete larguras sem overflow; manual confirmado. Sem medidas equivalentes registradas de toda matriz autenticada |
+| AC-02 | Screenshot e inspeção de cabeçalho | Busca/ações/contador acessíveis | Cabeçalho/ações conferidos como visitante; manual confirmado. Sem captura individual de todos os estados |
+| AC-03 | Grade e conteúdo dos cards | 1/2/4 colunas sem cortes | Grade 1/1/1/2/2/4/4 observada nas sete larguras; manual confirmado |
+| AC-04 | Teclado e navegação de catálogo | Foco/URL/eventos preservados | Busca/filtros e foco busca→Entrar conferidos; percurso completo sem registro por variante |
+| AC-05 | Antes/depois, suítes e build | Desktop preservado e regressões passando | Backend65/frontend53 e build61 passaram na etapa; manual confirmado |
+| AC-06 | Confirmação do usuário | Validação manual registrada | Confirmado pelo usuário em 2026-10-12 |
 
 ## Recuperação e autorrevisão
 
@@ -137,7 +150,7 @@ commit quando autorizado, sem reset ou remoção de dados. Cobertura: tarefa1
 implementa REQ-01 a06; tarefa2 verifica todos os aceites. Arquivos condicionais
 limitados aos cortes observados. Aprovação da spec não autoriza executar plano.
 
-## FIX-009 implementado — 2026-10-12
+## Histórico — FIX-009 implementado — 2026-10-12
 
 Plano versão1 aprovado com “aprovado” nesta sessão. Alterados apenas
 Cabecalho.jsx e Catalogo.jsx: marca sem compressão, busca flexível sem mínimo
@@ -158,13 +171,13 @@ Screenshot local: /private/tmp/kaizen-fix009-mobile.png (artefato temporário,
 não versionado). Evidência anterior: screenshot do usuário e medida341/702px.
 
 Regressões: frontend53/53, backend65/65, build61 módulos passaram. Backend65
-corresponde à baseline main f744b39; FIX-008 está em outro PR e não nesta branch.
+corresponde à baseline main; FIX-008 está em outro PR e não nesta branch.
 Sem teste que replique classes CSS. Estado Implementado: faltam matriz
 autenticada/contador/perfil, percurso completo de teclado/rolagem, adição e
 confirmação manual pelo usuário. Estado adicionando e captura desktop ainda
 não conferidos visualmente. Commit/publicação/PR aguardam comando explícito.
 
-## Ajuste solicitado pelo usuário — 2026-10-12
+## Histórico — Ajuste solicitado pelo usuário — 2026-10-12
 
 Usuário solicitou Entrar e Criar conta ocupando toda a largura disponível,
 com metade para cada um. Aplicar abaixo1024px: ambos com flex-1 e texto
@@ -177,7 +190,7 @@ Distribuição exata usa grid-cols-2 na navegação de visitante abaixo1024px,
 pois flex-1 isolado pode diferir por causa dos paddings dos links. Navegação
 autenticada continua flex-wrap; desktop usa flex.
 
-## Validação e publicação autorizada FIX-009 — 2026-10-12
+## Histórico — Validação e publicação autorizada FIX-009 — 2026-10-12
 
 Usuário confirmou “otimo, validado, pode abrir o PR”, incluindo o ajuste dos
 botões Entrar/Criar conta em metades iguais. Validação manual confirmada pelo
@@ -186,9 +199,9 @@ todos os estados. Medidas de visitante e limitações registradas acima mantidas
 Build final após grid-cols-2 passou com61 módulos; git diff --check passou.
 Commit, push e PR desta unidade autorizados. Merge manual pelo usuário.
 
-## Publicação FIX-009 — 2026-10-12
+## Histórico — Publicação FIX-009 — 2026-10-12
 
-Implementação: `c50fead`. Branch `fix/layout-responsivo-do-catalogo` publicada.
+Branch `fix/layout-responsivo-do-catalogo` publicada.
 PR #14: https://github.com/eduardofrois/kaizen-test/pull/14
 Validação manual confirmada; checks remotos em acompanhamento. Merge manual
 pendente. Nenhum merge realizado pela IA.

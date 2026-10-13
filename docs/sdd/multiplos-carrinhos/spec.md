@@ -1,10 +1,10 @@
 # Spec — Múltiplos carrinhos e edição na vitrine
 
 **Versão:** 2
-**Estado:** Revisão v2 implementada com TDD e validada em testes/navegador simulado; quatro achados corrigidos. Publicada no PR #17, aberto para avaliação e merge manual; validação manual da v1 confirmada pelo usuário.
+**Estado:** V2 implementada e integrada à main no PR #17; testes e navegador simulado registrados; manual da v1 confirmado. Sem nova confirmação humana específica da v2.
 **Aprovação da revisão v2:** 2026-10-13; usuário “aprovado” em resposta à apresentação dos links da spec/plano v2 e à pergunta “Aprova implementar essa versão?”. Escopo: REV-01 a REV-04 com TDD, regressões e ensaio simulado; sem publicação.
 **Autorização de publicação:** 2026-10-13; usuário “agora eu preciso que abra um pr detalhado sobre a nova feature e me mande o link para eu avaliar”. Autoriza commit/push da feature e abertura do PR em eduardofrois/kaizen-test; merge manual pelo usuário. Revisão documental geral anterior permanece fora do envio.
-**Baseline/data:** `f95ae66`; 2026-10-13, America/Sao_Paulo. Checkout com alterações documentais locais anteriores, preservadas.
+**Baseline/data:** 2026-10-13, America/Sao_Paulo. Checkout com alterações documentais locais anteriores, preservadas.
 **Origem:** MULTI-001 — requisito obrigatório de múltiplos carrinhos no README; riscos relacionados INV-001/INV-002.
 **Nome da pasta/branch de implementação:** `multiplos-carrinhos` / `feat/multiplos-carrinhos`.
 **Branch desta preparação:** `docs/revisao-da-documentacao-de-entrega`; nenhuma branch nova criada nesta etapa.
@@ -12,7 +12,12 @@
 **Aprovação histórica da spec v1:** 2026-10-13; usuário “aprovado”, em resposta à apresentação da spec v1 e ao pedido de aprovação para preparar o plano. Inclui os detalhes técnicos da versão 1.
 **Aprovação histórica para implementar v1:** 2026-10-13; usuário “aprovado” após apresentação do plano v1 e pergunta explícita sobre implementar nesta sessão. Escopo: spec v1 e plano v1; publicação não incluída. O [plano atual](plan.md) incorpora a revisão v2 aprovada separadamente acima.
 
-## Problema e evidência
+> Leitura atualizada em 2026-10-13, referência main. O problema e
+> os exemplos de execução abaixo descrevem a baseline e o escopo original
+> da unidade. Relatos datados preservam o estado conhecido naquela etapa.
+> Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
+
+## Problema e evidência na baseline da feature
 
 Oficinas precisam separar listas de peças de veículos/clientes e consultar o
 conteúdo sem abandonar a busca na vitrine. Hoje há um único carrinho por conta.
@@ -149,7 +154,7 @@ reconciliação. A operação de suporte em casos incertos será documentada.
 
 ## Contratos, dados e interface
 
-### Dados propostos para revisão
+### Modelo implementado e aprovado
 
 - `carrinhos`: ID, proprietário, nome, principal, versão e datas. Unicidade
   de principal por proprietário e transações garantem substituição/criação;
@@ -166,7 +171,7 @@ reconciliação. A operação de suporte em casos incertos será documentada.
   eventual referência de origem deve permitir exclusão posterior do carrinho
   sem apagar o histórico. O snapshot de endereço continua imutável.
 
-### API proposta para revisão
+### Contrato implementado e aprovado
 
 Todas as rotas abaixo exigem sessão e posse. Sucesso usa `{ dados: ... }`;
 erros mantêm `{ erro: { codigo, mensagem, detalhes? }, request_id }`.
@@ -190,19 +195,19 @@ Não existe endpoint para persistir “ativo”: é estado da aba. Nome/IDs são
 capturados antes de operações assíncronas. Respostas identificam o carrinho
 de origem; detalhes de checkout não tornam uma tentativa uma credencial.
 
-Proposta de erros: 409 `LIMITE_DE_CARRINHOS`, `CARRINHO_EM_CHECKOUT`,
+Erros implementados: 409 `LIMITE_DE_CARRINHOS`, `CARRINHO_EM_CHECKOUT`,
 `CARRINHO_ALTERADO`, `CONFIRMACAO_NECESSARIA`, `TENTATIVA_INCOMPATIVEL`;
 502 `CHECKOUT_INCERTO` para envio sem conclusão confiável. Estado persistido
 fica disponível pela leitura mesmo se a resposta original se perder.
 Falhas conclusivas mantêm códigos de negócio/validação já existentes.
 
 Frontend e backend devem atualizar juntos. Rotas antigas de carrinho sem ID
-não devem escolher silenciosamente o principal: proposta é responder 409
+não devem escolher silenciosamente o principal: a implementação responde 409
 `CARRINHO_OBRIGATORIO`, orientando recarga, sem mutação ou chamada ERP. POST
 de pedido sem os novos campos retorna 422. Testes e consumidores internos
 devem migrar; manter telas `/carrinho`, `/checkout` e `/produto/:codigo`.
 
-### Interface proposta para revisão visual
+### Interface implementada e evidência visual
 
 O painel usa os mesmos dados e ações da página de carrinho, evitando cópias
 divergentes. Cabeçalho identifica ativo e principal separadamente. Escolha de
@@ -431,7 +436,7 @@ correção; revisões de spec/plano e autorização necessárias antes de corrig
 **Origem:** pedido “arrume o que voce encontrou usando TDD”, em 2026-10-13,
 após apresentação de REV-01 a REV-04. Baseline de trabalho: conteúdo local
 revisado na branch `feat/multiplos-carrinhos`, incluindo a v1 não commitada;
-não substituir esse conteúdo pelo HEAD `f95ae66`.
+não substituir esse conteúdo pelo HEAD .
 
 ### Escopo e escolhas
 
@@ -543,10 +548,19 @@ Sem escrita no SIAC real, novas dependências/schema, commit, push, PR ou deploy
 ### Publicação autorizada e executada — 2026-10-13
 
 Usuário solicitou abrir PR detalhado e enviar o link para avaliação. Commit de
-implementação `2f9ff7a`, branch `feat/multiplos-carrinhos` enviada somente a
+implementação , branch `feat/multiplos-carrinhos` enviada somente a
 eduardofrois/kaizen-test. [PR #17](https://github.com/eduardofrois/kaizen-test/pull/17)
 aberto contra main, sem conflitos na consulta. CI da implementação passou:
 testes-backend e build-frontend no
 [run 38360777053](https://github.com/eduardofrois/kaizen-test/actions/runs/38360777053).
 Revisão documental geral preexistente preservada localmente e fora do PR.
 Merge manual pendente; nenhum merge, deploy ou pedido real nesta publicação.
+
+## Consolidação da entrega — 2026-10-13
+
+PR #17 integrado à main em , conferido pelo Git nesta conversa.
+Reavaliação local: backend 123/123, frontend 94/94 e build 67 módulos passaram.
+Esses resultados antecedem a revisão documental DOC-001; não constituem nova CI
+ou confirmação humana da v2. A consolidação geral foi autorizada pelo pedido
+de corrigir a documentação e agora inclui relatório, arquitetura e índices.
+As menções anteriores a PR aberto/publicação pendente descrevem etapas passadas.

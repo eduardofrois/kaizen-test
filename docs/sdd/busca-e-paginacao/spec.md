@@ -1,13 +1,26 @@
 # Spec — Busca e paginação do catálogo
 
 **Versão:** 1
-**Estado:** Implementado — validação automatizada local/remota concluída; manual pendente
-**Baseline/data:** 27217ff; 2026-10-11
+**Estado:** Implementado e integrado à main; validação manual confirmada pelo usuário em 2026-10-12. Evidências e limites por cenário na matriz e no histórico desta unidade.
+**Baseline/data:** 2026-10-11
 **Origem:** KZN-325 — Busca diz que não encontrou peça que existe
 **Branch:** fix/busca-e-paginacao
 **Aprovação para implementar:** versão 1 aprovada em 2026-10-11; usuário: “entao aprovo os docs”.
 
-## Problema e evidência
+
+**Validação manual atual — 2026-10-12:** concluída pelo usuário. Referência:
+“Agora eu preciso que voce revise os arquivos e mude aonde fala que eu nao fiz
+a validação manual, pois eu fiz.” A confirmação complementa as evidências
+anteriores; não acrescenta execução pela IA, capturas por variante, exploração
+de segurança ou pedido real no SIAC. Requisitos e aprovações de implementação
+permanecem os já registrados. Esta revisão documental não autoriza publicação.
+
+> Leitura atualizada em 2026-10-13, referência main. O problema e
+> os exemplos de execução abaixo descrevem a baseline e o escopo original
+> da unidade. Relatos datados preservam o estado conhecido naquela etapa.
+> Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
+
+## Problema e evidência na baseline
 
 Cabecalho.jsx/pesquisar copia window.location.search e muda busca sem retirar
 pagina. Catalogo.jsx/trocarParametro também mantém a página ao mudar categoria,
@@ -19,7 +32,7 @@ pesquisar e obteve /?pagina=2&busca=amortecedor. Nesta sessão o usuário inform
 “Erro encontrado”, confirmando reprodução pela interface. Não houve nova
 execução automatizada nem validação pós-correção nesta preparação.
 Git pull --ff-only realizado antes do trabalho; origin/main inclui PR #5
-no commit 27217ff. Arquivos locais gerados foram preservados.
+nessa publicação. Arquivos locais gerados foram preservados.
 
 ## Objetivo e comportamento esperado
 
@@ -78,13 +91,13 @@ parte da versão 1 aprovada pelo usuário.
 
 ## Critérios de aceite
 
-- [ ] AC-01: busca enviada da página 3 produz consulta na página 1, preservando
+- [x] AC-01: busca enviada da página 3 produz consulta na página 1, preservando
   categoria e disponibilidade; termo vazio remove busca e pagina.
-- [ ] AC-02: categoria, Todas, ligar/desligar estoque e limpar busca reiniciam
+- [x] AC-02: categoria, Todas, ligar/desligar estoque e limpar busca reiniciam
   página, preservando os demais parâmetros.
 - [x] AC-03: paginação explícita conserva busca/filtros; função não muta entrada
   e suporta termo com acentos e caracteres especiais.
-- [ ] AC-04: teste manual confirma resultados ao pesquisar após avançar páginas;
+- [x] AC-04: teste manual confirma resultados ao pesquisar após avançar páginas;
   F5 e histórico conservam URL/consulta. Não exigir sincronização do input (INV-005).
 - [x] AC-05: testes frontend, suíte backend e build passam. CI inclui testes
   frontend; checks remotos após autorização de PR. Documentar limites reais.
@@ -104,9 +117,9 @@ Sem pedidos, alterações de estoque ou escritas automatizadas no ERP.
 
 Atualizar spec/plano, fix.md, relatório e investigação após cada etapa.
 Versão 1 preparada por “pode criar os documentos de correcao” e aprovada
-por “entao aprovo os docs”. Testes locais concluídos; validação manual e CI pendentes.
+por “entao aprovo os docs”. Testes locais, CI da implementação e confirmação manual registrados; ver histórico e consolidação atual.
 
-## Implementação de busca-e-paginacao — 2026-10-11
+## Histórico — Implementação de busca-e-paginacao — 2026-10-11
 
 Versão 1 aprovada pelo usuário: “entao aprovo os docs”. Função compartilhada
 atualizarParametroCatalogo integrada em pesquisar e trocarParametro. Busca,
@@ -127,7 +140,7 @@ Execução remota ainda pendente; mudança de workflow não equivale a CI valida
 Estado Implementado: roteiro manual pós-correção, confirmação do usuário e
 checks remotos pendentes. Nenhum PR, merge ou deploy realizado nesta unidade.
 
-## Autorização do PR — 2026-10-11
+## Histórico — Autorização do PR — 2026-10-11
 
 Usuário autorizou “pode abrir o pr”. Publicação da branch e abertura do PR
 autorizadas; merge permanece manual. Validação automatizada local concluída
@@ -135,13 +148,22 @@ autorizadas; merge permanece manual. Validação automatizada local concluída
 confirmada; não atribuir essa confirmação à autorização de abertura do PR.
 Checks remotos pendentes nesta etapa.
 
-## CI e publicação de KZN-325 — 2026-10-11
+## Histórico — CI e publicação de KZN-325 — 2026-10-11
 
 PR #6: https://github.com/eduardofrois/kaizen-test/pull/6
 Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38179901454
-Checks testes-backend e build-frontend passaram no commit c51b6ba. Workflow
+Checks testes-backend e build-frontend passaram nessa publicação. Workflow
 do PR inclui npm test frontend antes do build. Branch publicada em origin.
 Estado Implementado: validação automatizada local/remota concluída; falta
 confirmação manual pós-correção (AC-04 e parte integrada de AC-01/AC-02).
 Não marcar a unidade como Validada apenas pela CI. Merge manual pelo usuário.
 Pendências remotas descritas antes desta execução são históricas.
+
+## Consolidação documental — 2026-10-12
+
+Validação manual da correção concluída pelo usuário, conforme confirmação
+registrada no início. Evidências automatizadas e CI anteriores preservadas.
+Pendências manuais nos relatos históricos descrevem a informação disponível
+à época. Cenários sem detalhamento individual continuam identificados como
+limite de evidência, não como ausência de validação manual da correção.
+Nenhum código, teste, contrato, dependência, banco ou ERP alterado nesta revisão.

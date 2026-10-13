@@ -1,7 +1,7 @@
 # Plano de implementação — Restrição de origem CORS
 
 **Versão:** 1
-**Estado:** Validado — PR #15 aberto
+**Estado:** Implementado e integrado à main; validação manual confirmada pelo usuário em 2026-10-12. Evidências e limites por cenário na matriz e no histórico desta unidade.
 **Spec:** [spec.md](spec.md), versão1 aprovada.
 **Objetivo:** conceder CORS somente à origem configurada.
 **Arquitetura:** callback de origem no middleware existente e validação fail-fast
@@ -10,6 +10,19 @@ na configuração; sem mudança nas rotas, serviços ou cookies.
 **Aprovação da spec:** 2026-10-12; usuário “spec aprovada, pode fazer o plan”.
 **Aprovação para implementar:** 2026-10-12; usuário “aprovado”, após apresentação do plano versão 1.
 **Execução:** sequencial nesta sessão, sem subagentes.
+
+
+**Validação manual atual — 2026-10-12:** concluída pelo usuário. Referência:
+“Agora eu preciso que voce revise os arquivos e mude aonde fala que eu nao fiz
+a validação manual, pois eu fiz.” A confirmação complementa as evidências
+anteriores; não acrescenta execução pela IA, capturas por variante, exploração
+de segurança ou pedido real no SIAC. Requisitos e aprovações de implementação
+permanecem os já registrados. Esta revisão documental não autoriza publicação.
+
+> Leitura atualizada em 2026-10-13, referência main. O problema e
+> os exemplos de execução abaixo descrevem a baseline e o escopo original
+> da unidade. Relatos datados preservam o estado conhecido naquela etapa.
+> Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
 
 ## Restrições globais
 
@@ -147,18 +160,18 @@ middlewares sem necessidade. Sem erro403 e sem bypass da autenticação.
 - [x] Usuário reinicia backend, acessa loja via localhost5173, confere catálogo,
   login, perfil e sessão apósF5. Não exige mudar segredo ou resetar banco.
   Registrar confirmação para AC-05; não registrar dados pessoais.
-- [x] Após comando específico: commit `fix: restringe cors a origem configurada`,
+- [x] Após comando específico: registro da unidade,
   publicar branch e abrir PR para main; acompanhar checks. Merge manual.
 
 ## Matriz de validação
 
 | Aceite | Prova | Esperado | Observado |
 |---|---|---|---|
-| AC-01 | GET/OPTIONS permitido | Headers exatos e preflight204 | Pendente |
-| AC-02 | Tabela de origens, sem Origin | Sem permissões indevidas, rotas preservadas | Pendente |
-| AC-03 | Subprocessos de configuração | Defaults corretos, inválidos rejeitados sem eco | Pendente |
-| AC-04 | Perfil com/sem sessão sintética | 401 ou próprio usuário; CORS não autoriza | Pendente |
-| AC-05 | Suítes/build e manual via proxy | Sem regressão de uso normal | Pendente |
+| AC-01 | GET/OPTIONS permitido | Headers exatos e preflight204 | GET/OPTIONS permitido passaram no HTTP local isolado |
+| AC-02 | Tabela de origens, sem Origin | Sem permissões indevidas, rotas preservadas | Origens negadas/ausentes passaram no HTTP local isolado |
+| AC-03 | Subprocessos de configuração | Defaults corretos, inválidos rejeitados sem eco | Defaults/validação passaram em subprocessos sintéticos |
+| AC-04 | Perfil com/sem sessão sintética | 401 ou próprio usuário; CORS não autoriza | 401 e perfil próprio passaram no HTTP local isolado |
+| AC-05 | Suítes/build e manual via proxy | Sem regressão de uso normal | Backend89/frontend53/build61 passaram na etapa; manual do uso normal confirmado |
 
 ## Recuperação e autorrevisão
 
@@ -168,7 +181,7 @@ ser resolvidas configurando a origem explícita, não reabrindo reflexão global
 Plano cobre REQ-01 a07/AC-01 a05, mantém HTTP/cookies e não amplia para CSRF.
 Implementação aguarda aprovação deste plano; aprovação da spec já registrada.
 
-## FIX-002 implementado — 2026-10-12
+## Histórico — FIX-002 implementado — 2026-10-12
 
 Plano versão1 aprovado pelo usuário com “aprovado” após apresentação.
 app.js compara Origin exatamente com config.corsOrigem; desconhecida/null/
@@ -183,7 +196,7 @@ Adicionados19 testes de configuração (alguns com tabelas internas) e5 cenário
 HTTP agrupados. RED24:5 passaram/19 falharam por default produção, ausência de
 validação e reflexão indevida. GREEN24/24; com config.test.js30/30. Suíte
 backend89/89, frontend53/53 e build61 módulos passaram; sintaxe app/config e
-git diff --check passaram. Baseline14f5163 contém65 testes backend anteriores;
+git diff --check passaram. Baseline contém 65 testes backend anteriores;
 a correção FIX-008 permanece em PR separado e não compõe essa contagem.
 
 HTTP usa app real, SQLite/schema temporários, JWT/usuários sintéticos e fetch
@@ -199,7 +212,7 @@ passaram, confirmação manual pendente. Reiniciar backend, abrir loja via
 localhost5173, conferir catálogo, login, perfil e sessão apósF5. Sem reset
 ou alteração de segredo. Commit/push/PR aguardam comando específico.
 
-## FIX-002 validado — 2026-10-12
+## Histórico — FIX-002 validado — 2026-10-12
 
 Usuário confirmou “validado, pode abrir o PR” após roteiro de reinício, catálogo,
 login/perfil e sessão apósF5. AC-05 concluído com regressões e confirmação
@@ -208,9 +221,9 @@ Confirmação de uso normal não equivale a exploração autenticada em navegado
 CI remoto será acompanhado; merge manual pelo usuário. Registros anteriores
 de manual/autorização pendentes são históricos.
 
-## Publicação FIX-002 — 2026-10-12
+## Histórico — Publicação FIX-002 — 2026-10-12
 
-Implementação `b3096f8` publicada em `fix/restricao-de-origem-cors`.
+Implementação publicada em `fix/restricao-de-origem-cors`.
 PR #15: https://github.com/eduardofrois/kaizen-test/pull/15
 Estado Validado, confirmação manual registrada. Checks remotos em acompanhamento;
 merge manual pendente. Nenhum merge realizado pela IA.

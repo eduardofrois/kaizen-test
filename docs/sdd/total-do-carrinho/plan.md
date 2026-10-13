@@ -1,9 +1,9 @@
 # Plano de implementação — Total do carrinho
 
 **Versão:** 1
-**Estado:** Validado — testes locais, confirmação manual e checks do PR concluídos
+**Estado:** Implementado e integrado à main; validação manual confirmada pelo usuário em 2026-10-12. Evidências e limites por cenário na matriz e no histórico desta unidade.
 **Spec:** [spec.md](spec.md), versão 1
-**Baseline/data:** 4261129; 2026-10-11
+**Baseline/data:** 2026-10-11
 **Objetivo:** excluir linhas indisponíveis do total sem alterar seus dados.
 **Arquitetura:** correção em lerCarrinho; teste do serviço real com SQLite
 em memória e fetch simulado em subprocessos isolados.
@@ -11,6 +11,19 @@ em memória e fetch simulado em subprocessos isolados.
 **Aprovação para implementar:** versão 1 aprovada em 2026-10-11;
 usuário: “Consegui recriar, perfeito. Docs aprovados.”
 **Execução:** nesta sessão, após aprovação; sem delegação automática.
+
+
+**Validação manual atual — 2026-10-12:** concluída pelo usuário. Referência:
+“Agora eu preciso que voce revise os arquivos e mude aonde fala que eu nao fiz
+a validação manual, pois eu fiz.” A confirmação complementa as evidências
+anteriores; não acrescenta execução pela IA, capturas por variante, exploração
+de segurança ou pedido real no SIAC. Requisitos e aprovações de implementação
+permanecem os já registrados. Esta revisão documental não autoriza publicação.
+
+> Leitura atualizada em 2026-10-13, referência main. O problema e
+> os exemplos de execução abaixo descrevem a baseline e o escopo original
+> da unidade. Relatos datados preservam o estado conhecido naquela etapa.
+> Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
 
 ## Restrições globais
 
@@ -225,7 +238,7 @@ const totalCentavos = itens.reduce(
 - [x] Commit `fix: exclui itens indisponiveis do total do carrinho` e publicação
       em origin/fix/total-do-carrinho, apenas com os arquivos revisados.
 - [x] Preparar PR para main; abertura pelo usuário ou por autorização
-      explícita. Aguardar testes-backend e build-frontend; registrar links/SHA.
+      explícita. Aguardar testes-backend e build-frontend; registrar links das execuções.
       Sem merge pela IA. Ajustar docs de status conforme a evidência evoluir.
 
 ## Matriz de validação
@@ -253,7 +266,7 @@ Todos os requisitos têm passos e provas; sem novas dependências ou mudança
 nos arquivos de aplicação antes da aprovação. Contadores, precisão monetária
 e ajustes de quantidade permanecem unidades separadas.
 
-## Implementação aprovada — 2026-10-11
+## Histórico — Implementação aprovada — 2026-10-11
 
 Usuário confirmou reprodução manual do KZN-312 e aprovou versão 1 com
 “Consegui recriar, perfeito. Docs aprovados.” Alteração do serviço limitada
@@ -275,18 +288,18 @@ explicitamente aguardar seu comando para abrir PR, pois vai validar localmente.
 Nenhum PR, merge ou pedido real criado pela IA. Publicação da branch segue
 o fluxo autorizado; não equivale à autorização para abrir PR.
 
-## Validação manual e autorização do PR — 2026-10-11
+## Histórico — Validação manual e autorização do PR — 2026-10-11
 
 Usuário confirmou “funcionando, pode abrir o PR”. Validação manual
 pós-correção confirmada pelo usuário; autorização anterior para aguardar
 foi revogada por esta mensagem. Abrir PR para main e acompanhar os checks,
 sem realizar merge. Testes locais já passaram; evidência remota ainda pendente.
 
-## Validação remota concluída — PR #3
+## Histórico — Validação remota concluída — PR #3
 
 PR: https://github.com/eduardofrois/kaizen-test/pull/3
 Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38175551404
-Checks testes-backend e build-frontend passaram no commit ac2231f.
+Checks testes-backend e build-frontend passaram nessa publicação.
 Com reprodução prévia, aprovação SDD, RED/GREEN, confirmação manual do
 usuário e checks do PR concluídos, KZN-312 está Validado. Todos os critérios
 da versão 1 cumpridos; merge continua pendente de ação manual do usuário.

@@ -1,1245 +1,557 @@
 # Relatório de entrega
 
-**Estado:** investigação e primeira correção concluídas; trabalho em andamento.
+**Candidato:** Eduardo Frois
 
-**Última atualização:** 2026-10-11.
+**Data de entrega prevista:** 13/10/2026, até as 15h (horário de Brasília)
 
-**Autor:** pendente de informação.
+**Tempo aproximado das correções:** cerca de 9h20 de tempo decorrido nos intervalos estimados das 14 correções, com média de 40 minutos por correção. Não houve apontamento de horas ativas; veja o detalhamento abaixo.
 
-**Data de entrega:** pendente de definição.
+**Última atualização:** 13/10/2026
 
-**Tempo aproximado dedicado:** pendente de registro pelo usuário.
+**Estado:** quatro chamados, dez correções adicionais e múltiplos carrinhos v2 implementados e integrados à main. Testes isolados e build passaram; limites de validação descritos abaixo.
 
-Esta versão registra o que foi encontrado e verificado até agora. A
-configuração por ambiente (FIX-001) foi corrigida e validada com testes
-automatizados e verificações manuais locais pelo usuário. Demais correções,
-múltiplos carrinhos, validação dos demais fluxos e deploy estão pendentes. A análise partiu da baseline original `81897d5`.
+Referência de código: main, com o PR #17 integrado. Esta edição altera
+somente documentação.
+
+Este relatório consolida o estado atual do código, em vez de repetir o diário
+de execução. A investigação partiu da baseline original. Os detalhes,
+aprovações e evidências de cada unidade estão em [fix.md](fix.md) e
+[docs/sdd/](docs/sdd/README.md).
+
+Em 12/10/2026, confirmei que realizei a validação manual das correções. Essa
+confirmação complementa os registros anteriores, inclusive aqueles que ainda
+indicavam validação manual pendente. Os testes automatizados usam ERP simulado
+e SQLite isolado. Não representam uma homologação do SIAC nem um deploy.
 
 ---
 
 ## 1. Subindo o projeto
 
-A aplicação ainda não foi colocada no ar. Foram lidos os requisitos,
-arquitetura, código, dependências e configuração. As dependências do backend foram instaladas com `npm ci` (120 pacotes;
-auditoria informou zero vulnerabilidades nessa execução). Foi criado
-`backend/.env` local, ignorado pelo Git, com os três campos obrigatórios vazios
-para preenchimento pelo usuário, que depois informou tê-los configurado e
-iniciado os servidores com sucesso. Build frontend validado posteriormente pela unidade CI-001; deploy pendente.
+Executei a aplicação localmente com dois processos: backend Node/Express na
+porta 3001 e frontend React/Vite na porta 5173. Instalei as dependências com
+`npm ci` em cada pasta, configurei `backend/.env` e iniciei ambos com
+`npm run dev`. O catálogo vem do SIAC; a loja não precisa importar produtos.
+O SQLite é criado e o schema é aplicado pelo bootstrap do backend, sem reset.
 
-O repositório próprio foi inicializado em
+Os principais pontos de atenção foram identificar `ERP_URL` como o nome real
+da variável, entender que ela recebe a base da API e alinhar a versão do Node
+com o Vite. O ambiente usado nas validações registradas foi Node 24.14.1 e
+npm 11.11.0. O proxy de `/api` permite que o navegador acesse frontend e API
+pela mesma origem. Não há configuração de credenciais no frontend.
+
+Criei/configurei os seguintes arquivos além dos originais:
+
+- `backend/.env`, somente local e ignorado pelo Git, para JWT e integração ERP.
+- `.gitignore`, para excluir ambiente, dependências, build e SQLite gerado.
+- `.github/workflows/validacao.yml`, para testes e build no GitHub Actions.
+- Testes em `backend/tests/` e `frontend/tests/`.
+- `fix.md`, `docs/investigacao.md`, `docs/ambiente.md`, contexto em `docs/ai/`
+  e specs/planos em `docs/sdd/`, para investigação, decisões e evidências.
+- `AGENTS.md`, com regras duradouras de trabalho e revisão antes de implementar.
+
+O repositório de entrega é
 [eduardofrois/kaizen-test](https://github.com/eduardofrois/kaizen-test), com
-histórico independente e backup local do Git original. Os commits `0b75868`
-e `6307deb` publicaram a documentação inicial e sua organização. O enunciado do
-teste foi preservado, com atualização das instruções de ambiente. A aplicação
-permanece local, sem novo push nesta etapa. A remoção dos segredos foi aprovada
-e executada na branch `codex/configuracao-por-ambiente`; o histórico original
-com credenciais não integra o novo repositório.
-
-Pontos de configuração identificados: o README citava `SIAC_URL` e foi corrigido
-para `ERP_URL`; o proxy Vite aponta para backend :3001; os requisitos de Node
-do frontend são mais específicos que o >=20 declarado pelo backend. O
-ambiente local consultado tem Node v24.14.1 e npm 11.11.0. Execução local confirmada pelo usuário,
-com catálogo, login, persistência da sessão e logout funcionando.
-
-Arquivos criados para organizar o trabalho:
-
-- `.gitignore`, com regras para ambiente, dependências, build e SQLite local.
-- `AGENTS.md`, com instruções e aprovação obrigatória antes de implementar.
-- `fix.md`, com inventário detalhado de problemas e investigação.
-- `docs/ai/arch.md` e `boundaries.md`, com arquitetura real e limites.
-- `docs/investigacao.md` e `docs/ambiente.md`.
-- Fluxo e modelos em `docs/sdd/`.
-- Spec e plano aprovados e executados em `docs/sdd/configuracao-por-ambiente/`.
-
-O procedimento de instalação/execução está descrito como previsto em
-[docs/ambiente.md](docs/ambiente.md); será atualizado com resultados reais.
+histórico próprio para não carregar as credenciais do histórico original.
+A execução local foi confirmada; não há deploy registrado. O procedimento
+reproduzível está no [README.md](README.md#como-rodar-o-projeto).
 
 ---
 
 ## 2. Chamados reportados
 
-As causas dos quatro chamados foram localizadas. KZN-312 foi corrigido e
-validado automaticamente, manualmente pelo usuário e pelos checks do PR #3.
-Os demais chamados continuam sem correção.
+Os quatro chamados estão corrigidos no checkout revisado. Cada correção teve
+spec e plano próprios, sem misturar causas diferentes que afetam a mesma tela.
 
 ### KZN-312 — Total do carrinho vem maior que a soma das peças
 
 | Campo | Registro |
 |---|---|
-| **Causa** | lerCarrinho somava subtotais de linhas indisponíveis. A pendência bloqueava o checkout, mas não excluía seu valor da soma. |
-| **Como reproduzi** | Cenário isolado: R$20 disponíveis + três unidades sem estoque de R$228 retornavam R$704, excesso de R$684. Usuário também confirmou reprodução pela interface com item que perdeu estoque enquanto permanecia no carrinho. |
-| **Arquivos alterados** | backend/src/services/carrinhoService.js (apenas condição do redutor), backend/tests/carrinho-total.test.js e documentação. |
-| **Correção** | Somar somente linhas com disponivel=true; manter dados, quantidades e subtotais referenciais, sem compra parcial e sem liberar checkout com pendências. Spec/plan versão 1 aprovados em 2026-10-11. |
-| **Como validei** | RED: seis falhas/cinco sucessos nos onze novos testes. GREEN: npm test com 17 sucessos; schema real em SQLite :memory:, fetch simulado e env/cwd isolados. Cobertos estoque, inativo, 404/500, vazio, isolamento de usuários, releitura e rejeição de checkout sem POST. Sintaxe e diff passaram. Usuário confirmou funcionamento e ambos os checks do PR #3 passaram. |
+| **Causa** | `lerCarrinho()` somava o subtotal de todas as linhas, inclusive indisponíveis. A mesma linha bloqueava o checkout, mas continuava aumentando o total. |
+| **Como reproduzi** | R$ 20,00 disponíveis mais três unidades sem estoque a R$ 228,00 produziam R$ 704,00: excesso de R$ 684,00. A reprodução também foi confirmada pela interface com item que perdeu estoque. |
+| **Correção** | O redutor soma somente linhas com `disponivel=true`. A linha com pendência permanece visível, com quantidade, motivo e subtotal de referência. O checkout continua bloqueado até resolver todas as pendências. |
+| **Arquivos alterados** | `backend/src/services/carrinhoService.js`, `backend/tests/carrinho-total.test.js`; spec/plano em `docs/sdd/total-do-carrinho/`. |
+| **Como validei a correção** | Onze testes novos: antes, seis falhavam; depois, a suíte da etapa passou com 17 testes. Cobertura de estoque insuficiente/zero, inativo, produto ausente, falha de consulta, vazio e isolamento. Validação manual confirmada; checks do PR #3 passaram. |
 
-FIX-003 (perda de centavos) é outra causa e continua pendente. Não foi alterado
-nesta unidade, assim como o contador KZN-318. Nota KZN-7F3A preservada.
+**Decisão:** excluir a linha inteira do total disponível, sem reduzir a quantidade
+automaticamente ou aceitar compra parcial. A perda de centavos tinha outra
+causa e foi tratada na FIX-003. Nota de revisão **KZN-7F3A** lida e preservada.
 
 ### KZN-318 — Número no ícone do carrinho está errado
 
 | Campo | Registro |
 |---|---|
-| **Causa** | O backend preenche `quantidade_pecas` com `itens.length`, contando produtos distintos, em vez de somar suas quantidades. Cabeçalho e resumo consomem esse campo. |
-| **Como reproduzi** | Na verificação isolada, duas linhas com quantidades 2 e 3 retornaram `quantidade_pecas: 2`, embora houvesse cinco unidades. |
-| **Arquivos alterados** | Nenhum arquivo de aplicação. Causa em `backend/src/services/carrinhoService.js`, `lerCarrinho()`. |
-| **Como validei a correção** | Pendente: validar soma de unidades e regressões dos consumidores após aprovação e implementação. |
+| **Causa** | `quantidade_pecas` recebia `itens.length`, contando produtos distintos em vez de unidades. |
+| **Como reproduzi** | Dois produtos com três e quatro unidades mostravam contador 2, apesar de haver sete peças. |
+| **Correção** | `quantidade_pecas` passou a somar `item.quantidade`. `quantidade_itens` continua representando produtos distintos. Cabeçalho e resumo recebem o mesmo total de unidades do backend. |
+| **Arquivos alterados** | `backend/src/services/carrinhoService.js`, `backend/tests/carrinho-total.test.js`; spec/plano em `docs/sdd/contador-do-carrinho/`. |
+| **Como validei a correção** | Seis regressões adicionadas; cinco falhavam antes da mudança. Depois, 23 testes backend passaram na etapa, além do build. Roteiro manual 7→5→3→0 e persistência após F5 confirmados. Checks do PR #5 passaram. |
+
+**Decisão:** contar também as unidades com pendências, pois continuam no
+carrinho. O contador informa conteúdo; o total monetário informa o valor das
+linhas disponíveis. O badge visual `99+` e o rótulo acessível foram preservados.
 
 ### KZN-325 — Busca diz que não encontrou peça que existe
 
 | Campo | Registro |
 |---|---|
-| **Causa** | A busca preserva a página anterior ao mudar o termo. Troca de categoria, disponibilidade e limpeza da busca também mantêm a página. O novo conjunto de resultados pode não ter essa página. |
-| **Como reproduzi** | Executei a função de pesquisa extraída do componente, partindo de `?pagina=2`. Pesquisar amortecedor gerou `/?pagina=2&busca=amortecedor`. A resposta real do catálogo ainda precisa de reprodução integrada. |
-| **Arquivos alterados** | Nenhum arquivo de aplicação. Causas em `frontend/src/componentes/Cabecalho.jsx`, `pesquisar()`, e `frontend/src/paginas/Catalogo.jsx`, `trocarParametro()`. |
-| **Como validei a correção** | Pendente: conferir reinício da página em mudanças de filtros, preservação dos filtros válidos e navegação pelo histórico. |
+| **Causa** | Busca, categoria, disponibilidade e limpeza do termo mantinham a página anterior. Um resultado menor podia ser consultado numa página que não existia. |
+| **Como reproduzi** | Partindo de `?pagina=2`, pesquisar amortecedor mantinha `pagina=2` na URL. O problema também foi reproduzido pelo candidato no catálogo. |
+| **Correção** | A função compartilhada `atualizarParametroCatalogo()` remove `pagina` ao mudar busca/filtros e preserva os demais parâmetros. Uma mudança explícita de página mantém os filtros. |
+| **Arquivos alterados** | `frontend/src/lib/parametrosCatalogo.js`, `frontend/src/componentes/Cabecalho.jsx`, `frontend/src/paginas/Catalogo.jsx`, `frontend/tests/parametros-catalogo.test.js`, `frontend/package.json`, `.github/workflows/validacao.yml`; spec/plano em `docs/sdd/busca-e-paginacao/`. |
+| **Como validei a correção** | Dez testes da função real: oito resets falhavam antes e todos passaram depois. Backend e build passaram na etapa; checks do PR #6 passaram. Validação manual confirmada na consolidação de 12/10/2026. |
+
+**Decisão:** manter a consulta no backend/ERP e os filtros na URL, preservando
+links compartilháveis e histórico. A sincronização posterior do texto do
+input com voltar/avançar é uma investigação separada (INV-005). Nota
+**KZN-5D1E** lida e preservada.
 
 ### KZN-331 — Pedido saiu com o endereço errado
 
 | Campo | Registro |
 |---|---|
-| **Causa** | A tela mantém o endereço escolhido em `enderecoId`, mas `finalizar()` ignora esse estado e envia o principal, ou o primeiro da lista. |
-| **Como reproduzi** | Executei a função frontend em memória com duas opções: endereço 1 principal, endereço 2 selecionado. O payload enviado à API simulada continha `endereco_id: 1`. Nenhum pedido foi criado no SIAC. |
-| **Arquivos alterados** | Nenhum arquivo de aplicação. Causa em `frontend/src/paginas/Checkout.jsx`, `finalizar()`. |
-| **Como validei a correção** | Pendente: validar envio da seleção, criação de endereço no checkout, posse no backend e snapshot preservado após edição posterior do endereço. |
+| **Causa** | `finalizar()` ignorava `enderecoId`, escolhido nos radios, e enviava o endereço principal ou o primeiro da lista. |
+| **Como reproduzi** | Com endereço 1 principal e 2 selecionado, o payload original enviava `endereco_id: 1`. A reprodução isolada usou API simulada. |
+| **Correção** | O POST passou a enviar `{ endereco_id: enderecoId, observacao }`. A seleção inicial e a seleção de endereço recém-salvo foram preservadas. O backend continua verificando posse e usando o endereço recebido no snapshot. |
+| **Arquivos alterados** | `frontend/src/paginas/Checkout.jsx`; spec/plano em `docs/sdd/endereco-selecionado-no-checkout/`. |
+| **Como validei a correção** | Payload informado pelo candidato mostrou `endereco_id: 2` após selecionar o endereço 2. Regressões existentes, build e checks do PR #7 passaram. Validação manual da correção confirmada na consolidação de 12/10/2026. |
+
+**Limite da evidência:** o payload comprova a seleção enviada, sem comprovar
+sozinho criação de pedido no SIAC. As suítes dessa etapa eram regressões
+existentes, sem teste automatizado específico do componente de checkout.
 
 ---
 
 ## 3. Problemas que encontrei por conta própria
 
-O inventário detalhado, com passos de reprodução e propostas de aceite, está
-em [fix.md](fix.md). Os IDs FIX/INV são referências internas desta investigação.
-Não há suposição de que o teste contenha exatamente sete problemas extras.
+Os dez itens FIX abaixo foram corrigidos. Em cada “Corrigi?”, explico a mudança,
+o motivo e o limite da solução. Os pontos INV ao final distinguem as mitigações da feature das investigações
+e decisões que permanecem abertas.
 
 ### Problema 1 — Segredos literais e configuração com fallback (FIX-001)
 
 | Campo | Registro |
 |---|---|
-| **O que estava errado** | Segredo JWT e token ERP literais eram usados quando a env faltava, contornando a intenção de fail-fast. ERP_URL também recebia padrão externo. |
-| **Como cheguei nele** | Leitura de config.js (nota KZN-2B9C), comparação com exemplo/documentação e regressão em subprocessos isolados. Antes da correção: cinco falhas e um sucesso. |
-| **Impacto** | Exposição do segredo usado pode comprometer assinaturas de sessão e a credencial ERP. Não testei validade das credenciais nem exploração de contas reais. |
-| **Corrigi?** | Sim, após aprovação explícita de spec/plan em 2026-10-11. Removi literais/fallbacks; exigi JWT_SEGREDO, ERP_URL e ERP_TOKEN; rejeitei placeholders, JWT curto e URL inválida sem ecoar valores. Defaults operacionais e contratos foram preservados. Revogação externa não foi realizada. |
-| **Arquivos alterados** | backend/src/config.js, backend/tests/config.test.js, backend/.env.example, README.md e registros documentais. backend/.env criado somente localmente, sem credenciais preenchidas. |
-| **Validação** | `node --test tests/config.test.js`: seis testes passaram após a correção. `node --check backend/src/config.js`: passou. Processos com env sintética e diretório temporário, sem .env do usuário, rede ERP ou banco. Complemento manual pelo usuário: catálogo, login, refresh de sessão, logout e rejeição de JWT_SEGREDO vazio confirmados. Checkout não testado. |
+| **O que estava errado** | Segredo JWT, token ERP e URL externa tinham fallback no código. A aplicação podia subir sem ambiente explícito, contornando o fail-fast documentado. |
+| **Como cheguei nele** | Leitura de `config.js`, nota KZN-2B9C e comparação com `.env.example`; subprocessos isolados confirmaram o comportamento anterior. |
+| **Impacto** | Credenciais compartilhadas no código e risco de executar contra o ambiente errado. A exposição existe independentemente de o token ainda ser válido. |
+| **Corrigi?** | **Sim.** Removi literais e fallbacks; `JWT_SEGREDO`, `ERP_URL` e `ERP_TOKEN` passaram a ser obrigatórios. A inicialização rejeita placeholders, JWT curto e URL inválida sem imprimir valores. Mantive os defaults operacionais para não mudar contratos. O histórico de entrega foi separado do original. Revogação de credenciais externas depende do responsável pelo SIAC e não foi executada nesta correção. |
+| **Arquivos alterados** | `backend/src/config.js`, `backend/.env.example`, `backend/tests/config.test.js`, `README.md`, `docs/ambiente.md`; SDD `configuracao-por-ambiente`. |
+| **Validação** | Seis testes isolados passaram após cinco falhas na baseline. Manual: catálogo, login, F5, logout e encerramento com `JWT_SEGREDO` vazio confirmados, sem sobrescrever `.env`. |
 
-### Problema 2 — CORS aceita qualquer origem com credenciais (FIX-002)
-
-| Campo | Registro |
-|---|---|
-| **O que está errado** | `cors({ origin: true, credentials: true })` reflete origens arbitrárias; `CORS_ORIGEM` existe na configuração, mas não é aplicado. |
-| **Como cheguei nele** | Segui a variável de ambiente até `backend/src/app.js` e comparei com o proxy/mesma origem previstos. Evidência estática. |
-| **Impacto** | Política de acesso entre origens permissiva. A exploração autenticada depende também de cookies, SameSite e ambiente; não foi demonstrada em navegador. |
-| **Corrigi?** | Sim, por SDD aprovado. Origem exata configurada, default fechado em produção e validação fail-fast; 24 cenários novos passaram. Manual confirmado em 2026-10-12. |
-| **Arquivos alterados** | backend/src/app.js, config.js, .env.example, testes cors-config/cors e docs/ambiente.md. |
-
-### Problema 3 — Conversão monetária perde centavos (FIX-003)
+### Problema 2 — CORS aceitava qualquer origem com credenciais (FIX-002)
 
 | Campo | Registro |
 |---|---|
-| **O que está errado** | `paraCentavos()` usa `Math.floor(Number(reais) * 100)`, truncando aproximações de ponto flutuante. |
-| **Como cheguei nele** | Executei a função original de `backend/src/lib/dinheiro.js`: 1.15 virou 114 centavos, 4.10 virou 409 e 19.99 virou 1998. |
-| **Impacto** | Subtotais, totais do carrinho e valor local do pedido podem divergir do valor correto/ERP. |
-| **Corrigi?** | Sim. Math.round na conversão compartilhada; domínio aprovado de até duas casas. 35 testes backend e 37 frontend passaram. Históricos preservados. |
-| **Arquivos alterados** | backend/src/lib/dinheiro.js; testes dinheiro, carrinho-total e pedido-dinheiro; documentos SDD e registros. |
+| **O que estava errado** | `origin: true` refletia qualquer origem, apesar de existir `CORS_ORIGEM` na configuração. |
+| **Como cheguei nele** | Segui a variável até `app.js` e comparei a política com o proxy Vite e a produção na mesma origem. |
+| **Impacto** | Permissão excessiva de leitura entre origens. A exploração autenticada depende também dos cookies e da topologia. |
+| **Corrigi?** | **Sim.** O middleware compara a origem exatamente com a configurada. Desenvolvimento/teste usam localhost:5173 como padrão; produção sem configuração não autoriza CORS entre origens. Validação fail-fast exige origem HTTP(S) canônica, sem caminho ou lista. Origens desconhecidas seguem as rotas sem headers de permissão; autenticação e posse continuam obrigatórias. Escolhi essa política para preservar o uso de mesma origem e evitar reflexão arbitrária. CORS não resolve CSRF nem substitui autorização. |
+| **Arquivos alterados** | `backend/src/app.js`, `backend/src/config.js`, `backend/.env.example`, `backend/tests/cors-config.test.js`, `backend/tests/cors.test.js`, `docs/ambiente.md`; SDD `restricao-de-origem-cors`. |
+| **Validação** | 24 testes novos de configuração/HTTP passaram, incluindo GET/OPTIONS, origens enganadoras, ausência de Origin, defaults e sessão. Manual do uso normal confirmado; não foi registrada exploração autenticada no navegador. |
+
+### Problema 3 — Conversão monetária perdia centavos (FIX-003)
+
+| Campo | Registro |
+|---|---|
+| **O que estava errado** | `Math.floor(Number(reais) * 100)` truncava aproximações binárias abaixo do inteiro esperado. |
+| **Como cheguei nele** | A função original converteu 1,15 em 114 centavos, 4,10 em 409 e 19,99 em 1998. |
+| **Impacto** | Subtotais, total do carrinho e vínculo local do pedido podiam perder centavos. |
+| **Corrigi?** | **Sim.** Substituí `floor` por `round` no helper compartilhado, dentro do domínio aprovado de valores finitos não negativos com até duas casas. Soma e multiplicação continuam em centavos inteiros, com conversão para reais na API. Corrigir a função comum evita remendos separados nos consumidores. Não reescrevi pedidos históricos nem defini arredondamento para preços com precisão extra. |
+| **Arquivos alterados** | `backend/src/lib/dinheiro.js`, `backend/tests/dinheiro.test.js`, `backend/tests/carrinho-total.test.js`, `backend/tests/pedido-dinheiro.test.js`; SDD `precisao-monetaria`. |
+| **Validação** | Doze testes adicionados, incluindo ida/volta de 100.001 valores. Carrinho 3×1,15 + 2×4,10 = 11,65 e pedido simulado de 19,99 salvo como 1999 centavos. Manual confirmado em 12/10/2026. |
 
 ### Problema 4 — Última página bloqueada pela paginação (FIX-004)
 
 | Campo | Registro |
 |---|---|
-| **O que está errado** | O botão Próxima usa `pagina >= totalPaginas - 1`, antecipando o bloqueio. |
-| **Como cheguei nele** | Executei a expressão original de `frontend/src/componentes/ui.jsx`: página 1 de 2 e página 2 de 3 já retornam desabilitado. |
-| **Impacto** | Última página do catálogo e dos pedidos não pode ser alcançada pelo botão normal. |
-| **Corrigi?** | Sim. Limite corrigido por SDD aprovado; nove testes focados passaram. Validação manual pendente. |
-| **Arquivos alterados** | frontend/src/componentes/ui.jsx, frontend/tests/paginacao.test.js e documentos. |
+| **O que estava errado** | `pagina >= totalPaginas - 1` desabilitava Próxima uma página antes do fim. |
+| **Como cheguei nele** | A expressão original bloqueava a página 1 de 2 e a página 2 de 3. |
+| **Impacto** | Parte do catálogo e do histórico ficava inacessível pelo botão de navegação. |
+| **Corrigi?** | **Sim.** Corrigi a condição para `pagina >= totalPaginas` no componente compartilhado. Catálogo e pedidos recebem o mesmo ajuste sem duplicar lógica. Mantive Anterior, ocultação com zero/uma página e callbacks existentes. A correção é independente do reinício de página ao pesquisar (KZN-325). |
+| **Arquivos alterados** | `frontend/src/componentes/ui.jsx`, `frontend/tests/paginacao.test.js`; SDD `ultima-pagina`. |
+| **Validação** | Nove testes do componente real, HTML e callbacks passaram; os dois casos que bloqueavam a última página falhavam antes. Manual confirmado em 12/10/2026. |
 
-### Problema 5 — Carrinho não acompanha autenticação (FIX-005)
-
-| Campo | Registro |
-|---|---|
-| **O que está errado** | O provider carrega uma vez e não observa login, logout ou identidade do usuário. Respostas em andamento também não são invalidadas por troca de identidade. |
-| **Como cheguei nele** | Leitura de `CarrinhoContext.jsx`, `AuthContext.jsx` e montagem em `main.jsx`. Usuário confirmou manualmente que o carrinho de X permanece visível após sair e entrar em Y, até F5. |
-| **Impacto** | Interface pode continuar vazia após login ou mostrar conteúdo residual da conta anterior. As consultas do backend continuam filtradas por usuário; não foi demonstrado vazamento pela API. |
-| **Corrigi?** | Não. Ciclo da sessão, estados de erro e respostas antigas precisam de spec/plano. |
-| **Arquivos alterados** | Nenhum arquivo de aplicação. |
-
-### Problema 6 — Estoque reduzido impede ajuste de quantidade (FIX-006)
+### Problema 5 — Carrinho não acompanhava autenticação (FIX-005)
 
 | Campo | Registro |
 |---|---|
-| **O que está errado** | A UI desabilita quantidade para qualquer item indisponível, incluindo aquele cuja quantidade apenas excedeu o estoque restante. |
-| **Como cheguei nele** | Comparei `LinhaItem()` em `Carrinho.jsx` com a definição de disponibilidade em `carrinhoService.js`. Inspeção estática e reprodução no frontend confirmada pelo usuário. |
-| **Impacto** | Se o estoque cair de cinco para três, o usuário não consegue reduzir para três pelo campo, embora a tela peça ajuste. |
-| **Corrigi?** | Sim. Capacidade quantidade_editavel no backend e input com limites; regressões passaram. Manual da correção pendente. |
-| **Arquivos alterados** | carrinhoService.js, Carrinho.jsx, LinhaItemCarrinho.jsx, testes backend/frontend e documentos. |
+| **O que estava errado** | O provider carregava uma vez, sem observar login/logout ou descartar respostas antigas ao trocar de conta. Falhas de leitura viravam carrinho vazio. |
+| **Como cheguei nele** | Leitura dos contextos e confirmação manual: sair de X e entrar em Y mantinha o carrinho de X até F5. |
+| **Impacto** | Conteúdo, contador e total residuais entre contas no mesmo navegador. Não foi demonstrado vazamento pela API, que já filtrava proprietário. |
+| **Corrigi?** | **Sim.** Associei o controlador à identidade e ao ciclo da sessão: limpa ao sair/trocar conta, carrega ao autenticar e invalida respostas/callbacks antigos. Visitante não consulta carrinho privado. Falhas de leitura aparecem com opção de tentar novamente e bloqueiam o checkout. Os chamadores interrompem mensagens/navegação de operações invalidadas. Isso corrige o ciclo do estado, além do sintoma resolvido por F5. Concorrência dentro da mesma sessão e checkout já enviado ao backend continuam fora desta unidade. |
+| **Arquivos alterados** | `frontend/src/lib/carrinhoPorSessao.js`, `frontend/src/contextos/CarrinhoContext.jsx`, `frontend/src/paginas/Catalogo.jsx`, `frontend/src/paginas/Produto.jsx`, `frontend/src/paginas/Carrinho.jsx`, `frontend/src/paginas/Checkout.jsx`, `frontend/tests/carrinho-por-sessao.test.js`; SDD `carrinho-por-sessao`. |
+| **Validação** | 27 testes determinísticos do controlador, incluindo dez respostas tardias, falhas e recarga. Troca X→logout→Y→logout→X sem F5 confirmada com itens, contador e total. Validação manual consolidada em 12/10/2026. |
 
-### Problema 7 — Telefone opcional não pode ser removido (FIX-007)
-
-| Campo | Registro |
-|---|---|
-| **O que está errado** | `atualizarPerfil()` usa `telefone || atual.telefone`, mantendo o valor antigo quando a validação produz null para limpeza do campo. |
-| **Como cheguei nele** | Executei o serviço com banco simulado: enviei telefone=null e o argumento do UPDATE continuou com o número anterior. |
-| **Impacto** | Usuário não consegue apagar contato, apesar do campo opcional e de uma resposta de salvamento. |
-| **Corrigi?** | Sim. Rota distingue omissão e serviço permite null explícito; 21 testes novos passaram. Manual pendente. |
-| **Arquivos alterados** | backend/src/routes/perfil.js, backend/src/services/usuarioService.js, backend/tests/perfil-telefone.test.js e documentos. |
-
-### Problema 8 — Senhas têm tratamento inconsistente de espaços (FIX-008)
+### Problema 6 — Estoque reduzido impedia ajustar quantidade (FIX-006)
 
 | Campo | Registro |
 |---|---|
-| **O que está errado** | Cadastro/nova senha preservam espaços; login e senha atual do perfil passam por validação que aplica trim. |
-| **Como cheguei nele** | Comparei validadores das rotas e executei as funções reais de hash/verificação com entrada sintética: versão original confere; versão com trim falha. |
-| **Impacto** | Uma senha aceita na criação pode não autenticar com a mesma entrada; a troca de senha atual também pode falhar. |
-| **Corrigi?** | Sim. Validador específico preserva espaços no login/senha atual; sete cenários novos passaram. Validação manual confirmada pelo usuário em 2026-10-12. |
-| **Arquivos alterados** | backend/src/lib/validacao.js, rotas auth/perfil, backend/tests/senha-autenticacao.test.js e documentos. |
+| **O que estava errado** | `disponivel=false` desabilitava o input tanto para estoque zero quanto para quantidade maior que o estoque positivo restante. |
+| **Como cheguei nele** | Comparei a linha da interface com o enriquecimento do carrinho; reprodução no frontend confirmada pelo candidato. |
+| **Impacto** | Com cinco unidades no carrinho e estoque três, a tela pedia ajuste, mas obrigava remover/adicionar novamente. |
+| **Corrigi?** | **Sim.** O backend informa `quantidade_editavel` quando o produto está ativo e tem estoque positivo. A linha permite inteiro entre 1 e `min(99, estoque)`, mesmo que haja pendência. Estoque zero, inativo, ausente ou falha de consulta continuam sem edição; remoção segue disponível. Separei capacidade de editar de disponibilidade para comprar, sem liberar checkout indevidamente. O backend revalida e preserva o conflito se o estoque cair outra vez. |
+| **Arquivos alterados** | `backend/src/services/carrinhoService.js`, `frontend/src/paginas/Carrinho.jsx`, `frontend/src/componentes/LinhaItemCarrinho.jsx`, `backend/tests/carrinho-total.test.js`, `frontend/tests/quantidade-carrinho.test.js`; SDD `ajuste-de-quantidade-com-estoque-reduzido`. |
+| **Validação** | Nove testes backend e sete frontend adicionados. ERP simulado comprovou redução 5→3, recálculo e liberação do checkout; nova queda para dois gerou 409, sem alterar quantidade salva ou usuário alheio. Manual confirmado em 12/10/2026. |
 
-### Problema 9 — Restrições de layout em telas pequenas (FIX-009)
+### Problema 7 — Telefone opcional não podia ser removido (FIX-007)
 
 | Campo | Registro |
 |---|---|
-| **O que está errado** | Cabeçalho exige busca com mínimo de 380px junto de logo/menu; grade fixa quatro colunas sem breakpoints. |
-| **Como cheguei nele** | Leitura de `Cabecalho.jsx` e `Catalogo.jsx`. Reprodução como visitante confirmou página de 702px numa área útil reportada de 341px, com busca de 380px e cards comprimidos. |
-| **Impacto** | Risco de overflow e conteúdo comprimido no celular, relevante para o carrinho visível na vitrine. Extensão do efeito visual ainda precisa ser medida. |
-| **Corrigi?** | Sim. Cabeçalho e grade responsivos por SDD aprovado; sete larguras como visitante sem overflow. Validação manual confirmada pelo usuário em 2026-10-12; matriz autenticada completa não executada pela IA. |
-| **Arquivos alterados** | Nenhum arquivo de aplicação. |
+| **O que estava errado** | `telefone \|\| atual.telefone` reaproveitava o contato antigo quando o campo era limpo. A rota também confundia omissão com limpeza. |
+| **Como cheguei nele** | Serviço executado com banco simulado recebeu `null`, mas manteve o telefone anterior no UPDATE. |
+| **Impacto** | O perfil indicava salvamento sem permitir remover o contato opcional. |
+| **Corrigi?** | **Sim.** A rota valida telefone somente quando a propriedade está presente. O serviço preserva o anterior apenas para `undefined`; `null`, vazio ou espaços normalizados removem o valor. Corrigi as duas camadas porque trocar apenas o operador não distinguia intenção de apagar e campo omitido. Nome/documento e validação acumulada foram preservados, sem mudar schema. |
+| **Arquivos alterados** | `backend/src/routes/perfil.js`, `backend/src/services/usuarioService.js`, `backend/tests/perfil-telefone.test.js`; SDD `remocao-de-telefone-do-perfil`. |
+| **Validação** | 21 testes de serviço/HTTP com banco isolado: limpeza, omissão, edição, 422 sem atualização parcial, 401 e posse. Manual de apagar, salvar, F5 e editar novamente confirmado em 12/10/2026. |
 
-### Pontos adicionais em investigação
+### Problema 8 — Espaços tratados de forma inconsistente em senhas (FIX-008)
 
-Nenhum destes pontos foi corrigido. O detalhamento está em `fix.md`.
+| Campo | Registro |
+|---|---|
+| **O que estava errado** | Cadastro/nova senha preservavam espaços; login e senha atual passavam por `trim`. |
+| **Como cheguei nele** | Comparação das rotas e conferência com scrypt real: entrada original autenticava, versão aparada falhava. |
+| **Impacto** | A mesma senha aceita no cadastro podia falhar no login ou impedir a troca. |
+| **Corrigi?** | **Sim.** Criei `senhaDeAutenticacao()` e apliquei no login e na senha atual. O validador preserva a entrada, rejeita vazio/whitespace/tipo inválido e mede até 200 caracteres incluindo espaços. A política de criação continua separada da conferência de credencial existente. Mantive scrypt, NFKC e hashes já armazenados; não há tentativa alternativa com `trim`, migração ou ampliação das senhas aceitas. |
+| **Arquivos alterados** | `backend/src/lib/validacao.js`, `backend/src/routes/auth.js`, `backend/src/routes/perfil.js`, `backend/tests/senha-autenticacao.test.js`; SDD `espacos-na-autenticacao-de-senha`. |
+| **Validação** | Sete cenários agrupados de validador/HTTP com SQLite temporário e scrypt real. Cadastro/login, troca, limites, senha incorreta e isolamento passaram. Manual com senha de bordas e nova autenticação confirmado em 12/10/2026. |
 
-| Referência | Evidência e dúvida pendente | Impacto a avaliar |
+### Problema 9 — Layout inadequado em telas pequenas (FIX-009)
+
+| Campo | Registro |
+|---|---|
+| **O que estava errado** | Busca com mínimo de 380px disputava espaço com marca/menu; grade mantinha quatro colunas em qualquer largura. |
+| **Como cheguei nele** | Reprodução visual como visitante: conteúdo de 702px numa área útil reportada de 341px, com cards comprimidos. |
+| **Impacto** | Corte de ações e navegação difícil no celular. |
+| **Corrigi?** | **Sim.** Retirei o mínimo fixo da busca, distribuí cabeçalho e ações em linhas abaixo de 1024px e adaptei a grade para uma, duas ou quatro colunas nos limites 640/1024px. Entrar/Criar conta ocupam metades iguais no celular. Mantive ações visíveis, paleta, handlers e ordem do DOM para resolver a restrição sem redesenhar a loja. A feature de carrinho na vitrine adapta a grade ao espaço lateral e acrescenta painel móvel, com evidência própria. |
+| **Arquivos alterados** | `frontend/src/componentes/Cabecalho.jsx`, `frontend/src/paginas/Catalogo.jsx`; SDD `layout-responsivo-do-catalogo`. |
+| **Validação** | Medidas como visitante em 320, 375, 390, 640, 768, 1024 e 1280px sem overflow horizontal da página. Busca/filtros, foco da busca e login em 375px conferidos. Validação manual confirmada em 12/10/2026. |
+
+### Problema 10 — Documento e telefone sem prevenção de excesso (FIX-010)
+
+| Campo | Registro |
+|---|---|
+| **O que estava errado** | Os inputs aceitavam entrada excessiva e só informavam o problema após a API rejeitar. `type=tel` não limitava tamanho nem formatava. |
+| **Como cheguei nele** | Reprodução manual no cadastro com capturas de rejeição por campo e inspeção do mesmo padrão no perfil. |
+| **Impacto** | Feedback tardio, retrabalho e preenchimento inconsistente, embora o backend já validasse. |
+| **Corrigi?** | **Sim.** Criei funções compartilhadas e `CampoComMascara` para cadastro/perfil: CPF/CNPJ automático por quantidade de dígitos e telefone fixo/celular com DDD. Limites de 14/11 dígitos, preservação de zeros e tratamento de colagem, cursor e exclusão. Evitei `maxLength` que corta a colagem formatada antes de extrair os dígitos. Valores legados fora do domínio são preservados na carga até edição; telefone continua removível. Não adicionei DDI/ramal nem validação matemática de CPF/CNPJ. |
+| **Arquivos alterados** | `frontend/src/lib/mascaras.js`, `frontend/src/componentes/CampoComMascara.jsx`, `frontend/src/paginas/Cadastro.jsx`, `frontend/src/paginas/Perfil.jsx`, `frontend/tests/mascaras.test.js`; SDD `limites-de-documento-e-telefone`. |
+| **Validação** | 26 testes novos de funções reais, incluindo posições de exclusão junto à pontuação. Conferência de entrada/colagem/exclusão no cadastro e confirmação manual do candidato nas duas telas, incluindo remoção e persistência de telefone. |
+
+### Pontos adicionais e limites remanescentes
+
+INV-001/002 foram tratados no escopo de múltiplos carrinhos; a recuperação
+remota continua limitada ao que o SIAC permite comprovar. INV-003/004/005
+seguem abertos, com decisão ou reprodução pendente.
+
+| Referência | Estado atual | Limite ou próximo passo |
 |---|---|---|
-| **INV-001 — Checkout concorrente/repetição** | Duas finalizações simultâneas com ERP simulado geraram duas chamadas de criação e dois vínculos. Falta verificar contrato real de idempotência/recuperação após timeout. | Duplicação de pedidos; a simulação comprova o caminho local, não o comportamento real do SIAC. |
-| **INV-002 — Alteração durante checkout** | Código lê snapshot, aguarda ERP e depois apaga todo o carrinho. Interleaving ainda não reproduzido. | Itens adicionados/alterados durante a espera podem desaparecer sem participar do pedido. |
-| **INV-003 — Endereço sem principal** | Edição permite desmarcar o único principal sem promover outro. | Decidir se nenhum principal é permitido ou se deve existir exatamente um quando há endereços. |
-| **INV-004 — Erro persistente nas telas de pedidos** | Nova consulta/sucesso não limpa erro anterior; evidência estática. | Resposta bem-sucedida pode continuar escondida pelo alerta no mesmo componente montado. |
-| **INV-005 — Busca do cabeçalho fora de sincronia** | Input lê URL só na inicialização; reprodução com histórico pendente. | Voltar/avançar ou limpar busca pode manter termo antigo no campo. |
+| **INV-001 — Checkout concorrente/repetido** | Mitigado por tentativa persistente, bloqueio exclusivo e replay sem segundo POST | Não garante idempotência remota; resultado incerto exige verificação |
+| **INV-002 — Alteração durante checkout** | Mitigado por bloqueio por carrinho e revalidação antes da gravação; limpeza só da origem | Outros carrinhos continuam úteis; não há atomicidade entre loja e SIAC |
+| **INV-003 — Endereço sem principal** | Comportamento localizado; regra de produto aberta | Decidir permitir nenhum ou exigir exatamente um principal |
+| **INV-004 — Erro persistente em pedidos** | Evidência estática de erro que não é limpo em nova consulta/sucesso | Reproduzir falha→sucesso no mesmo componente antes de corrigir |
+| **INV-005 — Texto da busca fora de sincronia** | Evidência estática; campo inicializa pela URL uma vez | Reproduzir histórico/limpeza e definir sincronização sem apagar rascunho |
+
+Causas, grau de evidência e próxima ação estão em [fix.md](fix.md).
+Os três INV abertos não são considerados resolvidos por validação geral dos
+fluxos normais.
 
 ---
 
 ## 4. Múltiplos carrinhos
 
-### Como ficou
+### Resultado e decisões
 
-Ainda não implementado. O requisito inclui criar, nomear, selecionar e remover
-carrinhos isolados, editar o ativo dentro da vitrine sem perder busca/navegação
-e fechar um carrinho por checkout. A spec e o plano da funcionalidade ainda
-serão preparados para aprovação.
+**Implementado e integrado à main no PR #17**, merge confirmado.
+A vitrine permite criar, selecionar, renomear, excluir e editar carrinhos sem
+sair dos resultados. A página /carrinho reutiliza gestão e conteúdo do painel.
 
-### Modelagem
-
-Nenhuma tabela, coluna ou relação foi alterada. Hoje `carrinho_itens` identifica
-itens por usuário, com unicidade em `(usuario_id, codigo_produto)`. Não existe
-entidade de carrinho. Uma migração futura deverá preservar os itens existentes.
-
-Não há endpoints novos nem alterações de contrato implementadas. Rotas e
-payloads serão definidos na spec/plano da funcionalidade.
-
-### Decisões que o enunciado deixou abertas
-
-| Pergunta | Sua decisão | Motivo/situação |
+| Pergunta do enunciado | Decisão implementada | Motivo |
 |---|---|---|
-| Quantos carrinhos por pessoa? Tem limite? | Pendente. | Limite será definido e justificado na spec. |
-| O que acontece ao apagar o carrinho ativo? | Pendente. | Definir seleção substituta e exclusão do último carrinho. |
-| Como o carrinho aparece na vitrine? | Pendente. | Definir interação sem perda de busca, filtros ou navegação. |
-| E no celular? | Pendente. | Definir apresentação e acesso às ações em pouco espaço. |
-| Qual carrinho vem selecionado ao entrar? | Pendente. | Definir persistência e comportamento entre sessões/abas. |
-| O que acontece com os carrinhos após fechar um pedido? | Pendente. | Definir preservação do nome/conteúdo e alterações concorrentes. |
+| Quantos carrinhos? | Até dez por conta, incluindo vazios; 50 produtos e 99 unidades por produto em cada um | Atender orçamentos paralelos com custo limitado |
+| Excluir o ativo? | Selecionar o mais antigo restante, por criado_em e id | Substituição previsível |
+| Excluir o principal ou o último? | Promover o mais antigo; último gera “Meu carrinho” vazio/principal | Manter destino válido na próxima entrada |
+| Vitrine desktop? | Painel lateral recolhível a partir de 1024px | Conferir e editar enquanto escolhe peças |
+| Celular? | Botão inferior abre painel sobreposto, com foco contido e Escape | Preservar espaço para produtos |
+| Qual vem selecionado? | Principal persistido; ativo independente por aba/ciclo. F5 volta ao principal | Uma aba não muda o destino da outra |
+| Depois do pedido? | Manter nome/ID/principal e esvaziar apenas o carrinho comprado | Reutilizar orçamento sem afetar os demais |
+| Destino da adição? | Direto ao ativo, com escolha alternativa que o torna ativo | Um clique no fluxo comum, destino explícito quando necessário |
 
-Há sugestões iniciais em [docs/ai/arch.md](docs/ai/arch.md), ainda não
-aprovadas como decisões de produto.
+Criar/renomear aceita 1–60 caracteres após trim. Nomes repetidos são permitidos;
+o ID identifica a lista. Exclusão com itens pede confirmação; cancelar não
+altera conteúdo. Seleção do painel preserva busca, categoria, página e rolagem.
 
-### Isolamento
+### Modelagem e contrato
 
-O backend atual exige sessão e filtra dados privados por `usuario_id`.
-Múltiplos carrinhos deverá validar também a posse do carrinho e o vínculo dos
-itens em toda operação. Essa garantia nova ainda não foi implementada nem testada.
+- `carrinhos`: proprietário, nome, principal, versão e datas.
+- `carrinho_itens`: referência ao carrinho, código ERP e quantidade, com
+  unicidade em (carrinho_id, codigo_produto). Não congela preço ou estoque.
+- `checkout_tentativas`: identidade por usuário, origem/versionamento,
+  assinatura da confirmação, snapshot de entrega, estado e número ERP conhecido.
+  Não guarda catálogo ou pedido ERP completo.
+- `pedidos_usuario`: vínculo e snapshots anteriores preservados.
+
+A migração transacional converte o carrinho legado para “Meu carrinho” por
+conta, preservando IDs, códigos, quantidades e datas. Não há reset.
+Testes partem do schema legado, verificam endereço/vínculo, repetição e rollback.
+Isso comprova migração sintética, sem afirmar migração/backup do banco de uso local.
+
+A API usa `/api/carrinhos/:id` para leitura/mutações explícitas.
+POST /pedidos recebe carrinho_id, versao_carrinho, tentativa_id, endereco_id e
+observacao. O contrato antigo /api/carrinho responde 409 CARRINHO_OBRIGATORIO,
+orientando recarga, sem escolher o principal silenciosamente.
+Rotas completas e erros estão em [ARQUITETURA.md](ARQUITETURA.md#endpoints).
+
+### Isolamento, concorrência e recuperação
+
+Posse é verificada no backend para carrinhos, itens, endereços, pedidos e
+estado de checkout. O controlador frontend invalida respostas por ciclo,
+seleção e sequência, compara ID/versão e serializa mutações por carrinho.
+
+Antes de criar pedido no SIAC, a loja registra tentativa/bloqueio persistente.
+O backend impede alteração/exclusão da origem durante envio ou verificação;
+mutações iniciadas antes revalidam o bloqueio depois de consultar o ERP.
+Outros carrinhos continuam disponíveis. Mesma tentativa concluída retorna
+o vínculo sem novo POST, inclusive após reabrir o SQLite.
+
+Sucesso atomiza vínculo, limpeza da origem, versão e conclusão local.
+Recusa conclusiva preserva itens e libera edição. Transporte/5xx/sucesso inválido
+ou falha local após possível criação conservam bloqueio e “Pedido em verificação”.
+Número válido recebido com total inválido é preservado quando possível.
+F5, reinício e tempo decorrido não liberam ou reenviam automaticamente.
+
+Não há transação distribuída nem promessa de idempotência remota. Proteção
+local pressupõe processos compartilhando o mesmo SQLite; reconciliação exige
+evidência do SIAC. [Roteiro operacional](docs/sdd/multiplos-carrinhos/recuperacao.md).
+
+### Revisão e evidências
+
+A v1 foi validada manualmente pelo candidato em 13/10/2026. A revisão posterior
+identificou quatro falhas e a v2 as corrigiu com TDD: lista antiga sobre seleção
+nova, mutação regredindo versão, fila global e perda de número ERP parcial.
+Foram acrescentadas 22 regressões, treze frontend e nove backend.
+Os cenários reproduzidos passaram após as correções.
+
+[Spec e plano](docs/sdd/multiplos-carrinhos/spec.md),
+[revisão](docs/sdd/multiplos-carrinhos/revisao.md) e
+[evidências visuais](docs/sdd/multiplos-carrinhos/validacao-visual.md) registram
+RED/GREEN, seis larguras, foco/Escape, duas abas, URL/rolagem, compra fake e
+pedido incerto. A v2 tem ensaio simulado; não há nova confirmação humana
+específica da v2 ou homologação SIAC registrada.
 
 ---
 
 ## 5. Como testei
 
-### Inspeção e verificações realizadas
+### Validação manual
 
-- Leitura dos três documentos originais, dos 45 arquivos em backend/src e
-  frontend/src, manifests/lockfiles, script de banco e trechos do build existente.
-- Busca por notas de revisão nos arquivos textuais do checkout: três notas.
-- Consulta SQLite em modo somente leitura/imutável: integrity check ok e
-  zero registros nas quatro tabelas de negócio da baseline.
-- Scripts transitórios em memória executaram funções/expressões originais,
-  com dependências simuladas quando necessário: total/contador, URL de busca,
-  endereço enviado, conversão monetária, paginação, limpeza do telefone e
-  conferência de senha. Resultados estão nas seções 2 e 3.
-- Simulação de duas finalizações simultâneas, com ERP aceitando ambas, para
-  identificar o caminho sem proteção local de duplicidade.
-- Revisão de links, blocos Markdown, sintaxe dos exemplos JavaScript completos
-  do plano e regras do .gitignore. Revisão dos arquivos preparados para Git
-  não encontrou os valores secretos originais. Push documental conferido no remoto.
+Realizei a validação manual das correções e confirmei sua conclusão em
+12/10/2026. Os caminhos descritos nas confirmações anteriores incluem:
 
-### Limitações da validação
+- Login, catálogo, F5 com sessão persistida, logout e falha de inicialização
+  quando `JWT_SEGREDO` está vazio.
+- Carrinho com linha indisponível e conferência de total; alterações/remoções
+  acompanhando contador 7→5→3→0 e releitura após F5.
+- Seleção de endereço diferente do principal e inspeção do payload enviado.
+- Troca X→logout→Y→logout→X sem F5, conferindo itens, contador e total.
+- Remoção de telefone, salvar/F5 e edição de um novo valor válido.
+- Cadastro/login e troca de senha preservando espaços nas bordas.
+- Layout de telas pequenas e ajuste de Entrar/Criar conta em metades iguais.
+- Documento/telefone nas telas de cadastro e perfil, colagem/edição e remoção
+  de telefone com persistência.
 
-O usuário validou manualmente catálogo, login, refresh de sessão e logout
-no navegador e rejeição de JWT_SEGREDO vazio no terminal. Não houve execução
-real do checkout, auditoria visual completa ou deploy. O build frontend foi
-validado posteriormente na unidade CI-001. As simulações não comprovam o contrato
-real do SIAC. Nenhum pedido real foi criado e nenhum dado de negócio foi alterado.
+A confirmação consolidada também cobre as correções que os registros antigos
+ainda classificavam como manual pendente: busca/paginação, precisão monetária,
+última página e ajuste de quantidade. Os roteiros estão nos respectivos planos;
+a confirmação geral não acrescenta capturas ou medições por variante.
 
-Foi adicionada a suíte `backend/tests/config.test.js`. Em `backend/`, executar
-`node --test tests/config.test.js`: RED de cinco falhas/um sucesso na baseline;
-GREEN de seis sucessos após a correção. Cobre ausência/vazio das três variáveis,
-placeholders/segredo curto, URL inválida sem exposição e contrato válido.
-A checagem de sintaxe de config.js passou. Os scripts da investigação dos
-outros problemas continuam transitórios; não representam testes integrados.
+Não foi registrado deploy, homologação completa do contrato SIAC, auditoria
+completa de acessibilidade ou matriz de autofill/IME/teclado virtual. Os testes
+automatizados não criam pedidos no ERP real. A evidência específica de endereço
+é o payload informado, sem alegação adicional de pedido real criado.
+
+### Testes automatizados e build
+
+Na reavaliação local de **13/10/2026**, a suíte atual passou com
+**123/123 testes backend, 94/94 frontend e build de 67 módulos**, usando Node
+24.14.1. Código e lockfiles conferidos contra a main. O build dessa
+reavaliação foi direcionado a /private/tmp para preservar o dist local.
+Estes resultados antecedem a edição documental; não representam uma nova CI.
+
+| Área | O que os testes verificam |
+|---|---|
+| Backend | Configuração, CORS, dinheiro, total/contador/estoque, autenticação/perfil, posse, migração, gestão de carrinhos, bloqueio/concorrência/replay e recuperação com ERP fake. |
+| Frontend | Parâmetros da URL, controlador por sessão/seleção, ordem de respostas e filas por carrinho, paginação, quantidade e máscaras. Há testes de funções e componentes isolados; não uma suíte E2E completa. |
+| Build | Compilação do frontend com Vite; não substitui navegação manual. |
+
+Para reproduzir a partir da raiz, use terminais separados:
+
+```sh
+cd backend
+npm ci
+npm test
+```
+
+```sh
+cd frontend
+npm ci
+npm test
+npm run build
+```
+
+Os testes backend usam configuração sintética e SQLite em memória/temporário;
+as chamadas ao ERP são simuladas ou bloqueadas. Algumas suítes HTTP abrem porta
+local efêmera. O frontend testa módulos reais com Node e, quando necessário,
+transformação pelo Vite existente. `.env` e banco de uso local não são fixtures.
+
+O workflow `Validacao` executa testes backend, testes frontend e build em PRs
+para `main` e pushes na `main`, com Node 24.14.1. Resultados de CI por unidade
+estão nos registros SDD; a implementação da feature teve checks aprovados no
+[run 38360777053](https://github.com/eduardofrois/kaizen-test/actions/runs/38360777053).
+O merge do PR #17 foi confirmado no Git; não foi consultada a CI de main
+nesta revisão.
 
 ---
 
 ## 6. Decisões e suposições
 
-- Adotei SDD com spec.md, plan.md e aprovação explícita antes de cada
-  implementação. Aprovação documental não aprova mudança de aplicação.
-- Organizei contexto de IA, arquitetura real, limites, decisões e investigação
-  em documentos separados. Pastas e branches recebem nomes descritivos.
-- Iniciei histórico próprio e preservei localmente o Git original. A primeira
-  publicação inclui documentação; código sanitizado preparado na branch da correção; publicação nova pendente.
-- Distingo evidência estática, verificação isolada, teste integrado e hipótese.
-  Não assumi que os problemas extras são exatamente sete.
-- Preservei o SIAC como fonte de catálogo, preço, estoque e pedidos. Falhas e
-  limitações da integração precisam ser tratadas deste lado do sistema.
+- Corrigi na camada responsável: agregações e dinheiro no backend; parâmetros,
+  seleção de endereço e apresentação no frontend; sessão no ciclo do provider.
+- Mantive JavaScript ESM, nomes em português, `ApiError`, envelope de erro e
+  `ColetorDeErros`. Não troquei stack, paleta ou biblioteca de formulários.
+- Mantive o SIAC como fonte de produtos, preço, estoque e pedidos. Carrinho não
+  congela preço nem reserva estoque; checkout pode receber conflito posterior.
+- Separei contagem de unidades, valor disponível e capacidade de editar. Cada
+  campo responde a uma pergunta diferente, sem esconder linhas com pendência.
+- Usei spec/plano por unidade e aprovação explícita antes de alterar aplicação.
+  Documentação e validação não concedem autorização automática de publicação.
+- Priorizei testes que reproduzem causas e riscos, com dados sintéticos, sem
+  expor credenciais ou depender do estoque real.
 
-O fallback de segredos foi removido para cumprir o fail-fast documentado.
-Ainda há divergências em CORS versus mesma origem e provider do carrinho
-versus dependência da autenticação. Propostas de correção estão no inventário;
-nenhum padrão foi substituído por preferência pessoal nesta etapa.
-
-As escolhas de produto de múltiplos carrinhos e a política do endereço
-principal continuam pendentes. Não foram assumidas como decisões concluídas.
+Discordei dos fallbacks de segredos, da reflexão arbitrária de CORS e do
+tratamento de falha técnica como carrinho vazio; as correções estão descritas
+acima. A política de endereço principal continua aberta. As decisões de múltiplos
+carrinhos estão implementadas e registradas na seção 4. Valores monetários com mais de duas casas exigem regra
+própria, além do domínio desta correção.
 
 ---
 
 ## 7. O que faria com mais tempo
 
-Lista provisória de evoluções além do trabalho obrigatório. Será revisada
-conforme a implementação e os riscos remanescentes forem conhecidos.
+Com o requisito de múltiplos carrinhos implementado, priorizaria:
 
-1. Fortalecer recuperação/reconciliação de checkout quando o ERP cria pedido
-   e a resposta ou gravação local falha; avaliar contrato de idempotência sem
-   prometer transação distribuída que a integração atual não oferece.
-2. Ampliar regressões de autenticação, posse de dados, migração e concorrência,
-   com ERP simulado e banco isolado, conforme os fluxos implementados.
-3. Medir custo das consultas individuais ao ERP e refinar acessibilidade e
-   uso em dispositivos pequenos após validar a funcionalidade obrigatória.
+1. Testes automatizados de interação React para endereço selecionado,
+   troca de conta/carrinho, recuperação do checkout e foco do painel.
+2. Fechar INV-003/004/005 com decisões e reproduções controladas; melhorar
+   recuperação operacional de tentativas incertas conforme contrato do SIAC.
+3. Ampliar acessibilidade e dispositivos reais; medir custo das consultas ERP
+   antes de decidir cache ou consulta em lote.
 
-Isso ainda não define itens deixados de fora da entrega. As limitações já
-assumidas pelo projeto estão em ARQUITETURA.md; não são descobertas inéditas.
+Pagamento, frete, nota fiscal, recuperação/confirmação de e-mail e consulta
+externa de CEP continuam limitações de escopo já conhecidas do projeto.
 
 ---
 
 ## 8. Outras observações
 
-Notas de revisão encontradas por leitura do código e busca no checkout:
-
-| Identificador | Local na baseline original |
-|---|---|
-| **KZN-2B9C** | `backend/src/config.js:8` — configuração e defaults. |
-| **KZN-7F3A** | `backend/src/services/carrinhoService.js:73` — leitura e resumo do carrinho. |
-| **KZN-5D1E** | `frontend/src/componentes/Cabecalho.jsx:22` — cabeçalho, busca e contador. |
-
-As três pedem citação no resumo de entrega. Foram registradas como evidência
-de leitura, sem inferir que cada nota representa apenas um bug.
-
-A investigação e a documentação tiveram apoio de IA, conforme permitido
-pelo teste. As decisões de implementação continuam sujeitas à revisão do
-usuário. Este relatório será atualizado com causas, mudanças e provas
-efetivamente realizadas ao longo do trabalho.
-
-### Atualização de preparação local — 2026-10-11
-
-O usuário informou que preencheu backend/.env. As dependências foram
-instaladas pelos lockfiles com npm ci: backend 120 pacotes e frontend 82.
-Auditorias npm informaram zero vulnerabilidades nessa execução. Nenhum
-manifest/lockfile foi alterado. Servidores e integração real não foram
-iniciados nesta etapa; instruções de execução local entregues ao usuário.
-
-### Validação manual e novo achado — 2026-10-11
-
-O usuário informou que iniciou o projeto local com sucesso, conseguiu
-logar e visualizar as peças. A captura da vitrine mostra catálogo carregado
-e navegação de usuário autenticado. Evidência fornecida pelo usuário;
-não equivale a teste completo de sessão, checkout ou credencial inválida.
-Persistência após atualizar a página, logout e execução com JWT_SEGREDO
-vazio foram confirmados posteriormente, conforme registro abaixo.
-
-Novo achado FIX-010: cadastro permite digitar/colar documento e telefone
-acima dos limites; após envio, a API rejeita com máximo de 18 e 20 caracteres,
-respectivamente. Confirmada ausência de maxLength em Cadastro.jsx; mesmo
-padrão observado estaticamente em Perfil.jsx. É uma melhoria de prevenção e
-feedback na interface, mantendo validação no servidor. Não foi implementada;
-exige spec/plan e aprovação própria. Detalhamento em fix.md. Dados pessoais
-das capturas não foram copiados para a documentação.
-
-### Confirmação manual da configuração — 2026-10-11
-
-Evidência informada pelo usuário: login, catálogo, persistência da sessão
-após atualizar a página e logout funcionaram localmente. Ao executar
-`JWT_SEGREDO= npm start` em backend/, o processo encerrou com
-`Configuracao invalida: JWT_SEGREDO nao definido. Rode: npm run segredo:gerar`.
-Fail-fast manual confirmado, sem alterar .env. Os seis testes automatizados
-já haviam passado. Não foi executado checkout real; este registro não
-comprova os demais fluxos do sistema. Implementação registrada no commit c46e68e. Validação concluída para o
-escopo aprovado; resultados consolidados neste commit documental complementar.
-Nenhuma nova alteração de aplicação realizada; publicação remota pendente.
-
-## Integração e publicação — 2026-10-11
-
-Por autorização do usuário, branch configuracao-por-ambiente integrada na
-main pelo merge f913cda, sem conflitos. Push para eduardofrois/kaizen-test
-concluído: remoto confirmou main de 6307deb para f913cda. Branch local
-codex/configuracao-por-ambiente preservada. Os registros anteriores de push
-pendente descrevem a etapa anterior e estão superados por esta atualização.
-.env e arquivos gerados não foram enviados. Publicação do código no GitHub
-não representa deploy da aplicação.
-
-## Preparação de CI — 2026-10-11
-
-Preparados spec e plano de pipeline GitHub Actions com dois checks propostos:
-testes do backend e build do frontend. A main remota inclui o merge manual
-do PR #1. Branch de trabalho: ci/pipeline-de-validacao. Implementação e
-execução da CI aguardam aprovação SDD; não há workflow criado nesta etapa.
-Não foram adicionados testes de negócio nem declarada cobertura dos chamados.
-
-## Implementação da CI — 2026-10-11
-
-Após aprovação SDD versão 1, criado .github/workflows/validacao.yml e script
-npm test no backend. Dois jobs independentes: testes-backend e build-frontend,
-Node 24.14.1/ubuntu-24.04, npm ci/cache pelos lockfiles, timeout de 10 minutos
-e permissões somente de leitura. PRs para main e push na main disparam checks;
-execuções antigas do mesmo PR/ref são canceladas. Sem secrets, ERP ou banco real.
-
-Validação local em cópia temporária para preservar servidores e dados do
-usuário: npm ci em ambos os projetos, seis testes passaram, build transformou
-58 módulos e gerou dist/index.html. Nenhum lockfile foi alterado. YAML analisado
-e diff conferido. Não foi adicionada suíte frontend; build comprova compilação.
-Usuário autorizou abrir PR para validar GitHub Actions. Execução remota e
-push/main após merge do usuário ainda pendentes nesta etapa; estado SDD
-Implementado, sem declarar validação remota ou proteção configurada.
-
-## Primeira execução remota — PR #2
-
-PR: https://github.com/eduardofrois/kaizen-test/pull/2
-Execução pull_request/opened concluída com success:
-https://github.com/eduardofrois/kaizen-test/actions/runs/38172181159
-SHA: 820bc9593a34a31ce49d1a63fcc2b457bd9728dc.
-Jobs testes-backend e build-frontend passaram em Ubuntu 24.04/Node 24.14.1.
-Logs confirmam npm ci em ambos, seis testes sem falhas e build de 58 módulos.
-Frontend instalou 85 pacotes no Linux (82 na validação local macOS), sem
-alteração de lockfile. Não houve credenciais reais, servidor ou ERP na CI.
-Ainda falta confirmar synchronize após novo push documental e push/main
-após merge manual do usuário. Proteção da main não foi alterada.
-
-## Validação do PR concluída — aguardando merge manual
-
-Novo push documental (10420ad) disparou pull_request/synchronize e ambos os
-jobs passaram novamente: run 38172264955, SHA
-10420adcd74f5b5c8eecf71274b7c6e636de38b1.
-Evidência: https://github.com/eduardofrois/kaizen-test/actions/runs/38172264955
-AC-01 confirmado por opened e synchronize; checks testes-backend e
-build-frontend reais e bem-sucedidos, disponíveis para proteção da main.
-Pendente apenas AC-02 e a etapa correspondente do plano: executar e observar
-push/main após merge manual do usuário no PR #2. Não declarar estado
-Validado global até obter essa evidência. Registro atual supera as pendências
-remotas descritas nas etapas anteriores; merge/deploy/proteção não realizados.
-
-## Preparação de KZN-312 — Total do carrinho
-
-Em 2026-10-11, após confirmar a pipeline em PR/main, preparada unidade SDD
-versão 1 total-do-carrinho na branch fix/total-do-carrinho. Proposta: excluir
-linhas indisponíveis do total do resumo, preservando linhas, quantidades,
-subtotais de referência e bloqueio de checkout. Causa localizada no redutor
-de lerCarrinho; nota KZN-7F3A preservada. Nenhum código corrigido nesta etapa.
-Plano prevê onze testes do serviço com SQLite em memória/ERP simulado,
-RED antes da alteração e GREEN depois. Precisão monetária FIX-003 e contador
-KZN-318 permanecem pendentes, com SDD próprio. Aprovação para implementar
-esta proposta ainda não foi dada; nenhum resultado novo de teste é declarado.
-
-## KZN-312 implementado e FIX-005 confirmado — 2026-10-11
-
-Aprovação de implementação: “Consegui recriar, perfeito. Docs aprovados.”
-KZN-312 corrigido conforme SDD versão 1 e 17 testes passaram. O usuário vai
-validar a correção localmente e pediu aguardar seu comando para abrir PR.
-Nenhum PR/merge realizado nesta unidade. Status SDD: Implementado, checks
-remotos e validação manual pós-correção pendentes.
-
-Novo retorno sobre achado existente FIX-005: sair de X e entrar em Y manteve
-o carrinho de X na interface até F5. Registrado como confirmação manual, sem
-inferir vazamento pela API. Correção permanece separada, sem aprovação SDD.
-
-## Validação manual e autorização do PR — 2026-10-11
-
-Usuário confirmou “funcionando, pode abrir o PR”. Validação manual
-pós-correção confirmada pelo usuário; autorização anterior para aguardar
-foi revogada por esta mensagem. Abrir PR para main e acompanhar os checks,
-sem realizar merge. Testes locais já passaram; evidência remota ainda pendente.
-
-## Validação remota concluída — PR #3
-
-PR: https://github.com/eduardofrois/kaizen-test/pull/3
-Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38175551404
-Checks testes-backend e build-frontend passaram no commit ac2231f.
-Com reprodução prévia, aprovação SDD, RED/GREEN, confirmação manual do
-usuário e checks do PR concluídos, KZN-312 está Validado. Todos os critérios
-da versão 1 cumpridos; merge continua pendente de ação manual do usuário.
-Nenhum merge/deploy realizado pela IA. As pendências de validação e instruções
-de aguardar abertura descritas anteriormente são registros históricos superados.
-FIX-003, FIX-005 e KZN-318 permanecem fora desta correção.
-
-## Preparação de contador-do-carrinho — 2026-10-11
-
-KZN-318 reproduzido manualmente pelo usuário, conforme informou nesta sessão.
-Inspeção confirmou quantidade_pecas = itens.length em lerCarrinho; cabeçalho e
-resumo já consomem esse campo. Spec e plano versão 1 preparados em
-`docs/sdd/contador-do-carrinho/`, estado Proposta. Regra proposta: somar unidades
-incluindo linhas com pendências, mantendo quantidade_itens como produtos distintos
-e preservando o total filtrado do KZN-312. Implementação e testes aguardam aprovação;
-nenhum código, teste, dependência ou banco alterado nesta preparação.
-
-## Implementação de contador-do-carrinho — 2026-10-11
-
-Versão 1 aprovada pela mensagem “aprovado os documentos”. Implementação
-limitada à soma de item.quantidade em quantidade_pecas. quantidade_itens,
-total filtrado do KZN-312, nota KZN-7F3A e checkout preservados.
-Seis regressões acrescentadas ao harness isolado existente, sem dependências.
-
-RED: node --test tests/carrinho-total.test.js antes da correção — 17 testes,
-12 passaram e cinco falharam no contador; exemplo 3+4 retornou 2 em vez de 7.
-GREEN: npm test após a correção — 23 testes passaram (17 de carrinho e seis
-configuração). SQLite em memória, fetch simulado e subprocesso com ambiente
-sintético; sem .env, banco local ou ERP real. Snapshots preservados e zero POST.
-node --check backend/src/services/carrinhoService.js e build frontend passaram;
-build transformou 58 módulos. Inspeção confirmou badge 99+, aria-label exato
-e resumo consumindo quantidade_pecas. Isso não substitui validação visual.
-
-Estado Implementado: validação automatizada local concluída; roteiro manual
-7→5→3→0 e persistência após F5 aguardam confirmação do usuário.
-PR não aberto; checks remotos não executados. FIX-003/FIX-005 não corrigidos.
-Também atendida a solicitação de usar “usuário” nas referências documentais.
-
-## Validação manual e autorização do PR — 2026-10-11
-
-Usuário confirmou “validado, pode subir o pr” após o roteiro de validação
-local. Validação manual pós-correção confirmada pelo usuário; não executada
-pela IA. Publicação da branch e abertura de PR autorizadas nesta mensagem.
-Testes locais: 23 passaram; build passou. Checks remotos ainda pendentes.
-Merge permanece manual pelo usuário. Pendências manuais descritas anteriormente
-são registros históricos superados por esta confirmação.
-
-## Validação remota de KZN-318 — 2026-10-11
-
-PR #5: https://github.com/eduardofrois/kaizen-test/pull/5
-Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38177680580
-Checks testes-backend e build-frontend passaram no commit ea3bc6a.
-Estado Validado: critérios da versão 1 concluídos com regressões isoladas,
-build local, confirmação manual do usuário e CI do PR. Merge manual pendente.
-Registros anteriores de espera por validação/abertura/CI são históricos.
-FIX-003 e FIX-005 continuam fora do escopo; nenhum merge ou deploy realizado.
-
-## Preparação de busca-e-paginacao — 2026-10-11
-
-KZN-325 reproduzido pelo usuário (“Erro encontrado”). Pull realizado antes do
-trabalho; nova branch fix/busca-e-paginacao baseada na main 27217ff, com PR #5
-integrado. Spec/plano versão 1 em docs/sdd/busca-e-paginacao/, estado Proposta.
-Proposta: remover pagina ao pesquisar, limpar termo ou alterar categoria/estoque;
-preservar paginação explícita e demais filtros. Prevê função compartilhada,
-dez testes nativos sem dependências novas e npm test no job frontend da CI.
-FIX-004 e INV-005 ficam separados. Nenhum código, teste, workflow ou dependência
-alterado; implementação aguarda aprovação explícita.
-
-## Implementação de busca-e-paginacao — 2026-10-11
-
-Versão 1 aprovada pelo usuário: “entao aprovo os docs”. Função compartilhada
-atualizarParametroCatalogo integrada em pesquisar e trocarParametro. Busca,
-categoria e estoque removem pagina; paginação explícita preserva filtros.
-Consulta continua no backend/ERP com tamanho 24; nenhum filtro local de lista.
-A leitura de `frontend/src/componentes/Cabecalho.jsx` identificou a nota de
-revisão **KZN-5D1E**, junto ao componente responsável pela pesquisa. A nota
-informa que o trecho foi sinalizado em revisão interna e solicita citar seu
-identificador no resumo de entrega como evidência de leitura. Nesta unidade,
-a função `pesquisar()` desse componente foi revisada e alterada para reiniciar
-a paginação ao submeter a busca. A nota foi preservada no código; seu conteúdo
-não especifica por si só um defeito nem comprova sua correção. O diagnóstico do
-KZN-325 e as verificações RED/GREEN estão registrados separadamente abaixo.
-FIX-004 e INV-005 não corrigidos nesta unidade.
-
-RED: node --test tests/parametros-catalogo.test.js no comportamento original
-extraído para o módulo — oito falhas nos resets e dois controles passaram.
-GREEN: npm test em frontend — dez testes passaram. npm test em backend —
-23 testes passaram. Build frontend passou com 59 módulos; git diff --check
-passou. Testes frontend importam função real, sem rede, env ou banco; suíte
-backend mantém SQLite isolado e ERP simulado. Não houve validação React/E2E.
-
-Script test frontend criado sem dependências. Workflow atualizado para executar
-npm test no job build-frontend antes do build, preservando nomes dos checks.
-Execução remota ainda pendente; mudança de workflow não equivale a CI validada.
-Estado Implementado: roteiro manual pós-correção, confirmação do usuário e
-checks remotos pendentes. Nenhum PR, merge ou deploy realizado nesta unidade.
-
-## Autorização do PR — 2026-10-11
-
-Usuário autorizou “pode abrir o pr”. Publicação da branch e abertura do PR
-autorizadas; merge permanece manual. Validação automatizada local concluída
-(10 testes frontend, 23 backend e build). Validação manual pós-correção não
-confirmada; não atribuir essa confirmação à autorização de abertura do PR.
-Checks remotos pendentes nesta etapa.
-
-## CI e publicação de KZN-325 — 2026-10-11
-
-PR #6: https://github.com/eduardofrois/kaizen-test/pull/6
-Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38179901454
-Checks testes-backend e build-frontend passaram no commit c51b6ba. Workflow
-do PR inclui npm test frontend antes do build. Branch publicada em origin.
-Estado Implementado: validação automatizada local/remota concluída; falta
-confirmação manual pós-correção (AC-04 e parte integrada de AC-01/AC-02).
-Não marcar a unidade como Validada apenas pela CI. Merge manual pelo usuário.
-Pendências remotas descritas antes desta execução são históricas.
-
-## Preparação de endereco-selecionado-no-checkout — 2026-10-11
-
-Pull confirmado; main 6fab792 inclui merge do PR #6. KZN-331: inspeção do
-Checkout.jsx confirma finalizar() buscando principal e ignorando enderecoId.
-Backend já verifica posse e utiliza o ID recebido para observação/snapshot.
-Spec/plano versão 1 em docs/sdd/endereco-selecionado-no-checkout/, Proposta.
-Correção proposta só no payload frontend; validação por POST interceptado sem
-criar pedido real. Mensagem “pronto” não detalha reprodução, então não foi
-registrada confirmação manual específica. Implementação aguarda aprovação.
-
-## Implementação de KZN-331 — 2026-10-11
-
-Versão 1 aprovada pelo usuário: “aprovado”. Checkout.jsx/finalizar passou a
-enviar { endereco_id: enderecoId, observacao }, removendo a busca pelo principal
-no envio. Seleção inicial, radios, enderecoSalvo, guarda do botão e fluxo de
-erro/navegação preservados. Backend, contrato, schema e dependências intactos.
-
-Validação local: npm test frontend — dez testes passaram; npm test backend —
-23 passaram; build frontend — passou com 59 módulos; git diff --check passou.
-Essas suítes são regressões existentes, não teste específico do payload KZN-331.
-Inspeção do diff confirma uso do estado selecionado e preservação do restante.
-Inventário da automação não apresentou aba local conectada para executar o
-roteiro de interceptação. Validação do payload no navegador permanece pendente;
-nenhum pedido real criado e nenhum cadastro/endereço/banco local alterado.
-Estado Implementado, não Validado. PR e checks remotos aguardam autorização.
-
-## Validação do payload pelo usuário — 2026-10-11
-
-Usuário confirmou “validado” e apresentou o payload
-`{ "endereco_id": 2, "observacao": "" }`. Evidência informada pelo usuário
-confirma envio do ID selecionado 2 e observação vazia. Não comprova por si
-só criação de pedido, integração ERP, uso de endereço recém-cadastrado ou
-observação preenchida. Esses cenários não foram declarados executados.
-AC-01 confirmado; AC-02, AC-03 e verificação manual de AC-04 permanecem
-sem evidência específica. Regressões locais/build já passaram. PR ainda
-não autorizado; merge manual pelo usuário.
-
-## Autorização de publicação — 2026-10-11
-
-Usuário solicitou “faca o pr”, autorizando commit, publicação da branch e
-abertura do PR desta unidade. Merge permanece manual. Payload endereco_id=2
-confirmado pelo usuário; demais cenários manuais seguem registrados como
-pendentes. Checks remotos ainda não executados nesta etapa.
-
-## Publicação e CI do KZN-331 — 2026-10-11
-
-PR #7: https://github.com/eduardofrois/kaizen-test/pull/7
-Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38181718715
-Checks testes-backend e build-frontend passaram no commit 37ed34b. Branch
-publicada; merge manual pelo usuário. CI comprova regressões existentes/build,
-sem substituir os cenários específicos de checkout ainda não confirmados.
-Estado Implementado: AC-01 confirmado por payload informado; AC-05 concluído;
-AC-02/AC-03 e validação manual de AC-04 pendentes. Sem pedido real pela IA.
-Pendências de autorização/abertura/CI anteriores são registros históricos.
-
-## Investigação de carrinho-por-sessao — 2026-10-11
-
-Pull confirmado; main 1d30bcc inclui PR #7. Branch fix/carrinho-por-sessao.
-FIX-005: provider não observa autenticação; respostas de todas as operações
-podem publicar estado após mudança de conta. Reprodução normal X→Y já foi
-confirmada pelo usuário; concorrência ainda depende de teste controlado.
-Desenho versão 1 em docs/sdd/carrinho-por-sessao/spec.md, Proposta para revisão.
-Inclui identidade/ciclo da sessão, descarte de respostas antigas e erro de
-leitura visível com checkout bloqueado. Plano será detalhado após revisão do
-desenho. Nenhum código/teste/dependência alterado; implementação não aprovada.
-
-## Desenho aprovado e plano do FIX-005 — 2026-10-11
-
-Usuário aprovou o desenho versão 1 com “aprovado”. Plan.md de carrinho-por-sessao
-preparado para revisão: controlador por ciclo, snapshot próprio, descarte de
-respostas e callbacks antigos, retorno false para operação invalidada e guardas
-nos chamadores. Erros de leitura expostos em Carrinho/Checkout com recarga.
-Testes determinísticos do módulo real e integração manual separados. Nenhum
-código/teste alterado. Implementação do plano ainda aguarda aprovação.
-
-## Implementação de carrinho-por-sessao — 2026-10-11
-
-Spec/plano versão 1 aprovados: usuário “aprovado” após apresentação do plano.
-Controlador por instância/ciclo integrado ao AuthContext via provider; novo
-render de identidade usa snapshot novo, vazio, e invalida resultados anteriores.
-Visitante não chama API de carrinho. Geração invalida promises de cleanup/setup.
-Leitura com falha expõe erro em Carrinho/Checkout antes de vazio/resumo, com
-recarga. Sucesso tardio de adição não mostra recado; operações antigas retornam
-false, e Checkout interrompe continuação de recarga invalidada.
-
-Validação local: 27 testes novos do controlador real passaram; npm test frontend
-totalizou 37 sucessos; npm test backend totalizou 23 sucessos. Build passou com
-60 módulos, git diff --check passou. Sem rede, env ou banco real nos testes.
-A execução inicial falhou por módulo ausente: isso é RED estrutural, não prova
-comportamental do defeito na baseline. Não houve alegação de RED comportamental.
-Testes controlados cobrem dez respostas tardias de leitura/mutação, callbacks
-antigos, carga/assinatura, cleanup/setup, X→visitante→X, 401/0/500, retry,
-argumentos, erros de mutação e setter. Não são testes React/hooks/E2E.
-
-Estado Implementado: testes locais e revisão estática concluídos; integração
-manual X/Y sem F5, boot/StrictMode no navegador e simulação visual de rede ainda
-pendentes. Sem novo pedido, cadastro, alteração de estoque ou dependências.
-PR não aberto; aguardará comando do usuário. Concorrência dentro da mesma
-sessão e checkout já enviado ao servidor continuam fora desta correção.
-
-## Confirmação manual de troca de conta — 2026-10-11
-
-Usuário informou “conferido” após o roteiro X→logout→Y→logout→X sem F5,
-conferindo itens, contador e total. Validação manual normal de troca de conta
-confirmada pelo usuário, não executada pela IA. Não extrapolar para inspeção
-Network do boot, testes visuais de falha/401 ou resposta atrasada no navegador.
-Esses cenários têm testes determinísticos no controlador, mas integração visual
-específica ainda não confirmada. Suítes locais e build já passaram.
-PR ainda não autorizado; merge permanece manual pelo usuário.
-
-## Autorização de publicação do FIX-005 — 2026-10-11
-
-Usuário solicitou “otimo, crie o PR”, autorizando commit, publicação da branch
-e abertura do PR. Troca X/Y/X sem F5 confirmada pelo usuário; testes locais
-frontend 37/backend 23 e build concluídos. Checks remotos ainda pendentes
-nesta etapa. Merge permanece manual; cenários visuais complementares não
-foram promovidos a validação concluída.
-
-## Publicação e CI do FIX-005 — 2026-10-11
-
-PR #8: https://github.com/eduardofrois/kaizen-test/pull/8
-Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38186410197
-Checks testes-backend e build-frontend passaram no commit 6ffa315. Branch
-fix/carrinho-por-sessao publicada. Troca X/Y/X sem F5 já confirmada pelo usuário;
-regressões controladas locais e CI concluídas. Integração visual específica
-de boot/StrictMode, falhas e resposta atrasada segue pendente; estado geral
-Implementado até completar os critérios restantes. Merge manual pelo usuário.
-Registros anteriores de autorização/abertura/CI pendentes são históricos.
-
-## Investigação de precisao-monetaria — 2026-10-11
-
-Pull realizado; main d040365 inclui merge do PR #8. Branch fix/precisao-monetaria.
-Execução isolada de paraCentavos confirmou 0.29→28 e 1.15→114 pela aproximação
-binária seguida de floor. Desenho versão 1 em docs/sdd/precisao-monetaria/spec.md,
-Proposta: arredondamento para valores com até duas casas, mantendo centavos
-inteiros e contratos atuais; sem reparo histórico. Precisão extra fica fora
-e requer política própria. Nenhum código/teste/dependência alterado.
-Aguardar revisão do domínio/desenho antes de detalhar plano e implementar.
-
-## Desenho aprovado e plano de precisao-monetaria — 2026-10-11
-
-Usuário aprovou desenho versão 1 com “aprovado”. Plan.md preparado para revisão:
-conversão compartilhada round, nove casos unitários e ida/volta representativa,
-serviço real do carrinho e pedido simulado com coluna de centavos inspecionada.
-Backend/SIAC e dados históricos preservados; nenhum código/teste alterado.
-Aprovação do plano de implementação ainda pendente.
-
-## Precisão monetária implementada e validada localmente — 2026-10-11
-
-FIX-003: usuário aprovou spec/plano versão 1 com “aprovado” nesta sessão.
-Substituído floor por round em backend/src/lib/dinheiro.js/paraCentavos,
-para valores finitos não negativos com até duas casas no domínio aprovado.
-RED focado: 29 testes, 20 sucessos/9 falhas, incluindo subtotal 3.42 em vez de
-3.45 e vínculo local 1998 em vez de 1999. GREEN: backend 35/35, frontend
-37/37, build 60 módulos; sintaxe e diff passaram. Adicionados 12 testes:
-nove conversões, ida/volta de 100001 valores, carrinho e pedido com ERP fake.
-Carrinho 3×1.15+2×4.10=11.65; indisponível excluído e checkout bloqueado.
-Pedido simulado conserva 19.99 como 1999 no SQLite em memória; endereço alheio
-rejeitado, apenas carrinho do proprietário limpo, vínculo alheio ausente.
-Sem .env/banco real, pedido real, dependências, schema ou contratos alterados.
-Históricos não reparados; mais de duas casas exige política separada.
-Estado: Validado localmente; manual opcional/CI não executados. Commit,
-publicação e PR aguardam comando do usuário. Próxima ação: revisão/validação
-pelo usuário e autorização para publicação. Registros anteriores são históricos.
-
-## Autorização de publicação — 2026-10-11
-
-Usuário: “pode abrir o PR”. Autorizados commit, publicação da branch
-fix/precisao-monetaria e abertura do PR para main. Validação local concluída;
-CI remoto será acompanhado. Validação manual não foi informada. Merge manual
-pelo usuário; nenhuma autorização para integrar diretamente na main.
-
-## Publicação da correção — 2026-10-11
-
-Commit de implementação: 3f584ce. Branch fix/precisao-monetaria publicada.
-PR #9: https://github.com/eduardofrois/kaizen-test/pull/9
-Checks testes-backend e build-frontend passaram no run 38187488965,
-commit 3f584ce: https://github.com/eduardofrois/kaizen-test/actions/runs/38187488965
-Esta atualização documental gera nova execução de CI a acompanhar.
-Merge permanece manual e pendente.
-Validação manual não informada; ERP real não utilizado nos testes.
-Os registros anteriores de publicação pendente descrevem etapas passadas.
-
-## Próxima unidade: última página — 2026-10-11
-
-PR #9 confirmado como integrado à main em a1c60d6; pull concluído.
-Branch fix/ultima-pagina criada. FIX-004: expressão atual bloqueia Próxima
-em 1/2 e 2/3, confirmado por execução isolada; componente compartilhado por
-catálogo e pedidos. Spec versão 1 proposta em docs/sdd/ultima-pagina/spec.md.
-Sem alteração de código/testes; revisão do desenho e plano ainda pendentes.
-
-## Desenho de última página aprovado — 2026-10-11
-
-Usuário aprovou spec versão 1 com “aprovado”. Plano versão 1 preparado em
-docs/sdd/ultima-pagina/plan.md: correção compartilhada, nove casos do componente
-real com Vite/React existentes, regressões/build e roteiro manual nas duas telas.
-Plano aguarda revisão; nenhum código, teste ou dependência alterado.
-
-## FIX-004 implementado — 2026-10-11
-
-Usuário aprovou plano versão 1 com “aprovado”, após apresentação nesta sessão.
-Branch fix/ultima-pagina. Produção: em Paginacao, comparação passou de
-pagina >= totalPaginas - 1 para pagina >= totalPaginas. Nenhuma outra
-alteração de produção, contrato, dependência, API, banco ou ERP nesta unidade.
-Teste novo frontend/tests/paginacao.test.js carrega o módulo real transformado
-pelo Vite existente, confere HTML renderizado e callbacks dos botões.
-RED: nove testes, sete passaram e dois falharam (1/2 e 2/3). GREEN focado:
-9/9; suíte frontend 46/46; backend 35/35; build passou com 60 módulos;
-git diff --check passou. Sem servidor ou pedidos reais nos testes.
-AC-01/02/03/04/06 comprovados por verificação isolada/regressões. AC-05 manual
-pendente: percorrer catálogo até última página preservando filtros e voltar;
-conferir pedidos apenas se histórico existente tiver páginas suficientes.
-HTML/callback direto não equivalem a navegação real no navegador.
-Estado Implementado. Sem commit, publicação ou PR; aguardar conferência e
-comando do usuário. Registros anteriores descrevem etapas passadas.
-
-## Autorização de publicação — 2026-10-11
-
-Usuário: “pode abrir o PR”. Autorizados commit, publicação da branch
-fix/ultima-pagina e abertura de PR para main. Checks locais concluídos;
-validação manual não foi informada. CI remoto será acompanhado. Merge manual
-pelo usuário; os registros anteriores de publicação pendente são históricos.
-
-## Publicação de última página — 2026-10-11
-
-Commit de implementação: 6607796. Branch fix/ultima-pagina publicada.
-PR #10: https://github.com/eduardofrois/kaizen-test/pull/10
-Checks testes-backend e build-frontend passaram para 6607796 no run
-38187909239: https://github.com/eduardofrois/kaizen-test/actions/runs/38187909239
-Esta atualização documental dispara novos checks a acompanhar. Manual pendente;
-estado Implementado. Merge manual pelo usuário, não realizado nesta sessão.
-Registros anteriores de publicação pendente são históricos.
-
-## Investigação de ajuste de quantidade — 2026-10-11
-
-PR #10 confirmado integrado na main (0845692); pull concluído. Branch
-fix/ajuste-de-quantidade-com-estoque-reduzido. Usuário confirmou reprodução
-do FIX-006 no frontend. Causa: input bloqueado por disponivel=false mesmo
-quando produto ativo permite reduzir a quantidade para o estoque disponível.
-Spec proposta: campo derivado quantidade_editavel, bloqueio para zero/inativo/
-ausente, limite inteiro 1..min(99,estoque), revalidação e conflito no backend.
-Nota KZN-7F3A relida em carrinhoService; registro de leitura, não diagnóstico.
-Spec em docs/sdd/ajuste-de-quantidade-com-estoque-reduzido/spec.md. Revisão do
-desenho e plano pendentes. Nenhum código/teste/dependência alterado.
-
-## Desenho FIX-006 aprovado e plano preparado — 2026-10-11
-
-Usuário aprovou spec versão 1 com “aprovado”. Plano versão 1 documenta
-quantidade_editavel, extração restrita da linha para teste real, limites no
-input e regressões SQLite/ERP fake para redução, conflito e posse.
-Arquivo: docs/sdd/ajuste-de-quantidade-com-estoque-reduzido/plan.md.
-Implementação pendente de aprovação do plano; código/testes intactos.
-
-## FIX-006 implementado — 2026-10-11
-
-Aprovação do plano versão 1: usuário “aprovao”, após apresentação do plano.
-Campo derivado quantidade_editavel adicionado no backend: produto ativo com
-estoque positivo permite ajustar mesmo com quantidade acima do estoque;
-zero/inativo/ausente/falha de consulta retornam false. disponivel e checkout
-preservados. Linha extraída para LinhaItemCarrinho.jsx; input respeita inteiro
-1..min(99,estoque), ocupado e capacidade; Remover preservado. Sem rascunho novo.
-RED backend focado: 27 casos, 20 passaram/7 falharam por capacidade ausente.
-Controles de conflito e posse já passaram antes da correção. RED frontend:
-7 casos/7 falhas de habilitação, limites e guardas do handler. Após correção:
-27/27 backend focados e 7/7 frontend focados; suítes completas backend44/44 e
-frontend53/53; build passou com61 módulos. Adicionados9 testes backend e7 frontend.
-Redução5→3 comprovada com subtotal60/contador3/checkoutliberado no fake; queda
-adicional para2 retorna409, preserva quantidade e linhas de outro usuário.
-Teste de posse retorna404. Componente real comprova input/callback, label,
-mensagem, limites e bloqueios; não equivale a navegação em navegador.
-Nota KZN-7F3A preservada e relida em carrinhoService. Revisão React focada:
-sem hooks/requisições novos, callbacks e acessibilidade da linha preservados.
-Nenhuma env, dependência, schema, banco real ou estoque SIAC alterado; testes
-com SQLite em memória/fetch sintético, sem pedido real. Estado Implementado.
-AC-01 a AC-04 passaram isoladamente; AC-05 conflito/posse passaram, apresentação
-visual do erro não conferida; AC-06 regressões/build passaram, manual pendente.
-Próximo passo: usuário conferir redução na linha pendente, total e checkout;
-remoção de item sem estoque. Commit/publicação/PR aguardam comando explícito.
-Os registros anteriores descrevem etapas históricas, não o estado atual.
-
-## Autorização de publicação FIX-006 — 2026-10-11
-
-Usuário: “pode commitar e abrir o pr”. Autorizados commit, publicação da branch
-fix/ajuste-de-quantidade-com-estoque-reduzido e PR para main. Validação local
-concluída; manual não informada. CI será acompanhado; merge manual pelo usuário.
-
-## Publicação FIX-006 — 2026-10-12
-
-Commit 58bb69f publicado na branch fix/ajuste-de-quantidade-com-estoque-reduzido.
-PR #11: https://github.com/eduardofrois/kaizen-test/pull/11
-Checks testes-backend e build-frontend passaram para 58bb69f no run
-38198503574: https://github.com/eduardofrois/kaizen-test/actions/runs/38198503574
-Nova execução acompanha esta atualização documental. Estado Implementado; manual pendente.
-Merge permanece manual pelo usuário. Registros de publicação pendente acima
-são históricos. Revisão do conteúdo staged passou após remover linha em branco
-extra ao final do componente; nenhuma mudança comportamental adicional.
-
-## Investigação de remoção de telefone — 2026-10-12
-
-PR #11 integrado na main c7e98cd, pull concluído. Branch
-fix/remocao-de-telefone-do-perfil criada. FIX-007 confirmado por inspeção atual
-e evidência isolada anterior: || mantém número diante de null; rota também
-normaliza telefone omitido como null. Proposta diferencia ausência (preservar)
-de vazio/espaços/null (remover), preservando validação e demais campos.
-Spec: docs/sdd/remocao-de-telefone-do-perfil/spec.md. Desenho/plano pendentes
-de aprovação; nenhuma alteração de código/testes, env, banco ou ERP.
-
-## Spec FIX-007 aprovada — 2026-10-12
-
-Usuário: “spec aprovada”, versão1. Plano preparado em
-docs/sdd/remocao-de-telefone-do-perfil/plan.md: distinção de presença na rota,
-fallback somente undefined no serviço, testes diretos com SQLite em memória
-e HTTP autenticado com banco descartável, sem .env/DB real ou ERP. Plano em
-revisão; código/testes/dependências permanecem intactos nesta unidade.
-
-## FIX-007 implementado — 2026-10-12
-
-Plano versão1 aprovado pelo usuário com “aprovado”, após apresentação nesta
-sessão. Rota valida telefone apenas quando Object.hasOwn(corpo,'telefone');
-serviço preserva valor anterior somente diante de undefined. Null gravaNULL.
-Vazio/espaços seguem normalização existente; nome/documento obrigatórios.
-Adicionados21 testes:7 serviço real/SQLite em memória e14 HTTP autenticado
-com banco temporário e porta local efêmera. Nenhuma env/DB real ou ERP acessado.
-Primeira execução HTTP sob sandbox falhou em infraestrutura; limpeza do
-servidor mascarou erro de inicialização, posteriormente guardada por listening.
-Essa execução não conta como reprodução do bug. Execução autorizada RED:
-21 casos,16 passaram/5 falharam por telefone antigo em vez deNULL (serviço,
-vazio,espaços,null e payload com usuario_id alheio). GREEN focado21/21.
-Regressão completa backend65/65 e frontend53/53; build61 módulos passou;
-sintaxe dos dois módulos e git diff --check passaram. Testes comprovam GET
-após PATCH, omissão, edição, conta sem telefone, validação422 sem atualização
-parcial,401 sem sessão/token inválido e isolamento entre proprietários.
-Nenhum hash/token/cookie real usado; serialização não expõe senha_hash.
-Estado Implementado. AC-01 a AC-04 comprovados isoladamente; AC-05 testes/build
-passaram, manual pendente. Próximo passo: apagar telefone no perfil, salvar e
-F5; depois editar um telefone válido e conferir persistência. Sem registrar
-número pessoal nos docs. Nenhuma alteração frontend/schema/dependências.
-Commit, publicação e PR aguardam comando explícito; CI não executado nesta
-unidade. Registros anteriores descrevem etapas históricas.
-
-## Validação manual e publicação autorizada — 2026-10-12
-
-Usuário confirmou “validado, pode abrir o PR”, após roteiro de remoção,
-salvamento/F5 e edição de telefone válido. Confirmação manual registrada sem
-expor número pessoal. AC-05 concluído com regressões locais e confirmação
-do usuário. Estado Validado; commit/publicação da branch e PR para main
-autorizados. CI remoto será acompanhado; merge manual pelo usuário.
-Registros anteriores de validação/publicação pendente são históricos.
-
-## Publicação FIX-007 — 2026-10-12
-
-Implementação publicada no commit40ea907, branch fix/remocao-de-telefone-do-perfil.
-PR #12: https://github.com/eduardofrois/kaizen-test/pull/12
-Checks testes-backend e build-frontend passaram no run38314449233:
-https://github.com/eduardofrois/kaizen-test/actions/runs/38314449233
-Validação manual confirmada pelo usuário. Estado Validado; merge manual pendente.
-Esta atualização documental gera novos checks a acompanhar. Registros anteriores
-de publicação/CI/manual pendentes são históricos. Nenhum merge realizado pela IA.
-
-## Investigação de espaços em senha — 2026-10-12
-
-PR #12 integrado na main f744b39; pull concluído. Branch
-fix/espacos-na-autenticacao-de-senha. Inspeção confirma trim em login/senha_atual
-e preservação em cadastro/nova senha, com NFKC simétrico na criptografia.
-Spec versão1 propõe validador de autenticação que preserva entrada, rejeita
-vazio/whitespace/não string e mede máximo200 na string original. Sem alterar
-política de criação, hashes existentes ou demais textos. Spec em
-docs/sdd/espacos-na-autenticacao-de-senha/spec.md; revisão e plano pendentes.
-Nenhum código/teste, env, banco real ou ERP alterado nesta unidade.
-
-## Spec FIX-008 aprovada — 2026-10-12
-
-Usuário aprovou spec versão1 com “aprovado”. Plano preparado em
-docs/sdd/espacos-na-autenticacao-de-senha/plan.md: validador específico,
-rotas login/senha_atual e provas HTTP isoladas com scrypt real, banco temporário
-e credenciais sintéticas. Hashes/tokens não serão expostos nas asserções.
-Plano em revisão; código/testes/dependências intactos nesta unidade.
-
-## FIX-008 implementado — 2026-10-12
-
-Plano versão1 aprovado pelo usuário com “aprovado” após apresentação nesta
-sessão. Criado senhaDeAutenticacao em validacao.js, usado no login e senha_atual.
-Retorna string original, rejeita vazio/whitespace/não string e mede máximo200
-incluindo espaços. Política de criação, textos comuns, scrypt/NFKC preservados.
-RED focado:7 cenários,3 passaram/4 falharam. Uma falha estrutural de export
-inexistente; três comportamentais: login com bordas401 em vez de200, troca422
-em vez de200 e entrada acima200 com espaços aceita após trim. GREEN7/7.
-Testes agrupam tabelas de validador e fluxos HTTP completos; não equivalem
-à contagem de cada asserção. Suíte backend72/72, frontend53/53; build61 módulos,
-sintaxe dos três módulos e git diff --check passaram.
-HTTP local com SQLite temporário, scrypt real e contas/config sintéticas;
-sem .env/banco real, ERP, dependências, schema ou frontend alterados.
-Comprovados cadastro/login original versus trim, troca e login novo/antigo,
-senhas sem espaços/internos, normalização NFKC, limites/erros de campo,
-política de criação, falhas sem alteração do hash, sessão e usuário2 intacto.
-Hashes/tokens/cookies mantidos apenas em memória de teste, sem impressão.
-Estado Implementado. AC-01 a AC-05 passaram isoladamente. AC-06 regressões e
-build passaram; confirmação manual pendente. Roteiro: conta de teste com senha
-contendo espaços nas bordas, sair/entrar, trocar para outra senha com espaços
-e sair/entrar novamente. Não registrar credenciais pessoais nos documentos.
-Sem migração ou fallback de credencial. Commit, publicação e PR aguardam comando
-explícito; CI não executado nesta unidade. Registros anteriores são históricos.
-
-## FIX-008 validado — 2026-10-12
-
-Usuário confirmou “validei a correcao, pode abrir o PR”. Validação manual
-confirmada; AC-06 concluído junto às regressões locais registradas acima.
-Estado Validado. Commit, push da branch e abertura do PR autorizados nesta
-sessão. CI remoto será acompanhado após a publicação; merge manual pelo usuário.
-Registros anteriores de manual/autorização pendentes são históricos.
-
-## Publicação FIX-008 — 2026-10-12
-
-Commit de implementação: `9b29049`. Branch publicada:
-`fix/espacos-na-autenticacao-de-senha`. PR #13 aberto para main:
-https://github.com/eduardofrois/kaizen-test/pull/13
-Estado Validado; testes locais e confirmação manual concluídos. Checks remotos
-em acompanhamento. Merge manual pendente. Nenhum merge realizado pela IA.
-
-## Investigação FIX-009 — 2026-10-12
-
-Main sincronizada em f744b39; PR #13 ainda não integrado na consulta remota.
-Branch fix/layout-responsivo-do-catalogo. Reprodução visual local como visitante:
-viewport solicitado375x812, largura útil reportada341px; página/cabeçalho702px,
-busca380px. Screenshot observado confirma corte do cabeçalho e cards comprimidos.
-Nota de revisão KZN-5D1E lida em Cabecalho.jsx. Usuário escolheu ações visíveis,
-distribuídas em linhas, sem menu recolhível. Spec versão1 em proposta em
- docs/sdd/layout-responsivo-do-catalogo/spec.md; aprovação e plano pendentes.
-Sem código/testes/dependências alterados. Autenticado e matriz de larguras
-permanecem pendentes; não declarar validação da correção nesta etapa.
-
-## Spec FIX-009 aprovada — 2026-10-12
-
-Usuário aprovou spec versão1 com “se temos essas informações na spec, aprovada”,
-após confirmar busca flexível e grade responsiva. Plano versão1 preparado em
-docs/sdd/layout-responsivo-do-catalogo/plan.md. Implementação aguarda aprovação
-do plano; nenhum código, teste ou dependência alterado nesta etapa.
-
-## FIX-009 implementado — 2026-10-12
-
-Plano versão1 aprovado com “aprovado” nesta sessão. Alterados apenas
-Cabecalho.jsx e Catalogo.jsx: marca sem compressão, busca flexível sem mínimo
-380px, navegação com quebra de linha, cabeçalho em coluna abaixo1024px e grade
-1/2/4 colunas nos limites640/1024px. Nota KZN-5D1E preservada e reavaliada:
-o trecho do cabeçalho continha a restrição de largura responsável pelo corte.
-Nenhum handler, contrato, estado React, paleta ou dependência alterado.
-Revisão React: DOM/ordem de teclado e semântica preservados, sem novos hooks.
-
-Medições no catálogo local como visitante (largura útil/clientWidth/scrollWidth
-iguais em cada caso):320,375,390,640,768,1024,1280px. Colunas observadas:
-1,1,1,2,2,4,4. Larguras da busca respectivamente288,343,358,608,736,587.45,715.45px.
-Paginação em320px: largura288px e scrollWidth288px, sem ajuste necessário.
-Não foi necessário alterar CardProduto ou ui.jsx. Busca amortecedor retornou
-produtos; categoria SUSPENSAO e estoque atualizados na URL mantendo busca.
-Tab da busca alcançou Entrar com outline solid. Login em375px sem overflow.
-Screenshot local: /private/tmp/kaizen-fix009-mobile.png (artefato temporário,
-não versionado). Evidência anterior: screenshot do usuário e medida341/702px.
-
-Regressões: frontend53/53, backend65/65, build61 módulos passaram. Backend65
-corresponde à baseline main f744b39; FIX-008 está em outro PR e não nesta branch.
-Sem teste que replique classes CSS. Estado Implementado: faltam matriz
-autenticada/contador/perfil, percurso completo de teclado/rolagem, adição e
-confirmação manual pelo usuário. Estado adicionando e captura desktop ainda
-não conferidos visualmente. Commit/publicação/PR aguardam comando explícito.
-
-### Ajuste FIX-009 — ações de visitante
-
-Em 2026-10-12, usuário solicitou Entrar e Criar conta ocupando a linha inteira
-com larguras iguais. Aplicado flex-1/text-center abaixo1024px, preservando gap
-e larguras pelo conteúdo no desktop. ItemMenu aceita className opcional.
-Validação manual geral continua pendente.
-
-Distribuição exata usa grid-cols-2 na navegação de visitante abaixo1024px,
-pois flex-1 isolado pode diferir por causa dos paddings dos links. Navegação
-autenticada continua flex-wrap; desktop usa flex.
-
-## Validação e publicação autorizada FIX-009 — 2026-10-12
-
-Usuário confirmou “otimo, validado, pode abrir o PR”, incluindo o ajuste dos
-botões Entrar/Criar conta em metades iguais. Validação manual confirmada pelo
-usuário; não atribuir a essa confirmação execução detalhada da matriz de
-todos os estados. Medidas de visitante e limitações registradas acima mantidas.
-Build final após grid-cols-2 passou com61 módulos; git diff --check passou.
-Commit, push e PR desta unidade autorizados. Merge manual pelo usuário.
-
-## Publicação FIX-009 — 2026-10-12
-
-Implementação: `c50fead`. Branch `fix/layout-responsivo-do-catalogo` publicada.
-PR #14: https://github.com/eduardofrois/kaizen-test/pull/14
-Validação manual confirmada; checks remotos em acompanhamento. Merge manual
-pendente. Nenhum merge realizado pela IA.
-
-## Investigação FIX-002 — 2026-10-12
-
-Main sincronizada em14f5163 após merge do PR14. Branch fix/restricao-de-origem-cors.
-Revisados comentários de app.js, proxy Vite, cookies e config.corsOrigem.
-Proposta: permitir apenas origem configurada, padrão localhost5173 em dev/test
-e nenhuma permissão CORS por padrão em produção; requisições seguem rotas
-normalmente sem headers CORS quando origem não autorizada. CORS não é barreira
-de autenticação/CSRF. Spec versão1 em docs/sdd/restricao-de-origem-cors/spec.md.
-Aprovação e plano pendentes. Nenhum código/teste/env real alterado.
-
-## Spec FIX-002 aprovada — 2026-10-12
-
-Usuário confirmou “spec aprovada, pode fazer o plan”. Plano versão1 preparado
-em docs/sdd/restricao-de-origem-cors/plan.md: configuração canônica, callback
-com comparação exata, testes HTTP/SQLite isolados e guia por ambiente.
-Nenhuma variável nova; .env real preservada. Plano em revisão, implementação
-não autorizada nesta etapa. Nenhum código/teste/dependência alterado.
-
-## FIX-002 implementado — 2026-10-12
-
-Plano versão1 aprovado pelo usuário com “aprovado” após apresentação.
-app.js compara Origin exatamente com config.corsOrigem; desconhecida/null/
-ausente não recebe permissões CORS e segue as rotas/autenticação normais.
-config.js valida origem canônica HTTP(S), sem ecoar entrada inválida; padrão
-localhost5173 em dev/test, vazio em produção sem configuração. .env.example
-e guia de ambiente atualizados. Nenhuma variável nova; .env real preservada.
-Nota de revisão KZN-2B9C lida e preservada em config.js. Comentário antigo
-sobre refletir qualquer origem substituído pela política efetiva.
-
-Adicionados19 testes de configuração (alguns com tabelas internas) e5 cenários
-HTTP agrupados. RED24:5 passaram/19 falharam por default produção, ausência de
-validação e reflexão indevida. GREEN24/24; com config.test.js30/30. Suíte
-backend89/89, frontend53/53 e build61 módulos passaram; sintaxe app/config e
-git diff --check passaram. Baseline14f5163 contém65 testes backend anteriores;
-a correção FIX-008 permanece em PR separado e não compõe essa contagem.
-
-HTTP usa app real, SQLite/schema temporários, JWT/usuários sintéticos e fetch
-restrito à origem local. Comprovados GET/OPTIONS permitido, métodos/headers,
-Vary, origens enganadoras/porta/null/ausente, defaults em3 ambientes,401 sem
-sessão e perfil do usuário1 sem hash com sessão. Origem negada com sessão
-continua200 no cliente HTTP sem permissão CORS, conforme decisão da spec.
-Não executada exploração no navegador; não é promessa de proteção CSRF.
-Ajuste de roteiro: /auth/eu exige autenticação, diferente do pressuposto no
-plano inicial; teste usa /perfil com401 sem sessão, mantendo objetivo aprovado.
-Estado Implementado: AC-01 a04 passaram isoladamente; AC-05 regressões/build
-passaram, confirmação manual pendente. Reiniciar backend, abrir loja via
-localhost5173, conferir catálogo, login, perfil e sessão apósF5. Sem reset
-ou alteração de segredo. Commit/push/PR aguardam comando específico.
-
-## FIX-002 validado — 2026-10-12
-
-Usuário confirmou “validado, pode abrir o PR” após roteiro de reinício, catálogo,
-login/perfil e sessão apósF5. AC-05 concluído com regressões e confirmação
-manual. Estado Validado. Commit, publicação da branch e PR autorizados.
-Confirmação de uso normal não equivale a exploração autenticada em navegador.
-CI remoto será acompanhado; merge manual pelo usuário. Registros anteriores
-de manual/autorização pendentes são históricos.
-
-## Publicação FIX-002 — 2026-10-12
-
-Implementação `b3096f8` publicada em `fix/restricao-de-origem-cors`.
-PR #15: https://github.com/eduardofrois/kaizen-test/pull/15
-Estado Validado, confirmação manual registrada. Checks remotos em acompanhamento;
-merge manual pendente. Nenhum merge realizado pela IA.
-
-## Preparação FIX-010 — 2026-10-12
-
-Main sincronizada em7d4f391 após PR15. Branch fix/limites-de-documento-e-telefone.
-Cadastro.jsx e DadosPessoais em Perfil.jsx sem maxLength; Campo já encaminha
-props. Backend mantém documento18/telefone20 caracteres e regras de dígitos.
-Spec versão1 propõe limites nativos nos quatro inputs, sem máscaras ou filtro
-só numérico, preservando telefone opcional e zeros iniciais. Limite de entrada
-não substitui validação do servidor nem impede valores programáticos.
-Documento: docs/sdd/limites-de-documento-e-telefone/spec.md. Aprovação e plano
-pendentes; nenhum código/teste/dependência alterado nesta etapa.
-
-## FIX-010 — spec revisada para máscaras — 2026-10-12
-
-Por pedido do usuário, spec versão2 inclui CPF/CNPJ automático por quantidade
-de dígitos (até11 CPF,12–14 CNPJ), telefone brasileiro fixo/celular com DDD,
-limites14/11 dígitos, colagem/edição/cursor e preservação de zeros. Substitui
-proposta de maxLength isolado. Sem DDI/ramal, algoritmo de dígitos verificadores
-ou alteração da API. Versão2 em revisão; plano e implementação pendentes.
-Nenhum código/teste/dependência alterado nesta etapa.
-
-## FIX-010 — spec v2 aprovada e plano preparado — 2026-10-12
-
-Usuário aprovou versão2 com “aprovado”. Plano versão1 preparado em
-docs/sdd/limites-de-documento-e-telefone/plan.md: funções puras compartilhadas,
-CampoComMascara, integração cadastro/perfil, cursor/exclusão e testes reais
-de entrada. Legado fora do domínio preservado ao carregar; telefone removível.
-Plano em revisão; nenhum código/teste/dependência alterado nesta etapa.
-
-## FIX-010 implementado — 2026-10-12
-
-Plano versão1 aprovado com “aprovado” após apresentação nesta sessão. Criados
-mascaras.js e CampoComMascara.jsx; integrados documento/telefone em Cadastro
-e DadosPessoais de Perfil. CPF/CNPJ automático11/12 dígitos, telefone fixo/
-celular10/11, limites14/11, zeros preservados e payload textual formatado.
-Sem maxLength nativo que corte colagem prematuramente; máscara limita dígitos.
-Campo genérico, API, dependências e schema intactos. Inicialização formata apenas
-valores completos no domínio e preserva legado fora do domínio até edição.
-
-26 testes novos de funções reais, incluindo tabelas e todas as posições de
-exclusão ao redor da pontuação; frontend79/79, backend89/89 e build63 módulos
-passaram; diff --check passou. Primeira execução focada23/24: expectativa de
-cursor escrita como14 estava incorreta (fim da saída tem15); corrigida a
-asserção após conferir comprimento. Não é RED comportamental do defeito original;
-reprodução original vem da confirmação manual/inspeção registrada anteriormente.
-
-Navegador no cadastro: digitação sintética produziu01.234.567/8901-23; telefone
-formatado; colagem com máscara e excesso limitada corretamente; exclusão no
-meio produziu012.345.678-0 com cursor11. Nenhum cadastro/perfil enviado.
-Revisão React: reutilização de componente, handlers compatíveis, sem estado
-paralelo do valor; ref de seleção restaurada após render. Labels/erros mantidos.
-Estado Implementado. Testes puros não comprovam toda interação: perfil
-autenticado/persistência, autofill nativo, teclado virtual, atalhos/desfazer e
-composição ainda precisam de conferência. AC-01 a04 parcialmente comprovados
-isoladamente/cadastro; AC-05 regressões/build passaram, manual pendente.
-Próximo passo: usuário validar nas duas telas digitação, colagem, troca CPF/CNPJ,
-fixo/celular, seleção/exclusão no meio e remoção de telefone com salvar/F5.
-Sem dados pessoais nos docs. Commit/push/PR aguardam comando específico.
-
-## FIX-010 validado — 2026-10-12
-
-Usuário confirmou “validado, pode abrir o PR” após roteiro das duas telas,
-colagem/edição e remoção de telefone. Estado Validado pelo usuário; regressões
-79 frontend/89 backend e build registrados acima. Confirmação não equivale
-a prova automatizada de autofill/composição/teclado virtual; limitações mantidas.
-Commit, push e PR desta unidade autorizados; merge manual pelo usuário.
-Registros anteriores de manual/publicação pendentes são históricos.
-
-## Publicação FIX-010 — 2026-10-12
-
-Implementação `cc24f45` publicada em `fix/limites-de-documento-e-telefone`.
-PR #16: https://github.com/eduardofrois/kaizen-test/pull/16
-Validação manual confirmada. Checks remotos em acompanhamento; merge manual
-pendente. Nenhum merge realizado pela IA.
-
-## Atualização do PR #13 e resolução de conflitos — 2026-10-12
-
-Usuário solicitou corrigir os conflitos do PR #13. Incorporada a main
-`60d5827` na branch `fix/espacos-na-autenticacao-de-senha`, preservando os
-registros da FIX-008 e os trabalhos posteriores (layout, CORS e máscaras).
-Os conflitos eram documentais em RELATORIO.md, fix.md, docs/investigacao.md
-e docs/sdd/README.md; o código foi integrado automaticamente, sem alteração
-adicional de comportamento. Revisado o diff contra main: permanece restrito
-à correção de autenticação, seus testes e documentação.
-Validação conjunta: backend96/96, frontend79/79 e build63 módulos passaram;
-git diff --check passou. Nenhum teste manual novo realizado nesta atualização.
-PRs #14, #15 e #16 já integrados à main. PR #13 continua aberto: atualização
-da branch autorizada, checks remotos a acompanhar e merge manual pelo usuário.
+As três notas de revisão encontradas no código foram lidas e preservadas:
+
+| Identificador | Arquivo | Relação com o trabalho |
+|---|---|---|
+| **KZN-2B9C** | `backend/src/config.js` | Configuração, segredos e política de origem. |
+| **KZN-7F3A** | `backend/src/services/carrinhoService.js` | Total, contador e capacidade de ajuste. |
+| **KZN-5D1E** | `frontend/src/componentes/Cabecalho.jsx` | Busca, contador e layout responsivo. |
+
+Usei IA como apoio de investigação, implementação e documentação, conforme
+permitido. As decisões foram revisadas por unidade e estão registradas
+nas [specs e planos](docs/sdd/README.md);
+`fix.md` e `docs/investigacao.md` mostram o estado atual. Registros antigos de
+pendência manual foram complementados pela confirmação de 12/10/2026, sem
+atribuir ensaios individuais às variantes ainda sem prova específica.
+
+Publicação do código no GitHub e deploy são resultados distintos. O enunciado
+menciona “colocar a aplicação no ar”, sem definir hospedagem pública, domínio
+ou provedor. Registrei execução local e não declarei deploy público.
+A revisão documental foi solicitada pelo usuário e publicada no
+[PR #18](https://github.com/eduardofrois/kaizen-test/pull/18) para main em 13/10/2026.
+Os checks da publicação inicial passaram no [run 38404473049](https://github.com/eduardofrois/kaizen-test/actions/runs/38404473049).
+O registro complementar gera nova execução; o merge permanece manual.
+
+---
+
+## 9. Estimativa de tempo das correções
+
+As correções foram trabalhadas em 11 e 12/10/2026. Reconstruí os intervalos
+pelos horários dos commits: usei o primeiro registro documental da unidade
+quando disponível e, nos demais casos, o merge anterior como referência de
+início, até o commit de implementação ou validação. Esses marcos aproximam
+investigação, SDD, implementação e validação, mas não medem cada etapa nem
+permitem separar trabalho ativo de pausas e espera por aprovação.
+
+| Demanda | Intervalo estimado |
+|---|---:|
+| FIX-001 — Configuração por ambiente | 41 min |
+| KZN-312 — Total do carrinho | 17 min |
+| KZN-318 — Contador de unidades | 17 min |
+| KZN-325 — Busca e paginação | 28 min |
+| KZN-331 — Endereço do checkout | 24 min |
+| FIX-005 — Carrinho por sessão | 71 min |
+| FIX-003 — Precisão monetária | 15 min |
+| FIX-004 — Última página | 5 min |
+| FIX-006 — Ajuste com estoque reduzido | 2h40 |
+| FIX-007 — Remoção de telefone | 12 min |
+| FIX-008 — Espaços na autenticação de senha | 21 min |
+| FIX-009 — Layout responsivo | 15 min |
+| FIX-002 — Restrição de origem CORS | 21 min |
+| FIX-010 — Máscaras de documento e telefone | 11 min |
+
+A soma arredondada é aproximadamente **9h20**, com média de **40 minutos**.
+O intervalo de 2h40 da FIX-006 pode incluir pausas; sem ele, a média dos outros
+13 intervalos fica em aproximadamente 30 minutos. Mantive esse intervalo no
+total, pois não há registro que permita descontar pausas com precisão.
+
+Esta estimativa não representa o esforço total do desafio: não contabiliza
+separadamente o estudo inicial, a pipeline, a organização documental, esperas
+após a implementação, a resolução posterior de conflitos, o deploy ou a
+funcionalidade de múltiplos carrinhos. O tempo ativo da feature não foi medido
+e não foi acrescentado ao total. Não mantive um controle de horas ativas para
+afirmar um total exato de dedicação.
+
+## Revisão documental — 13/10/2026
+
+Removidas as referências a identificadores de commits, inclusive nos históricos.
+O README informa as branches publicadas preservadas para consulta do avaliador.
+As conclusões sobre o enunciado e o e-mail estão consolidadas abaixo.
+Atualização do PR #18 autorizada pelo usuário em 13/10/2026; merge permanece manual.
+Não houve deploy ou envio de e-mail.
+As evidências funcionais anteriores foram preservadas; não houve nova suíte nesta edição.
+
+## 10. Atendimento ao enunciado e condições de entrega
+
+A comparação com o [README original](https://github.com/PecistaTecnologia/teste-tecnico-kaizen/blob/main/README.md)
+e o e-mail do processo seletivo considera os resultados e limites registrados
+neste relatório. Os quatro chamados, a investigação de problemas adicionais e
+a funcionalidade de múltiplos carrinhos estão implementados. As decisões de
+produto e as evidências estão detalhadas nas respectivas unidades SDD.
+
+A solução preserva a organização entre rotas HTTP, serviços de negócio e
+cliente do ERP. Os testes cobrem regressões e riscos como cálculo monetário,
+autorização, isolamento e concorrência entre carrinhos. Os resultados locais
+de 123 testes backend, 94 frontend e build aprovados são os da execução anterior
+de 13/10. Testes isolados não substituem um fluxo completo no navegador nem
+homologação com o SIAC; a validação humana integral da v2 não está registrada.
+INV-003/004/005 continuam abertos, conforme o inventário.
+
+O enunciado exige colocar a aplicação no ar, mas não define a hospedagem.
+Há execução local comprovada e nenhum deploy público registrado. Assim, a
+execução local, por si só, não comprova atendimento integral a essa exigência.
+
+Na consulta de 13/10, o repositório da solução estava público. O e-mail exige
+enviar seu link aos dois destinatários informados até 13/10 às 15h e exclui da
+avaliação commits posteriores ao prazo. Os registros Git consultados eram
+anteriores a esse horário, considerando America/Sao_Paulo; isso não comprova
+envio do link. Não há comprovação desse envio nesta revisão.
+
+A revisão documental compõe a atualização autorizada do PR #18, aberto para
+main. O merge permanece manual; a versão na branch de trabalho deve ser
+distinguida da main remota. Esta etapa não realizou deploy ou contato com os
+avaliadores.

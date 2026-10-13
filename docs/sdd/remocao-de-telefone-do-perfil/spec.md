@@ -1,14 +1,27 @@
 # Spec — Remoção de telefone do perfil
 
 **Versão:** 1
-**Estado:** Validado — PR #12 aberto; CI da implementação passou
-**Baseline/data:** c7e98cd; 2026-10-12
+**Estado:** Implementado e integrado à main; validação manual confirmada pelo usuário em 2026-10-12. Evidências e limites por cenário na matriz e no histórico desta unidade.
+**Baseline/data:** 2026-10-12
 **Origem:** FIX-007
 **Branch:** fix/remocao-de-telefone-do-perfil
 **Aprovação da spec:** 2026-10-12; usuário “spec aprovada”.
 **Aprovação para implementar:** 2026-10-12; usuário “aprovado”, após apresentação do plano versão 1.
 
-## Problema e evidência
+
+**Validação manual atual — 2026-10-12:** concluída pelo usuário. Referência:
+“Agora eu preciso que voce revise os arquivos e mude aonde fala que eu nao fiz
+a validação manual, pois eu fiz.” A confirmação complementa as evidências
+anteriores; não acrescenta execução pela IA, capturas por variante, exploração
+de segurança ou pedido real no SIAC. Requisitos e aprovações de implementação
+permanecem os já registrados. Esta revisão documental não autoriza publicação.
+
+> Leitura atualizada em 2026-10-13, referência main. O problema e
+> os exemplos de execução abaixo descrevem a baseline e o escopo original
+> da unidade. Relatos datados preservam o estado conhecido naquela etapa.
+> Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
+
+## Problema e evidência na baseline
 
 atualizarPerfil em usuarioService.js usa telefone || atual.telefone. A rota
 PATCH /api/perfil sempre chama telefone(corpo.telefone), mesmo quando omitido;
@@ -83,13 +96,13 @@ confirmação manual. Sem reparo retroativo: telefone só removido quando solici
 
 ## Entrega e histórico
 
-PR #11 confirmado integrado à main c7e98cd; pull concluído. Spec versão1 em
+PR #11 confirmado integrado à main; pull concluído. Spec versão1 em
 proposta. Após aprovação do desenho, preparar plan.md para revisão antes da
 implementação. Atualizar fix.md, relatório, investigação e SDD com evidências.
 Código/testes intactos nesta unidade; autorização de publicação anterior não
 se estende a este trabalho. Merge permanece manual pelo usuário.
 
-## FIX-007 implementado — 2026-10-12
+## Histórico — FIX-007 implementado — 2026-10-12
 
 Plano versão1 aprovado pelo usuário com “aprovado”, após apresentação nesta
 sessão. Rota valida telefone apenas quando Object.hasOwn(corpo,'telefone');
@@ -114,7 +127,7 @@ número pessoal nos docs. Nenhuma alteração frontend/schema/dependências.
 Commit, publicação e PR aguardam comando explícito; CI não executado nesta
 unidade. Registros anteriores descrevem etapas históricas.
 
-## Validação manual e publicação autorizada — 2026-10-12
+## Histórico — Validação manual e publicação autorizada — 2026-10-12
 
 Usuário confirmou “validado, pode abrir o PR”, após roteiro de remoção,
 salvamento/F5 e edição de telefone válido. Confirmação manual registrada sem
@@ -123,9 +136,9 @@ do usuário. Estado Validado; commit/publicação da branch e PR para main
 autorizados. CI remoto será acompanhado; merge manual pelo usuário.
 Registros anteriores de validação/publicação pendente são históricos.
 
-## Publicação FIX-007 — 2026-10-12
+## Histórico — Publicação FIX-007 — 2026-10-12
 
-Implementação publicada no commit40ea907, branch fix/remocao-de-telefone-do-perfil.
+Implementação publicada na branch fix/remocao-de-telefone-do-perfil.
 PR #12: https://github.com/eduardofrois/kaizen-test/pull/12
 Checks testes-backend e build-frontend passaram no run38314449233:
 https://github.com/eduardofrois/kaizen-test/actions/runs/38314449233

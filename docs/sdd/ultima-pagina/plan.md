@@ -1,15 +1,28 @@
 # Plano de implementação — Acesso à última página
 
 **Versão:** 1
-**Estado:** Implementado — validação manual pendente
+**Estado:** Implementado e integrado à main; validação manual confirmada pelo usuário em 2026-10-12. Evidências e limites por cenário na matriz e no histórico desta unidade.
 **Spec:** [spec.md](spec.md), versão 1
-**Baseline/data:** a1c60d6; 2026-10-11
+**Baseline/data:** 2026-10-11
 **Objetivo:** permitir chegar à última página pelo botão Próxima.
 **Arquitetura:** corrigir comparação no componente compartilhado Paginacao.
 **Stack:** React 19, Vite 7, JavaScript ESM, node:test e react-dom/server.
 **Aprovação do desenho:** usuário “aprovado”, em 2026-10-11.
 **Aprovação para implementar:** 2026-10-11; usuário “aprovado”, após apresentação deste plano versão 1.
 **Execução:** nesta sessão, sequencial, sem delegação.
+
+
+**Validação manual atual — 2026-10-12:** concluída pelo usuário. Referência:
+“Agora eu preciso que voce revise os arquivos e mude aonde fala que eu nao fiz
+a validação manual, pois eu fiz.” A confirmação complementa as evidências
+anteriores; não acrescenta execução pela IA, capturas por variante, exploração
+de segurança ou pedido real no SIAC. Requisitos e aprovações de implementação
+permanecem os já registrados. Esta revisão documental não autoriza publicação.
+
+> Leitura atualizada em 2026-10-13, referência main. O problema e
+> os exemplos de execução abaixo descrevem a baseline e o escopo original
+> da unidade. Relatos datados preservam o estado conhecido naquela etapa.
+> Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
 
 ## Restrições globais
 
@@ -119,21 +132,25 @@ disabled={pagina >= totalPaginas}
   até a última e voltar; verificar GET /api/pedidos com pagina correspondente.
   Não criar pedidos para aumentar histórico. Se insuficiente, registrar que
   integração manual desta tela não foi executada; teste compartilhado é isolado.
-- [ ] Registrar validação manual somente quando realizada ou confirmada pelo
+- [x] Registrar validação manual somente quando realizada ou confirmada pelo
   usuário. HTML estático e callback direto não comprovam clique/navegação real.
 - [x] Atualizar estado, aceites, RED/GREEN e pendências em spec/plano, inventário,
   relatório, investigação e índice SDD antes do commit. Separar CI e manual.
-- [x] Após autorização, commit `fix: permite acessar ultima pagina` e publicar
+- [x] Após autorização, registro da unidade e publicar
   branch fix/ultima-pagina. Abrir PR apenas após comando explícito; merge manual.
 
 ## Matriz de validação
+
+A confirmação manual consolidada é do usuário. Passos instrumentados que
+continuam sem marcação não têm execução específica registrada; são o roteiro
+original, sem atribuir à IA interceptações ou medições que não realizou.
 
 | Aceite | Prova | Esperado | Observado |
 |---|---|---|---|
 | AC-01/02 | Cinco cenários no componente real | Próxima habilitada até penúltima | Cinco cenários passaram |
 | AC-03 | Props/HTML e callback Anterior | Limite inicial e decremento | Passou (props, HTML e callbacks) |
 | AC-04 | Quatro casos null/0/1 | Retorno null | Quatro casos passaram |
-| AC-05 | Manual catálogo/pedidos com dados existentes | Última página e filtros preservados | Não executado |
+| AC-05 | Manual catálogo/pedidos com dados existentes | Última página e filtros preservados | manual confirmado pelo usuário em 2026-10-12; sem detalhamento por variante |
 | AC-06 | Suítes backend/frontend, build e diff | Sucesso | Frontend 46/46; backend 35/35; build 60 módulos; diff passou |
 
 ## Migração, recuperação e autorrevisão
@@ -142,9 +159,9 @@ Sem migração; dados preservados. Reversão por commit, sem reset de banco.
 Plano cobre componente real sem dependência nova nem refatoração. Teste conhece
 a estrutura dos dois botões e precisará acompanhar mudança futura de layout;
 esta unidade preserva layout. Os testes de callbacks não simulam DOM/browser.
-Implementação aprovada e concluída; validação manual/CI e publicação pendentes.
+Implementação concluída; manual confirmado. CI/publicação da implementação registradas no histórico.
 
-## FIX-004 implementado — 2026-10-11
+## Histórico — FIX-004 implementado — 2026-10-11
 
 Usuário aprovou plano versão 1 com “aprovado”, após apresentação nesta sessão.
 Branch fix/ultima-pagina. Produção: em Paginacao, comparação passou de
@@ -162,19 +179,28 @@ HTML/callback direto não equivalem a navegação real no navegador.
 Estado Implementado. Sem commit, publicação ou PR; aguardar conferência e
 comando do usuário. Registros anteriores descrevem etapas passadas.
 
-## Autorização de publicação — 2026-10-11
+## Histórico — Autorização de publicação — 2026-10-11
 
 Usuário: “pode abrir o PR”. Autorizados commit, publicação da branch
 fix/ultima-pagina e abertura de PR para main. Checks locais concluídos;
 validação manual não foi informada. CI remoto será acompanhado. Merge manual
 pelo usuário; os registros anteriores de publicação pendente são históricos.
 
-## Publicação de última página — 2026-10-11
+## Histórico — Publicação de última página — 2026-10-11
 
-Commit de implementação: 6607796. Branch fix/ultima-pagina publicada.
+Branch fix/ultima-pagina publicada.
 PR #10: https://github.com/eduardofrois/kaizen-test/pull/10
-Checks testes-backend e build-frontend passaram para 6607796 no run
+Checks testes-backend e build-frontend passaram no run
 38187909239: https://github.com/eduardofrois/kaizen-test/actions/runs/38187909239
 Esta atualização documental dispara novos checks a acompanhar. Manual pendente;
 estado Implementado. Merge manual pelo usuário, não realizado nesta sessão.
 Registros anteriores de publicação pendente são históricos.
+
+## Consolidação documental — 2026-10-12
+
+Validação manual da correção concluída pelo usuário, conforme confirmação
+registrada no início. Evidências automatizadas e CI anteriores preservadas.
+Pendências manuais nos relatos históricos descrevem a informação disponível
+à época. Cenários sem detalhamento individual continuam identificados como
+limite de evidência, não como ausência de validação manual da correção.
+Nenhum código, teste, contrato, dependência, banco ou ERP alterado nesta revisão.

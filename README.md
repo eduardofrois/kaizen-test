@@ -1,5 +1,25 @@
 # Teste Técnico — Kaizen Autopeças
 
+> **Solução atual — 13/10/2026:** quatro chamados corrigidos, dez correções
+> adicionais e múltiplos carrinhos v2 integrados à main.
+> [Relatório de entrega](RELATORIO.md) · [Como rodar](#como-rodar-o-projeto) ·
+> [Arquitetura e API](ARQUITETURA.md) · [Decisões e evidências](docs/sdd/README.md).
+> Última verificação local: 123 testes backend, 94 frontend e build passaram.
+
+## Enunciado e critérios do desafio
+
+As branches publicadas de `feat/`, `fix/` e `docs/` foram preservadas para que
+o avaliador possa consultar cada frente de trabalho, suas decisões e alterações.
+Elas estão na [lista de branches da solução](https://github.com/eduardofrois/kaizen-test/branches).
+A `main` reúne as mudanças já integradas; as branches também registram etapas
+anteriores e devem ser lidas nesse contexto.
+
+O [relatório de entrega](RELATORIO.md) reúne resultados, evidências e limitações
+em relação ao enunciado e às orientações recebidas por e-mail.
+
+O texto a seguir apresenta o cenário original. As instruções de execução e
+o estado da solução estão documentados depois dos critérios de avaliação.
+
 Bem-vindo. Este repositório é a loja virtual da Kaizen Autopeças: um e-commerce
 de peças (React + Node) que consome a API do **SIAC**, o ERP interno da empresa.
 
@@ -28,7 +48,7 @@ operação.
 
 **O SIAC você não controla.** Ele roda numa EC2 e você apenas consome a API
 dele. Se um problema parecer estar no ERP, a correção tem que acontecer **deste
-lado** — é assim na vida real quando o sistema legado não é seu. O estoque é atualizado 
+lado** — é assim na vida real quando o sistema legado não é seu. O estoque é atualizado
 de 30 em 30 minutos
 
 A documentação técnica (arquitetura, contrato da API, decisões, paleta) está em
@@ -38,11 +58,10 @@ A documentação técnica (arquitetura, contrato da API, decisões, paleta) est�
 montados em cima dela. Para conferir se você tem acesso, o ERP responde em
 `/health` sem exigir token.
 
-> **Colocar a aplicação no ar faz parte do teste.** Não documentamos o passo a
-> passo de propósito: queremos ver como você se vira com um projeto que não
-> conhece. O código, os arquivos de dependência e os exemplos de configuração
-> têm o que é preciso.
-> Versão do node: LTS
+> **Contexto do enunciado original:** colocar a aplicação no ar faz parte do
+> teste. A expressão não especifica hospedagem pública, domínio ou provedor.
+> A execução local foi confirmada; não há deploy público registrado.
+> O passo a passo abaixo foi acrescentado à solução para reproduzir a execução.
 
 ---
 
@@ -219,33 +238,173 @@ Entregar menos sabendo explicar vale mais do que entregar tudo sem saber.
 
 ---
 
-## Configuração do ambiente
+## Como rodar o projeto
 
-No diretório `backend/`, copie `.env.example` para `.env` se ainda não existir.
-`JWT_SEGREDO`, `ERP_URL` e `ERP_TOKEN` são obrigatórios. Substitua os exemplos
-localmente; não versione `.env` nem credenciais reais. Gere o segredo JWT com
-`npm run segredo:gerar` (mínimo 32 caracteres). A URL é a base HTTP(S) do ERP.
-Veja [docs/ambiente.md](docs/ambiente.md) para as demais variáveis e execução.
+### 1. Pré-requisitos e clone
 
-Teste isolado da configuração, a partir de `backend/`:
+- Git e acesso ao repositório de entrega.
+- Node.js **24.14.1**, versão usada na CI e nas validações registradas, com npm.
+- Acesso de rede ao SIAC, sua URL base e um token fornecido pelo responsável.
+  O ERP é externo; não há servidor SIAC ou catálogo local para iniciar neste repo.
 
 ```sh
+git clone https://github.com/eduardofrois/kaizen-test.git
+cd kaizen-test
+node --version
+npm --version
+```
+
+Se já tem o checkout, use a pasta existente. Os comandos seguintes partem da
+raiz do repositório. Backend e frontend têm `package.json` e lockfile próprios;
+não há instalação ou script de execução único na raiz.
+
+### 2. Instalar e configurar o backend
+
+```sh
+cd backend
+npm ci
+cp -n .env.example .env
+npm run segredo:gerar
+```
+
+`cp -n` cria `.env` apenas se ele ainda não existir. Edite `backend/.env` no
+seu editor, substituindo os exemplos:
+
+| Variável | Como preencher |
+|---|---|
+| `JWT_SEGREDO` | Resultado de `npm run segredo:gerar`; mínimo de 32 caracteres. |
+| `ERP_URL` | Base HTTP(S) da API SIAC fornecida pelo responsável; sem acrescentar `/produtos` ou `/pedidos`. |
+| `ERP_TOKEN` | Token real de acesso ao SIAC, somente no backend. |
+| `NODE_ENV` | `development` para execução local. |
+| `PORT` | Mantenha `3001`: o proxy do Vite aponta para essa porta. |
+
+As três primeiras são obrigatórias. Ausência, segredo curto ou placeholders
+impedem a inicialização; a URL também é validada. Nunca versione `.env`, copie
+credenciais para o frontend ou compartilhe a saída do gerador de segredo.
+As demais opções, inclusive `DB_PATH` e `CORS_ORIGEM`, estão em
+[docs/ambiente.md](docs/ambiente.md).
+
+### 3. Iniciar o backend — terminal 1
+
+Ainda em `backend/`:
+
+```sh
+npm run dev
+```
+
+Mantenha esse terminal aberto. O backend usa a porta 3001 por padrão e
+registra a situação do ERP ao iniciar. Execute a partir de `backend/` para que
+`dotenv` encontre o `.env`.
+
+O bootstrap cria `backend/data/ecommerce.db` e aplica o schema automaticamente
+no caminho padrão. Em bancos legados, converte os itens para carrinhos próprios
+em transação, preservando os dados. Antes de iniciar sobre dados existentes,
+consulte o [roteiro de backup/migração](docs/sdd/multiplos-carrinhos/recuperacao.md).
+Não é necessário instalar um servidor de banco, executar
+`db:init` ou resetar dados. `db:reset` apaga dados e não faz parte da instalação.
+
+### 4. Iniciar o frontend — terminal 2
+
+Abra outro terminal na raiz do repositório:
+
+```sh
+cd frontend
+npm ci
+npm run dev
+```
+
+Acesse **[http://localhost:5173](http://localhost:5173)**. O Vite encaminha
+`/api` para `http://localhost:3001`; o frontend não precisa de `.env`.
+Confira a URL impressa pelo Vite se a porta 5173 já estiver ocupada.
+
+### 5. Conferir o funcionamento
+
+1. Abra a vitrine e confira produtos, busca e filtros.
+2. Crie uma conta de teste pela tela de cadastro ou entre com uma conta local
+   existente. Não há credenciais padrão de usuário documentadas.
+3. Adicione peças ao carrinho e confira quantidade, contador e total.
+4. Crie outro carrinho, troque o ativo e confira os conteúdos separados no
+   painel da vitrine. Busca, filtros e página devem permanecer na URL.
+5. Defina o principal e atualize a página: ele será selecionado. A seleção
+   corrente pertence à aba; escolher outro ativo não muda o principal.
+6. Abra perfil/endereços e confira a sessão após atualizar a página.
+
+Para um diagnóstico somente de leitura, em outro terminal:
+
+```sh
+curl http://localhost:3001/api/health
+curl http://localhost:3001/api/catalogo
+```
+
+No health, confira também o campo `erp`: HTTP 200 da loja não garante ERP
+saudável. O `/health` do SIAC é público e não valida o token; a leitura do
+catálogo exercita a integração autenticada. Confirmar um checkout cria pedido
+no SIAC e não é necessário para verificar a instalação.
+
+### 6. Rodar testes e build
+
+A partir da raiz, em terminais separados:
+
+```sh
+cd backend
 npm test
 ```
+
+```sh
+cd frontend
+npm test
+npm run build
+```
+
+Os testes usam dados sintéticos, ERP simulado e SQLite isolado; não exigem o
+`.env` local nem criam pedidos no ERP real. Algumas suítes backend abrem uma
+porta HTTP local efêmera. O build gera `frontend/dist` e verifica compilação;
+a validação manual das correções foi confirmada pelo candidato em 12/10/2026.
+
+### 7. Execução do build em produção
+
+Gere `frontend/dist` com o passo anterior. No terminal do backend:
+
+```sh
+cd backend
+NODE_ENV=production npm start
+```
+
+Esse bloco parte da raiz. Configure JWT/ERP e as demais variáveis no ambiente
+de produção. O backend serve o build e a API pela mesma origem; o Vite não
+precisa ficar ativo. O navegador deve acessar por **HTTPS**, pois o cookie de
+sessão usa `Secure` em produção. Com `CORS_ORIGEM` ausente/vazia não há permissão
+CORS entre origens; remova o localhost do exemplo para esse cenário.
+
+Este é o procedimento de execução, sem deploy público registrado na entrega.
+Para encerrar os processos locais, use `Ctrl+C` nos dois terminais.
+
+### Problemas comuns
+
+| Sintoma | O que conferir |
+|---|---|
+| `Configuracao invalida` ao iniciar | Preencha as variáveis obrigatórias, troque os exemplos e execute dentro de `backend/`. |
+| Vitrine retorna erro de proxy/conexão | Backend ativo em 3001 e target em `frontend/vite.config.js`; frontend precisa do backend. |
+| ERP indisponível ou catálogo falha | URL base, token, acesso de rede e campo `erp` do health. Health público do SIAC não comprova autorização. |
+| Sessão não persiste em produção | HTTPS e configuração do ambiente/cookie; para uso local normal mantenha `development`. |
+| Erro de instalação do `better-sqlite3` | Confira Node 24.14.1 e reinstale com `npm ci`. Se não houver binário compatível com a plataforma, a compilação requer ferramentas nativas. |
 
 ## Validação automática
 
 O workflow `Validacao` executa em PRs para `main` e em pushes na `main`:
 
 - `testes-backend`: `npm ci` e `npm test` em `backend/`.
-- `build-frontend`: `npm ci` e `npm run build` em `frontend/`.
+- `build-frontend`: `npm ci`, `npm test` e `npm run build` em `frontend/`.
 
-Ambos usam Node 24.14.1. Os testes existentes usam configuração sintética,
-sem `.env`, ERP ou banco real. O build verifica compilação, sem substituir
-validação de interface. Merges são manuais pelo usuário.
-Veja [docs/ambiente.md](docs/ambiente.md) para reprodução e proteção da main.
+Ambos usam Node 24.14.1. Testes isolados e build complementam a conferência
+manual; os merges são feitos pelo usuário. Veja
+[RELATORIO.md](RELATORIO.md) para resultados e escopo atual e
+[docs/ambiente.md](docs/ambiente.md) para configuração detalhada.
 
 ## Antes de começar
+
+As orientações abaixo pertencem ao enunciado original. Para consultar o que
+foi entregue, veja o [relatório](RELATORIO.md).
 
 - Preencha o **[RELATORIO.md](RELATORIO.md)** conforme for trabalhando, não no
   final. É mais fácil lembrar como chegou num bug no dia em que chegou.

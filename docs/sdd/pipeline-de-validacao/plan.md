@@ -1,15 +1,20 @@
 # Plano de implementação — Pipeline de validação
 
 **Versão:** 1
-**Estado:** Implementado — validação local e PR concluídos; aguardando push/main após merge manual
+**Estado:** Implementado e integrado à main; CI em PR registrada. Evidência específica do evento push/main permanece pendente no plano; não é falha confirmada do workflow.
 **Spec:** [spec.md](spec.md), versão 1
-**Baseline:** a70f55f; 2026-10-11
+**Baseline:** versão anterior; 2026-10-11
 **Objetivo:** automatizar testes de configuração e build em PRs/main.
 **Arquitetura:** um workflow com dois jobs independentes e lockfiles existentes.
 **Stack:** GitHub Actions, Node 24.14.1, npm, node:test e Vite.
 **Aprovação para implementar:** versão 1 aprovada pelo usuário em
 2026-10-11, resposta “aprovo” à apresentação de spec.md e plan.md.
 **Execução:** nesta sessão, após aprovação, sem delegação automática.
+
+> Leitura atualizada em 2026-10-13, referência main. O problema e
+> os exemplos de execução abaixo descrevem a baseline e o escopo original
+> da unidade. Relatos datados preservam o estado conhecido naquela etapa.
+> Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
 
 ## Restrições globais
 
@@ -138,7 +143,7 @@ jobs:
       deve ser aberto para disparar pull_request; preparar título/descrição
       com escopo, comandos e limitações. A abertura de PR será feita mediante
       autorização do usuário ou diretamente por ele. Não fazer merge.
-- [x] Observar execução real do PR e registrar link/SHA/resultados dos dois jobs;
+- [x] Observar execução real do PR e registrar link e resultados dos dois jobs;
       nenhuma falha pode ser ignorada com continue-on-error. Se houver falha
       em instalação/build, investigar a causa e corrigir apenas neste escopo.
       Mudança de produto/dependência exige revisão SDD.
@@ -198,7 +203,6 @@ Nenhum merge/deploy ou alteração de proteção realizado pela IA.
 PR: https://github.com/eduardofrois/kaizen-test/pull/2
 Execução pull_request/opened concluída com success:
 https://github.com/eduardofrois/kaizen-test/actions/runs/38172181159
-SHA: 820bc9593a34a31ce49d1a63fcc2b457bd9728dc.
 Jobs testes-backend e build-frontend passaram em Ubuntu 24.04/Node 24.14.1.
 Logs confirmam npm ci em ambos, seis testes sem falhas e build de 58 módulos.
 Frontend instalou 85 pacotes no Linux (82 na validação local macOS), sem
@@ -208,9 +212,8 @@ após merge manual do usuário. Proteção da main não foi alterada.
 
 ## Validação do PR concluída — aguardando merge manual
 
-Novo push documental (10420ad) disparou pull_request/synchronize e ambos os
-jobs passaram novamente: run 38172264955, SHA
-10420adcd74f5b5c8eecf71274b7c6e636de38b1.
+Novo push documental disparou pull_request/synchronize e ambos os
+jobs passaram novamente: run 38172264955.
 Evidência: https://github.com/eduardofrois/kaizen-test/actions/runs/38172264955
 AC-01 confirmado por opened e synchronize; checks testes-backend e
 build-frontend reais e bem-sucedidos, disponíveis para proteção da main.

@@ -1,14 +1,27 @@
 # Spec — Espaços na autenticação de senha
 
 **Versão:** 1
-**Estado:** Validado — PR #13 aberto
-**Baseline/data:** f744b39; 2026-10-12
+**Estado:** Implementado e integrado à main; validação manual confirmada pelo usuário em 2026-10-12. Evidências e limites por cenário na matriz e no histórico desta unidade.
+**Baseline/data:** 2026-10-12
 **Origem:** FIX-008
 **Branch:** fix/espacos-na-autenticacao-de-senha
 **Aprovação da spec:** 2026-10-12; usuário “aprovado”, após apresentação da versão 1.
 **Aprovação para implementar:** 2026-10-12; usuário “aprovado”, após apresentação do plano versão 1.
 
-## Problema e evidência
+
+**Validação manual atual — 2026-10-12:** concluída pelo usuário. Referência:
+“Agora eu preciso que voce revise os arquivos e mude aonde fala que eu nao fiz
+a validação manual, pois eu fiz.” A confirmação complementa as evidências
+anteriores; não acrescenta execução pela IA, capturas por variante, exploração
+de segurança ou pedido real no SIAC. Requisitos e aprovações de implementação
+permanecem os já registrados. Esta revisão documental não autoriza publicação.
+
+> Leitura atualizada em 2026-10-13, referência main. O problema e
+> os exemplos de execução abaixo descrevem a baseline e o escopo original
+> da unidade. Relatos datados preservam o estado conhecido naquela etapa.
+> Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
+
+## Problema e evidência na baseline
 
 Cadastro e nova senha usam senha(), que retorna entrada sem trim. Login e
 senha_atual no perfil usam textoObrigatorio(), que remove espaços. Hash e
@@ -90,12 +103,12 @@ Nota de escopo: NFKC não é novo requisito; é comportamento já existente.
 
 ## Entrega e histórico
 
-PR #12 confirmado integrado à main f744b39; pull concluído. Spec versão1 em
+PR #12 confirmado integrado à main; pull concluído. Spec versão1 em
 proposta. Após aprovação, detalhar plan.md para revisão antes de implementar.
 Atualizar fix.md, RELATORIO.md, investigação e SDD com evidências reais.
 Código/testes intactos nesta unidade; publicação/merge exigem comando específico.
 
-## FIX-008 implementado — 2026-10-12
+## Histórico — FIX-008 implementado — 2026-10-12
 
 Plano versão1 aprovado pelo usuário com “aprovado” após apresentação nesta
 sessão. Criado senhaDeAutenticacao em validacao.js, usado no login e senha_atual.
@@ -120,7 +133,7 @@ e sair/entrar novamente. Não registrar credenciais pessoais nos documentos.
 Sem migração ou fallback de credencial. Commit, publicação e PR aguardam comando
 explícito; CI não executado nesta unidade. Registros anteriores são históricos.
 
-## FIX-008 validado — 2026-10-12
+## Histórico — FIX-008 validado — 2026-10-12
 
 Usuário confirmou “validei a correcao, pode abrir o PR”. Validação manual
 confirmada; AC-06 concluído junto às regressões locais registradas acima.
@@ -128,18 +141,18 @@ Estado Validado. Commit, push da branch e abertura do PR autorizados nesta
 sessão. CI remoto será acompanhado após a publicação; merge manual pelo usuário.
 Registros anteriores de manual/autorização pendentes são históricos.
 
-## Publicação FIX-008 — 2026-10-12
+## Histórico — Publicação FIX-008 — 2026-10-12
 
-Commit de implementação: `9b29049`. Branch publicada:
+Branch publicada:
 `fix/espacos-na-autenticacao-de-senha`. PR #13 aberto para main:
 https://github.com/eduardofrois/kaizen-test/pull/13
 Estado Validado; testes locais e confirmação manual concluídos. Checks remotos
 em acompanhamento. Merge manual pendente. Nenhum merge realizado pela IA.
 
-## Atualização do PR #13 e resolução de conflitos — 2026-10-12
+## Histórico — Atualização do PR #13 e resolução de conflitos — 2026-10-12
 
 Usuário solicitou corrigir os conflitos do PR #13. Incorporada a main
-`60d5827` na branch `fix/espacos-na-autenticacao-de-senha`, preservando os
+na branch `fix/espacos-na-autenticacao-de-senha`, preservando os
 registros da FIX-008 e os trabalhos posteriores (layout, CORS e máscaras).
 Os conflitos eram documentais em RELATORIO.md, fix.md, docs/investigacao.md
 e docs/sdd/README.md; o código foi integrado automaticamente, sem alteração
