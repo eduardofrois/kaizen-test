@@ -471,8 +471,10 @@ atribuir ensaios individuais às variantes ainda sem prova específica.
 Publicação do código no GitHub e deploy são resultados distintos. O enunciado
 menciona “colocar a aplicação no ar”, sem definir hospedagem pública, domínio
 ou provedor. Registrei execução local e não declarei deploy público.
-A revisão documental foi solicitada pelo usuário. Em 13/10/2026, foi
-autorizada sua publicação por PR para main; o merge permanece manual.
+A revisão documental foi solicitada pelo usuário e publicada no
+[PR #18](https://github.com/eduardofrois/kaizen-test/pull/18) para main em 13/10/2026.
+Os checks do commit inicial passaram no [run 38404473049](https://github.com/eduardofrois/kaizen-test/actions/runs/38404473049).
+O registro complementar gera nova execução; o merge permanece manual.
 
 ---
 

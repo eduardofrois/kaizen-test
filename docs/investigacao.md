@@ -15,7 +15,7 @@ incorpora edições locais anteriores. Não há nova alteração de aplicação.
 | INV-003 | Regra de principal de endereço ainda aberta | Decidir permitir nenhum principal ou exigir um |
 | INV-004 | Erro persistente em pedidos identificado por leitura | Reproduzir falha→sucesso no mesmo componente antes de corrigir |
 | INV-005 | Texto da busca pode divergir da URL/histórico | Reproduzir e definir sincronização sem apagar rascunho |
-| DOC-001 | Consolidação documental concluída; links/estados/diff conferidos | Publicação autorizada; preparar PR para main, com merge manual |
+| DOC-001 | Consolidação documental concluída; links/estados/diff conferidos | [PR #18](https://github.com/eduardofrois/kaizen-test/pull/18) aberto; checks iniciais passaram; merge manual |
 | Execução | Local confirmada; deploy público não registrado | Não apresentar publicação no GitHub como deploy |
 
 ## Evidências disponíveis
@@ -32,7 +32,8 @@ incorpora edições locais anteriores. Não há nova alteração de aplicação.
   URL/rolagem, compra fake e bloqueio persistente; detalhes no SDD.
 - O Git confirmou o merge do PR #17 em `76eca4d`. CI anterior da
   implementação: [run 38360777053](https://github.com/eduardofrois/kaizen-test/actions/runs/38360777053).
-  Não foi consultada nova execução remota nesta edição documental.
+  A publicação documental teve checks iniciais aprovados no run 38404473049;
+  registro complementar gera nova execução, ainda não incluída nessa prova.
 
 ## Onde retomar
 
@@ -48,3 +49,9 @@ integração direta na main ou deploy. Commit/push/PR desta revisão foram
 autorizados em 13/10/2026 pelo pedido de abrir o PR. Aprovações antigas
 permanecem nas unidades.
 Histórico anterior preservado em [docs/historico/investigacao.md](historico/investigacao.md).
+
+## Publicação da revisão documental — 2026-10-13
+
+[PR #18](https://github.com/eduardofrois/kaizen-test/pull/18) aberto para main, commit inicial b7f7d16.
+Checks testes-backend/build-frontend passaram no
+[run 38404473049](https://github.com/eduardofrois/kaizen-test/actions/runs/38404473049). Merge manual pendente.

@@ -19,8 +19,9 @@ no [histórico](docs/historico/fix.md); decisões e provas por unidade ficam no
 Na reavaliação de **13/10/2026** desta conversa, backend **123/123**, frontend
 **94/94** e build **67 módulos** passaram, com Node 24.14.1.
 São resultados já executados antes desta edição documental. As suítes não
-criam pedidos no SIAC real. Não há nova CI, deploy, backup/migração real ou
-auditoria exaustiva de segurança/contraste nesta revisão.
+criam pedidos no SIAC real. A etapa editorial não teve nova CI; a publicação documental tem execução
+própria registrada ao final. Não há deploy, backup/migração real ou auditoria
+exaustiva de segurança/contraste nesta revisão.
 
 ## Chamados corrigidos
 
@@ -85,7 +86,8 @@ Commit de implementação 2f9ff7a; [PR #17](https://github.com/eduardofrois/kaiz
 integrado em 76eca4d, conforme Git local atualizado nesta conversa.
 Checks da implementação registrados no
 [run 38360777053](https://github.com/eduardofrois/kaizen-test/actions/runs/38360777053).
-Não foi feita nova consulta remota de CI nesta revisão.
+Essa é a evidência histórica da feature; a publicação documental tem
+execução própria registrada ao final.
 
 ## Investigações e limites atuais
 
@@ -155,3 +157,12 @@ A unidade não modifica código, testes, dependências, schema ou ambiente.
 [Spec e plano documentais](docs/sdd/coerencia-da-documentacao/spec.md) registram
 as verificações desta edição. Em 13/10/2026, usuário pediu abrir o PR:
 commit/push/publicação documental autorizados, com destino main e merge manual.
+
+## Publicação — 2026-10-13
+
+Commit documental b7f7d16 publicado em docs/coerencia-da-documentacao.
+[PR #18](https://github.com/eduardofrois/kaizen-test/pull/18) aberto para main, sem conflitos na consulta.
+Checks testes-backend e build-frontend passaram no
+[run 38404473049](https://github.com/eduardofrois/kaizen-test/actions/runs/38404473049), referente a b7f7d16.
+Este registro complementar gera novo commit e nova CI, separados dessa prova.
+Merge permanece manual; não houve integração direta na main ou deploy.

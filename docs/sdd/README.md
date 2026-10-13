@@ -24,7 +24,7 @@ O histórico extenso deste índice está [arquivado](../historico/sdd.md).
 | [Layout responsivo](layout-responsivo-do-catalogo/spec.md) | FIX-009 | Integrado; medidas e manual; painel tem evidência própria |
 | [Documento e telefone](limites-de-documento-e-telefone/spec.md) | FIX-010 | Integrados; funções de máscara e manual; variantes de IME/autofill não comprovadas integralmente |
 | [Múltiplos carrinhos](multiplos-carrinhos/spec.md) | MULTI-001 | V2 integrada no PR #17; TDD e navegador simulado; manual da v1 confirmado |
-| [Coerência da documentação](coerencia-da-documentacao/spec.md) | DOC-001 | Concluída; publicação autorizada, PR para main em preparação |
+| [Coerência da documentação](coerencia-da-documentacao/spec.md) | DOC-001 | Publicada no [PR #18](https://github.com/eduardofrois/kaizen-test/pull/18); checks iniciais passaram; merge manual |
 
 As 14 correções têm confirmação manual consolidada do usuário em 12/10/2026.
 Isso complementa os registros; checkboxes de variantes sem prova individual
@@ -37,14 +37,16 @@ específica. INV-003/004/005 seguem abertos no [inventário](../../fix.md).
 Na reavaliação de 13/10/2026 desta conversa, Node 24.14.1:
 **123/123 backend, 94/94 frontend e build de 67 módulos passaram**.
 ERP simulado e SQLite isolado; build não é navegação integrada.
-Nenhuma escrita no SIAC real ou nova CI foi feita na revisão documental.
+Nenhuma escrita no SIAC real foi feita. A conferência editorial precedeu a
+publicação; o PR documental agora tem CI própria registrada abaixo.
 
 PR #17 integrado em `76eca4d`, conferido pelo Git. A implementação teve checks
 aprovados no [run 38360777053](https://github.com/eduardofrois/kaizen-test/actions/runs/38360777053).
 Não se presume resultado de uma execução remota posterior. Publicação no
 GitHub, execução local e deploy são estados distintos; deploy público não
-registrado. A publicação da branch documental foi autorizada em 13/10/2026; PR em
-preparação e merge manual. A etapa editorial anterior não publicou arquivos.
+registrado. [PR #18](https://github.com/eduardofrois/kaizen-test/pull/18) aberto para a revisão documental,
+com checks iniciais aprovados no [run 38404473049](https://github.com/eduardofrois/kaizen-test/actions/runs/38404473049).
+Registro complementar gera nova execução; merge permanece manual.
 
 ## Fluxo acordado
 

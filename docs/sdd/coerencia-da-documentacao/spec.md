@@ -1,7 +1,7 @@
 # Spec — Coerência da documentação de entrega
 
 **Versão:** 1
-**Estado:** Concluído e validado documentalmente; publicação autorizada, PR em preparação.
+**Estado:** Concluído e publicado no PR #18 para main; checks do commit inicial passaram; merge manual pendente.
 **Baseline/data:** `76eca4d`, main integrada; 2026-10-13, America/Sao_Paulo.
 **Origem:** DOC-001 — pedido de alinhar a documentação ao projeto existente.
 **Branch:** `docs/coerencia-da-documentacao`.
@@ -74,3 +74,12 @@ Usuário: “quero essas correções na main, pode abrir o PR”. Autoriza commi
 push da branch docs/coerencia-da-documentacao ao repositório
 eduardofrois/kaizen-test e abertura de PR para main. Merge permanece manual
 pelo usuário; não há autorização para integração direta ou deploy.
+
+## Publicação — 2026-10-13
+
+Commit documental b7f7d16 publicado em docs/coerencia-da-documentacao.
+[PR #18](https://github.com/eduardofrois/kaizen-test/pull/18) aberto para main, sem conflitos na consulta.
+Checks testes-backend e build-frontend passaram no
+[run 38404473049](https://github.com/eduardofrois/kaizen-test/actions/runs/38404473049), referente a b7f7d16.
+Este registro complementar gera novo commit e nova CI, separados dessa prova.
+Merge permanece manual; não houve integração direta na main ou deploy.
