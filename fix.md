@@ -182,3 +182,21 @@ aprovações e evidências das correções continuam nas specs e nos planos SDD;
 o relatório e este inventário mantêm resultados e pendências atuais.
 Ajuste apenas documental; commit e atualização do PR #18 autorizados pelo
 usuário em 13/10/2026 com “commita”. Merge permanece manual.
+
+## Revisão das prioridades futuras — 13/10/2026
+
+Inspeção estática confirmou componentes reutilizáveis no frontend e CI de
+testes/build existente. A seção 7 do relatório foi ajustada para propor
+refinamento de legibilidade e componentes, melhorias de interface e Docker
+com proxy HTTPS e CD, preservando as pendências técnicas. Propostas futuras,
+sem implementação ou nova validação visual. PR #18 integrado com checks
+aprovados; esta edição posterior permanece local.
+
+Complemento documental — 13/10/2026: incluída na seção 7 do relatório a
+ampliação futura de testes E2E, interação, acessibilidade, contrato,
+carga/desempenho, segurança e concorrência. Nenhuma nova suíte implementada
+ou executada; alterações permanecem locais.
+
+Publicação desta revisão autorizada em 13/10/2026 na branch
+docs/prioridades-futuras, com PR para main após integração do PR #18.
+E-mail de entrega será apresentado para aprovação antes de qualquer envio.

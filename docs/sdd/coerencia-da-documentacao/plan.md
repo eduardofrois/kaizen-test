@@ -122,3 +122,33 @@ para os arquivos removidos permanece. Aplicação e testes preservados.
 Publicação autorizada em 13/10/2026 pelo usuário: “commita”, após a revisão
 da remoção dos históricos. Autoriza commit e atualização da branch do PR #18
 em eduardofrois/kaizen-test; merge permanece manual e deploy fora do escopo.
+
+## Prioridades futuras da entrega — 13/10/2026
+
+Pedido do usuário nesta conversa: avaliar a prontidão e conferir suas propostas
+de refatoração, componentes/interface e Docker/proxy/CI/CD para a seção de
+melhorias futuras. Escopo: redação da seção 7 do RELATORIO.md com base no código
+existente, sem implementar essas propostas ou publicar esta edição.
+
+- [x] Conferir carrinhoService, componentes e páginas, workflow e ausência de Docker/proxy.
+- [x] Distinguir refinamento de componentes existentes e CD futuro da CI já implementada.
+- [x] Preservar riscos e pendências já documentados.
+
+Consulta ao GitHub confirmou PR #18 integrado em 13/10/2026 e ambos os checks
+aprovados na execução 38409343064. Esta edição documental é posterior ao merge
+e permanece local. Não houve nova execução funcional ou avaliação visual no navegador.
+
+Complemento solicitado pelo usuário em 13/10/2026: incluir testes ponta a ponta
+(E2E) e outros tipos de testes nas prioridades futuras. Seção 7 atualizada com
+E2E, interação, acessibilidade, contrato, carga/desempenho, segurança e
+concorrência; distingue ampliação dos testes existentes e preserva ERP simulado
+e banco isolado. Ajuste apenas documental, sem implementação ou publicação.
+
+## Publicação das prioridades futuras — 13/10/2026
+
+Autorização do usuário nesta conversa: “vamos subir isso no git e depois enviar
+para o email dos avaliadores”, com revisão obrigatória do e-mail antes do envio.
+Escopo Git: commit e push desta revisão documental em docs/prioridades-futuras
+e PR para main, pois o PR #18 já foi integrado. Merge permanece manual.
+Escopo do e-mail nesta etapa: preparar e apresentar texto; envio somente após
+aprovação explícita. Documentação validada; sem alteração de aplicação.
