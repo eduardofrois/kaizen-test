@@ -439,12 +439,40 @@ própria, além do domínio desta correção.
 
 Com o requisito de múltiplos carrinhos implementado, priorizaria:
 
-1. Testes automatizados de interação React para endereço selecionado,
-   troca de conta/carrinho, recuperação do checkout e foco do painel.
-2. Fechar INV-003/004/005 com decisões e reproduções controladas; melhorar
-   recuperação operacional de tentativas incertas conforme contrato do SIAC.
-3. Ampliar acessibilidade e dispositivos reais; medir custo das consultas ERP
-   antes de decidir cache ou consulta em lote.
+1. **Refatoração focada em legibilidade.** Revisaria trechos como
+   `carrinhoService.js`, separando melhor o enriquecimento dos itens, as consultas
+   de persistência e a composição da resposta quando isso simplificasse a leitura.
+   Preservaria as transações, a validação de proprietário e a revalidação do
+   bloqueio após chamadas ao ERP: essas verificações têm propósito e não devem
+   ser removidas apenas para reduzir linhas. Usaria as regressões existentes
+   para manter o comportamento.
+2. **Refinamento dos componentes e da interface.** O frontend já reutiliza
+   componentes de carrinho, formulários e elementos de UI. Continuaria essa
+   organização, extraindo partes das páginas de perfil e checkout e separando
+   lógica de interação quando trouxesse clareza. Melhoraria consistência de
+   espaçamentos, estados de carregamento/erro, foco, teclado e uso em dispositivos
+   reais, preservando a identidade visual definida no desafio. Um redesign
+   completo não é necessário para atender ao enunciado.
+3. **Deploy reproduzível em servidor Linux.** Prepararia Docker para padronizar
+   build e execução, com persistência e backup do SQLite, segredos fornecidos
+   pelo ambiente e proxy reverso para domínio e HTTPS. A CI de testes e build já
+   existe; acrescentaria entrega e deploy automatizados, com verificação de
+   saúde e procedimento de rollback. Docker seria minha escolha para facilitar
+   a reprodução do ambiente, sem tratar a configuração como já implementada.
+4. **Ampliar a estratégia de testes.** Adicionaria testes ponta a ponta (E2E)
+   no navegador para os fluxos de autenticação, busca, múltiplos carrinhos e
+   checkout, usando ERP simulado e banco isolado, sem criar pedidos no SIAC real.
+   Complementaria os testes unitários e de integração existentes com testes de
+   interação dos componentes, acessibilidade, contrato com o ERP, carga e
+   desempenho, além de cenários adicionais de segurança e concorrência.
+   Priorizaria os fluxos críticos e as falhas de recuperação, sem buscar
+   cobertura apenas pelo número de testes.
+
+Também manteria como pendências técnicas os testes de interação React para
+endereço selecionado, troca de conta/carrinho, recuperação do checkout e foco
+do painel; as decisões e reproduções de INV-003/004/005; e a recuperação
+operacional de tentativas incertas conforme o contrato do SIAC. Mediria o custo
+das consultas ao ERP antes de decidir cache ou consulta em lote.
 
 Pagamento, frete, nota fiscal, recuperação/confirmação de e-mail e consulta
 externa de CEP continuam limitações de escopo já conhecidas do projeto.
