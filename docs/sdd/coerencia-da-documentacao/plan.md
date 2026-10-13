@@ -16,7 +16,7 @@ escopo, sem atribuir aprovação separada destes documentos ou de aplicação.
 | RELATORIO.md | Resultado da entrega, decisões, evidências e limitações |
 | fix.md, docs/investigacao.md, docs/sdd/README.md | Inventário, pendências e índice atual |
 | docs/sdd/*/spec.md e plan.md | Estados atuais separados dos registros históricos |
-| docs/historico/*.md | Preservar registros extensos substituídos pela consolidação |
+| Specs e planos das unidades | Manter decisões, aprovações e evidências sem arquivos históricos paralelos |
 
 ## Execução
 
@@ -103,3 +103,22 @@ atualizar o PR #18 em eduardofrois/kaizen-test. Não autoriza merge ou deploy.
 Escopo: remoção de referências a commits, aviso das branches no README e
 conclusões consolidadas no RELATORIO.md, sem arquivo separado de avaliação.
 Validação documental registrada acima; nova CI será conferida após o envio.
+
+## Simplificação dos registros — 13/10/2026
+
+Pedido do usuário: “não vejo necessidade de um arquivo de histórico tb”.
+Escopo documental: remover os cinco arquivos redundantes da pasta de históricos,
+ajustar referências e manter resultados no relatório, situação na investigação
+e decisões, aprovações e provas nas unidades SDD existentes. Não altera código.
+
+- [x] Remover os arquivos históricos separados.
+- [x] Apontar referências para os documentos atuais e unidades SDD.
+- [x] Validar links, formatação e diff.
+
+Verificação: 49 arquivos Markdown, 144 links locais, cinco âncoras e 78 tabelas
+conferidos sem erros. Blocos fechados; git diff --check passou. Nenhum link
+para os arquivos removidos permanece. Aplicação e testes preservados.
+
+Publicação autorizada em 13/10/2026 pelo usuário: “commita”, após a revisão
+da remoção dos históricos. Autoriza commit e atualização da branch do PR #18
+em eduardofrois/kaizen-test; merge permanece manual e deploy fora do escopo.

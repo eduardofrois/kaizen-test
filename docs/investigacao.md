@@ -48,7 +48,7 @@ existente. Não autoriza mudanças de comportamento, correção dos INV abertos,
 integração direta na main ou deploy. Commit/push/PR desta revisão foram
 autorizados em 13/10/2026 pelo pedido de abrir o PR. Aprovações antigas
 permanecem nas unidades.
-Histórico anterior preservado em [docs/historico/investigacao.md](historico/investigacao.md).
+Decisões, aprovações e evidências permanecem nas unidades SDD.
 
 ## Publicação da revisão documental — 2026-10-13
 

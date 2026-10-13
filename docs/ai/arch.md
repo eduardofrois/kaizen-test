@@ -1,8 +1,8 @@
 # Mapa do código e da arquitetura atual
 
 Atualizado em 2026-10-13. Referência: main, com múltiplos carrinhos v2
-integrados. O contexto da baseline original está no
-[histórico da investigação](../historico/fix.md).
+integrados. Achados, causas e pendências estão no
+[inventário de correções](../../fix.md).
 [ARQUITETURA.md](../../ARQUITETURA.md) documenta os contratos e regras atuais.
 
 ## Camadas e pontos de entrada

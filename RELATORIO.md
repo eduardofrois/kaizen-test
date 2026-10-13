@@ -462,8 +462,8 @@ As três notas de revisão encontradas no código foram lidas e preservadas:
 | **KZN-5D1E** | `frontend/src/componentes/Cabecalho.jsx` | Busca, contador e layout responsivo. |
 
 Usei IA como apoio de investigação, implementação e documentação, conforme
-permitido. As decisões foram revisadas por unidade. O histórico detalhado
-permanece em [docs/historico](docs/historico/README.md) e nas specs/planos;
+permitido. As decisões foram revisadas por unidade e estão registradas
+nas [specs e planos](docs/sdd/README.md);
 `fix.md` e `docs/investigacao.md` mostram o estado atual. Registros antigos de
 pendência manual foram complementados pela confirmação de 12/10/2026, sem
 atribuir ensaios individuais às variantes ainda sem prova específica.

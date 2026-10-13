@@ -142,4 +142,4 @@ substituem interação de navegador; limites em [RELATORIO](../RELATORIO.md).
 
 .env, dependências, dist, bancos e WAL/SHM são gerados e ignorados pelo Git.
 A exclusão por ignore não remove arquivos já rastreados nem sanitiza histórico.
-Histórico de preparação do ambiente: [arquivo](historico/ambiente.md).
+Decisões e evidências de configuração: [unidade SDD](sdd/configuracao-por-ambiente/spec.md).

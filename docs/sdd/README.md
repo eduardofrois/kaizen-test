@@ -3,7 +3,6 @@
 Atualizado em 2026-10-13, referência main.
 Este índice mostra o estado atual. Aprovações, RED/GREEN, publicações e
 pendências por cenário ficam na spec e no plano de cada unidade.
-O histórico extenso deste índice está [arquivado](../historico/sdd.md).
 
 ## Unidades
 

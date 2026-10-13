@@ -3,8 +3,7 @@
 Atualizado em **2026-10-13**, referência main.
 Quatro chamados, dez correções adicionais e múltiplos carrinhos v2 estão
 implementados e integrados. Este inventário descreve o estado atual.
-Reproduções cronológicas, aprovações e publicações anteriores foram preservadas
-no [histórico](docs/historico/fix.md); decisões e provas por unidade ficam no
+Decisões, aprovações, reproduções e provas por unidade ficam no
 [SDD](docs/sdd/README.md). A baseline investigada era o estado original.
 
 ## Evidência e validação
@@ -175,3 +174,11 @@ As conclusões sobre o README original e o e-mail estão no [relatório de entre
 Atualização do PR #18 autorizada pelo usuário em 13/10/2026; merge permanece manual.
 Não houve deploy ou envio de e-mail.
 As evidências funcionais anteriores foram preservadas; não houve nova suíte nesta edição.
+
+## Simplificação documental — 13/10/2026
+
+Removidos os arquivos históricos separados a pedido do usuário. As decisões,
+aprovações e evidências das correções continuam nas specs e nos planos SDD;
+o relatório e este inventário mantêm resultados e pendências atuais.
+Ajuste apenas documental; commit e atualização do PR #18 autorizados pelo
+usuário em 13/10/2026 com “commita”. Merge permanece manual.
