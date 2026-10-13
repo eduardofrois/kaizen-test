@@ -1,22 +1,18 @@
 import { useEffect, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { api, dinheiro } from '../api/cliente.js';
 import { useAuth } from '../contextos/AuthContext.jsx';
-import { useCarrinho } from '../contextos/CarrinhoContext.jsx';
-import { Alerta, Botao, Carregando, EstadoVazio } from '../componentes/ui.jsx';
+import { AdicionarAoCarrinho } from '../componentes/AdicionarAoCarrinho.jsx';
+import { Botao, Carregando, EstadoVazio } from '../componentes/ui.jsx';
 
 export function Produto() {
   const { codigo } = useParams();
   const { autenticado } = useAuth();
-  const { adicionar } = useCarrinho();
-  const navegar = useNavigate();
 
   const [produto, setProduto] = useState(null);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState(null);
   const [quantidade, setQuantidade] = useState(1);
-  const [adicionando, setAdicionando] = useState(false);
-  const [recado, setRecado] = useState(null);
 
   useEffect(() => {
     let ativo = true;
@@ -40,26 +36,6 @@ export function Produto() {
       ativo = false;
     };
   }, [codigo]);
-
-  async function adicionarAoCarrinho() {
-    if (!autenticado) {
-      navegar('/entrar', { state: { de: `/produto/${codigo}` } });
-      return;
-    }
-
-    setAdicionando(true);
-    setRecado(null);
-
-    try {
-      const aplicado = await adicionar(produto.codigo, quantidade);
-      if (aplicado === false) return;
-      setRecado({ tipo: 'sucesso', texto: 'Adicionado ao carrinho.' });
-    } catch (falha) {
-      setRecado({ tipo: 'erro', texto: falha.message });
-    } finally {
-      setAdicionando(false);
-    }
-  }
 
   if (carregando) return <Carregando texto="Carregando peça..." />;
 
@@ -141,7 +117,6 @@ export function Produto() {
             )}
           </p>
 
-          {recado && <Alerta tipo={recado.tipo} className="mt-4">{recado.texto}</Alerta>}
 
           <div className="mt-6 flex items-end gap-3">
             <div>
@@ -164,15 +139,7 @@ export function Produto() {
               />
             </div>
 
-            <Botao
-              tamanho="grande"
-              className="flex-1"
-              disabled={semEstoque}
-              carregando={adicionando}
-              onClick={adicionarAoCarrinho}
-            >
-              {semEstoque ? 'Indisponível' : 'Adicionar ao carrinho'}
-            </Botao>
+            <div className="min-w-0 flex-1"><AdicionarAoCarrinho produto={produto} quantidade={quantidade} /></div>
           </div>
 
           {!autenticado && !semEstoque && (

@@ -1,5 +1,32 @@
 # Situação da investigação
 
+## Publicação MULTI-001 — 2026-10-13
+
+Usuário solicitou PR detalhado da nova feature e link para avaliação.
+Implementação `2f9ff7a` enviada em `feat/multiplos-carrinhos` ao repositório
+eduardofrois/kaizen-test. [PR #17](https://github.com/eduardofrois/kaizen-test/pull/17)
+aberto contra main, sem conflitos na consulta. Checks testes-backend e
+build-frontend da implementação passaram no
+[run 38360777053](https://github.com/eduardofrois/kaizen-test/actions/runs/38360777053).
+
+Validação local registrada: backend 123/123, frontend 94/94, build e navegador
+simulado; 22 regressões TDD na revisão v2. A consolidação documental anterior
+foi preservada localmente, fora do PR. Merge manual pendente; sem merge/deploy.
+Atualização documental da publicação gerará nova CI, separada do run acima.
+
+## Múltiplos carrinhos — situação da unidade em 2026-10-13
+
+Spec/plano v2 aprovados e implementados, com 123 testes backend, 94 frontend,
+build e navegação em ambiente simulado aprovados. Os quatro achados da revisão
+foram corrigidos com TDD. Validação manual da v1 confirmada pelo usuário.
+
+Usuário solicitou abrir PR detalhado da nova feature e enviar o link para
+avaliação. Publicação desta unidade autorizada em eduardofrois/kaizen-test;
+merge manual pelo usuário. Consolidação documental anterior é trabalho local
+separado e não integra este envio. Registro abaixo preserva o histórico anterior.
+
+[Spec](sdd/multiplos-carrinhos/spec.md) · [Plano](sdd/multiplos-carrinhos/plan.md)
+
 Atualização: 2026-10-11. Baseline original: `81897d5`.
 
 ## Retomada em outra sessão
@@ -911,3 +938,85 @@ Validação conjunta: backend96/96, frontend79/79 e build63 módulos passaram;
 git diff --check passou. Nenhum teste manual novo realizado nesta atualização.
 PRs #14, #15 e #16 já integrados à main. PR #13 continua aberto: atualização
 da branch autorizada, checks remotos a acompanhar e merge manual pelo usuário.
+
+
+## Histórico específico de múltiplos carrinhos
+
+### Múltiplos carrinhos — correções TDD concluídas — 2026-10-13
+
+Usuário aprovou spec/plano v2 após links e pergunta explícita para implementar.
+REV-01/02/03/04 corrigidos com 22 regressões novas e RED/GREEN por causa.
+Backend 123/123, frontend 94/94 e build 67 módulos passaram. Navegador fake
+desktop/mobile confirmou seleção disponível e operações em Civic com resposta
+do Gol retida, mantendo isolamento, ocupação, busca/página/scroll.
+AC-06/11 revalidados. [Evidências](sdd/multiplos-carrinhos/plan.md).
+Sem escrita no SIAC real, commit/publicação, CI remoto ou deploy; registros
+anteriores de proposta/achados abertos abaixo ficam históricos.
+
+### Múltiplos carrinhos — correção com TDD proposta — 2026-10-13
+
+Usuário pediu corrigir os quatro achados usando TDD. Spec/plano v2 preparados
+na mesma unidade: teste RED por causa antes da mudança mínima, depois GREEN,
+refatoração pertinente, regressões e seletor em ambiente simulado. Regras
+comerciais/schema/ERP mantidos; campos internos `gerindo` e `numeroErp` descritos.
+Aprovação da versão escrita pendente conforme AGENTS.md. Apenas documentação
+alterada nesta preparação; nenhuma suíte/build ou escrita real nova.
+
+### Múltiplos carrinhos — revisão após validação manual — 2026-10-13
+
+Usuário confirmou “Validei, não encontrei nada” e solicitou nova revisão de
+falhas. Manual registrado sem inferir pedido real. Quatro achados reproduzidos:
+lista antiga invalida seleção/criação, mutação regride versão exibida, fila da
+aba impede independência entre carrinhos e resposta ERP parcial perde número
+conhecido. [Causas e evidências](sdd/multiplos-carrinhos/revisao.md).
+Backend 114/114 e frontend 81/81 reexecutados; falhas fora da cobertura atual.
+Nenhuma alteração de implementação/testes ou publicação. Próxima ação:
+preparar revisão de spec/plano e obter aprovação para corrigir. AC-06/11
+reabertos; limite de prova do seletor/fila descrito no documento da revisão.
+
+### Múltiplos carrinhos — implementado — 2026-10-13
+
+Plano v1 aprovado com “aprovado” após apresentação e pergunta explícita sobre
+implementar nesta sessão. Branch feat/multiplos-carrinhos; alterações locais
+anteriores preservadas. Implementados carrinhos/itens por ID, principal,
+ativo por aba, painel responsivo, migração e checkout persistente protegido.
+INV-001/002 mitigados no escopo da feature; recuperação SIAC sem referência
+continua dependendo de evidência do responsável ERP.
+
+Backend 114/114 e frontend 81/81 passaram; build 67 módulos e diff/sintaxe
+passaram. Navegador sintético conferiu gestão/quantidades, principal/F5,
+URL/rolagem, seis larguras, dez carrinhos, foco/Escape, duas abas, compra e
+pedido incerto. Sem pedido real ou reset na validação. Estado Implementado;
+manual do usuário, commit/push/PR e deploy pendentes. Relatório geral da
+entrega anterior preservado; [spec](sdd/multiplos-carrinhos/spec.md),
+[plano](sdd/multiplos-carrinhos/plan.md) e evidências da unidade são o registro
+atual. Próxima ação: usuário conferir o resultado concreto e orientar publicação.
+
+### Múltiplos carrinhos — spec aprovada e plano preparado — 2026-10-13
+
+Usuário aprovou a spec v1 com “aprovado”, após apresentação do documento e
+pergunta sobre preparar o plano. Criado [plano v1](sdd/multiplos-carrinhos/plan.md)
+com seis tarefas: migração, API/gestão, checkout, controlador frontend,
+interface e integração. Define arquivos/interfaces/provas para os 12 aceites.
+Próxima ação: revisão e aprovação do plano para implementar. A mensagem não
+autoriza implementação ou publicação; código/banco/ERP preservados, sem
+teste funcional, build ou protótipo novos nesta preparação.
+
+### Múltiplos carrinhos — decisões e spec — 2026-10-13
+
+Entrevista Q1–Q8 encerrada com “confirmado”. Decisões registradas na
+[spec v1](sdd/multiplos-carrinhos/spec.md): dez carrinhos, principal na entrada,
+ativo por aba, escolha opcional ao adicionar, substituição determinística na
+exclusão, painel na vitrine, nome mantido após compra e bloqueio por carrinho
+durante envio/verificação de pedido. Contratos/modelo/recuperação são propostas
+técnicas da spec, ainda sujeitas a revisão; não inferir aprovação para implementar.
+
+Inspeção do código atual confirmou ausência de entidade/IDs de carrinho e
+bloqueio persistente, além da limpeza por usuário após resposta do ERP.
+Sem reprodução nova ou teste funcional. Estado: spec escrita, plano e protótipo
+pendentes; próximo passo é revisão do documento pelo usuário. Checkout
+`f95ae66` e alterações documentais locais anteriores preservados, sem branch
+nova, commit, push, PR, migração, banco ou ERP alterados.
+
+Os relatos datados abaixo preservam a sequência de decisões e evidências.
+Pendências manuais antigas não representam o estado atual consolidado acima.

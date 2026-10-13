@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { api, dinheiro } from '../api/cliente.js';
 import { useCarrinho } from '../contextos/CarrinhoContext.jsx';
@@ -6,7 +6,10 @@ import { FormularioEndereco } from '../componentes/FormularioEndereco.jsx';
 import { Alerta, Botao, Carregando, ErroGeral, EstadoVazio } from '../componentes/ui.jsx';
 
 export function Checkout() {
-  const { carrinho, carregando: carregandoCarrinho, recarregar, erro: erroCarrinho } = useCarrinho();
+  const contexto = useCarrinho();
+  const { carrinho, ativoId, ocupado, carregando: carregandoCarrinho, recarregar, erro: erroCarrinho, capturarOrigem } = contexto;
+  const tentativa = useRef(null);
+  const [verificacao, setVerificacao] = useState(null);
   const navegar = useNavigate();
 
   const [enderecos, setEnderecos] = useState([]);
@@ -18,20 +21,27 @@ export function Checkout() {
   const [enviando, setEnviando] = useState(false);
 
   useEffect(() => {
+    const origem = capturarOrigem();
+    let ativo = true;
+    setCarregando(true); setErro(null); setVerificacao(null); setEnviando(false);
+    tentativa.current = null;
     api.enderecos
       .listar()
       .then((resposta) => {
+        if (!ativo || !origem()) return;
         setEnderecos(resposta.dados);
         const principal = resposta.dados.find((item) => item.principal) ?? resposta.dados[0];
         setEnderecoId(principal?.id ?? null);
         // Sem nenhum endereco cadastrado, ja abre o formulario: um passo a menos.
         setMostrarFormulario(resposta.dados.length === 0);
       })
-      .catch((falha) => setErro(falha))
-      .finally(() => setCarregando(false));
-  }, []);
+      .catch((falha) => { if (ativo && origem()) setErro(falha); })
+      .finally(() => { if (ativo && origem()) setCarregando(false); });
+    return () => { ativo = false; };
+  }, [ativoId, capturarOrigem]);
 
   function enderecoSalvo(novo) {
+    if (!contexto.origem()) return;
     setEnderecos((atual) => {
       const semEle = atual.filter((item) => item.id !== novo.id);
       // Salvar um principal desmarca os outros no servidor; reflete aqui.
@@ -46,21 +56,51 @@ export function Checkout() {
   }
 
   async function finalizar() {
-    setErro(null);
-    setEnviando(true);
-
+    if (!contexto.origem()) return;
+    if (enviando || ocupado || carregandoCarrinho || !carrinho.pronto_para_checkout || verificacao === ativoId) return;
+    const origem = capturarOrigem(), id = ativoId;
+    const dados = { carrinho_id: id, versao_carrinho: carrinho.versao,
+      tentativa_id: tentativa.current ?? crypto.randomUUID(), endereco_id: enderecoId, observacao };
+    tentativa.current = dados.tentativa_id;
+    setErro(null); setEnviando(true);
     try {
-      const resposta = await api.pedidos.criar({ endereco_id: enderecoId, observacao });
-      if (await recarregar() === false) return;
+      const resposta = await api.pedidos.criar(dados);
+      if (!origem()) return;
+      if (await recarregar() === false || !origem()) return;
       navegar(`/pedidos/${resposta.dados.numero}`, { replace: true, state: { novo: true } });
     } catch (falha) {
+      if (!origem()) return;
       setErro(falha);
-      // O estoque pode ter mudado entre abrir o checkout e confirmar: recarrega
-      // para o carrinho ja mostrar o item que ficou com pendencia.
-      if (await recarregar() === false) return;
-    } finally {
-      setEnviando(false);
-    }
+      if (falha.status === 0 || falha.status >= 500 || falha.codigo === 'CARRINHO_EM_CHECKOUT') {
+        setVerificacao(id);
+        try {
+          const resposta = await api.carrinhos.estadoCheckout(id);
+          if (!origem()) return;
+          if (resposta.dados.tentativa_id === dados.tentativa_id && resposta.dados.estado === 'concluido' && resposta.dados.numero_erp) {
+            navegar(`/pedidos/${resposta.dados.numero_erp}`, { replace: true }); return;
+          }
+          if (resposta.dados.tentativa_id === dados.tentativa_id && resposta.dados.estado === 'recusado') { setVerificacao(null); tentativa.current = null; }
+        } catch { /* Sem resposta conclusiva: conservar proteção local. */ }
+      } else tentativa.current = null;
+      if (origem()) await recarregar();
+    } finally { if (origem()) setEnviando(false); }
+  }
+
+  async function consultar() {
+    if (!contexto.origem()) return;
+    const origem = capturarOrigem();
+    try {
+      const { dados } = await api.carrinhos.estadoCheckout(ativoId);
+      if (!origem()) return;
+      const correspondente = dados.tentativa_id === tentativa.current || (!tentativa.current && Boolean(carrinho.checkout));
+      if (correspondente && dados.estado === 'concluido' && dados.numero_erp) {
+        navegar(`/pedidos/${dados.numero_erp}`, { replace: true }); return;
+      }
+      if (correspondente && dados.estado === 'recusado') {
+        setVerificacao(null); tentativa.current = null; setErro(null);
+      }
+      await recarregar();
+    } catch (falha) { if (origem()) setErro(falha); }
   }
 
   if (carregando || carregandoCarrinho) return <Carregando texto="Preparando o checkout..." />;
@@ -84,7 +124,11 @@ export function Checkout() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-tinta-900">Fechar pedido</h1>
+      <h1 className="break-words text-2xl font-bold text-tinta-900">Fechar pedido — {carrinho.nome}</h1>
+      {(carrinho.checkout || verificacao === ativoId) && <Alerta tipo="aviso" titulo="Pedido em envio ou verificação">
+        Não confirme novamente. Consulte a situação ou procure o atendimento.
+        <Botao variante="discreto" onClick={consultar}>Consultar situação</Botao>
+      </Alerta>}
 
       <ErroGeral erro={erro} camposConhecidos={[]} />
 
@@ -192,7 +236,7 @@ export function Checkout() {
             </span>
           </div>
 
-          {!carrinho.pronto_para_checkout && (
+          {!carrinho.pronto_para_checkout && !carrinho.checkout && (
             <Alerta tipo="aviso" className="mt-4">
               Há itens com pendência no carrinho.
             </Alerta>
@@ -202,7 +246,7 @@ export function Checkout() {
             tamanho="grande"
             className="mt-5 w-full"
             carregando={enviando}
-            disabled={!enderecoId || !carrinho.pronto_para_checkout}
+            disabled={!enderecoId || !carrinho.pronto_para_checkout || ocupado || verificacao === ativoId}
             onClick={finalizar}
           >
             Confirmar pedido

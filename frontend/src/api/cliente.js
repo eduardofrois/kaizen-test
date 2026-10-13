@@ -103,18 +103,18 @@ export const api = {
     produto: (codigo) => requisitar(`/catalogo/${encodeURIComponent(codigo)}`),
   },
 
-  carrinho: {
-    ler: () => requisitar('/carrinho'),
-    adicionar: (codigo_produto, quantidade = 1) =>
-      requisitar('/carrinho/itens', { metodo: 'POST', corpo: { codigo_produto, quantidade } }),
-    alterar: (codigo, quantidade) =>
-      requisitar(`/carrinho/itens/${encodeURIComponent(codigo)}`, {
-        metodo: 'PATCH',
-        corpo: { quantidade },
-      }),
-    remover: (codigo) =>
-      requisitar(`/carrinho/itens/${encodeURIComponent(codigo)}`, { metodo: 'DELETE' }),
-    limpar: () => requisitar('/carrinho', { metodo: 'DELETE' }),
+  carrinhos: {
+    listar: () => requisitar('/carrinhos'),
+    criar: (nome) => requisitar('/carrinhos', { metodo: 'POST', corpo: { nome } }),
+    renomear: (id, nome) => requisitar(`/carrinhos/${id}`, { metodo: 'PATCH', corpo: { nome } }),
+    definirPrincipal: (id) => requisitar(`/carrinhos/${id}/principal`, { metodo: 'PUT' }),
+    excluir: (id, confirmar_com_itens = false) => requisitar(`/carrinhos/${id}`, { metodo: 'DELETE', corpo: { confirmar_com_itens } }),
+    ler: (id) => requisitar(`/carrinhos/${id}`),
+    adicionar: (id, codigo_produto, quantidade = 1) => requisitar(`/carrinhos/${id}/itens`, { metodo: 'POST', corpo: { codigo_produto, quantidade } }),
+    alterar: (id, codigo, quantidade) => requisitar(`/carrinhos/${id}/itens/${encodeURIComponent(codigo)}`, { metodo: 'PATCH', corpo: { quantidade } }),
+    remover: (id, codigo) => requisitar(`/carrinhos/${id}/itens/${encodeURIComponent(codigo)}`, { metodo: 'DELETE' }),
+    limpar: (id) => requisitar(`/carrinhos/${id}/itens`, { metodo: 'DELETE' }),
+    estadoCheckout: (id) => requisitar(`/carrinhos/${id}/checkout`),
   },
 
   pedidos: {

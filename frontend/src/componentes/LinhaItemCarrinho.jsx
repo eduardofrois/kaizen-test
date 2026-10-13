@@ -1,16 +1,16 @@
 import { Link } from 'react-router-dom';
 import { dinheiro } from '../api/cliente.js';
 
-export function LinhaItemCarrinho({ item, aoAlterar, aoRemover, ocupado }) {
+export function LinhaItemCarrinho({ item, aoAlterar, aoRemover, ocupado, compacto = false, idQuantidade }) {
   const limite = Math.min(99, item.estoque ?? 99);
   return (
-    <li className="flex gap-4 py-4">
+    <li className={`flex flex-wrap gap-3 py-4 ${compacto ? 'text-sm' : ''}`}>
       <img
         src={item.imagem_url}
         alt=""
         width="80"
         height="80"
-        className="size-20 shrink-0 rounded-lg bg-tinta-100 object-contain p-1"
+        className={`${compacto ? 'size-12' : 'size-20'} shrink-0 rounded-lg bg-tinta-100 object-contain p-1`}
       />
 
       <div className="min-w-0 flex-1">
@@ -30,12 +30,12 @@ export function LinhaItemCarrinho({ item, aoAlterar, aoRemover, ocupado }) {
           <p className="mt-1.5 text-xs font-medium text-amber-700">{item.problema}</p>
         )}
 
-        <div className="mt-2 flex items-center gap-3">
-          <label className="sr-only" htmlFor={`qtd-${item.codigo_produto}`}>
+        <div className="mt-2 flex flex-wrap items-center gap-3">
+          <label className="sr-only" htmlFor={idQuantidade}>
             Quantidade de {item.descricao}
           </label>
           <input
-            id={`qtd-${item.codigo_produto}`}
+            id={idQuantidade}
             type="number"
             min="1"
             max={limite}
@@ -64,7 +64,7 @@ export function LinhaItemCarrinho({ item, aoAlterar, aoRemover, ocupado }) {
         </div>
       </div>
 
-      <p className="shrink-0 text-right text-sm font-bold text-tinta-900">
+      <p className={`${compacto ? 'w-full' : 'shrink-0'} text-right text-sm font-bold text-tinta-900`}>
         {dinheiro.format(item.valor_total)}
       </p>
     </li>

@@ -1,5 +1,32 @@
 # Spec Driven Development
 
+## Publicação MULTI-001 — 2026-10-13
+
+Usuário solicitou PR detalhado da nova feature e link para avaliação.
+Implementação `2f9ff7a` enviada em `feat/multiplos-carrinhos` ao repositório
+eduardofrois/kaizen-test. [PR #17](https://github.com/eduardofrois/kaizen-test/pull/17)
+aberto contra main, sem conflitos na consulta. Checks testes-backend e
+build-frontend da implementação passaram no
+[run 38360777053](https://github.com/eduardofrois/kaizen-test/actions/runs/38360777053).
+
+Validação local registrada: backend 123/123, frontend 94/94, build e navegador
+simulado; 22 regressões TDD na revisão v2. A consolidação documental anterior
+foi preservada localmente, fora do PR. Merge manual pendente; sem merge/deploy.
+Atualização documental da publicação gerará nova CI, separada do run acima.
+
+## Múltiplos carrinhos — situação da unidade em 2026-10-13
+
+Spec/plano v2 aprovados e implementados, com 123 testes backend, 94 frontend,
+build e navegação em ambiente simulado aprovados. Os quatro achados da revisão
+foram corrigidos com TDD. Validação manual da v1 confirmada pelo usuário.
+
+Usuário solicitou abrir PR detalhado da nova feature e enviar o link para
+avaliação. Publicação desta unidade autorizada em eduardofrois/kaizen-test;
+merge manual pelo usuário. Consolidação documental anterior é trabalho local
+separado e não integra este envio. Registro abaixo preserva o histórico anterior.
+
+[Spec](multiplos-carrinhos/spec.md) · [Plano](multiplos-carrinhos/plan.md) · [Recuperação](multiplos-carrinhos/recuperacao.md)
+
 ## Fluxo acordado
 
 1. Investigar o comportamento e reunir evidência.
@@ -519,3 +546,16 @@ Validação conjunta: backend96/96, frontend79/79 e build63 módulos passaram;
 git diff --check passou. Nenhum teste manual novo realizado nesta atualização.
 PRs #14, #15 e #16 já integrados à main. PR #13 continua aberto: atualização
 da branch autorizada, checks remotos a acompanhar e merge manual pelo usuário.
+
+
+## Histórico específico de múltiplos carrinhos
+
+### Múltiplos carrinhos implementado — 2026-10-13
+
+Plano v1 aprovado com “aprovado” após pergunta explícita sobre implementar
+na sessão. Migração, API, checkout protegido, seleção por aba e painel entregues
+na branch feat/multiplos-carrinhos, sem publicação. Backend 114/114, frontend
+81/81, build 67 módulos e verificações de diff/sintaxe passaram. Navegador
+usou API real com SQLite temporário/ERP simulado, seis larguras, duas abas,
+compra e envio incerto; ver evidências da unidade. Confirmação manual do
+usuário pendente; histórico abaixo não representa a situação atual da feature.

@@ -23,9 +23,10 @@ test('FIX-003: pedido conserva total ERP em centavos e isolamento', () => {
       for (const id of [1, 2]) {
         db.prepare('INSERT INTO usuarios (id,nome,email,senha_hash,documento,criado_em,atualizado_em) VALUES (?,?,?,?,?,?,?)')
           .run(id, 'Teste', 'teste'+id+'@example.invalid', 'hash-sintetico', '00000000000', '2026-01-01', '2026-01-01');
+      db.prepare("INSERT INTO carrinhos(id,usuario_id,nome,principal,criado_em,atualizado_em) VALUES(?,?,'Meu carrinho',1,'2026-01-01','2026-01-01')").run(id,id);
         db.prepare('INSERT INTO enderecos (id,usuario_id,apelido,cep,logradouro,numero,bairro,cidade,uf,principal,criado_em,atualizado_em) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)')
           .run(id, id, 'Teste', '00000-000', 'Rua sintetica '+id, '1', 'Centro', 'Teste', 'SP', 1, '2026-01-01', '2026-01-01');
-        db.prepare('INSERT INTO carrinho_itens (usuario_id,codigo_produto,quantidade,adicionado_em) VALUES (?,?,?,?)')
+        db.prepare('INSERT INTO carrinho_itens (carrinho_id,codigo_produto,quantidade,adicionado_em) VALUES (?,?,?,?)')
           .run(id, 'A', 1, '2026-01-01');
       }
       const posts = [];
@@ -44,9 +45,9 @@ test('FIX-003: pedido conserva total ERP em centavos e isolamento', () => {
       };
       const { finalizarPedido } = await import(${JSON.stringify(moduloPedido)});
       const usuario = { id: 1, nome: 'Teste', documento: '00000000000' };
-      await assert.rejects(finalizarPedido(usuario, 2, '', db), erro => erro.status === 422);
+      await assert.rejects(finalizarPedido(usuario, {carrinho_id:1,versao_carrinho:1,tentativa_id:'teste-endereco',endereco_id:2,observacao:''}, db), erro => erro.status === 422);
       assert.equal(posts.length, 0);
-      const pedido = await finalizarPedido(usuario, 1, '', db);
+      const { pedido } = await finalizarPedido(usuario, {carrinho_id:1,versao_carrinho:1,tentativa_id:'teste-dinheiro',endereco_id:1,observacao:''}, db);
       const vinculo = db.prepare('SELECT * FROM pedidos_usuario WHERE usuario_id = ?').get(1);
       assert.equal(vinculo.valor_total_centavos, 1999);
       assert.equal(pedido.valor_total, 19.99);
@@ -55,8 +56,8 @@ test('FIX-003: pedido conserva total ERP em centavos e isolamento', () => {
       assert.equal(posts.length, 1);
       assert.deepEqual(posts[0].itens, [{ codigo_produto: 'A', quantidade: 1 }]);
       assert.match(posts[0].observacao, /Entrega: Rua sintetica 1, 1/);
-      assert.equal(db.prepare('SELECT COUNT(*) AS total FROM carrinho_itens WHERE usuario_id = ?').get(1).total, 0);
-      assert.equal(db.prepare('SELECT COUNT(*) AS total FROM carrinho_itens WHERE usuario_id = ?').get(2).total, 1);
+      assert.equal(db.prepare('SELECT COUNT(*) AS total FROM carrinho_itens WHERE carrinho_id = ?').get(1).total, 0);
+      assert.equal(db.prepare('SELECT COUNT(*) AS total FROM carrinho_itens WHERE carrinho_id = ?').get(2).total, 1);
       assert.equal(db.prepare('SELECT COUNT(*) AS total FROM pedidos_usuario WHERE usuario_id = ?').get(2).total, 0);
     } finally { db.close(); }
   `;
