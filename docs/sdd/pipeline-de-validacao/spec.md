@@ -2,14 +2,14 @@
 
 **Versão:** 1
 **Estado:** Implementado e integrado à main; CI em PR registrada. Evidência específica do evento push/main permanece pendente no plano; não é falha confirmada do workflow.
-**Baseline/data:** origin/main a70f55f; 2026-10-11
+**Baseline/data:** origin/main; 2026-10-11
 **Origem:** CI-001 — validação automática antes do merge manual
 **Pasta:** pipeline-de-validacao
 **Branch:** ci/pipeline-de-validacao
 **Aprovação para implementar:** versão 1 aprovada pelo usuário em
 2026-10-11, resposta “aprovo” à apresentação de spec.md e plan.md.
 
-> Leitura atualizada em 2026-10-13, referência main 76eca4d. O problema e
+> Leitura atualizada em 2026-10-13, referência main. O problema e
 > os exemplos de execução abaixo descrevem a baseline e o escopo original
 > da unidade. Relatos datados preservam o estado conhecido naquela etapa.
 > Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
@@ -112,7 +112,7 @@ que os quatro chamados ou múltiplos carrinhos foram resolvidos.
 ## Validação e entrega
 
 Local: npm test em backend/ e npm run build em frontend/, após aprovação.
-Remota: registrar URL da execução, SHA, jobs e resultados observados no PR;
+Remota: registrar URL da execução, jobs e resultados observados no PR;
 após merge feito pelo usuário, confirmar também execução na main.
 Antes do merge, AC-02 fica pendente com status explícito. Se não houver
 acesso à execução remota, registrar limitação sem marcar Validado.
@@ -149,7 +149,6 @@ Nenhum merge/deploy ou alteração de proteção realizado pela IA.
 PR: https://github.com/eduardofrois/kaizen-test/pull/2
 Execução pull_request/opened concluída com success:
 https://github.com/eduardofrois/kaizen-test/actions/runs/38172181159
-SHA: 820bc9593a34a31ce49d1a63fcc2b457bd9728dc.
 Jobs testes-backend e build-frontend passaram em Ubuntu 24.04/Node 24.14.1.
 Logs confirmam npm ci em ambos, seis testes sem falhas e build de 58 módulos.
 Frontend instalou 85 pacotes no Linux (82 na validação local macOS), sem
@@ -159,9 +158,8 @@ após merge manual do usuário. Proteção da main não foi alterada.
 
 ## Validação do PR concluída — aguardando merge manual
 
-Novo push documental (10420ad) disparou pull_request/synchronize e ambos os
-jobs passaram novamente: run 38172264955, SHA
-10420adcd74f5b5c8eecf71274b7c6e636de38b1.
+Novo push documental disparou pull_request/synchronize e ambos os
+jobs passaram novamente: run 38172264955.
 Evidência: https://github.com/eduardofrois/kaizen-test/actions/runs/38172264955
 AC-01 confirmado por opened e synchronize; checks testes-backend e
 build-frontend reais e bem-sucedidos, disponíveis para proteção da main.

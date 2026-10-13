@@ -5,7 +5,7 @@ na porta 3199, API Express real, build React e SQLite temporário. Todo acesso
 ERP interceptado pelo simulador com origem .invalid; contas e produtos sintéticos.
 Este ensaio não é homologação do SIAC nem confirmação manual do usuário.
 Separadamente, o usuário confirmou a v1 em 13/10/2026; a v2 tem ensaio
-simulado próprio no plano. PR #17 integrado à main em 76eca4d.
+simulado próprio no plano. PR #17 integrado à main.
 
 ## Protótipo
 

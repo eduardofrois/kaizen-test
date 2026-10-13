@@ -1,12 +1,21 @@
 # Teste Técnico — Kaizen Autopeças
 
 > **Solução atual — 13/10/2026:** quatro chamados corrigidos, dez correções
-> adicionais e múltiplos carrinhos v2 integrados à main (`76eca4d`).
+> adicionais e múltiplos carrinhos v2 integrados à main.
 > [Relatório de entrega](RELATORIO.md) · [Como rodar](#como-rodar-o-projeto) ·
 > [Arquitetura e API](ARQUITETURA.md) · [Decisões e evidências](docs/sdd/README.md).
 > Última verificação local: 123 testes backend, 94 frontend e build passaram.
 
 ## Enunciado e critérios do desafio
+
+As branches publicadas de `feat/`, `fix/` e `docs/` foram preservadas para que
+o avaliador possa consultar cada frente de trabalho, suas decisões e alterações.
+Elas estão na [lista de branches da solução](https://github.com/eduardofrois/kaizen-test/branches).
+A `main` reúne as mudanças já integradas; as branches também registram etapas
+anteriores e devem ser lidas nesse contexto.
+
+O [relatório de entrega](RELATORIO.md) reúne resultados, evidências e limitações
+em relação ao enunciado e às orientações recebidas por e-mail.
 
 O texto a seguir apresenta o cenário original. As instruções de execução e
 o estado da solução estão documentados depois dos critérios de avaliação.
@@ -39,7 +48,7 @@ operação.
 
 **O SIAC você não controla.** Ele roda numa EC2 e você apenas consome a API
 dele. Se um problema parecer estar no ERP, a correção tem que acontecer **deste
-lado** — é assim na vida real quando o sistema legado não é seu. O estoque é atualizado 
+lado** — é assim na vida real quando o sistema legado não é seu. O estoque é atualizado
 de 30 em 30 minutos
 
 A documentação técnica (arquitetura, contrato da API, decisões, paleta) está em

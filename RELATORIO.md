@@ -8,13 +8,13 @@
 
 **Última atualização:** 13/10/2026
 
-**Estado:** quatro chamados, dez correções adicionais e múltiplos carrinhos v2 implementados e integrados à main (76eca4d). Testes isolados e build passaram; limites de validação descritos abaixo.
+**Estado:** quatro chamados, dez correções adicionais e múltiplos carrinhos v2 implementados e integrados à main. Testes isolados e build passaram; limites de validação descritos abaixo.
 
-Referência de código: main 76eca4d, com o PR #17 integrado. Esta edição altera
+Referência de código: main, com o PR #17 integrado. Esta edição altera
 somente documentação.
 
 Este relatório consolida o estado atual do código, em vez de repetir o diário
-de execução. A investigação partiu da baseline original `81897d5`. Os detalhes,
+de execução. A investigação partiu da baseline original. Os detalhes,
 aprovações e evidências de cada unidade estão em [fix.md](fix.md) e
 [docs/sdd/](docs/sdd/README.md).
 
@@ -261,7 +261,7 @@ fluxos normais.
 
 ### Resultado e decisões
 
-**Implementado e integrado à main no PR #17**, commit de merge `76eca4d`.
+**Implementado e integrado à main no PR #17**, merge confirmado.
 A vitrine permite criar, selecionar, renomear, excluir e editar carrinhos sem
 sair dos resultados. A página /carrinho reutiliza gestão e conteúdo do painel.
 
@@ -373,7 +373,7 @@ automatizados não criam pedidos no ERP real. A evidência específica de endere
 
 Na reavaliação local de **13/10/2026**, a suíte atual passou com
 **123/123 testes backend, 94/94 frontend e build de 67 módulos**, usando Node
-24.14.1. Código e lockfiles conferidos contra a main 76eca4d. O build dessa
+24.14.1. Código e lockfiles conferidos contra a main. O build dessa
 reavaliação foi direcionado a /private/tmp para preservar o dist local.
 Estes resultados antecedem a edição documental; não representam uma nova CI.
 
@@ -473,7 +473,7 @@ menciona “colocar a aplicação no ar”, sem definir hospedagem pública, dom
 ou provedor. Registrei execução local e não declarei deploy público.
 A revisão documental foi solicitada pelo usuário e publicada no
 [PR #18](https://github.com/eduardofrois/kaizen-test/pull/18) para main em 13/10/2026.
-Os checks do commit inicial passaram no [run 38404473049](https://github.com/eduardofrois/kaizen-test/actions/runs/38404473049).
+Os checks da publicação inicial passaram no [run 38404473049](https://github.com/eduardofrois/kaizen-test/actions/runs/38404473049).
 O registro complementar gera nova execução; o merge permanece manual.
 
 ---
@@ -515,3 +515,43 @@ após a implementação, a resolução posterior de conflitos, o deploy ou a
 funcionalidade de múltiplos carrinhos. O tempo ativo da feature não foi medido
 e não foi acrescentado ao total. Não mantive um controle de horas ativas para
 afirmar um total exato de dedicação.
+
+## Revisão documental — 13/10/2026
+
+Removidas as referências a identificadores de commits, inclusive nos históricos.
+O README informa as branches publicadas preservadas para consulta do avaliador.
+As conclusões sobre o enunciado e o e-mail estão consolidadas abaixo.
+Atualização do PR #18 autorizada pelo usuário em 13/10/2026; merge permanece manual.
+Não houve deploy ou envio de e-mail.
+As evidências funcionais anteriores foram preservadas; não houve nova suíte nesta edição.
+
+## 10. Atendimento ao enunciado e condições de entrega
+
+A comparação com o [README original](https://github.com/PecistaTecnologia/teste-tecnico-kaizen/blob/main/README.md)
+e o e-mail do processo seletivo considera os resultados e limites registrados
+neste relatório. Os quatro chamados, a investigação de problemas adicionais e
+a funcionalidade de múltiplos carrinhos estão implementados. As decisões de
+produto e as evidências estão detalhadas nas respectivas unidades SDD.
+
+A solução preserva a organização entre rotas HTTP, serviços de negócio e
+cliente do ERP. Os testes cobrem regressões e riscos como cálculo monetário,
+autorização, isolamento e concorrência entre carrinhos. Os resultados locais
+de 123 testes backend, 94 frontend e build aprovados são os da execução anterior
+de 13/10. Testes isolados não substituem um fluxo completo no navegador nem
+homologação com o SIAC; a validação humana integral da v2 não está registrada.
+INV-003/004/005 continuam abertos, conforme o inventário.
+
+O enunciado exige colocar a aplicação no ar, mas não define a hospedagem.
+Há execução local comprovada e nenhum deploy público registrado. Assim, a
+execução local, por si só, não comprova atendimento integral a essa exigência.
+
+Na consulta de 13/10, o repositório da solução estava público. O e-mail exige
+enviar seu link aos dois destinatários informados até 13/10 às 15h e exclui da
+avaliação commits posteriores ao prazo. Os registros Git consultados eram
+anteriores a esse horário, considerando America/Sao_Paulo; isso não comprova
+envio do link. Não há comprovação desse envio nesta revisão.
+
+A revisão documental compõe a atualização autorizada do PR #18, aberto para
+main. O merge permanece manual; a versão na branch de trabalho deve ser
+distinguida da main remota. Esta etapa não realizou deploy ou contato com os
+avaliadores.

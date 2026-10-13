@@ -134,7 +134,7 @@ após atualizar a página e logout funcionaram localmente. Ao executar
 `Configuracao invalida: JWT_SEGREDO nao definido. Rode: npm run segredo:gerar`.
 Fail-fast manual confirmado, sem alterar .env. Os seis testes automatizados
 já haviam passado. Não foi executado checkout real; este registro não
-comprova os demais fluxos do sistema. Implementação registrada no commit c46e68e. Validação concluída para o
+comprova os demais fluxos do sistema. Implementação registrada nessa publicação. Validação concluída para o
 escopo aprovado; resultados consolidados neste commit documental complementar.
 Nenhuma nova alteração de aplicação realizada; publicação remota pendente.
 

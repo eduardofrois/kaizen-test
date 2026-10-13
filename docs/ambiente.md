@@ -1,6 +1,6 @@
 # Ambiente e execução
 
-Atualizado em 2026-10-13, referência main `76eca4d`.
+Atualizado em 2026-10-13, referência main.
 O [README](../README.md#como-rodar-o-projeto) contém a instalação passo a passo.
 Backend e frontend têm package.json e lockfiles próprios. Node 24.14.1 é a
 versão usada na CI e na última validação local; não há script único na raiz.

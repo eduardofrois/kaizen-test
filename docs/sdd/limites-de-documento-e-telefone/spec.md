@@ -3,7 +3,7 @@
 **Versão:** 2
 **Estado:** Implementado e integrado à main; validação manual confirmada pelo usuário em 2026-10-12. Evidências e limites por cenário na matriz e no histórico desta unidade.
 **Origem:** FIX-010
-**Baseline/data:** 7d4f391; 2026-10-12
+**Baseline/data:** 2026-10-12
 **Branch:** fix/limites-de-documento-e-telefone
 **Aprovação da versão2:** 2026-10-12; usuário “aprovado”, após apresentação da versão2.
 **Aprovação para implementar:** 2026-10-12; usuário “aprovado” após plano versão1.
@@ -16,7 +16,7 @@ anteriores; não acrescenta execução pela IA, capturas por variante, exploraç
 de segurança ou pedido real no SIAC. Requisitos e aprovações de implementação
 permanecem os já registrados. Esta revisão documental não autoriza publicação.
 
-> Leitura atualizada em 2026-10-13, referência main 76eca4d. O problema e
+> Leitura atualizada em 2026-10-13, referência main. O problema e
 > os exemplos de execução abaixo descrevem a baseline e o escopo original
 > da unidade. Relatos datados preservam o estado conhecido naquela etapa.
 > Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
@@ -180,7 +180,7 @@ Registros anteriores de manual/publicação pendentes são históricos.
 
 ## Histórico — Publicação FIX-010 — 2026-10-12
 
-Implementação `cc24f45` publicada em `fix/limites-de-documento-e-telefone`.
+Implementação publicada em `fix/limites-de-documento-e-telefone`.
 PR #16: https://github.com/eduardofrois/kaizen-test/pull/16
 Validação manual confirmada. Checks remotos em acompanhamento; merge manual
 pendente. Nenhum merge realizado pela IA.

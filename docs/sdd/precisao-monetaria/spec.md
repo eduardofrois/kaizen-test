@@ -2,7 +2,7 @@
 
 **Versão:** 1
 **Estado:** Implementado e integrado à main; validação manual confirmada pelo usuário em 2026-10-12. Evidências e limites por cenário na matriz e no histórico desta unidade.
-**Baseline/data:** d040365; 2026-10-11
+**Baseline/data:** 2026-10-11
 **Origem:** FIX-003 — Conversão de reais para centavos perde dinheiro
 **Branch:** fix/precisao-monetaria
 **Aprovação do desenho:** 2026-10-11; usuário: “aprovado”, após apresentação da spec.
@@ -16,7 +16,7 @@ anteriores; não acrescenta execução pela IA, capturas por variante, exploraç
 de segurança ou pedido real no SIAC. Requisitos e aprovações de implementação
 permanecem os já registrados. Esta revisão documental não autoriza publicação.
 
-> Leitura atualizada em 2026-10-13, referência main 76eca4d. O problema e
+> Leitura atualizada em 2026-10-13, referência main. O problema e
 > os exemplos de execução abaixo descrevem a baseline e o escopo original
 > da unidade. Relatos datados preservam o estado conhecido naquela etapa.
 > Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
@@ -30,7 +30,7 @@ anteriores também demonstraram 4.10→409 e 19.99→1998.
 Consumidores: carrinhoService calcula subtotal unitário×quantidade e total;
 pedidoService armazena valor_total_centavos retornado pelo ERP.
 O carrinho reconverte subtotais em reais ao agregar, permitindo nova perda.
-Pull realizado; main inclui PR #8 no merge d040365.
+Pull realizado; main inclui PR #8 no merge .
 
 ## Objetivo e domínio suportado
 
@@ -133,10 +133,10 @@ pelo usuário; nenhuma autorização para integrar diretamente na main.
 
 ## Histórico — Publicação da correção — 2026-10-11
 
-Commit de implementação: 3f584ce. Branch fix/precisao-monetaria publicada.
+Branch fix/precisao-monetaria publicada.
 PR #9: https://github.com/eduardofrois/kaizen-test/pull/9
 Checks testes-backend e build-frontend passaram no run 38187488965,
-commit 3f584ce: https://github.com/eduardofrois/kaizen-test/actions/runs/38187488965
+execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38187488965
 Esta atualização documental gera nova execução de CI a acompanhar.
 Merge permanece manual e pendente.
 Validação manual não informada; ERP real não utilizado nos testes.

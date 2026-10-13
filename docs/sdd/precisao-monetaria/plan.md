@@ -3,7 +3,7 @@
 **Versão:** 1
 **Estado:** Implementado e integrado à main; validação manual confirmada pelo usuário em 2026-10-12. Evidências e limites por cenário na matriz e no histórico desta unidade.
 **Spec:** [spec.md](spec.md), versão 1
-**Baseline/data:** d040365; 2026-10-11
+**Baseline/data:** 2026-10-11
 **Objetivo:** eliminar perda de centavos em conversão, carrinho e vínculo local.
 **Arquitetura:** corrigir conversão compartilhada; consumidores preservados.
 **Stack:** JavaScript ESM, node:test, SQLite em memória e fetch fake existentes.
@@ -19,7 +19,7 @@ anteriores; não acrescenta execução pela IA, capturas por variante, exploraç
 de segurança ou pedido real no SIAC. Requisitos e aprovações de implementação
 permanecem os já registrados. Esta revisão documental não autoriza publicação.
 
-> Leitura atualizada em 2026-10-13, referência main 76eca4d. O problema e
+> Leitura atualizada em 2026-10-13, referência main. O problema e
 > os exemplos de execução abaixo descrevem a baseline e o escopo original
 > da unidade. Relatos datados preservam o estado conhecido naquela etapa.
 > Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
@@ -177,7 +177,7 @@ export function paraCentavos(reais) {
   reproduzem aproximação, usar provas isoladas e registrar essa limitação.
 - [x] Atualizar SDD, inventário e relatório com RED/GREEN, domínio de duas
   casas, ausência de reparo histórico e distinção de ERP fake versus real.
-- [x] Quando autorizado, commit `fix: preserva centavos na conversao monetaria`
+- [x] Quando autorizado, registro da unidade
   e publicar branch. PR somente com comando do usuário; merge manual.
 
 ## Matriz de validação
@@ -221,10 +221,10 @@ pelo usuário; nenhuma autorização para integrar diretamente na main.
 
 ## Histórico — Publicação da correção — 2026-10-11
 
-Commit de implementação: 3f584ce. Branch fix/precisao-monetaria publicada.
+Branch fix/precisao-monetaria publicada.
 PR #9: https://github.com/eduardofrois/kaizen-test/pull/9
 Checks testes-backend e build-frontend passaram no run 38187488965,
-commit 3f584ce: https://github.com/eduardofrois/kaizen-test/actions/runs/38187488965
+execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38187488965
 Esta atualização documental gera nova execução de CI a acompanhar.
 Merge permanece manual e pendente.
 Validação manual não informada; ERP real não utilizado nos testes.

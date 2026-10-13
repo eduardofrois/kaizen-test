@@ -2,7 +2,7 @@
 
 **Versão:** 1
 **Estado:** Implementado e integrado à main; validação manual confirmada pelo usuário em 2026-10-12. Evidências e limites por cenário na matriz e no histórico desta unidade.
-**Baseline/data:** c7e98cd; 2026-10-12
+**Baseline/data:** 2026-10-12
 **Origem:** FIX-007
 **Branch:** fix/remocao-de-telefone-do-perfil
 **Aprovação da spec:** 2026-10-12; usuário “spec aprovada”.
@@ -16,7 +16,7 @@ anteriores; não acrescenta execução pela IA, capturas por variante, exploraç
 de segurança ou pedido real no SIAC. Requisitos e aprovações de implementação
 permanecem os já registrados. Esta revisão documental não autoriza publicação.
 
-> Leitura atualizada em 2026-10-13, referência main 76eca4d. O problema e
+> Leitura atualizada em 2026-10-13, referência main. O problema e
 > os exemplos de execução abaixo descrevem a baseline e o escopo original
 > da unidade. Relatos datados preservam o estado conhecido naquela etapa.
 > Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
@@ -96,7 +96,7 @@ confirmação manual. Sem reparo retroativo: telefone só removido quando solici
 
 ## Entrega e histórico
 
-PR #11 confirmado integrado à main c7e98cd; pull concluído. Spec versão1 em
+PR #11 confirmado integrado à main; pull concluído. Spec versão1 em
 proposta. Após aprovação do desenho, preparar plan.md para revisão antes da
 implementação. Atualizar fix.md, relatório, investigação e SDD com evidências.
 Código/testes intactos nesta unidade; autorização de publicação anterior não
@@ -138,7 +138,7 @@ Registros anteriores de validação/publicação pendente são históricos.
 
 ## Histórico — Publicação FIX-007 — 2026-10-12
 
-Implementação publicada no commit40ea907, branch fix/remocao-de-telefone-do-perfil.
+Implementação publicada na branch fix/remocao-de-telefone-do-perfil.
 PR #12: https://github.com/eduardofrois/kaizen-test/pull/12
 Checks testes-backend e build-frontend passaram no run38314449233:
 https://github.com/eduardofrois/kaizen-test/actions/runs/38314449233

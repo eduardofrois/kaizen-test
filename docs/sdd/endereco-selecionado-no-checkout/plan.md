@@ -3,7 +3,7 @@
 **Versão:** 1
 **Estado:** Implementado e integrado à main; validação manual confirmada pelo usuário em 2026-10-12. Evidências e limites por cenário na matriz e no histórico desta unidade.
 **Spec:** [spec.md](spec.md), versão 1
-**Baseline/data:** 6fab792; 2026-10-11
+**Baseline/data:** 2026-10-11
 **Objetivo:** enviar o endereço efetivamente selecionado.
 **Arquitetura:** estado React existente como fonte do ID; backend preservado.
 **Stack:** React/JavaScript ESM, fetch e testes existentes.
@@ -18,7 +18,7 @@ anteriores; não acrescenta execução pela IA, capturas por variante, exploraç
 de segurança ou pedido real no SIAC. Requisitos e aprovações de implementação
 permanecem os já registrados. Esta revisão documental não autoriza publicação.
 
-> Leitura atualizada em 2026-10-13, referência main 76eca4d. O problema e
+> Leitura atualizada em 2026-10-13, referência main. O problema e
 > os exemplos de execução abaixo descrevem a baseline e o escopo original
 > da unidade. Relatos datados preservam o estado conhecido naquela etapa.
 > Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
@@ -107,7 +107,7 @@ Uma recarga também remove a interceptação. Não confirmar novamente sem bloqu
   buscarEndereco(usuario.id, enderecoId) e snapshot sem alterá-los.
 - [x] Atualizar documentos com causa, provas realmente executadas e pendências.
   Não declarar teste integrado do ERP nem criação de pedido sem evidência.
-- [x] Quando autorizado, commit `fix: usa endereco selecionado no checkout`;
+- [x] Quando autorizado, registro da unidade;
   publicar branch, aguardar comando para PR e acompanhar checks autorizados.
   Merge manual pelo usuário.
 
@@ -174,7 +174,7 @@ pendentes. Checks remotos ainda não executados nesta etapa.
 
 PR #7: https://github.com/eduardofrois/kaizen-test/pull/7
 Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38181718715
-Checks testes-backend e build-frontend passaram no commit 37ed34b. Branch
+Checks testes-backend e build-frontend passaram nessa publicação. Branch
 publicada; merge manual pelo usuário. CI comprova regressões existentes/build,
 sem substituir os cenários específicos de checkout ainda não confirmados.
 Estado Implementado: AC-01 confirmado por payload informado; AC-05 concluído;

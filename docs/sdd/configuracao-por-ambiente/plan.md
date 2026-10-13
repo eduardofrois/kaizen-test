@@ -18,7 +18,7 @@ anteriores; não acrescenta execução pela IA, capturas por variante, exploraç
 de segurança ou pedido real no SIAC. Requisitos e aprovações de implementação
 permanecem os já registrados. Esta revisão documental não autoriza publicação.
 
-> Leitura atualizada em 2026-10-13, referência main 76eca4d. O problema e
+> Leitura atualizada em 2026-10-13, referência main. O problema e
 > os exemplos de execução abaixo descrevem a baseline e o escopo original
 > da unidade. Relatos datados preservam o estado conhecido naquela etapa.
 > Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
@@ -215,7 +215,7 @@ if (problemas.length > 0) {
       Não imprimir credenciais para mostrar que foram removidas.
 - [x] Atualizar FIX-001 e documentos com comandos/resultados reais. Aprovação
       de implementação não autoriza afirmar que token externo foi revogado.
-- [x] Criar commit `fix: exige configuracao explicita sem segredos no codigo`
+- [x] Criar registro da unidade
       com código sanitizado, teste e documentação. Na importação inicial,
       revisar todos os arquivos de aplicação por allowlist, pois estarão
       inicialmente não rastreados. Não usar git add . sem essa revisão.
@@ -274,15 +274,15 @@ após atualizar a página e logout funcionaram localmente. Ao executar
 `Configuracao invalida: JWT_SEGREDO nao definido. Rode: npm run segredo:gerar`.
 Fail-fast manual confirmado, sem alterar .env. Os seis testes automatizados
 já haviam passado. Não foi executado checkout real; este registro não
-comprova os demais fluxos do sistema. Implementação registrada no commit c46e68e. Validação concluída para o
+comprova os demais fluxos do sistema. Implementação registrada nessa publicação. Validação concluída para o
 escopo aprovado; resultados consolidados neste commit documental complementar.
 Nenhuma nova alteração de aplicação realizada; publicação remota pendente.
 
 ## Histórico — Integração e publicação — 2026-10-11
 
 Por autorização do usuário, branch configuracao-por-ambiente integrada na
-main pelo merge f913cda, sem conflitos. Push para eduardofrois/kaizen-test
-concluído: remoto confirmou main de 6307deb para f913cda. Branch local
+main pelo merge, sem conflitos. Push para eduardofrois/kaizen-test
+concluído: remoto confirmou a atualização da main. Branch local
 codex/configuracao-por-ambiente preservada. Os registros anteriores de push
 pendente descrevem a etapa anterior e estão superados por esta atualização.
 .env e arquivos gerados não foram enviados. Publicação do código no GitHub

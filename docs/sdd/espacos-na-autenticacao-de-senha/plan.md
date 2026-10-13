@@ -3,7 +3,7 @@
 **Versão:** 1
 **Estado:** Implementado e integrado à main; validação manual confirmada pelo usuário em 2026-10-12. Evidências e limites por cenário na matriz e no histórico desta unidade.
 **Spec:** [spec.md](spec.md), versão 1
-**Baseline/data:** f744b39; 2026-10-12
+**Baseline/data:** 2026-10-12
 **Objetivo:** conferir senhas sem remover espaços escolhidos no cadastro/troca.
 **Arquitetura:** validador específico nas duas rotas de conferência; hash intacto.
 **Stack:** JavaScript ESM, node:test, Express, SQLite e scrypt existentes.
@@ -19,7 +19,7 @@ anteriores; não acrescenta execução pela IA, capturas por variante, exploraç
 de segurança ou pedido real no SIAC. Requisitos e aprovações de implementação
 permanecem os já registrados. Esta revisão documental não autoriza publicação.
 
-> Leitura atualizada em 2026-10-13, referência main 76eca4d. O problema e
+> Leitura atualizada em 2026-10-13, referência main. O problema e
 > os exemplos de execução abaixo descrevem a baseline e o escopo original
 > da unidade. Relatos datados preservam o estado conhecido naquela etapa.
 > Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
@@ -204,7 +204,7 @@ Registros anteriores de manual/autorização pendentes são históricos.
 
 ## Histórico — Publicação FIX-008 — 2026-10-12
 
-Commit de implementação: `9b29049`. Branch publicada:
+Branch publicada:
 `fix/espacos-na-autenticacao-de-senha`. PR #13 aberto para main:
 https://github.com/eduardofrois/kaizen-test/pull/13
 Estado Validado; testes locais e confirmação manual concluídos. Checks remotos
@@ -213,7 +213,7 @@ em acompanhamento. Merge manual pendente. Nenhum merge realizado pela IA.
 ## Histórico — Atualização do PR #13 e resolução de conflitos — 2026-10-12
 
 Usuário solicitou corrigir os conflitos do PR #13. Incorporada a main
-`60d5827` na branch `fix/espacos-na-autenticacao-de-senha`, preservando os
+na branch `fix/espacos-na-autenticacao-de-senha`, preservando os
 registros da FIX-008 e os trabalhos posteriores (layout, CORS e máscaras).
 Os conflitos eram documentais em RELATORIO.md, fix.md, docs/investigacao.md
 e docs/sdd/README.md; o código foi integrado automaticamente, sem alteração

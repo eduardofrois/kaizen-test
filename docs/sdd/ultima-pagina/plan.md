@@ -3,7 +3,7 @@
 **Versão:** 1
 **Estado:** Implementado e integrado à main; validação manual confirmada pelo usuário em 2026-10-12. Evidências e limites por cenário na matriz e no histórico desta unidade.
 **Spec:** [spec.md](spec.md), versão 1
-**Baseline/data:** a1c60d6; 2026-10-11
+**Baseline/data:** 2026-10-11
 **Objetivo:** permitir chegar à última página pelo botão Próxima.
 **Arquitetura:** corrigir comparação no componente compartilhado Paginacao.
 **Stack:** React 19, Vite 7, JavaScript ESM, node:test e react-dom/server.
@@ -19,7 +19,7 @@ anteriores; não acrescenta execução pela IA, capturas por variante, exploraç
 de segurança ou pedido real no SIAC. Requisitos e aprovações de implementação
 permanecem os já registrados. Esta revisão documental não autoriza publicação.
 
-> Leitura atualizada em 2026-10-13, referência main 76eca4d. O problema e
+> Leitura atualizada em 2026-10-13, referência main. O problema e
 > os exemplos de execução abaixo descrevem a baseline e o escopo original
 > da unidade. Relatos datados preservam o estado conhecido naquela etapa.
 > Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
@@ -136,7 +136,7 @@ disabled={pagina >= totalPaginas}
   usuário. HTML estático e callback direto não comprovam clique/navegação real.
 - [x] Atualizar estado, aceites, RED/GREEN e pendências em spec/plano, inventário,
   relatório, investigação e índice SDD antes do commit. Separar CI e manual.
-- [x] Após autorização, commit `fix: permite acessar ultima pagina` e publicar
+- [x] Após autorização, registro da unidade e publicar
   branch fix/ultima-pagina. Abrir PR apenas após comando explícito; merge manual.
 
 ## Matriz de validação
@@ -188,9 +188,9 @@ pelo usuário; os registros anteriores de publicação pendente são históricos
 
 ## Histórico — Publicação de última página — 2026-10-11
 
-Commit de implementação: 6607796. Branch fix/ultima-pagina publicada.
+Branch fix/ultima-pagina publicada.
 PR #10: https://github.com/eduardofrois/kaizen-test/pull/10
-Checks testes-backend e build-frontend passaram para 6607796 no run
+Checks testes-backend e build-frontend passaram no run
 38187909239: https://github.com/eduardofrois/kaizen-test/actions/runs/38187909239
 Esta atualização documental dispara novos checks a acompanhar. Manual pendente;
 estado Implementado. Merge manual pelo usuário, não realizado nesta sessão.

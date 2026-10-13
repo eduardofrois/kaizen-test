@@ -18,7 +18,7 @@ anteriores; não acrescenta execução pela IA, capturas por variante, exploraç
 de segurança ou pedido real no SIAC. Requisitos e aprovações de implementação
 permanecem os já registrados. Esta revisão documental não autoriza publicação.
 
-> Leitura atualizada em 2026-10-13, referência main 76eca4d. O problema e
+> Leitura atualizada em 2026-10-13, referência main. O problema e
 > os exemplos de execução abaixo descrevem a baseline e o escopo original
 > da unidade. Relatos datados preservam o estado conhecido naquela etapa.
 > Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
@@ -154,8 +154,7 @@ assert.equal(formatarTelefone('11987654321'), '(11) 98765-4321');
   e pendências manuais; marcar aceites apenas quando comprovados.
 - [x] Usuário valida cadastro/perfil e telefone removível, edição e colagem;
   registrar confirmação antes de Validado. Sem copiar dados pessoais aos docs.
-- [x] Somente após comando específico: commit `fix: aplica mascaras a documento
-  e telefone`, push da branch e PR para main; acompanhar checks. Merge manual.
+- [x] Somente após comando específico: registro da unidade, push da branch e PR para main; acompanhar checks. Merge manual.
 
 ## Matriz de validação
 
@@ -219,7 +218,7 @@ Registros anteriores de manual/publicação pendentes são históricos.
 
 ## Histórico — Publicação FIX-010 — 2026-10-12
 
-Implementação `cc24f45` publicada em `fix/limites-de-documento-e-telefone`.
+Implementação publicada em `fix/limites-de-documento-e-telefone`.
 PR #16: https://github.com/eduardofrois/kaizen-test/pull/16
 Validação manual confirmada. Checks remotos em acompanhamento; merge manual
 pendente. Nenhum merge realizado pela IA.

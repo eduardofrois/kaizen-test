@@ -5,7 +5,7 @@
 
 **Versão:** [número]
 **Estado:** Proposta
-**Baseline/data:** [commit e data]
+**Baseline/data:** [estado ou branch de referência e data]
 **Origem:** [chamado, FIX/INV ou requisito README]
 **Nome da pasta/branch:** [objetivo em minúsculas com hífens; não apenas ID]
 **Aprovação:** Pendente — registrar mensagem/data/escopo após aprovação real.

@@ -8,7 +8,7 @@
 ## Publicação MULTI-001 — 2026-10-13
 
 Usuário solicitou PR detalhado da nova feature e link para avaliação.
-Implementação `2f9ff7a` enviada em `feat/multiplos-carrinhos` ao repositório
+Implementação enviada em `feat/multiplos-carrinhos` ao repositório
 eduardofrois/kaizen-test. [PR #17](https://github.com/eduardofrois/kaizen-test/pull/17)
 aberto contra main, sem conflitos na consulta. Checks testes-backend e
 build-frontend da implementação passaram no
@@ -32,8 +32,8 @@ separado e não integra este envio. Registro abaixo preserva o histórico anteri
 
 [Spec](../sdd/multiplos-carrinhos/spec.md) · [Plano](../sdd/multiplos-carrinhos/plan.md)
 
-Atualização: 2026-10-13. Baseline original: `81897d5`.
-Checkout revisado: `f95ae66`, com as correções integradas da main `60d5827`.
+Atualização: 2026-10-13. Baseline original: projeto recebido.
+Checkout revisado com as correções integradas da main.
 
 ## Situação atual
 
@@ -170,7 +170,7 @@ Inspeção do código atual confirmou ausência de entidade/IDs de carrinho e
 bloqueio persistente, além da limpeza por usuário após resposta do ERP.
 Sem reprodução nova ou teste funcional. Estado: spec escrita, plano e protótipo
 pendentes; próximo passo é revisão do documento pelo usuário. Checkout
-`f95ae66` e alterações documentais locais anteriores preservados, sem branch
+Alterações documentais locais anteriores preservadas, sem branch
 nova, commit, push, PR, migração, banco ou ERP alterados.
 
 Os relatos datados abaixo preservam a sequência de decisões e evidências.
@@ -187,8 +187,8 @@ semelhante por inspeção. Correção pendente de SDD/aprovação.
 ## Histórico — Integração e publicação — 2026-10-11
 
 Por autorização do usuário, branch configuracao-por-ambiente integrada na
-main pelo merge f913cda, sem conflitos. Push para eduardofrois/kaizen-test
-concluído: remoto confirmou main de 6307deb para f913cda. Branch local
+main pelo merge, sem conflitos. Push para eduardofrois/kaizen-test
+concluído: remoto confirmou a atualização da main. Branch local
 codex/configuracao-por-ambiente preservada. Os registros anteriores de push
 pendente descrevem a etapa anterior e estão superados por esta atualização.
 .env e arquivos gerados não foram enviados. Publicação do código no GitHub
@@ -197,7 +197,7 @@ não representa deploy da aplicação.
 ## CI-001 — Pipeline de validação em preparação
 
 SDD versão 1 proposto em docs/sdd/pipeline-de-validacao/; branch
-ci/pipeline-de-validacao baseada em origin/main a70f55f, após merge manual
+ci/pipeline-de-validacao baseada em origin/main, após merge manual
 do PR #1 pelo usuário. Dois checks propostos: testes-backend e
 build-frontend. Workflow, script npm test e execuções ainda não implementados
 nesta unidade; aprovação explícita pendente.
@@ -216,7 +216,6 @@ alterada. O registro anterior de proposta foi superado por esta execução.
 PR: https://github.com/eduardofrois/kaizen-test/pull/2
 Execução pull_request/opened concluída com success:
 https://github.com/eduardofrois/kaizen-test/actions/runs/38172181159
-SHA: 820bc9593a34a31ce49d1a63fcc2b457bd9728dc.
 Jobs testes-backend e build-frontend passaram em Ubuntu 24.04/Node 24.14.1.
 Logs confirmam npm ci em ambos, seis testes sem falhas e build de 58 módulos.
 Frontend instalou 85 pacotes no Linux (82 na validação local macOS), sem
@@ -226,9 +225,8 @@ após merge manual do usuário. Proteção da main não foi alterada.
 
 ## Validação do PR concluída — aguardando merge manual
 
-Novo push documental (10420ad) disparou pull_request/synchronize e ambos os
-jobs passaram novamente: run 38172264955, SHA
-10420adcd74f5b5c8eecf71274b7c6e636de38b1.
+Novo push documental disparou pull_request/synchronize e ambos os
+jobs passaram novamente: run 38172264955.
 Evidência: https://github.com/eduardofrois/kaizen-test/actions/runs/38172264955
 AC-01 confirmado por opened e synchronize; checks testes-backend e
 build-frontend reais e bem-sucedidos, disponíveis para proteção da main.
@@ -241,7 +239,7 @@ remotas descritas nas etapas anteriores; merge/deploy/proteção não realizados
 
 Em 2026-10-11, usuário confirmou a CI antes e depois do merge e pediu
 trabalhar no total. Criada branch fix/total-do-carrinho a partir de origin/main
-4261129. Spec/plan versão 1 em proposta para KZN-312: somar só linhas
+Spec/plan versão 1 em proposta para KZN-312: somar só linhas
 com disponivel=true, mantendo linhas/quantidades/subtotais e bloqueio checkout.
 FIX-003 é causa distinta e permanece pendente de SDD próprio. Nenhuma
 alteração no serviço ou testes nesta preparação. Plano prevê onze regressões
@@ -269,7 +267,7 @@ sem realizar merge. Testes locais já passaram; evidência remota ainda pendente
 
 PR: https://github.com/eduardofrois/kaizen-test/pull/3
 Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38175551404
-Checks testes-backend e build-frontend passaram no commit ac2231f.
+Checks testes-backend e build-frontend passaram nessa publicação.
 Com reprodução prévia, aprovação SDD, RED/GREEN, confirmação manual do
 usuário e checks do PR concluídos, KZN-312 está Validado. Todos os critérios
 da versão 1 cumpridos; merge continua pendente de ação manual do usuário.
@@ -321,7 +319,7 @@ são registros históricos superados por esta confirmação.
 
 PR #5: https://github.com/eduardofrois/kaizen-test/pull/5
 Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38177680580
-Checks testes-backend e build-frontend passaram no commit ea3bc6a.
+Checks testes-backend e build-frontend passaram nessa publicação.
 Estado Validado: critérios da versão 1 concluídos com regressões isoladas,
 build local, confirmação manual do usuário e CI do PR. Merge manual pendente.
 Registros anteriores de espera por validação/abertura/CI são históricos.
@@ -330,7 +328,7 @@ FIX-003 e FIX-005 continuam fora do escopo; nenhum merge ou deploy realizado.
 ## Histórico — Preparação de busca-e-paginacao — 2026-10-11
 
 KZN-325 reproduzido pelo usuário (“Erro encontrado”). Pull realizado antes do
-trabalho; nova branch fix/busca-e-paginacao baseada na main 27217ff, com PR #5
+trabalho; nova branch fix/busca-e-paginacao baseada na main, com PR #5
 integrado. Spec/plano versão 1 em docs/sdd/busca-e-paginacao/, estado Proposta.
 Proposta: remover pagina ao pesquisar, limpar termo ou alterar categoria/estoque;
 preservar paginação explícita e demais filtros. Prevê função compartilhada,
@@ -371,7 +369,7 @@ Checks remotos pendentes nesta etapa.
 
 PR #6: https://github.com/eduardofrois/kaizen-test/pull/6
 Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38179901454
-Checks testes-backend e build-frontend passaram no commit c51b6ba. Workflow
+Checks testes-backend e build-frontend passaram nessa publicação. Workflow
 do PR inclui npm test frontend antes do build. Branch publicada em origin.
 Estado Implementado: validação automatizada local/remota concluída; falta
 confirmação manual pós-correção (AC-04 e parte integrada de AC-01/AC-02).
@@ -380,7 +378,7 @@ Pendências remotas descritas antes desta execução são históricas.
 
 ## Histórico — Preparação de endereco-selecionado-no-checkout — 2026-10-11
 
-Pull confirmado; main 6fab792 inclui merge do PR #6. KZN-331: inspeção do
+Pull confirmado; main inclui merge do PR #6. KZN-331: inspeção do
 Checkout.jsx confirma finalizar() buscando principal e ignorando enderecoId.
 Backend já verifica posse e utiliza o ID recebido para observação/snapshot.
 Spec/plano versão 1 em docs/sdd/endereco-selecionado-no-checkout/, Proposta.
@@ -426,7 +424,7 @@ pendentes. Checks remotos ainda não executados nesta etapa.
 
 PR #7: https://github.com/eduardofrois/kaizen-test/pull/7
 Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38181718715
-Checks testes-backend e build-frontend passaram no commit 37ed34b. Branch
+Checks testes-backend e build-frontend passaram nessa publicação. Branch
 publicada; merge manual pelo usuário. CI comprova regressões existentes/build,
 sem substituir os cenários específicos de checkout ainda não confirmados.
 Estado Implementado: AC-01 confirmado por payload informado; AC-05 concluído;
@@ -435,7 +433,7 @@ Pendências de autorização/abertura/CI anteriores são registros históricos.
 
 ## Histórico — Investigação de carrinho-por-sessao — 2026-10-11
 
-Pull confirmado; main 1d30bcc inclui PR #7. Branch fix/carrinho-por-sessao.
+Pull confirmado; main inclui PR #7. Branch fix/carrinho-por-sessao.
 FIX-005: provider não observa autenticação; respostas de todas as operações
 podem publicar estado após mudança de conta. Reprodução normal X→Y já foi
 confirmada pelo usuário; concorrência ainda depende de teste controlado.
@@ -500,7 +498,7 @@ foram promovidos a validação concluída.
 
 PR #8: https://github.com/eduardofrois/kaizen-test/pull/8
 Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38186410197
-Checks testes-backend e build-frontend passaram no commit 6ffa315. Branch
+Checks testes-backend e build-frontend passaram nessa publicação. Branch
 fix/carrinho-por-sessao publicada. Troca X/Y/X sem F5 já confirmada pelo usuário;
 regressões controladas locais e CI concluídas. Integração visual específica
 de boot/StrictMode, falhas e resposta atrasada segue pendente; estado geral
@@ -509,7 +507,7 @@ Registros anteriores de autorização/abertura/CI pendentes são históricos.
 
 ## Histórico — Investigação de precisao-monetaria — 2026-10-11
 
-Pull realizado; main d040365 inclui merge do PR #8. Branch fix/precisao-monetaria.
+Pull realizado; main inclui merge do PR #8. Branch fix/precisao-monetaria.
 Execução isolada de paraCentavos confirmou 0.29→28 e 1.15→114 pela aproximação
 binária seguida de floor. Desenho versão 1 em docs/sdd/precisao-monetaria/spec.md,
 Proposta: arredondamento para valores com até duas casas, mantendo centavos
@@ -552,10 +550,10 @@ pelo usuário; nenhuma autorização para integrar diretamente na main.
 
 ## Histórico — Publicação da correção — 2026-10-11
 
-Commit de implementação: 3f584ce. Branch fix/precisao-monetaria publicada.
+Branch fix/precisao-monetaria publicada.
 PR #9: https://github.com/eduardofrois/kaizen-test/pull/9
 Checks testes-backend e build-frontend passaram no run 38187488965,
-commit 3f584ce: https://github.com/eduardofrois/kaizen-test/actions/runs/38187488965
+execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38187488965
 Esta atualização documental gera nova execução de CI a acompanhar.
 Merge permanece manual e pendente.
 Validação manual não informada; ERP real não utilizado nos testes.
@@ -563,7 +561,7 @@ Os registros anteriores de publicação pendente descrevem etapas passadas.
 
 ## Histórico — Próxima unidade: última página — 2026-10-11
 
-PR #9 confirmado como integrado à main em a1c60d6; pull concluído.
+PR #9 confirmado como integrado à main; pull concluído.
 Branch fix/ultima-pagina criada. FIX-004: expressão atual bloqueia Próxima
 em 1/2 e 2/3, confirmado por execução isolada; componente compartilhado por
 catálogo e pedidos. Spec versão 1 proposta em docs/sdd/ultima-pagina/spec.md.
@@ -603,9 +601,9 @@ pelo usuário; os registros anteriores de publicação pendente são históricos
 
 ## Histórico — Publicação de última página — 2026-10-11
 
-Commit de implementação: 6607796. Branch fix/ultima-pagina publicada.
+Branch fix/ultima-pagina publicada.
 PR #10: https://github.com/eduardofrois/kaizen-test/pull/10
-Checks testes-backend e build-frontend passaram para 6607796 no run
+Checks testes-backend e build-frontend passaram no run
 38187909239: https://github.com/eduardofrois/kaizen-test/actions/runs/38187909239
 Esta atualização documental dispara novos checks a acompanhar. Manual pendente;
 estado Implementado. Merge manual pelo usuário, não realizado nesta sessão.
@@ -613,7 +611,7 @@ Registros anteriores de publicação pendente são históricos.
 
 ## Histórico — Investigação de ajuste de quantidade — 2026-10-11
 
-PR #10 confirmado integrado na main (0845692); pull concluído. Branch
+PR #10 confirmado integrado na main; pull concluído. Branch
 fix/ajuste-de-quantidade-com-estoque-reduzido. Usuário confirmou reprodução
 do FIX-006 no frontend. Causa: input bloqueado por disponivel=false mesmo
 quando produto ativo permite reduzir a quantidade para o estoque disponível.
@@ -666,9 +664,9 @@ concluída; manual não informada. CI será acompanhado; merge manual pelo usuá
 
 ## Histórico — Publicação FIX-006 — 2026-10-12
 
-Commit 58bb69f publicado na branch fix/ajuste-de-quantidade-com-estoque-reduzido.
+Implementação publicada na branch fix/ajuste-de-quantidade-com-estoque-reduzido.
 PR #11: https://github.com/eduardofrois/kaizen-test/pull/11
-Checks testes-backend e build-frontend passaram para 58bb69f no run
+Checks testes-backend e build-frontend passaram no run
 38198503574: https://github.com/eduardofrois/kaizen-test/actions/runs/38198503574
 Nova execução acompanha esta atualização documental. Estado Implementado; manual pendente.
 Merge permanece manual pelo usuário. Registros de publicação pendente acima
@@ -677,7 +675,7 @@ extra ao final do componente; nenhuma mudança comportamental adicional.
 
 ## Histórico — Investigação de remoção de telefone — 2026-10-12
 
-PR #11 integrado na main c7e98cd, pull concluído. Branch
+PR #11 integrado na main, pull concluído. Branch
 fix/remocao-de-telefone-do-perfil criada. FIX-007 confirmado por inspeção atual
 e evidência isolada anterior: || mantém número diante de null; rota também
 normaliza telefone omitido como null. Proposta diferencia ausência (preservar)
@@ -729,7 +727,7 @@ Registros anteriores de validação/publicação pendente são históricos.
 
 ## Histórico — Publicação FIX-007 — 2026-10-12
 
-Implementação publicada no commit40ea907, branch fix/remocao-de-telefone-do-perfil.
+Implementação publicada na branch fix/remocao-de-telefone-do-perfil.
 PR #12: https://github.com/eduardofrois/kaizen-test/pull/12
 Checks testes-backend e build-frontend passaram no run38314449233:
 https://github.com/eduardofrois/kaizen-test/actions/runs/38314449233
@@ -739,7 +737,7 @@ de publicação/CI/manual pendentes são históricos. Nenhum merge realizado pel
 
 ## Histórico — Investigação de espaços em senha — 2026-10-12
 
-PR #12 integrado na main f744b39; pull concluído. Branch
+PR #12 integrado na main; pull concluído. Branch
 fix/espacos-na-autenticacao-de-senha. Inspeção confirma trim em login/senha_atual
 e preservação em cadastro/nova senha, com NFKC simétrico na criptografia.
 Spec versão1 propõe validador de autenticação que preserva entrada, rejeita
@@ -791,7 +789,7 @@ Registros anteriores de manual/autorização pendentes são históricos.
 
 ## Histórico — Publicação FIX-008 — 2026-10-12
 
-Commit de implementação: `9b29049`. Branch publicada:
+Branch publicada:
 `fix/espacos-na-autenticacao-de-senha`. PR #13 aberto para main:
 https://github.com/eduardofrois/kaizen-test/pull/13
 Estado Validado; testes locais e confirmação manual concluídos. Checks remotos
@@ -799,7 +797,7 @@ em acompanhamento. Merge manual pendente. Nenhum merge realizado pela IA.
 
 ## Histórico — Investigação FIX-009 — 2026-10-12
 
-Main sincronizada em f744b39; PR #13 ainda não integrado na consulta remota.
+Main sincronizada; PR #13 ainda não integrado na consulta remota.
 Branch fix/layout-responsivo-do-catalogo. Reprodução visual local como visitante:
 viewport solicitado375x812, largura útil reportada341px; página/cabeçalho702px,
 busca380px. Screenshot observado confirma corte do cabeçalho e cards comprimidos.
@@ -837,7 +835,7 @@ Screenshot local: /private/tmp/kaizen-fix009-mobile.png (artefato temporário,
 não versionado). Evidência anterior: screenshot do usuário e medida341/702px.
 
 Regressões: frontend53/53, backend65/65, build61 módulos passaram. Backend65
-corresponde à baseline main f744b39; FIX-008 está em outro PR e não nesta branch.
+corresponde à baseline main; FIX-008 está em outro PR e não nesta branch.
 Sem teste que replique classes CSS. Estado Implementado: faltam matriz
 autenticada/contador/perfil, percurso completo de teclado/rolagem, adição e
 confirmação manual pelo usuário. Estado adicionando e captura desktop ainda
@@ -865,14 +863,14 @@ Commit, push e PR desta unidade autorizados. Merge manual pelo usuário.
 
 ## Histórico — Publicação FIX-009 — 2026-10-12
 
-Implementação: `c50fead`. Branch `fix/layout-responsivo-do-catalogo` publicada.
+Branch `fix/layout-responsivo-do-catalogo` publicada.
 PR #14: https://github.com/eduardofrois/kaizen-test/pull/14
 Validação manual confirmada; checks remotos em acompanhamento. Merge manual
 pendente. Nenhum merge realizado pela IA.
 
 ## Histórico — Investigação FIX-002 — 2026-10-12
 
-Main sincronizada em14f5163 após merge do PR14. Branch fix/restricao-de-origem-cors.
+Main sincronizada após merge do PR14. Branch fix/restricao-de-origem-cors.
 Revisados comentários de app.js, proxy Vite, cookies e config.corsOrigem.
 Proposta: permitir apenas origem configurada, padrão localhost5173 em dev/test
 e nenhuma permissão CORS por padrão em produção; requisições seguem rotas
@@ -903,7 +901,7 @@ Adicionados19 testes de configuração (alguns com tabelas internas) e5 cenário
 HTTP agrupados. RED24:5 passaram/19 falharam por default produção, ausência de
 validação e reflexão indevida. GREEN24/24; com config.test.js30/30. Suíte
 backend89/89, frontend53/53 e build61 módulos passaram; sintaxe app/config e
-git diff --check passaram. Baseline14f5163 contém65 testes backend anteriores;
+git diff --check passaram. Baseline contém 65 testes backend anteriores;
 a correção FIX-008 permanece em PR separado e não compõe essa contagem.
 
 HTTP usa app real, SQLite/schema temporários, JWT/usuários sintéticos e fetch
@@ -930,14 +928,14 @@ de manual/autorização pendentes são históricos.
 
 ## Histórico — Publicação FIX-002 — 2026-10-12
 
-Implementação `b3096f8` publicada em `fix/restricao-de-origem-cors`.
+Implementação publicada em `fix/restricao-de-origem-cors`.
 PR #15: https://github.com/eduardofrois/kaizen-test/pull/15
 Estado Validado, confirmação manual registrada. Checks remotos em acompanhamento;
 merge manual pendente. Nenhum merge realizado pela IA.
 
 ## Histórico — Preparação FIX-010 — 2026-10-12
 
-Main sincronizada em7d4f391 após PR15. Branch fix/limites-de-documento-e-telefone.
+Main sincronizada após PR15. Branch fix/limites-de-documento-e-telefone.
 Cadastro.jsx e DadosPessoais em Perfil.jsx sem maxLength; Campo já encaminha
 props. Backend mantém documento18/telefone20 caracteres e regras de dígitos.
 Spec versão1 propõe limites nativos nos quatro inputs, sem máscaras ou filtro
@@ -1004,7 +1002,7 @@ Registros anteriores de manual/publicação pendentes são históricos.
 
 ## Histórico — Publicação FIX-010 — 2026-10-12
 
-Implementação `cc24f45` publicada em `fix/limites-de-documento-e-telefone`.
+Implementação publicada em `fix/limites-de-documento-e-telefone`.
 PR #16: https://github.com/eduardofrois/kaizen-test/pull/16
 Validação manual confirmada. Checks remotos em acompanhamento; merge manual
 pendente. Nenhum merge realizado pela IA.
@@ -1012,7 +1010,7 @@ pendente. Nenhum merge realizado pela IA.
 ## Histórico — Atualização do PR #13 e resolução de conflitos — 2026-10-12
 
 Usuário solicitou corrigir os conflitos do PR #13. Incorporada a main
-`60d5827` na branch `fix/espacos-na-autenticacao-de-senha`, preservando os
+na branch `fix/espacos-na-autenticacao-de-senha`, preservando os
 registros da FIX-008 e os trabalhos posteriores (layout, CORS e máscaras).
 Os conflitos eram documentais em RELATORIO.md, fix.md, docs/investigacao.md
 e docs/sdd/README.md; o código foi integrado automaticamente, sem alteração

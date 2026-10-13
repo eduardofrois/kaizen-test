@@ -1,7 +1,7 @@
 # Mapa do código e da arquitetura atual
 
-Atualizado em 2026-10-13. Referência: main `76eca4d`, com múltiplos carrinhos v2
-integrados. O contexto da baseline original `81897d5` está no
+Atualizado em 2026-10-13. Referência: main, com múltiplos carrinhos v2
+integrados. O contexto da baseline original está no
 [histórico da investigação](../historico/fix.md).
 [ARQUITETURA.md](../../ARQUITETURA.md) documenta os contratos e regras atuais.
 

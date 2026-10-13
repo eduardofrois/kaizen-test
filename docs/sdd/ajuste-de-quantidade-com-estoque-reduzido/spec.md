@@ -2,7 +2,7 @@
 
 **Versão:** 1
 **Estado:** Implementado e integrado à main; validação manual confirmada pelo usuário em 2026-10-12. Evidências e limites por cenário na matriz e no histórico desta unidade.
-**Baseline/data:** 0845692; 2026-10-11
+**Baseline/data:** 2026-10-11
 **Origem:** FIX-006
 **Branch:** fix/ajuste-de-quantidade-com-estoque-reduzido
 **Aprovação do desenho:** 2026-10-11; usuário “aprovado”, após apresentação da spec versão 1.
@@ -16,7 +16,7 @@ anteriores; não acrescenta execução pela IA, capturas por variante, exploraç
 de segurança ou pedido real no SIAC. Requisitos e aprovações de implementação
 permanecem os já registrados. Esta revisão documental não autoriza publicação.
 
-> Leitura atualizada em 2026-10-13, referência main 76eca4d. O problema e
+> Leitura atualizada em 2026-10-13, referência main. O problema e
 > os exemplos de execução abaixo descrevem a baseline e o escopo original
 > da unidade. Relatos datados preservam o estado conhecido naquela etapa.
 > Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
@@ -112,7 +112,7 @@ Nota KZN-7F3A lida novamente em carrinhoService; identifica leitura, não o bug.
 
 ## Entrega e histórico
 
-Main atualizada após PR #10, merge 0845692. Atualizar relatório, inventário,
+Main atualizada após PR #10, merge . Atualizar relatório, inventário,
 investigação e SDD com aprovação, resultados e pendências reais.
 Versão 1 preparada para revisão. Plan.md será detalhado após aprovação do desenho;
 código/testes/dependências permanecem intactos nesta etapa.
@@ -154,9 +154,9 @@ concluída; manual não informada. CI será acompanhado; merge manual pelo usuá
 
 ## Histórico — Publicação FIX-006 — 2026-10-12
 
-Commit 58bb69f publicado na branch fix/ajuste-de-quantidade-com-estoque-reduzido.
+Implementação publicada na branch fix/ajuste-de-quantidade-com-estoque-reduzido.
 PR #11: https://github.com/eduardofrois/kaizen-test/pull/11
-Checks testes-backend e build-frontend passaram para 58bb69f no run
+Checks testes-backend e build-frontend passaram no run
 38198503574: https://github.com/eduardofrois/kaizen-test/actions/runs/38198503574
 Nova execução acompanha esta atualização documental. Estado Implementado; manual pendente.
 Merge permanece manual pelo usuário. Registros de publicação pendente acima

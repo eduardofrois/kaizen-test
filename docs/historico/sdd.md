@@ -8,7 +8,7 @@
 ## Publicação MULTI-001 — 2026-10-13
 
 Usuário solicitou PR detalhado da nova feature e link para avaliação.
-Implementação `2f9ff7a` enviada em `feat/multiplos-carrinhos` ao repositório
+Implementação enviada em `feat/multiplos-carrinhos` ao repositório
 eduardofrois/kaizen-test. [PR #17](https://github.com/eduardofrois/kaizen-test/pull/17)
 aberto contra main, sem conflitos na consulta. Checks testes-backend e
 build-frontend da implementação passaram no
@@ -207,10 +207,10 @@ pelo usuário; nenhuma autorização para integrar diretamente na main.
 
 ## Histórico — Publicação da correção — 2026-10-11
 
-Commit de implementação: 3f584ce. Branch fix/precisao-monetaria publicada.
+Branch fix/precisao-monetaria publicada.
 PR #9: https://github.com/eduardofrois/kaizen-test/pull/9
 Checks testes-backend e build-frontend passaram no run 38187488965,
-commit 3f584ce: https://github.com/eduardofrois/kaizen-test/actions/runs/38187488965
+execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38187488965
 Esta atualização documental gera nova execução de CI a acompanhar.
 Merge permanece manual e pendente.
 Validação manual não informada; ERP real não utilizado nos testes.
@@ -243,9 +243,9 @@ pelo usuário; os registros anteriores de publicação pendente são históricos
 
 ## Histórico — Publicação de última página — 2026-10-11
 
-Commit de implementação: 6607796. Branch fix/ultima-pagina publicada.
+Branch fix/ultima-pagina publicada.
 PR #10: https://github.com/eduardofrois/kaizen-test/pull/10
-Checks testes-backend e build-frontend passaram para 6607796 no run
+Checks testes-backend e build-frontend passaram no run
 38187909239: https://github.com/eduardofrois/kaizen-test/actions/runs/38187909239
 Esta atualização documental dispara novos checks a acompanhar. Manual pendente;
 estado Implementado. Merge manual pelo usuário, não realizado nesta sessão.
@@ -286,9 +286,9 @@ concluída; manual não informada. CI será acompanhado; merge manual pelo usuá
 
 ## Histórico — Publicação FIX-006 — 2026-10-12
 
-Commit 58bb69f publicado na branch fix/ajuste-de-quantidade-com-estoque-reduzido.
+Implementação publicada na branch fix/ajuste-de-quantidade-com-estoque-reduzido.
 PR #11: https://github.com/eduardofrois/kaizen-test/pull/11
-Checks testes-backend e build-frontend passaram para 58bb69f no run
+Checks testes-backend e build-frontend passaram no run
 38198503574: https://github.com/eduardofrois/kaizen-test/actions/runs/38198503574
 Nova execução acompanha esta atualização documental. Estado Implementado; manual pendente.
 Merge permanece manual pelo usuário. Registros de publicação pendente acima
@@ -331,7 +331,7 @@ Registros anteriores de validação/publicação pendente são históricos.
 
 ## Histórico — Publicação FIX-007 — 2026-10-12
 
-Implementação publicada no commit40ea907, branch fix/remocao-de-telefone-do-perfil.
+Implementação publicada na branch fix/remocao-de-telefone-do-perfil.
 PR #12: https://github.com/eduardofrois/kaizen-test/pull/12
 Checks testes-backend e build-frontend passaram no run38314449233:
 https://github.com/eduardofrois/kaizen-test/actions/runs/38314449233
@@ -374,7 +374,7 @@ Registros anteriores de manual/autorização pendentes são históricos.
 
 ## Histórico — Publicação FIX-008 — 2026-10-12
 
-Commit de implementação: `9b29049`. Branch publicada:
+Branch publicada:
 `fix/espacos-na-autenticacao-de-senha`. PR #13 aberto para main:
 https://github.com/eduardofrois/kaizen-test/pull/13
 Estado Validado; testes locais e confirmação manual concluídos. Checks remotos
@@ -382,7 +382,7 @@ em acompanhamento. Merge manual pendente. Nenhum merge realizado pela IA.
 
 ## Histórico — Investigação FIX-009 — 2026-10-12
 
-Main sincronizada em f744b39; PR #13 ainda não integrado na consulta remota.
+Main sincronizada; PR #13 ainda não integrado na consulta remota.
 Branch fix/layout-responsivo-do-catalogo. Reprodução visual local como visitante:
 viewport solicitado375x812, largura útil reportada341px; página/cabeçalho702px,
 busca380px. Screenshot observado confirma corte do cabeçalho e cards comprimidos.
@@ -420,7 +420,7 @@ Screenshot local: /private/tmp/kaizen-fix009-mobile.png (artefato temporário,
 não versionado). Evidência anterior: screenshot do usuário e medida341/702px.
 
 Regressões: frontend53/53, backend65/65, build61 módulos passaram. Backend65
-corresponde à baseline main f744b39; FIX-008 está em outro PR e não nesta branch.
+corresponde à baseline main; FIX-008 está em outro PR e não nesta branch.
 Sem teste que replique classes CSS. Estado Implementado: faltam matriz
 autenticada/contador/perfil, percurso completo de teclado/rolagem, adição e
 confirmação manual pelo usuário. Estado adicionando e captura desktop ainda
@@ -448,14 +448,14 @@ Commit, push e PR desta unidade autorizados. Merge manual pelo usuário.
 
 ## Histórico — Publicação FIX-009 — 2026-10-12
 
-Implementação: `c50fead`. Branch `fix/layout-responsivo-do-catalogo` publicada.
+Branch `fix/layout-responsivo-do-catalogo` publicada.
 PR #14: https://github.com/eduardofrois/kaizen-test/pull/14
 Validação manual confirmada; checks remotos em acompanhamento. Merge manual
 pendente. Nenhum merge realizado pela IA.
 
 ## Histórico — Investigação FIX-002 — 2026-10-12
 
-Main sincronizada em14f5163 após merge do PR14. Branch fix/restricao-de-origem-cors.
+Main sincronizada após merge do PR14. Branch fix/restricao-de-origem-cors.
 Revisados comentários de app.js, proxy Vite, cookies e config.corsOrigem.
 Proposta: permitir apenas origem configurada, padrão localhost5173 em dev/test
 e nenhuma permissão CORS por padrão em produção; requisições seguem rotas
@@ -486,7 +486,7 @@ Adicionados19 testes de configuração (alguns com tabelas internas) e5 cenário
 HTTP agrupados. RED24:5 passaram/19 falharam por default produção, ausência de
 validação e reflexão indevida. GREEN24/24; com config.test.js30/30. Suíte
 backend89/89, frontend53/53 e build61 módulos passaram; sintaxe app/config e
-git diff --check passaram. Baseline14f5163 contém65 testes backend anteriores;
+git diff --check passaram. Baseline contém 65 testes backend anteriores;
 a correção FIX-008 permanece em PR separado e não compõe essa contagem.
 
 HTTP usa app real, SQLite/schema temporários, JWT/usuários sintéticos e fetch
@@ -513,14 +513,14 @@ de manual/autorização pendentes são históricos.
 
 ## Histórico — Publicação FIX-002 — 2026-10-12
 
-Implementação `b3096f8` publicada em `fix/restricao-de-origem-cors`.
+Implementação publicada em `fix/restricao-de-origem-cors`.
 PR #15: https://github.com/eduardofrois/kaizen-test/pull/15
 Estado Validado, confirmação manual registrada. Checks remotos em acompanhamento;
 merge manual pendente. Nenhum merge realizado pela IA.
 
 ## Histórico — Preparação FIX-010 — 2026-10-12
 
-Main sincronizada em7d4f391 após PR15. Branch fix/limites-de-documento-e-telefone.
+Main sincronizada após PR15. Branch fix/limites-de-documento-e-telefone.
 Cadastro.jsx e DadosPessoais em Perfil.jsx sem maxLength; Campo já encaminha
 props. Backend mantém documento18/telefone20 caracteres e regras de dígitos.
 Spec versão1 propõe limites nativos nos quatro inputs, sem máscaras ou filtro
@@ -587,7 +587,7 @@ Registros anteriores de manual/publicação pendentes são históricos.
 
 ## Histórico — Publicação FIX-010 — 2026-10-12
 
-Implementação `cc24f45` publicada em `fix/limites-de-documento-e-telefone`.
+Implementação publicada em `fix/limites-de-documento-e-telefone`.
 PR #16: https://github.com/eduardofrois/kaizen-test/pull/16
 Validação manual confirmada. Checks remotos em acompanhamento; merge manual
 pendente. Nenhum merge realizado pela IA.
@@ -595,7 +595,7 @@ pendente. Nenhum merge realizado pela IA.
 ## Histórico — Atualização do PR #13 e resolução de conflitos — 2026-10-12
 
 Usuário solicitou corrigir os conflitos do PR #13. Incorporada a main
-`60d5827` na branch `fix/espacos-na-autenticacao-de-senha`, preservando os
+na branch `fix/espacos-na-autenticacao-de-senha`, preservando os
 registros da FIX-008 e os trabalhos posteriores (layout, CORS e máscaras).
 Os conflitos eram documentais em RELATORIO.md, fix.md, docs/investigacao.md
 e docs/sdd/README.md; o código foi integrado automaticamente, sem alteração

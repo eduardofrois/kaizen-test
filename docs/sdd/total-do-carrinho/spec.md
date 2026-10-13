@@ -2,7 +2,7 @@
 
 **Versão:** 1
 **Estado:** Implementado e integrado à main; validação manual confirmada pelo usuário em 2026-10-12. Evidências e limites por cenário na matriz e no histórico desta unidade.
-**Baseline/data:** origin/main 4261129; 2026-10-11
+**Baseline/data:** origin/main; 2026-10-11
 **Origem:** KZN-312; nota de leitura KZN-7F3A
 **Pasta/branch:** total-do-carrinho / fix/total-do-carrinho
 **Aprovação para implementar:** versão 1 aprovada em 2026-10-11;
@@ -16,7 +16,7 @@ anteriores; não acrescenta execução pela IA, capturas por variante, exploraç
 de segurança ou pedido real no SIAC. Requisitos e aprovações de implementação
 permanecem os já registrados. Esta revisão documental não autoriza publicação.
 
-> Leitura atualizada em 2026-10-13, referência main 76eca4d. O problema e
+> Leitura atualizada em 2026-10-13, referência main. O problema e
 > os exemplos de execução abaixo descrevem a baseline e o escopo original
 > da unidade. Relatos datados preservam o estado conhecido naquela etapa.
 > Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
@@ -166,7 +166,7 @@ sem realizar merge. Testes locais já passaram; evidência remota ainda pendente
 
 PR: https://github.com/eduardofrois/kaizen-test/pull/3
 Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38175551404
-Checks testes-backend e build-frontend passaram no commit ac2231f.
+Checks testes-backend e build-frontend passaram nessa publicação.
 Com reprodução prévia, aprovação SDD, RED/GREEN, confirmação manual do
 usuário e checks do PR concluídos, KZN-312 está Validado. Todos os critérios
 da versão 1 cumpridos; merge continua pendente de ação manual do usuário.

@@ -144,6 +144,6 @@ Sem nova dependência, schema, commit, publicação, CI remoto ou deploy.
 ## Situação da entrega — 2026-10-13
 
 Os quatro achados foram corrigidos na v2 e integrados no PR #17, merge
-76eca4d. A suíte atual passou com 123 testes backend e 94 frontend; build
+A suíte atual passou com 123 testes backend e 94 frontend; build
 67 módulos. Registros anteriores de achados abertos e publicação pendente
 são históricos. A revisão documental atual não altera os resultados TDD.

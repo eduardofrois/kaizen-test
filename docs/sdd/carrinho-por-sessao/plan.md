@@ -3,7 +3,7 @@
 **Versão:** 1
 **Estado:** Implementado e integrado à main; validação manual confirmada pelo usuário em 2026-10-12. Evidências e limites por cenário na matriz e no histórico desta unidade.
 **Spec:** [spec.md](spec.md), versão 1
-**Baseline/data:** 1d30bcc; 2026-10-11
+**Baseline/data:** 2026-10-11
 **Objetivo:** isolar conteúdo e resultados assíncronos por ciclo autenticado.
 **Arquitetura:** controlador sem React por identidade; provider assina snapshot
 com useSyncExternalStore, ativa/invalida no ciclo de layout e publica somente
@@ -21,7 +21,7 @@ anteriores; não acrescenta execução pela IA, capturas por variante, exploraç
 de segurança ou pedido real no SIAC. Requisitos e aprovações de implementação
 permanecem os já registrados. Esta revisão documental não autoriza publicação.
 
-> Leitura atualizada em 2026-10-13, referência main 76eca4d. O problema e
+> Leitura atualizada em 2026-10-13, referência main. O problema e
 > os exemplos de execução abaixo descrevem a baseline e o escopo original
 > da unidade. Relatos datados preservam o estado conhecido naquela etapa.
 > Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
@@ -231,7 +231,7 @@ Não adicionar mensagens técnicas de geração/identidade aos fluxos de produto
 - [ ] Conferir URL/filtros após troca; manter testes KZN-312/318 e KZN-325 verdes.
 - [x] Registrar limites: testes do controlador não são testes de hooks/React;
   integração exige navegador. Atualizar spec/plano/inventário/relatório.
-- [x] Quando autorizado, commit `fix: isola estado do carrinho por sessao` e
+- [x] Quando autorizado, registro da unidade e
   publicação da branch. PR somente sob comando explícito; merge pelo usuário.
 
 ## Matriz de validação
@@ -302,7 +302,7 @@ foram promovidos a validação concluída.
 
 PR #8: https://github.com/eduardofrois/kaizen-test/pull/8
 Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38186410197
-Checks testes-backend e build-frontend passaram no commit 6ffa315. Branch
+Checks testes-backend e build-frontend passaram nessa publicação. Branch
 fix/carrinho-por-sessao publicada. Troca X/Y/X sem F5 já confirmada pelo usuário;
 regressões controladas locais e CI concluídas. Integração visual específica
 de boot/StrictMode, falhas e resposta atrasada segue pendente; estado geral

@@ -1,8 +1,8 @@
 # Spec — Coerência da documentação de entrega
 
-**Versão:** 1
-**Estado:** Concluído e publicado no PR #18 para main; checks do commit inicial passaram; merge manual pendente.
-**Baseline/data:** `76eca4d`, main integrada; 2026-10-13, America/Sao_Paulo.
+**Versão:** 2
+**Estado:** Revisão v2 concluída; atualização do PR #18 autorizada, com merge manual pendente.
+**Baseline/data:** main integrada; 2026-10-13, America/Sao_Paulo.
 **Origem:** DOC-001 — pedido de alinhar a documentação ao projeto existente.
 **Branch:** `docs/coerencia-da-documentacao`.
 **Autorização:** pedido do usuário nesta conversa, em 2026-10-13: “vamos trabalhar na melhoria da documentacao então, deixe tudo coezo com o que existe de fato no projeto. arrume”. Autoriza edição documental. Não constitui aprovação de mudanças de aplicação, testes, dependências, schema ou contratos.
@@ -29,7 +29,7 @@ não será transformada em requisito explícito de hospedagem pública.
 - REQ-02: registrar testes 123/123 backend, 94/94 frontend e build de 67 módulos
   como execução de 2026-10-13 já observada nesta conversa, sem inventar nova CI,
   validação humana da v2 ou homologação SIAC.
-- REQ-03: registrar integração do PR #17 na main em `76eca4d`, conferida no Git;
+- REQ-03: registrar integração do PR #17 na main, conferida no Git;
   publicação documental autorizada separadamente em 2026-10-13, com PR para main.
 - REQ-04: manter INV-003/004/005 abertos e descrever INV-001/002 como mitigados
   pela feature, com recuperação externa ainda limitada.
@@ -61,7 +61,7 @@ pois esta unidade não altera comportamento.
 ## Resultado — 2026-10-13
 
 Relatório, arquitetura, execução, inventários e metadados reconciliados com
-a main 76eca4d. Registros anteriores preservados em docs/historico.
+a main. Registros anteriores preservados em docs/historico.
 Script transitório conferiu 54 Markdown, 206 links locais, seis âncoras,
 87 tabelas e fechamento de blocos, sem erros. git diff --check passou;
 comparação com main confirmou que arquivos não Markdown e AGENTS.md
@@ -77,9 +77,45 @@ pelo usuário; não há autorização para integração direta ou deploy.
 
 ## Publicação — 2026-10-13
 
-Commit documental b7f7d16 publicado em docs/coerencia-da-documentacao.
+Commit documental publicado em docs/coerencia-da-documentacao.
 [PR #18](https://github.com/eduardofrois/kaizen-test/pull/18) aberto para main, sem conflitos na consulta.
 Checks testes-backend e build-frontend passaram no
-[run 38404473049](https://github.com/eduardofrois/kaizen-test/actions/runs/38404473049), referente a b7f7d16.
-Este registro complementar gera novo commit e nova CI, separados dessa prova.
+[run 38404473049](https://github.com/eduardofrois/kaizen-test/actions/runs/38404473049), referente à publicação.
+A revisão v2 abaixo tem envio autorizado no registro mais recente; resultados de CI anteriores não validam automaticamente esta atualização.
 Merge permanece manual; não houve integração direta na main ou deploy.
+
+## Revisão v2 — referências e conclusões da entrega
+
+**Autorização — 2026-10-13:** pedido direto do usuário nesta conversa para remover referências a commits, informar as branches preservadas no README e avaliar a entrega conforme o README original e o e-mail recebido. Restrição expressa: somente código e documentação neste momento. Esta execução altera apenas Markdown e não publica alterações.
+
+- [x] Remover identificadores de commits dos documentos atuais e históricos, preservando aprovações, datas e evidências de execução.
+- [x] Atualizar o modelo SDD para usar estado ou branch de referência.
+- [x] Informar no README as branches publicadas preservadas para avaliação.
+- [x] Registrar a comparação com o enunciado e o e-mail em [relatório de entrega](../../../RELATORIO.md), distinguindo execução, validação e publicação.
+- [x] Conferir links, formatação, ausência de identificadores e escopo final do diff.
+
+Validação v2: 55 arquivos Markdown, 213 links locais, seis âncoras e 89 tabelas conferidos, sem erros; blocos fechados e git diff --check aprovado. Somente Markdown alterado; AGENTS.md e aplicação preservados. Nenhuma nova suíte funcional ou publicação nesta revisão.
+
+## Ajuste editorial — 13/10/2026
+
+Pedido do usuário nesta conversa: “então faça essa alteração”, em resposta à
+proposta de remover o documento separado de avaliação e consolidar somente as
+conclusões úteis no RELATORIO.md. Ajuste dentro do escopo documental da v2.
+
+- [x] Remover o arquivo separado de avaliação.
+- [x] Consolidar resultados e limitações no relatório existente.
+- [x] Atualizar README e referências nos registros da unidade e da investigação.
+- [x] Conferir links locais e diff; manter alterações apenas locais.
+
+Validação do ajuste: 54 arquivos Markdown, 211 links locais, seis âncoras e
+87 tabelas conferidos sem erros; git diff --check passou. Nenhuma referência
+ao arquivo removido permanece. Aplicação e testes não foram alterados.
+
+## Autorização de atualização do PR — 13/10/2026
+
+Usuário: “pode commitar para eu avaliar no PR 18”. Autoriza commit das alterações
+documentais revisadas e push da branch docs/coerencia-da-documentacao para
+atualizar o PR #18 em eduardofrois/kaizen-test. Não autoriza merge ou deploy.
+Escopo: remoção de referências a commits, aviso das branches no README e
+conclusões consolidadas no RELATORIO.md, sem arquivo separado de avaliação.
+Validação documental registrada acima; nova CI será conferida após o envio.

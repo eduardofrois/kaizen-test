@@ -2,7 +2,7 @@
 
 **Versão:** 1
 **Estado:** Implementado e integrado à main; validação manual confirmada pelo usuário em 2026-10-12. Evidências e limites por cenário na matriz e no histórico desta unidade.
-**Baseline/data:** 1d30bcc; 2026-10-11
+**Baseline/data:** 2026-10-11
 **Origem:** FIX-005 — Estado do carrinho desconectado da autenticação
 **Branch:** fix/carrinho-por-sessao
 **Aprovação do desenho:** 2026-10-11; mensagem do usuário: “aprovado”, após apresentação da spec.
@@ -16,7 +16,7 @@ anteriores; não acrescenta execução pela IA, capturas por variante, exploraç
 de segurança ou pedido real no SIAC. Requisitos e aprovações de implementação
 permanecem os já registrados. Esta revisão documental não autoriza publicação.
 
-> Leitura atualizada em 2026-10-13, referência main 76eca4d. O problema e
+> Leitura atualizada em 2026-10-13, referência main. O problema e
 > os exemplos de execução abaixo descrevem a baseline e o escopo original
 > da unidade. Relatos datados preservam o estado conhecido naquela etapa.
 > Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
@@ -33,7 +33,7 @@ Usuário já confirmou X→logout→Y exibindo carrinho X até F5. Não há prov
 vazamento pela API; backend filtra usuario_id. Risco de resposta tardia foi
 identificado por inspeção e precisa de teste controlado. main.jsx documenta
 que visitante não consulta carrinho, mas isso ainda não acontece na baseline.
-Pull realizado; PR #7 integrado em main pelo merge 1d30bcc.
+Pull realizado; PR #7 integrado em main pelo merge .
 
 ## Objetivo e comportamento esperado
 
@@ -194,7 +194,7 @@ foram promovidos a validação concluída.
 
 PR #8: https://github.com/eduardofrois/kaizen-test/pull/8
 Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38186410197
-Checks testes-backend e build-frontend passaram no commit 6ffa315. Branch
+Checks testes-backend e build-frontend passaram nessa publicação. Branch
 fix/carrinho-por-sessao publicada. Troca X/Y/X sem F5 já confirmada pelo usuário;
 regressões controladas locais e CI concluídas. Integração visual específica
 de boot/StrictMode, falhas e resposta atrasada segue pendente; estado geral

@@ -3,7 +3,7 @@
 **Versão:** 1
 **Estado:** Implementado e integrado à main; validação manual confirmada pelo usuário em 2026-10-12. Evidências e limites por cenário na matriz e no histórico desta unidade.
 **Spec:** [spec.md](spec.md), versão 1
-**Baseline/data:** c7e98cd; 2026-10-12
+**Baseline/data:** 2026-10-12
 **Objetivo:** remover telefone explicitamente e preservar quando omitido.
 **Arquitetura:** rota distingue presença; serviço distingue undefined de null.
 **Stack:** JavaScript ESM, node:test, Express e SQLite existentes.
@@ -19,7 +19,7 @@ anteriores; não acrescenta execução pela IA, capturas por variante, exploraç
 de segurança ou pedido real no SIAC. Requisitos e aprovações de implementação
 permanecem os já registrados. Esta revisão documental não autoriza publicação.
 
-> Leitura atualizada em 2026-10-13, referência main 76eca4d. O problema e
+> Leitura atualizada em 2026-10-13, referência main. O problema e
 > os exemplos de execução abaixo descrevem a baseline e o escopo original
 > da unidade. Relatos datados preservam o estado conhecido naquela etapa.
 > Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
@@ -146,7 +146,7 @@ Não alterar validador global, serialização, sessão ou frontend.
 - [x] Atualizar spec/plano, fix.md, relatório, investigação e índice SDD com
   RED/GREEN, aprovações, estado e pendências. Teste HTTP isolado não equivale
   a sessão real no navegador; registro manual somente quando confirmado.
-- [x] Após comando explícito, commit `fix: permite remover telefone do perfil`,
+- [x] Após comando explícito, registro da unidade,
   publicar branch e abrir PR. Merge manual pelo usuário.
 
 ## Matriz de validação
@@ -203,7 +203,7 @@ Registros anteriores de validação/publicação pendente são históricos.
 
 ## Histórico — Publicação FIX-007 — 2026-10-12
 
-Implementação publicada no commit40ea907, branch fix/remocao-de-telefone-do-perfil.
+Implementação publicada na branch fix/remocao-de-telefone-do-perfil.
 PR #12: https://github.com/eduardofrois/kaizen-test/pull/12
 Checks testes-backend e build-frontend passaram no run38314449233:
 https://github.com/eduardofrois/kaizen-test/actions/runs/38314449233

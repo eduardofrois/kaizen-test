@@ -3,7 +3,7 @@
 **Versão:** 1
 **Estado:** Implementado e integrado à main; validação manual confirmada pelo usuário em 2026-10-12. Evidências e limites por cenário na matriz e no histórico desta unidade.
 **Origem:** FIX-002
-**Baseline/data:** 14f5163; 2026-10-12
+**Baseline/data:** 2026-10-12
 **Branch:** fix/restricao-de-origem-cors
 **Aprovação da spec:** 2026-10-12; usuário “aprovado” e “spec aprovada, pode fazer o plan”.
 **Aprovação para implementar:** 2026-10-12; usuário “aprovado”, após apresentação do plano versão 1.
@@ -16,7 +16,7 @@ anteriores; não acrescenta execução pela IA, capturas por variante, exploraç
 de segurança ou pedido real no SIAC. Requisitos e aprovações de implementação
 permanecem os já registrados. Esta revisão documental não autoriza publicação.
 
-> Leitura atualizada em 2026-10-13, referência main 76eca4d. O problema e
+> Leitura atualizada em 2026-10-13, referência main. O problema e
 > os exemplos de execução abaixo descrevem a baseline e o escopo original
 > da unidade. Relatos datados preservam o estado conhecido naquela etapa.
 > Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
@@ -130,7 +130,7 @@ Adicionados19 testes de configuração (alguns com tabelas internas) e5 cenário
 HTTP agrupados. RED24:5 passaram/19 falharam por default produção, ausência de
 validação e reflexão indevida. GREEN24/24; com config.test.js30/30. Suíte
 backend89/89, frontend53/53 e build61 módulos passaram; sintaxe app/config e
-git diff --check passaram. Baseline14f5163 contém65 testes backend anteriores;
+git diff --check passaram. Baseline contém 65 testes backend anteriores;
 a correção FIX-008 permanece em PR separado e não compõe essa contagem.
 
 HTTP usa app real, SQLite/schema temporários, JWT/usuários sintéticos e fetch
@@ -157,7 +157,7 @@ de manual/autorização pendentes são históricos.
 
 ## Histórico — Publicação FIX-002 — 2026-10-12
 
-Implementação `b3096f8` publicada em `fix/restricao-de-origem-cors`.
+Implementação publicada em `fix/restricao-de-origem-cors`.
 PR #15: https://github.com/eduardofrois/kaizen-test/pull/15
 Estado Validado, confirmação manual registrada. Checks remotos em acompanhamento;
 merge manual pendente. Nenhum merge realizado pela IA.

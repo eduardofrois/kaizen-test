@@ -1,6 +1,6 @@
 # Spec Driven Development
 
-Atualizado em 2026-10-13, referência main **76eca4d**.
+Atualizado em 2026-10-13, referência main.
 Este índice mostra o estado atual. Aprovações, RED/GREEN, publicações e
 pendências por cenário ficam na spec e no plano de cada unidade.
 O histórico extenso deste índice está [arquivado](../historico/sdd.md).
@@ -40,7 +40,7 @@ ERP simulado e SQLite isolado; build não é navegação integrada.
 Nenhuma escrita no SIAC real foi feita. A conferência editorial precedeu a
 publicação; o PR documental agora tem CI própria registrada abaixo.
 
-PR #17 integrado em `76eca4d`, conferido pelo Git. A implementação teve checks
+PR #17 integrado, conferido pelo Git. A implementação teve checks
 aprovados no [run 38360777053](https://github.com/eduardofrois/kaizen-test/actions/runs/38360777053).
 Não se presume resultado de uma execução remota posterior. Publicação no
 GitHub, execução local e deploy são estados distintos; deploy público não

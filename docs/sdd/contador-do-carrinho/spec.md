@@ -2,7 +2,7 @@
 
 **Versão:** 1
 **Estado:** Implementado e integrado à main; validação manual confirmada pelo usuário em 2026-10-12. Evidências e limites por cenário na matriz e no histórico desta unidade.
-**Baseline/data:** b8f6abf; 2026-10-11
+**Baseline/data:** 2026-10-11
 **Origem:** KZN-318 — Número no ícone do carrinho está errado
 **Branch:** fix/contador-do-carrinho
 **Aprovação para implementar:** versão 1 aprovada em 2026-10-11; mensagem do usuário: “aprovado os documentos”.
@@ -15,7 +15,7 @@ anteriores; não acrescenta execução pela IA, capturas por variante, exploraç
 de segurança ou pedido real no SIAC. Requisitos e aprovações de implementação
 permanecem os já registrados. Esta revisão documental não autoriza publicação.
 
-> Leitura atualizada em 2026-10-13, referência main 76eca4d. O problema e
+> Leitura atualizada em 2026-10-13, referência main. O problema e
 > os exemplos de execução abaixo descrevem a baseline e o escopo original
 > da unidade. Relatos datados preservam o estado conhecido naquela etapa.
 > Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
@@ -136,7 +136,7 @@ são registros históricos superados por esta confirmação.
 
 PR #5: https://github.com/eduardofrois/kaizen-test/pull/5
 Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38177680580
-Checks testes-backend e build-frontend passaram no commit ea3bc6a.
+Checks testes-backend e build-frontend passaram nessa publicação.
 Estado Validado: critérios da versão 1 concluídos com regressões isoladas,
 build local, confirmação manual do usuário e CI do PR. Merge manual pendente.
 Registros anteriores de espera por validação/abertura/CI são históricos.

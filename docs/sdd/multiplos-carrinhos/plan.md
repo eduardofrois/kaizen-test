@@ -1,19 +1,19 @@
 # Plano de implementação — Múltiplos carrinhos e edição na vitrine
 
 **Versão:** 2
-**Estado:** V2 implementada e integrada à main no PR #17 (76eca4d); testes e navegador simulado registrados; manual da v1 confirmado. Sem nova confirmação humana específica da v2.
+**Estado:** V2 implementada e integrada à main no PR #17; testes e navegador simulado registrados; manual da v1 confirmado. Sem nova confirmação humana específica da v2.
 **Spec:** [spec.md](spec.md), versão 2 aprovada em 2026-10-13; versão 1 preservada no histórico.
 **Aprovação da revisão v2 para implementar:** 2026-10-13; usuário “aprovado” após apresentação dos links da spec/plano v2 e pergunta “Aprova implementar essa versão?”. Inclui os quatro achados, testes RED/GREEN, regressões e ensaio simulado; sem publicação.
 **Autorização de publicação:** 2026-10-13; usuário solicitou abrir PR detalhado da nova feature e enviar o link. Commit/push e PR desta unidade autorizados; merge manual e sem envio da consolidação documental anterior.
 **Objetivo:** manter até dez carrinhos isolados por cliente e editar o ativo na vitrine, com checkout explícito e protegido por carrinho.
 **Arquitetura:** entidades e bloqueio no SQLite; rotas validam HTTP/posse, serviços aplicam regras, cliente ERP concentra chamadas SIAC. O contexto React mantém principal persistido e ativo local à aba, publicando somente respostas do ciclo/seleção atual.
 **Stack:** JavaScript ESM, Node/Express, better-sqlite3, React, React Router, Tailwind e node:test existentes; sem dependências novas.
-**Baseline/data:** `f95ae66`; 2026-10-13, America/Sao_Paulo. Alterações documentais locais anteriores preservadas.
+**Baseline/data:** 2026-10-13, America/Sao_Paulo. Alterações documentais locais anteriores preservadas.
 **Aprovação da spec:** usuário “aprovado” após apresentação da spec v1 e pergunta sobre preparar este plano.
 **Aprovação histórica para implementar v1:** 2026-10-13; usuário “aprovado” após apresentação do plano v1 e pergunta explícita sobre implementar a feature nesta sessão. Escopo: spec v1 e plano v1; não atribuída à revisão v2.
 **Execução:** nesta sessão, uma etapa por vez; sem delegação automática. Registrar resultado observado ao concluir cada etapa. Commit/push/PR exigem comando específico.
 
-> Leitura atualizada em 2026-10-13, referência main 76eca4d. O problema e
+> Leitura atualizada em 2026-10-13, referência main. O problema e
 > os exemplos de execução abaixo descrevem a baseline e o escopo original
 > da unidade. Relatos datados preservam o estado conhecido naquela etapa.
 > Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
@@ -991,7 +991,7 @@ confirmação humana adicional para a v2. Limites distribuídos de SIAC mantidos
 ### Preparação do PR autorizada — 2026-10-13
 
 Usuário solicitou abrir PR detalhado da nova feature e enviar o link. Confirmado
-origin eduardofrois/kaizen-test e base main; HEAD f95ae66 já alcançável por
+origin eduardofrois/kaizen-test e base main; HEAD já alcançável por
 origin/main, sem diferença de árvore. Nenhum PR anterior desta branch na consulta.
 Stage explícito de 45 arquivos: código/testes/unidade e somente trechos da
 feature em fix.md e índices. Revisão documental geral anterior preservada no
@@ -1006,7 +1006,7 @@ Commit/push/PR serão registrados após execução; merge manual pelo usuário.
 
 ### Publicação do PR — 2026-10-13
 
-Commit `2f9ff7a` criado e enviado na branch `feat/multiplos-carrinhos` ao
+Commit criado e enviado na branch `feat/multiplos-carrinhos` ao
 repositório autorizado eduardofrois/kaizen-test. [PR #17](https://github.com/eduardofrois/kaizen-test/pull/17)
 aberto contra main, regular, com regras/justificativas, implementação, migração,
 contratos, checkout/recuperação, quatro correções TDD, evidências e roteiro
@@ -1021,7 +1021,7 @@ e frontend/.vite preservados fora do envio. Nenhum merge/deploy realizado.
 
 ## Consolidação da entrega — 2026-10-13
 
-PR #17 integrado à main em 76eca4d, conferido pelo Git nesta conversa.
+PR #17 integrado à main em , conferido pelo Git nesta conversa.
 Reavaliação local: backend 123/123, frontend 94/94 e build 67 módulos passaram.
 Esses resultados antecedem a revisão documental DOC-001; não constituem nova CI
 ou confirmação humana da v2. A consolidação geral foi autorizada pelo pedido

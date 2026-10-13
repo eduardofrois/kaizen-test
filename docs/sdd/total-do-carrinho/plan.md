@@ -3,7 +3,7 @@
 **Versão:** 1
 **Estado:** Implementado e integrado à main; validação manual confirmada pelo usuário em 2026-10-12. Evidências e limites por cenário na matriz e no histórico desta unidade.
 **Spec:** [spec.md](spec.md), versão 1
-**Baseline/data:** 4261129; 2026-10-11
+**Baseline/data:** 2026-10-11
 **Objetivo:** excluir linhas indisponíveis do total sem alterar seus dados.
 **Arquitetura:** correção em lerCarrinho; teste do serviço real com SQLite
 em memória e fetch simulado em subprocessos isolados.
@@ -20,7 +20,7 @@ anteriores; não acrescenta execução pela IA, capturas por variante, exploraç
 de segurança ou pedido real no SIAC. Requisitos e aprovações de implementação
 permanecem os já registrados. Esta revisão documental não autoriza publicação.
 
-> Leitura atualizada em 2026-10-13, referência main 76eca4d. O problema e
+> Leitura atualizada em 2026-10-13, referência main. O problema e
 > os exemplos de execução abaixo descrevem a baseline e o escopo original
 > da unidade. Relatos datados preservam o estado conhecido naquela etapa.
 > Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
@@ -238,7 +238,7 @@ const totalCentavos = itens.reduce(
 - [x] Commit `fix: exclui itens indisponiveis do total do carrinho` e publicação
       em origin/fix/total-do-carrinho, apenas com os arquivos revisados.
 - [x] Preparar PR para main; abertura pelo usuário ou por autorização
-      explícita. Aguardar testes-backend e build-frontend; registrar links/SHA.
+      explícita. Aguardar testes-backend e build-frontend; registrar links das execuções.
       Sem merge pela IA. Ajustar docs de status conforme a evidência evoluir.
 
 ## Matriz de validação
@@ -299,7 +299,7 @@ sem realizar merge. Testes locais já passaram; evidência remota ainda pendente
 
 PR: https://github.com/eduardofrois/kaizen-test/pull/3
 Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38175551404
-Checks testes-backend e build-frontend passaram no commit ac2231f.
+Checks testes-backend e build-frontend passaram nessa publicação.
 Com reprodução prévia, aprovação SDD, RED/GREEN, confirmação manual do
 usuário e checks do PR concluídos, KZN-312 está Validado. Todos os critérios
 da versão 1 cumpridos; merge continua pendente de ação manual do usuário.

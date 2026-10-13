@@ -2,7 +2,7 @@
 
 **Versão:** 1
 **Estado:** Implementado e integrado à main; validação manual confirmada pelo usuário em 2026-10-12. Evidências e limites por cenário na matriz e no histórico desta unidade.
-**Baseline/data:** 6fab792; 2026-10-11
+**Baseline/data:** 2026-10-11
 **Origem:** KZN-331 — Pedido saiu com o endereço errado
 **Branch:** fix/endereco-selecionado-no-checkout
 **Aprovação para implementar:** versão 1 aprovada em 2026-10-11; mensagem do usuário: “aprovado”.
@@ -15,7 +15,7 @@ anteriores; não acrescenta execução pela IA, capturas por variante, exploraç
 de segurança ou pedido real no SIAC. Requisitos e aprovações de implementação
 permanecem os já registrados. Esta revisão documental não autoriza publicação.
 
-> Leitura atualizada em 2026-10-13, referência main 76eca4d. O problema e
+> Leitura atualizada em 2026-10-13, referência main. O problema e
 > os exemplos de execução abaixo descrevem a baseline e o escopo original
 > da unidade. Relatos datados preservam o estado conhecido naquela etapa.
 > Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
@@ -34,7 +34,7 @@ Backend routes/pedidos.js valida endereco_id e chama finalizarPedido.
 O serviço consulta buscarEndereco(usuario.id, enderecoId), verifica posse,
 serializa endereço na observação ERP e grava snapshot em pedidos_usuario.
 Não foi localizada troca pelo principal nesse fluxo do backend.
-Pull realizado antes desta preparação; main inclui merge do PR #6 em 6fab792.
+Pull realizado antes desta preparação; main inclui merge do PR #6.
 
 ## Objetivo e comportamento esperado
 
@@ -145,7 +145,7 @@ pendentes. Checks remotos ainda não executados nesta etapa.
 
 PR #7: https://github.com/eduardofrois/kaizen-test/pull/7
 Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38181718715
-Checks testes-backend e build-frontend passaram no commit 37ed34b. Branch
+Checks testes-backend e build-frontend passaram nessa publicação. Branch
 publicada; merge manual pelo usuário. CI comprova regressões existentes/build,
 sem substituir os cenários específicos de checkout ainda não confirmados.
 Estado Implementado: AC-01 confirmado por payload informado; AC-05 concluído;

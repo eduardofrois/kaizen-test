@@ -1,11 +1,11 @@
 # Inventário de correções e investigação — Kaizen
 
-Atualizado em **2026-10-13**, referência main **76eca4d**.
+Atualizado em **2026-10-13**, referência main.
 Quatro chamados, dez correções adicionais e múltiplos carrinhos v2 estão
 implementados e integrados. Este inventário descreve o estado atual.
 Reproduções cronológicas, aprovações e publicações anteriores foram preservadas
 no [histórico](docs/historico/fix.md); decisões e provas por unidade ficam no
-[SDD](docs/sdd/README.md). A baseline investigada era o commit original 81897d5.
+[SDD](docs/sdd/README.md). A baseline investigada era o estado original.
 
 ## Evidência e validação
 
@@ -82,8 +82,8 @@ V2 corrigida com 22 regressões TDD. [Spec](docs/sdd/multiplos-carrinhos/spec.md
 [visual](docs/sdd/multiplos-carrinhos/validacao-visual.md) e
 [recuperação](docs/sdd/multiplos-carrinhos/recuperacao.md).
 
-Commit de implementação 2f9ff7a; [PR #17](https://github.com/eduardofrois/kaizen-test/pull/17)
-integrado em 76eca4d, conforme Git local atualizado nesta conversa.
+[PR #17](https://github.com/eduardofrois/kaizen-test/pull/17)
+integrado, conforme Git local atualizado nesta conversa.
 Checks da implementação registrados no
 [run 38360777053](https://github.com/eduardofrois/kaizen-test/actions/runs/38360777053).
 Essa é a evidência histórica da feature; a publicação documental tem
@@ -160,9 +160,18 @@ commit/push/publicação documental autorizados, com destino main e merge manual
 
 ## Publicação — 2026-10-13
 
-Commit documental b7f7d16 publicado em docs/coerencia-da-documentacao.
+Commit documental publicado em docs/coerencia-da-documentacao.
 [PR #18](https://github.com/eduardofrois/kaizen-test/pull/18) aberto para main, sem conflitos na consulta.
 Checks testes-backend e build-frontend passaram no
-[run 38404473049](https://github.com/eduardofrois/kaizen-test/actions/runs/38404473049), referente a b7f7d16.
-Este registro complementar gera novo commit e nova CI, separados dessa prova.
+[run 38404473049](https://github.com/eduardofrois/kaizen-test/actions/runs/38404473049), referente à publicação.
+O registro complementar não altera a evidência dessa execução de CI.
 Merge permanece manual; não houve integração direta na main ou deploy.
+
+## Revisão documental — 13/10/2026
+
+Removidas as referências a identificadores de commits, inclusive nos históricos.
+O README informa as branches publicadas preservadas para consulta do avaliador.
+As conclusões sobre o README original e o e-mail estão no [relatório de entrega](RELATORIO.md).
+Atualização do PR #18 autorizada pelo usuário em 13/10/2026; merge permanece manual.
+Não houve deploy ou envio de e-mail.
+As evidências funcionais anteriores foram preservadas; não houve nova suíte nesta edição.

@@ -1,10 +1,10 @@
 # Spec — Múltiplos carrinhos e edição na vitrine
 
 **Versão:** 2
-**Estado:** V2 implementada e integrada à main no PR #17 (76eca4d); testes e navegador simulado registrados; manual da v1 confirmado. Sem nova confirmação humana específica da v2.
+**Estado:** V2 implementada e integrada à main no PR #17; testes e navegador simulado registrados; manual da v1 confirmado. Sem nova confirmação humana específica da v2.
 **Aprovação da revisão v2:** 2026-10-13; usuário “aprovado” em resposta à apresentação dos links da spec/plano v2 e à pergunta “Aprova implementar essa versão?”. Escopo: REV-01 a REV-04 com TDD, regressões e ensaio simulado; sem publicação.
 **Autorização de publicação:** 2026-10-13; usuário “agora eu preciso que abra um pr detalhado sobre a nova feature e me mande o link para eu avaliar”. Autoriza commit/push da feature e abertura do PR em eduardofrois/kaizen-test; merge manual pelo usuário. Revisão documental geral anterior permanece fora do envio.
-**Baseline/data:** `f95ae66`; 2026-10-13, America/Sao_Paulo. Checkout com alterações documentais locais anteriores, preservadas.
+**Baseline/data:** 2026-10-13, America/Sao_Paulo. Checkout com alterações documentais locais anteriores, preservadas.
 **Origem:** MULTI-001 — requisito obrigatório de múltiplos carrinhos no README; riscos relacionados INV-001/INV-002.
 **Nome da pasta/branch de implementação:** `multiplos-carrinhos` / `feat/multiplos-carrinhos`.
 **Branch desta preparação:** `docs/revisao-da-documentacao-de-entrega`; nenhuma branch nova criada nesta etapa.
@@ -12,7 +12,7 @@
 **Aprovação histórica da spec v1:** 2026-10-13; usuário “aprovado”, em resposta à apresentação da spec v1 e ao pedido de aprovação para preparar o plano. Inclui os detalhes técnicos da versão 1.
 **Aprovação histórica para implementar v1:** 2026-10-13; usuário “aprovado” após apresentação do plano v1 e pergunta explícita sobre implementar nesta sessão. Escopo: spec v1 e plano v1; publicação não incluída. O [plano atual](plan.md) incorpora a revisão v2 aprovada separadamente acima.
 
-> Leitura atualizada em 2026-10-13, referência main 76eca4d. O problema e
+> Leitura atualizada em 2026-10-13, referência main. O problema e
 > os exemplos de execução abaixo descrevem a baseline e o escopo original
 > da unidade. Relatos datados preservam o estado conhecido naquela etapa.
 > Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
@@ -436,7 +436,7 @@ correção; revisões de spec/plano e autorização necessárias antes de corrig
 **Origem:** pedido “arrume o que voce encontrou usando TDD”, em 2026-10-13,
 após apresentação de REV-01 a REV-04. Baseline de trabalho: conteúdo local
 revisado na branch `feat/multiplos-carrinhos`, incluindo a v1 não commitada;
-não substituir esse conteúdo pelo HEAD `f95ae66`.
+não substituir esse conteúdo pelo HEAD .
 
 ### Escopo e escolhas
 
@@ -548,7 +548,7 @@ Sem escrita no SIAC real, novas dependências/schema, commit, push, PR ou deploy
 ### Publicação autorizada e executada — 2026-10-13
 
 Usuário solicitou abrir PR detalhado e enviar o link para avaliação. Commit de
-implementação `2f9ff7a`, branch `feat/multiplos-carrinhos` enviada somente a
+implementação , branch `feat/multiplos-carrinhos` enviada somente a
 eduardofrois/kaizen-test. [PR #17](https://github.com/eduardofrois/kaizen-test/pull/17)
 aberto contra main, sem conflitos na consulta. CI da implementação passou:
 testes-backend e build-frontend no
@@ -558,7 +558,7 @@ Merge manual pendente; nenhum merge, deploy ou pedido real nesta publicação.
 
 ## Consolidação da entrega — 2026-10-13
 
-PR #17 integrado à main em 76eca4d, conferido pelo Git nesta conversa.
+PR #17 integrado à main em , conferido pelo Git nesta conversa.
 Reavaliação local: backend 123/123, frontend 94/94 e build 67 módulos passaram.
 Esses resultados antecedem a revisão documental DOC-001; não constituem nova CI
 ou confirmação humana da v2. A consolidação geral foi autorizada pelo pedido

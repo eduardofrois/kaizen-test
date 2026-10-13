@@ -3,7 +3,7 @@
 **Versão:** 1
 **Estado:** Implementado e integrado à main; validação manual confirmada pelo usuário em 2026-10-12. Evidências e limites por cenário na matriz e no histórico desta unidade.
 **Spec:** [spec.md](spec.md), versão 1
-**Baseline/data:** 0845692; 2026-10-11
+**Baseline/data:** 2026-10-11
 **Objetivo:** permitir corrigir quantidade de produto ativo com estoque reduzido.
 **Arquitetura:** capacidade derivada no serviço; input consome capacidade.
 **Stack:** JavaScript ESM, React, Vite, node:test, SQLite em memória/fetch fake.
@@ -19,7 +19,7 @@ anteriores; não acrescenta execução pela IA, capturas por variante, exploraç
 de segurança ou pedido real no SIAC. Requisitos e aprovações de implementação
 permanecem os já registrados. Esta revisão documental não autoriza publicação.
 
-> Leitura atualizada em 2026-10-13, referência main 76eca4d. O problema e
+> Leitura atualizada em 2026-10-13, referência main. O problema e
 > os exemplos de execução abaixo descrevem a baseline e o escopo original
 > da unidade. Relatos datados preservam o estado conhecido naquela etapa.
 > Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
@@ -248,9 +248,9 @@ concluída; manual não informada. CI será acompanhado; merge manual pelo usuá
 
 ## Histórico — Publicação FIX-006 — 2026-10-12
 
-Commit 58bb69f publicado na branch fix/ajuste-de-quantidade-com-estoque-reduzido.
+Implementação publicada na branch fix/ajuste-de-quantidade-com-estoque-reduzido.
 PR #11: https://github.com/eduardofrois/kaizen-test/pull/11
-Checks testes-backend e build-frontend passaram para 58bb69f no run
+Checks testes-backend e build-frontend passaram no run
 38198503574: https://github.com/eduardofrois/kaizen-test/actions/runs/38198503574
 Nova execução acompanha esta atualização documental. Estado Implementado; manual pendente.
 Merge permanece manual pelo usuário. Registros de publicação pendente acima

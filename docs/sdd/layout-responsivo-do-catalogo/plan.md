@@ -17,7 +17,7 @@ anteriores; não acrescenta execução pela IA, capturas por variante, exploraç
 de segurança ou pedido real no SIAC. Requisitos e aprovações de implementação
 permanecem os já registrados. Esta revisão documental não autoriza publicação.
 
-> Leitura atualizada em 2026-10-13, referência main 76eca4d. O problema e
+> Leitura atualizada em 2026-10-13, referência main. O problema e
 > os exemplos de execução abaixo descrevem a baseline e o escopo original
 > da unidade. Relatos datados preservam o estado conhecido naquela etapa.
 > Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
@@ -171,7 +171,7 @@ Screenshot local: /private/tmp/kaizen-fix009-mobile.png (artefato temporário,
 não versionado). Evidência anterior: screenshot do usuário e medida341/702px.
 
 Regressões: frontend53/53, backend65/65, build61 módulos passaram. Backend65
-corresponde à baseline main f744b39; FIX-008 está em outro PR e não nesta branch.
+corresponde à baseline main; FIX-008 está em outro PR e não nesta branch.
 Sem teste que replique classes CSS. Estado Implementado: faltam matriz
 autenticada/contador/perfil, percurso completo de teclado/rolagem, adição e
 confirmação manual pelo usuário. Estado adicionando e captura desktop ainda
@@ -201,7 +201,7 @@ Commit, push e PR desta unidade autorizados. Merge manual pelo usuário.
 
 ## Histórico — Publicação FIX-009 — 2026-10-12
 
-Implementação: `c50fead`. Branch `fix/layout-responsivo-do-catalogo` publicada.
+Branch `fix/layout-responsivo-do-catalogo` publicada.
 PR #14: https://github.com/eduardofrois/kaizen-test/pull/14
 Validação manual confirmada; checks remotos em acompanhamento. Merge manual
 pendente. Nenhum merge realizado pela IA.

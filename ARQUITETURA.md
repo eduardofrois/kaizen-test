@@ -1,6 +1,6 @@
 # Arquitetura — Kaizen Autopeças
 
-> Arquitetura atual em 13/10/2026, referência main `76eca4d`.
+> Arquitetura atual em 13/10/2026, referência main.
 > O enunciado está no [README](README.md); evidências e limitações da entrega
 > estão no [relatório](RELATORIO.md).
 

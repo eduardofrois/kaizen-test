@@ -3,7 +3,7 @@
 **Versão:** 1
 **Estado:** Implementado e integrado à main; validação manual confirmada pelo usuário em 2026-10-12. Evidências e limites por cenário na matriz e no histórico desta unidade.
 **Spec:** [spec.md](spec.md), versão 1
-**Baseline/data:** 27217ff; 2026-10-11
+**Baseline/data:** 2026-10-11
 **Objetivo:** reiniciar página ao pesquisar/filtrar e conservar navegação explícita.
 **Arquitetura:** função pura compartilhada pelos handlers; React Router mantém URL.
 **Stack:** JavaScript ESM, URLSearchParams, node:test, React/Vite existentes.
@@ -18,7 +18,7 @@ anteriores; não acrescenta execução pela IA, capturas por variante, exploraç
 de segurança ou pedido real no SIAC. Requisitos e aprovações de implementação
 permanecem os já registrados. Esta revisão documental não autoriza publicação.
 
-> Leitura atualizada em 2026-10-13, referência main 76eca4d. O problema e
+> Leitura atualizada em 2026-10-13, referência main. O problema e
 > os exemplos de execução abaixo descrevem a baseline e o escopo original
 > da unidade. Relatos datados preservam o estado conhecido naquela etapa.
 > Contratos evoluídos e pendências atuais: [índice SDD](../README.md).
@@ -222,7 +222,7 @@ Checks remotos pendentes nesta etapa.
 
 PR #6: https://github.com/eduardofrois/kaizen-test/pull/6
 Execução: https://github.com/eduardofrois/kaizen-test/actions/runs/38179901454
-Checks testes-backend e build-frontend passaram no commit c51b6ba. Workflow
+Checks testes-backend e build-frontend passaram nessa publicação. Workflow
 do PR inclui npm test frontend antes do build. Branch publicada em origin.
 Estado Implementado: validação automatizada local/remota concluída; falta
 confirmação manual pós-correção (AC-04 e parte integrada de AC-01/AC-02).

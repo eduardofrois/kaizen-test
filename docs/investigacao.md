@@ -1,6 +1,6 @@
 # Situação atual da investigação
 
-Atualizado em 2026-10-13. Referência de código: main `76eca4d`, incluindo
+Atualizado em 2026-10-13. Referência de código: main, incluindo
 PR #17. A revisão documental ocorre em docs/coerencia-da-documentacao e
 incorpora edições locais anteriores. Não há nova alteração de aplicação.
 
@@ -30,7 +30,7 @@ incorpora edições locais anteriores. Não há nova alteração de aplicação.
   Não há confirmação humana específica da v2 ou homologação SIAC registrada.
 - As medições da feature incluem seis larguras, foco/Escape, duas abas,
   URL/rolagem, compra fake e bloqueio persistente; detalhes no SDD.
-- O Git confirmou o merge do PR #17 em `76eca4d`. CI anterior da
+- O Git confirmou o merge do PR #17. CI anterior da
   implementação: [run 38360777053](https://github.com/eduardofrois/kaizen-test/actions/runs/38360777053).
   A publicação documental teve checks iniciais aprovados no run 38404473049;
   registro complementar gera nova execução, ainda não incluída nessa prova.
@@ -52,6 +52,15 @@ Histórico anterior preservado em [docs/historico/investigacao.md](historico/inv
 
 ## Publicação da revisão documental — 2026-10-13
 
-[PR #18](https://github.com/eduardofrois/kaizen-test/pull/18) aberto para main, commit inicial b7f7d16.
+[PR #18](https://github.com/eduardofrois/kaizen-test/pull/18) aberto para main, publicação inicial.
 Checks testes-backend/build-frontend passaram no
 [run 38404473049](https://github.com/eduardofrois/kaizen-test/actions/runs/38404473049). Merge manual pendente.
+
+## Revisão documental — 13/10/2026
+
+Removidas as referências a identificadores de commits, inclusive nos históricos.
+O README informa as branches publicadas preservadas para consulta do avaliador.
+As conclusões sobre o README original e o e-mail estão no [relatório de entrega](../RELATORIO.md).
+Atualização do PR #18 autorizada pelo usuário em 13/10/2026; merge permanece manual.
+Não houve deploy ou envio de e-mail.
+As evidências funcionais anteriores foram preservadas; não houve nova suíte nesta edição.
