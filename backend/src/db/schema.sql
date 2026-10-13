@@ -41,19 +41,43 @@ CREATE TABLE IF NOT EXISTS enderecos (
 
 CREATE INDEX IF NOT EXISTS idx_enderecos_usuario ON enderecos (usuario_id);
 
--- Carrinho persistido: o cliente fecha o navegador e encontra tudo de volta.
--- Guarda so o codigo do produto; preco e descricao vem do ERP na hora de ler,
--- entao o carrinho nunca mostra preco velho.
-CREATE TABLE IF NOT EXISTS carrinho_itens (
-  id             INTEGER PRIMARY KEY AUTOINCREMENT,
-  usuario_id     INTEGER NOT NULL REFERENCES usuarios (id) ON DELETE CASCADE,
-  codigo_produto TEXT    NOT NULL,
-  quantidade     INTEGER NOT NULL CHECK (quantidade > 0),
-  adicionado_em  TEXT    NOT NULL,
-  UNIQUE (usuario_id, codigo_produto)
+-- Carrinhos guardam apenas referências e quantidades; catálogo pertence ao ERP.
+CREATE TABLE IF NOT EXISTS carrinhos (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  usuario_id INTEGER NOT NULL REFERENCES usuarios(id) ON DELETE CASCADE,
+  nome TEXT NOT NULL CHECK(length(trim(nome)) BETWEEN 1 AND 60),
+  principal INTEGER NOT NULL DEFAULT 0 CHECK(principal IN (0,1)),
+  versao INTEGER NOT NULL DEFAULT 1 CHECK(versao >= 1),
+  criado_em TEXT NOT NULL,
+  atualizado_em TEXT NOT NULL
 );
-
-CREATE INDEX IF NOT EXISTS idx_carrinho_usuario ON carrinho_itens (usuario_id);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_carrinhos_principal ON carrinhos(usuario_id) WHERE principal=1;
+CREATE INDEX IF NOT EXISTS idx_carrinhos_usuario ON carrinhos(usuario_id);
+CREATE TABLE IF NOT EXISTS carrinho_itens (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  carrinho_id INTEGER NOT NULL REFERENCES carrinhos(id) ON DELETE CASCADE,
+  codigo_produto TEXT NOT NULL,
+  quantidade INTEGER NOT NULL CHECK(quantidade > 0),
+  adicionado_em TEXT NOT NULL,
+  UNIQUE(carrinho_id,codigo_produto)
+);
+CREATE INDEX IF NOT EXISTS idx_itens_carrinho ON carrinho_itens(carrinho_id);
+-- Origem lógica sem FK: excluir carrinho comprado não apaga deduplicação.
+CREATE TABLE IF NOT EXISTS checkout_tentativas (
+  usuario_id INTEGER NOT NULL REFERENCES usuarios(id) ON DELETE CASCADE,
+  tentativa_id TEXT NOT NULL,
+  carrinho_id_origem INTEGER NOT NULL,
+  versao_carrinho INTEGER NOT NULL,
+  assinatura_requisicao TEXT NOT NULL,
+  endereco_entrega TEXT NOT NULL,
+  estado TEXT NOT NULL CHECK(estado IN ('preparando','enviando','incerto','concluido','recusado')),
+  numero_erp TEXT,
+  criado_em TEXT NOT NULL,
+  atualizado_em TEXT NOT NULL,
+  PRIMARY KEY(usuario_id,tentativa_id)
+);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_checkout_exclusivo
+  ON checkout_tentativas(carrinho_id_origem) WHERE estado IN ('preparando','enviando','incerto');
 
 -- Vinculo com o pedido que vive no ERP.
 -- `endereco_entrega` e um snapshot em JSON: o ERP nao tem esse dado, e se o

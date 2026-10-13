@@ -1,5 +1,18 @@
 # Inventário de correções e investigação — Kaizen
 
+## Múltiplos carrinhos — situação da unidade em 2026-10-13
+
+Spec/plano v2 aprovados e implementados, com 123 testes backend, 94 frontend,
+build e navegação em ambiente simulado aprovados. Os quatro achados da revisão
+foram corrigidos com TDD. Validação manual da v1 confirmada pelo usuário.
+
+Usuário solicitou abrir PR detalhado da nova feature e enviar o link para
+avaliação. Publicação desta unidade autorizada em eduardofrois/kaizen-test;
+merge manual pelo usuário. Consolidação documental anterior é trabalho local
+separado e não integra este envio. Registro abaixo preserva o histórico anterior.
+
+[Spec](docs/sdd/multiplos-carrinhos/spec.md) · [Plano](docs/sdd/multiplos-carrinhos/plan.md) · [Revisão](docs/sdd/multiplos-carrinhos/revisao.md)
+
 Atualizado em **2026-10-11**. Baseline lida: commit original **81897d5**.
 Este arquivo é o contexto detalhado para retomar o trabalho em outra sessão.
 Distingue correções executadas de propostas ainda sem aprovação.
@@ -1358,3 +1371,142 @@ Validação conjunta: backend96/96, frontend79/79 e build63 módulos passaram;
 git diff --check passou. Nenhum teste manual novo realizado nesta atualização.
 PRs #14, #15 e #16 já integrados à main. PR #13 continua aberto: atualização
 da branch autorizada, checks remotos a acompanhar e merge manual pelo usuário.
+
+
+## Histórico específico de múltiplos carrinhos
+
+## MULTI-001 — Quatro achados corrigidos com TDD — 2026-10-13
+
+Spec/plano v2 aprovados pelo usuário com “aprovado” após apresentação dos
+links e pergunta para implementar. Corrigidos REV-01/02/03/04: listagens
+anteriores invalidadas na seleção/gestão; snapshot de escrita valida ID/versão
+e preserva leitura mais nova; filas/ocupação por carrinho, seletor disponível
+durante mutação de itens; referência ERP parcial persistida sem concluir ou
+liberar checkout incerto. Falha local continua bloqueante e não autoriza POST.
+
+TDD executado antes de cada correção: R1 RED 0/2; R2 RED 1/4; R3 RED 3/7;
+R4 RED 5/9. Depois, todos os novos casos passaram. As falhas foram comportamentais,
+não setup/importação. Adicionadas 22 regressões, treze frontend/nove backend.
+Suítes completas passaram com backend 123/123 e frontend 94/94; build 67 módulos,
+sintaxe JS e diff passaram. [Evidência detalhada](docs/sdd/multiplos-carrinhos/plan.md).
+
+Navegador com backend/frontend reais, SQLite temporário e ERP fake: Gol retido,
+Civic recebeu peça antes da resposta do Gol; voltar ao Gol conserva bloqueio
+dos itens e permite trocar. Desktop e mobile 390×844 conferidos; busca/página
+e scroll desktop 395,5 preservados; resposta tardia não altera Civic. Banco
+sintético conferido readonly: peças distintas isoladas, zero pedidos neste
+ensaio. Servidor temporário/aba encerrados; viewport restaurado.
+AC-06/11 revalidados. Sem escrita no SIAC real, dependência/schema novos,
+commit, push, PR, CI remoto ou deploy. Manual da v1 permanece confirmado;
+não atribuída nova validação humana à v2. Relatório geral fora deste escopo.
+
+## MULTI-001 — Validação manual e revisão posterior — 2026-10-13
+
+**Próxima etapa atualizada:** usuário pediu “arrume o que voce encontrou usando
+TDD”. Spec/plano revisados para versão 2, propondo RED/GREEN por causa, fila e
+ocupação por ID, guardas de lista/versão e referência ERP em erro interno.
+Documentos preparados para aprovação explícita conforme AGENTS.md; nenhuma
+mudança de código/testes ou execução nova de suíte nesta preparação. Aprovações
+da v1 preservadas como históricas, sem atribuí-las à versão 2.
+
+Usuário confirmou “Validei, não encontrei nada” e pediu análise de brechas/falhas.
+Registro confirma seu percurso manual, sem inferir criação de pedido no ERP
+real. Revisão sem subagentes e sem alterar implementação/testes:
+
+- REV-01/P2: listagem anterior à seleção/criação pode esvaziar representação
+  nova ou trocar o ativo com aviso falso de exclusão.
+- REV-02/P2: resposta atrasada de mutação publica versão inferior à já lida.
+- REV-03/P2: fila/ocupação globais prendem operações de carrinhos diferentes;
+  plano previa serialização por carrinho. Reprodução da fila no controlador;
+  bloqueio do seletor verificado por inspeção, sem navegador novo.
+- REV-04/P2: resposta ERP com número válido/total inválido perde a referência
+  ao marcar checkout incerto, dificultando reconciliação; bloqueio é mantido.
+
+Causas, ordem dos eventos, locais e recomendações em
+[revisao.md](docs/sdd/multiplos-carrinhos/revisao.md). Reproduções isoladas com
+promessas controladas, SQLite temporário e ERP simulado confirmaram os quatro
+achados. Suítes existentes reexecutadas: backend 114/114, frontend 81/81;
+essas passagens não cobrem os novos cenários. Sem indício de acesso cruzado
+entre contas nos fluxos inspecionados; não é auditoria exaustiva de segurança.
+AC-06/11 reabertos; correções exigem revisão/aprovação SDD. Nenhum pedido
+real, build novo, alteração de código/testes, commit, publicação ou deploy.
+
+## MULTI-001 — Implementação e validação local — 2026-10-13
+
+Usuário aprovou plano v1 com “aprovado” após pergunta explícita sobre
+implementar nesta sessão. Spec/plano v1 executados na branch
+feat/multiplos-carrinhos. Alterações locais anteriores preservadas; sem commit,
+push, PR ou deploy. Sem subagentes, dependências novas ou reset.
+
+Implementados entidade/migração, principal por conta, seleção ativa por aba,
+API com IDs e posse, dez carrinhos, CRUD/itens isolados e painel na vitrine.
+Checkout usa versão/tentativa e bloqueio SQLite persistido por carrinho;
+limpeza limitada à origem após vínculo confirmado. Timeout/5xx/resposta
+inválida/falha local conservam itens e bloqueio, sem reenvio. Isso mitiga
+INV-001/002 no escopo aprovado, sem prometer atomicidade ou idempotência SIAC.
+
+Evidência: backend 114/114, frontend 81/81, build Vite 67 módulos, sintaxe e
+diff passaram. Novos testes cobrem migração com rollback/reexecução, duas
+contas, 50/99/dez, HTTP/autenticação/endereço, criação/exclusão por dois
+processos, checkout retido, mutação pré-await, reabertura/replay e reconciliação
+sintética. Frontend tem 24 cenários de sessão e cinco de seleção; guardas
+React também foram inspecionadas. Detalhes/RED estrutural em plan.md.
+
+Navegador sintético: criar Gol/Civic, principal, adição/quantidade na vitrine,
+URL e scroll preservados, compra fake limpa só Gol mantendo nome/Civic,
+F5 no principal, duas abas, dez nomes, seis larguras e foco/Escape. Detectado
+escape de foco no dialog nativo; corrigido/rechecado. Pedido incerto ficou
+bloqueado após F5; outro carrinho livre. Fake inicial sem cliente/imagem e
+corpo DELETE do cliente de teste foram corrigidos, sem alterar o contrato real.
+
+Estado Implementado. Confirmação manual do usuário e publicação pendentes.
+SQLite temporário e ERP fake em todas as compras da validação; nenhum pedido
+real criado pela suíte. [Evidências visuais](docs/sdd/multiplos-carrinhos/validacao-visual.md)
+e [recuperação](docs/sdd/multiplos-carrinhos/recuperacao.md). Relatório geral
+anterior preservado até atualização documental autorizada da entrega.
+
+## MULTI-001 — Spec aprovada e plano preparado — 2026-10-13
+
+Usuário “aprovado” após apresentação da spec v1 e pergunta sobre preparar o
+plano. Aprovação da spec registrada; [plano v1](docs/sdd/multiplos-carrinhos/plan.md)
+preparado com seis tarefas, arquivos/interfaces, migração preservando dados,
+checkout persistente, controlador por seleção e validação visual/integrada.
+Os 12 aceites possuem tarefa e prova prevista. Nenhum requisito da spec foi
+ampliado; snapshot de endereço e metadados de tentativa atendem à recuperação
+já especificada, sem cópia de pedido/catálogo ERP.
+
+Estado: spec aprovada, plano em revisão. Implementação aguarda aprovação do
+plano; publicação exige comando específico. Não criados código, testes,
+schema, dependências ou protótipo; sem migração, build, teste funcional,
+branch nova ou escrita no ERP/banco real nesta preparação.
+
+## MULTI-001 — Preparação de múltiplos carrinhos — 2026-10-13
+
+Spec: [Múltiplos carrinhos](docs/sdd/multiplos-carrinhos/spec.md), versão 1.
+Baseline conferida: `f95ae66`, branch `docs/revisao-da-documentacao-de-entrega`,
+com alterações documentais locais anteriores e `frontend/.vite/` não rastreado;
+preservados. Nenhuma implementação, migração, branch nova ou publicação.
+
+Na entrevista desta sessão, usuário confirmou até dez carrinhos, substituição
+pelo mais antigo ao excluir ativo/principal, criação de padrão vazio ao excluir
+o último, principal na entrada, ativo independente por aba, adição direta com
+escolha opcional, painel desktop/celular e esvaziamento com nome preservado após
+compra. Q6/Q8 receberam “sim”, Q7 “segunda opção”; resumo final recebeu
+“confirmado”. Isso aprova decisões de produto, não a spec escrita depois.
+
+Inspeção estática: schema ainda vincula itens ao usuário; serviços e rotas não
+recebem carrinho_id; checkout aguarda ERP e limpa todos os itens da conta.
+O controlador frontend invalida ciclos de sessão, mas não seleções de carrinho.
+Cliente ERP não demonstra idempotência/consulta por referência e aceita sucesso
+sem JSON utilizável. Sem novas reproduções ou consultas ao ERP/banco real.
+
+Proposta técnica em revisão: entidade própria, migração preservando itens,
+IDs explícitos, principal persistido e ativo por aba, bloqueio SQLite por
+carrinho e registro mínimo de tentativas. INV-001/INV-002 entram somente no
+necessário para impedir alteração/reenvio durante checkout; não declarar
+transação distribuída nem recuperação automática de pedido incerto.
+
+Próxima ação: usuário revisar spec v1; depois elaborar plano. Protótipo,
+implementação e testes funcionais ainda não executados. O plano e a autorização
+para implementar permanecem pendentes. Alterações locais anteriores e relatório
+de entrega não foram sobrescritos; este registro não autoriza commit/push/PR.

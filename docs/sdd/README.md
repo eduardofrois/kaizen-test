@@ -1,5 +1,18 @@
 # Spec Driven Development
 
+## Múltiplos carrinhos — situação da unidade em 2026-10-13
+
+Spec/plano v2 aprovados e implementados, com 123 testes backend, 94 frontend,
+build e navegação em ambiente simulado aprovados. Os quatro achados da revisão
+foram corrigidos com TDD. Validação manual da v1 confirmada pelo usuário.
+
+Usuário solicitou abrir PR detalhado da nova feature e enviar o link para
+avaliação. Publicação desta unidade autorizada em eduardofrois/kaizen-test;
+merge manual pelo usuário. Consolidação documental anterior é trabalho local
+separado e não integra este envio. Registro abaixo preserva o histórico anterior.
+
+[Spec](multiplos-carrinhos/spec.md) · [Plano](multiplos-carrinhos/plan.md) · [Recuperação](multiplos-carrinhos/recuperacao.md)
+
 ## Fluxo acordado
 
 1. Investigar o comportamento e reunir evidência.
@@ -519,3 +532,16 @@ Validação conjunta: backend96/96, frontend79/79 e build63 módulos passaram;
 git diff --check passou. Nenhum teste manual novo realizado nesta atualização.
 PRs #14, #15 e #16 já integrados à main. PR #13 continua aberto: atualização
 da branch autorizada, checks remotos a acompanhar e merge manual pelo usuário.
+
+
+## Histórico específico de múltiplos carrinhos
+
+### Múltiplos carrinhos implementado — 2026-10-13
+
+Plano v1 aprovado com “aprovado” após pergunta explícita sobre implementar
+na sessão. Migração, API, checkout protegido, seleção por aba e painel entregues
+na branch feat/multiplos-carrinhos, sem publicação. Backend 114/114, frontend
+81/81, build 67 módulos e verificações de diff/sintaxe passaram. Navegador
+usou API real com SQLite temporário/ERP simulado, seis larguras, duas abas,
+compra e envio incerto; ver evidências da unidade. Confirmação manual do
+usuário pendente; histórico abaixo não representa a situação atual da feature.

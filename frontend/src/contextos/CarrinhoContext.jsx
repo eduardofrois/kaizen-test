@@ -1,4 +1,4 @@
-import { createContext, useContext, useLayoutEffect, useMemo, useSyncExternalStore } from 'react';
+import { createContext, useContext, useEffect, useLayoutEffect, useMemo, useSyncExternalStore } from 'react';
 import { api } from '../api/cliente.js';
 import { criarCarrinhoPorSessao } from '../lib/carrinhoPorSessao.js';
 import { useAuth } from './AuthContext.jsx';
@@ -10,7 +10,7 @@ export function ProvedorCarrinho({ children }) {
   const { usuario, carregando: carregandoAuth } = useAuth();
   const usuarioId = usuario?.id ?? null;
   const controle = useMemo(
-    () => criarCarrinhoPorSessao(api.carrinho, !carregandoAuth && usuarioId !== null),
+    () => criarCarrinhoPorSessao(api.carrinhos, !carregandoAuth && usuarioId !== null),
     [usuarioId, carregandoAuth],
   );
   const estado = useSyncExternalStore(controle.assinar, controle.obterSnapshot);
@@ -21,15 +21,28 @@ export function ProvedorCarrinho({ children }) {
     return () => controle.invalidar();
   }, [controle]);
 
+  useEffect(() => {
+    const atualizar = () => { if (document.visibilityState === 'visible') void controle.recarregar(); };
+    window.addEventListener('focus', atualizar);
+    document.addEventListener('visibilitychange', atualizar);
+    return () => { window.removeEventListener('focus', atualizar); document.removeEventListener('visibilitychange', atualizar); };
+  }, [controle]);
+
   const valor = useMemo(() => ({
     ...estado,
+    origem: controle.capturarOrigem(),
     carregando: carregandoAuth || estado.carregando,
     recarregar: controle.recarregar,
     adicionar: controle.adicionar,
     alterar: controle.alterar,
     remover: controle.remover,
     limpar: controle.limpar,
-    setCarrinho: controle.setCarrinho,
+    selecionar: controle.selecionar,
+    criar: controle.criar,
+    renomear: controle.renomear,
+    definirPrincipal: controle.definirPrincipal,
+    excluir: controle.excluir,
+    capturarOrigem: controle.capturarOrigem,
   }), [estado, controle, carregandoAuth]);
 
   return <CarrinhoContext.Provider value={valor}>{children}</CarrinhoContext.Provider>;

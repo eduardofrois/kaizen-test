@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import Database from 'better-sqlite3';
 import { config } from '../config.js';
+import { migrarBanco } from './migracoes.js';
 
 let instancia = null;
 
@@ -20,7 +21,7 @@ export function obterBanco() {
 
 export function aplicarSchema(db = obterBanco()) {
   const ddl = fs.readFileSync(new URL('./schema.sql', import.meta.url), 'utf8');
-  db.exec(ddl);
+  migrarBanco(db, ddl);
 }
 
 export function fecharBanco() {

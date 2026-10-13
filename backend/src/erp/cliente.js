@@ -118,8 +118,23 @@ export async function buscarPedido(numero) {
 // ------------------------------------------------------------------ escrita --
 
 export async function criarPedido(payload) {
-  const json = await requisitar('/pedidos', { metodo: 'POST', corpo: payload });
-  return json?.dados ?? null;
+  let json;
+  try {
+    json = await requisitar('/pedidos', { metodo: 'POST', corpo: payload });
+  } catch (erro) {
+    erro.recusaConclusiva = [404, 409, 422].includes(erro.status) || erro.codigo === 'ERP_NAO_AUTORIZADO';
+    throw erro;
+  }
+  const pedido = json?.dados;
+  const numeroValido = typeof pedido?.numero === 'string' ? Boolean(pedido.numero.trim())
+    : typeof pedido?.numero === 'number' && Number.isFinite(pedido.numero);
+  if (!numeroValido
+      || typeof pedido.valor_total !== 'number' || !Number.isFinite(pedido.valor_total) || pedido.valor_total < 0) {
+    const erro = new ApiError(502, 'ERP_RESPOSTA_INVALIDA', 'O pedido precisa de verificação.');
+    if (numeroValido) erro.numeroErp = String(pedido.numero);
+    throw erro;
+  }
+  return pedido;
 }
 
 // ------------------------------------------------------------------ imagens --

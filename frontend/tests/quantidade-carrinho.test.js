@@ -23,7 +23,7 @@ function encontrar(no, predicado) {
 }
 function montar(opcoes = {}, ocupado = false) {
   const alteracoes = [], remocoes = [];
-  const arvore = LinhaItemCarrinho({ item: {
+  const arvore = LinhaItemCarrinho({ idQuantidade: 'qtd-teste', item: {
     codigo_produto: 'A', descricao: 'Teste', preco_unitario: 20, valor_total: 100,
     quantidade: 5, estoque: 3, disponivel: false, quantidade_editavel: true,
     problema: 'Restam apenas 3 em estoque.', ...opcoes,

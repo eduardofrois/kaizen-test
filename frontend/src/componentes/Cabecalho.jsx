@@ -27,7 +27,8 @@ function ItemMenu({ para, children, className = '' }) {
  */
 export function Cabecalho() {
   const { usuario, autenticado, sair } = useAuth();
-  const { carrinho } = useCarrinho();
+  const { carrinho, carrinhos, ativoId } = useCarrinho();
+  const nomeAtivo = carrinhos.find(c => c.id === ativoId)?.nome;
   const navegar = useNavigate();
   const [parametros] = useSearchParams();
   const [busca, setBusca] = useState(parametros.get('busca') ?? '');
@@ -88,7 +89,7 @@ export function Cabecalho() {
                 to="/carrinho"
                 className="relative rounded-lg px-3 py-2 text-sm font-medium text-tinta-600 hover:bg-tinta-100"
               >
-                Carrinho
+                <span title={nomeAtivo} className="block max-w-40 truncate">{nomeAtivo ?? 'Carrinho'}</span>
                 {carrinho.quantidade_pecas > 0 && (
                   <span
                     className="absolute -right-0.5 -top-0.5 grid size-5 place-items-center

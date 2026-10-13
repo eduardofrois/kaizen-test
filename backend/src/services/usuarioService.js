@@ -1,6 +1,7 @@
 import { obterBanco, agoraISO } from '../db/index.js';
 import { ApiError } from '../lib/ApiError.js';
 import { conferirSenha, gerarHash } from '../lib/senha.js';
+import { garantirCarrinhoInicial } from './carrinhosService.js';
 
 /** Nunca devolve senha_hash. */
 export function serializarUsuario(linha) {
@@ -32,12 +33,16 @@ export async function cadastrarUsuario({ nome, email, senha, documento, telefone
 
   let resultado;
   try {
-    resultado = db
-      .prepare(`
-        INSERT INTO usuarios (nome, email, senha_hash, documento, telefone, criado_em, atualizado_em)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
-      `)
-      .run(nome, email, senhaHash, documento, telefone, agora, agora);
+    resultado = db.transaction(() => {
+      const inserido = db
+        .prepare(`
+          INSERT INTO usuarios (nome, email, senha_hash, documento, telefone, criado_em, atualizado_em)
+          VALUES (?, ?, ?, ?, ?, ?, ?)
+        `)
+        .run(nome, email, senhaHash, documento, telefone, agora, agora);
+      garantirCarrinhoInicial(Number(inserido.lastInsertRowid), db);
+      return inserido;
+    }).immediate();
   } catch (erro) {
     // Corrida entre dois cadastros com o mesmo e-mail: o UNIQUE do banco e a
     // garantia de verdade, a checagem acima e so para dar mensagem melhor.

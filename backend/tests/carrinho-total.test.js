@@ -28,13 +28,14 @@ function consultar(cenario) {
     for (const id of [1, 2]) {
       db.prepare('INSERT INTO usuarios (id,nome,email,senha_hash,documento,criado_em,atualizado_em) VALUES (?,?,?,?,?,?,?)')
         .run(id, 'Usuario sintetico', 'teste'+id+'@example.invalid', 'hash-sintetico-sem-autenticacao', '00000000000', '2026-01-01', '2026-01-01');
+      db.prepare("INSERT INTO carrinhos(id,usuario_id,nome,principal,criado_em,atualizado_em) VALUES(?,?,'Meu carrinho',1,'2026-01-01','2026-01-01')").run(id,id);
     }
     db.prepare('INSERT INTO enderecos (id,usuario_id,apelido,cep,logradouro,numero,bairro,cidade,uf,principal,criado_em,atualizado_em) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)')
       .run(1, 1, 'Teste', '00000-000', 'Rua de teste', '1', 'Centro', 'Teste', 'SP', 1, '2026-01-01', '2026-01-01');
     const produtos = new Map();
     for (const linha of entrada.itens) {
       produtos.set(linha.codigo, { ...linha });
-      db.prepare('INSERT INTO carrinho_itens (usuario_id,codigo_produto,quantidade,adicionado_em) VALUES (?,?,?,?)')
+      db.prepare('INSERT INTO carrinho_itens (carrinho_id,codigo_produto,quantidade,adicionado_em) VALUES (?,?,?,?)')
         .run(linha.usuario, linha.codigo, linha.quantidade, '2026-01-01');
     }
     let posts = 0;
@@ -57,25 +58,25 @@ function consultar(cenario) {
     try {
       const { lerCarrinho, alterarQuantidade } = await import(${JSON.stringify(moduloCarrinho)});
       const antes = db.prepare('SELECT * FROM carrinho_itens ORDER BY id').all();
-      const carrinho = await lerCarrinho(1, db);
+      const carrinho = await lerCarrinho(1, 1, db);
       let checkoutErro = null;
       if (entrada.checkout) {
         const { finalizarPedido } = await import(${JSON.stringify(moduloPedido)});
         try {
-          await finalizarPedido({ id: 1, nome: 'Teste', documento: '00000000000' }, 1, '', db);
+          await finalizarPedido({ id: 1, nome: 'Teste', documento: '00000000000' }, {carrinho_id:1,versao_carrinho:1,tentativa_id:'teste-pendencia',endereco_id:1,observacao:''}, db);
         } catch (erro) { checkoutErro = erro.codigo; }
       }
       let releitura = null;
       if (entrada.novoEstoque !== undefined) {
         produtos.get(entrada.itens[0].codigo).estoque = entrada.novoEstoque;
-        releitura = await lerCarrinho(1, db);
+        releitura = await lerCarrinho(1, 1, db);
       }
       let alterado = null;
       let alteracaoErro = null;
       if (entrada.alteracao) {
         const { codigo, quantidade, estoqueAntes, usuario = 1 } = entrada.alteracao;
         if (estoqueAntes !== undefined) produtos.get(codigo).estoque = estoqueAntes;
-        try { alterado = await alterarQuantidade(usuario, codigo, quantidade, db); }
+        try { alterado = await alterarQuantidade(usuario, usuario, codigo, quantidade, db); }
         catch (erro) { alteracaoErro = { status: erro.status, codigo: erro.codigo }; }
       }
       const depois = db.prepare('SELECT * FROM carrinho_itens ORDER BY id').all();
@@ -231,7 +232,7 @@ test('FIX-006: reduzir resolve pendencia e preserva outro usuario', () => {
   assert.equal(dados.alterado.valor_total, 60);
   assert.equal(dados.alterado.quantidade_pecas, 3);
   assert.equal(dados.alterado.pronto_para_checkout, true);
-  assert.deepEqual(dados.depois, dados.antes.map(linha => linha.usuario_id === 1 ? { ...linha, quantidade: 3 } : linha));
+  assert.deepEqual(dados.depois, dados.antes.map(linha => linha.carrinho_id === 1 ? { ...linha, quantidade: 3 } : linha));
 });
 
 test('FIX-006: nova queda rejeita sem alterar linhas', () => {
